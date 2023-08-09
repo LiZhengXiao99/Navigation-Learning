@@ -1,38 +1,74 @@
+[TOC]
 
+## 一、GAMP 简介
 
-## 零、前言
+### 1、程序概述
 
-之前写过一个 RTKLIB 的专栏：
+GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and multi-frequency **P**recise positioning)，在 RTKLIB 的基础上，将一些些多余的函数、代码简洁化，精简出后处理 PPP 部分，并对算法进行改进增强。对初学者非常友好，在我接触过的导航定位开源程序中算是最简单的，是用纯 C 语言编写，由于做了简化，代码比 RTKLIB 原版还要简单；使用也非常简单，软件包里直接有 VS 工程，和组织好的配置、数据文件，简单改改路径就能算出结果。
 
-* [RTKLIB学习总结（一）VS配置RTKLIB、manual、矩阵、最小二乘和Kalman滤波基本函数](https://lizhengxiao.blog.csdn.net/article/details/129339677)
-* [RTKLIB学习总结（二）时间系统、坐标系统](https://lizhengxiao.blog.csdn.net/article/details/129472515)
-* [RTKLIB学习总结（三）RTKGET、RTKCONV、RTKPLOT、RTKPOST、STRSVR的使用](https://lizhengxiao.blog.csdn.net/article/details/129569948)
-* [RTKLIB学习总结（四）rnx2rtkp.c、Option文件读取、Trace](https://lizhengxiao.blog.csdn.net/article/details/129617353)
-* [RTKLIB学习总结（五）后处理函数调用流程、postpos、execses_b、execses_r、execses、procpos、rtkpos](https://lizhengxiao.blog.csdn.net/article/details/129887413)
-* [RTKLIB学习总结（六）导航电文、卫星位置计算](https://lizhengxiao.blog.csdn.net/article/details/129986385)
-* [RTKLIB学习总结（七）GNSS观测量、Rinex文件读取](https://lizhengxiao.blog.csdn.net/article/details/130083589)
-* [RTKLIB学习总结（八）伪距单点定位SPP](https://lizhengxiao.blog.csdn.net/article/details/130359930)
-* [RTKLIB学习总结（九）RTK算法学习](https://lizhengxiao.blog.csdn.net/article/details/130674816)
-
-
-
-## 一、VS2022调试GMAP
+由于 GMAP 比较简单，用着简单、代码也好读，之前接触过 RTKLIB 的很快就能入门，所以 GAMP 的笔记我都写在这一篇里了。
 
 
 
 
 
-
-
-## 二、数据组织结构
-
+### 2、资源获取
 
 
 
 
 
+### 3、代码分析
 
-## 二、PPP 函数调用流程
+
+
+
+
+### 4、程序执行流程图
+
+
+
+
+
+
+
+
+
+## 二、VS2022下 编译调试调试
+
+
+
+
+
+
+
+
+
+## 三、配置文件
+
+
+
+
+
+
+
+
+
+
+
+## 四、主要的数据结构
+
+
+
+
+
+
+
+
+
+
+
+## 三、PPP 函数调用流程
 
 ![1688082358362](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1688082358362.png)
 
