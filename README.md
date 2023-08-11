@@ -44,13 +44,13 @@ GICI-LIB 全称 **G**NSS/**I**NS/**C**amera **I**ntegrated Navigation Library，
 
 
 
-### GraphGNSSLib：基于RTKLIB
+### GraphGNSSLib：基于 RTKLIB 的图优化 GNSS 定位
 
 
 
-### BNC：Qt-GNSS数据流处理
+### BNC：Qt-GNSS 实时数据流处理
 
-
+BNC（The BKG Ntrip Client）是由德国 BKG 开发的一款软件，它的功能丰富，可以选择不同分析中心以及挂载点，接收实时数据，并实现对其编码、解码、转换、处理和分析等功能。
 
 ### GNSS-SDR：GNSS 软件接收机
 
