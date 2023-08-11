@@ -252,13 +252,7 @@ NtripClient一般就是GPS流动站。登录NtripCaster后，发送自身的坐�
 
 
 
-
-
-
-
-
-
-## 四、vt_t 虚拟终端
+## 四、rtksvr.c 的函数
 
 
 
@@ -268,7 +262,113 @@ NtripClient一般就是GPS流动站。登录NtripCaster后，发送自身的坐�
 
 
 
-## 五、SSR 改正
+## 五、rtkrcv.c/vt.c/vt.h 的类型、函数
+
+### 1、虚拟终端
+
+#### 1. 虚拟终端结构体 vt_t
+
+
+
+```c
+typedef struct vt_tag {                 /* virtual console type */          // 
+    int state;                          /* state(0:close,1:open) */         // (0:close,1:open)
+    int type;                           /* type (0:dev,1:telnet) */         // (0:dev,1:telnet)
+    int in,out;                         /* input/output file descriptor */  // 输入、输出文件描述符
+    int n,nesc;                         /* number of line buffer/escape */  // 当前行数
+    int cur;                            /* cursor position */               // 光标位置
+    int cur_h;                          /* current history */               // 光标历史位置
+    int brk;                            /* break status */                  // 
+    int blind;                          /* blind inpu mode */               // 屏蔽输入模式
+    struct termios tio;                 /* original terminal attribute */   // 
+    char buff[MAXBUFF];                 /* line buffer */                   // 
+    char esc[8];                        /* escape buffer */                 // 
+    char *hist[MAXHIST];                /* history buffer */                // 历史字符串
+    FILE *logfp;                        /* log file pointer */              // log 文件指针
+} vt_t;
+```
+
+#### 2. 操作虚拟终端的基础函数
+
+
+
+```c
+extern vt_t *vt_open(int sock, const char *dev);
+extern void vt_close(vt_t *vt);
+extern int vt_getc(vt_t *vt, char *c);
+extern int vt_gets(vt_t *vt, char *buff, int n);
+extern int vt_putc(vt_t *vt, char c);
+extern int vt_puts(vt_t *vt, const char *buff);
+extern int vt_printf(vt_t *vt, const char *format, ...);
+extern int vt_chkbrk(vt_t *vt);
+extern int vt_openlog(vt_t *vt, const char *file);
+extern void vt_closelog(vt_t *vt);
+```
+
+#### 6. 虚拟终端输出函数
+
+
+
+```c
+static void prtime(vt_t *vt, gtime_t time);	//输出时间
+static void prsolution(vt_t *vt, const sol_t *sol, const double *rb);	//输出结果
+static void prstatus(vt_t *vt);				// 输出状态
+static void prsatellite(vt_t *vt, int nf);	// 输出卫星数据
+static void probserv(vt_t *vt, int nf);		// 输出观测值数据
+static void prnavidata(vt_t *vt);			// 输出星历数据
+static void prerror(vt_t *vt);				// 输出错误信息
+static void prstream(vt_t *vt);				// 输出数据流
+static void prssr(vt_t *vt);				// 输出 SSR 改正数据
+```
+
+#### 5. 虚拟终端控制结构体 con_t
+
+
+
+```c
+typedef struct {                       /* console type */
+    int state;                         /* 状态 (0:stop,1:run) */
+    vt_t *vt;                          /* 虚拟终端结构体 */
+    pthread_t thread;                  /* 线程控制 */
+} con_t;
+```
+
+#### 6. 处理终端命令函数
+
+
+
+```c
+cmd_start    (char **args, int narg, vt_t *vt);
+cmd_stop     (char **args, int narg, vt_t *vt);
+cmd_restart  (char **args, int narg, vt_t *vt);
+cmd_solution (char **args, int narg, vt_t *vt);
+cmd_status   (char **args, int narg, vt_t *vt);
+cmd_satellite(char **args, int narg, vt_t *vt);
+cmd_observ   (char **args, int narg, vt_t *vt);
+cmd_navidata (char **args, int narg, vt_t *vt);
+cmd_stream   (char **args, int narg, vt_t *vt);
+cmd_ssr      (char **args, int narg, vt_t *vt);
+cmd_error    (char **args, int narg, vt_t *vt); 
+cmd_option   (char **args, int narg, vt_t *vt);
+cmd_set      (char **args, int narg, vt_t *vt); 
+cmd_load     (char **args, int narg, vt_t *vt); 
+cmd_save     (char **args, int narg, vt_t *vt); 
+cmd_log      (char **args, int narg, vt_t *vt); 
+cmd_help     (char **args, int narg, vt_t *vt); 
+cmd_help     (char **args, int narg, vt_t *vt); 
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
