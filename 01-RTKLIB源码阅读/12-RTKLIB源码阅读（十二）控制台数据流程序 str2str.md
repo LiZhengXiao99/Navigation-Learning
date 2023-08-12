@@ -1,60 +1,96 @@
 [TOC]
 
-## 一、rtkrcv 用法
+
+
+## 一、str2str 用法
 
 ### 1、简介
 
+从数据流中输入数据，并将其分割和输出到多个数据流中，输入流可以是串行、tcp 客户端、tcp 服务器、ntrip 客户端或文件。输出流可以是串行、tcp 客户端、tcp 服务器、ntrip 服务器或文件。str2str 是常驻应用程序。要停止它：
 
+* 如果运行在前台，则在控制台中键入 ctr-c；
+* 如果运行在后台，则向后台进程发送 SIGINT 信号。
 
-
-
-### 2、配置文件
-
-
-
-
-
-### 3、命令行参数
-
-*     `-s`：start RTK server on program startup
-*     `-p port`：port number for telnet console
-*     `-m port`：port number for monitor stream
-*     `-d dev`：terminal device for console
-*     `-o file`：processing options file
-*     `-w pwd`：login password for remote console ("": no password)
-*     `-r level`：output solution status file (0:off,1:states,2:residuals)
-*     `-t level`：debug trace level (0:off,1-5:on)
-*     `-sta sta`：station name for receiver dcb
-
-
-
-### 4、终端命令
-
-* `start`：
-* `stop`：
-* `restart`：
-* `solution [cycle]`：
-* `status [cycle]`：
-* `satellite [-n] [cycle]`：
-* `observ [-n] [cycle]`：
-* `navidata [cycle]`：
-* `stream [cycle]`：
-* `error`：
-* `option [opt]`：
-* `set opt [val]`：
-* `load [file]`：
-* `save [file]`：
-* `log [file|off]`：
-* `help|? [path]`：
-* `exit`：
-* `shutdown`：
-* `!command [arg...]`：
+如果输入流和输出流都遵循 #format 输入信息的格式将被转换为输出格式。要指定输出使用 -msg 选项。如果省略选项 -in 或 -out，则输入为 stdin，"... "输出为 stdout、输入使用stdin，输出使用 stdout。如果选项 -in 或 -out 中的流为空，也会使用 stdin 或 stdout
 
 
 
 
 
-## 二、实时 GNSS 概念
+### 2、命令行参数
+
+使用方法：`str2str [-in stream] [-out stream [-out stream...]] [options]`
+
+
+
+数据流路径 stream path：
+
+```yaml
+serial       : serial://port[:brate[:bsize[:parity[:stopb[:fctr]]]]]
+tcp server   : tcpsvr://:port
+tcp client   : tcpcli://addr[:port]
+ntrip client : ntrip://[user[:passwd]@]addr[:port][/mntpnt]
+ntrip server : ntrips://[:passwd@]addr[:port]/mntpnt[:str] (only out)
+ntrip caster : ntripc://[user:passwd@][:port]/mntpnt[:srctbl] (only out)
+file         : [file://]path[::T][::+start][::xseppd][::S=swap]
+```
+
+数据格式 format：
+
+```yaml
+rtcm2        : RTCM 2 (only in)
+rtcm3        : RTCM 3
+nov          : NovAtel OEMV/4/6,OEMStar (only in)
+oem3         : NovAtel OEM3 (only in)
+ubx          : ublox LEA-4T/5T/6T (only in)
+ss2          : NovAtel Superstar II (only in)
+hemis        : Hemisphere Eclipse/Crescent (only in)
+stq          : SkyTraq S1315F (only in)
+javad        : Javad (only in)
+nvs          : NVS BINR (only in)
+binex        : BINEX (only in)
+rt17         : Trimble RT17 (only in)
+sbf          : Septentrio SBF (only in)
+```
+
+选项 option：
+
+```yaml
+-sta sta          station id
+-opt opt          receiver dependent options
+-s  msec          timeout time (ms) [10000]
+-r  msec          reconnect interval (ms) [10000]
+-n  msec          nmea request cycle (m) [0]
+-f  sec           file swap margin (s) [30]
+-c  file          input commands file [no]
+-c1 file          output 1 commands file [no]
+-c2 file          output 2 commands file [no]
+-c3 file          output 3 commands file [no]
+-c4 file          output 4 commands file [no]
+-p  lat lon hgt   station position (latitude/longitude/height) (deg,m)
+-px x y z         station position (x/y/z-ecef) (m)
+-a  antinfo       antenna info (separated by ,)
+-i  rcvinfo       receiver info (separated by ,)
+-o  e n u         antenna offset (e,n,u) (m)
+-l  local_dir     ftp/http local directory []
+-x  proxy_addr    http/ntrip proxy address [no]
+-b  str_no        relay back messages from output str to input str [no]
+-t  level         trace level [0]
+-fl file          log file [str2str.trace]
+-h                print help
+```
+
+
+
+
+
+
+
+### 3、配置文件
+
+
+
+## 二、GNSS 数据流概念
 
 ### 1、Linux 进程线程
 
@@ -248,11 +284,11 @@ NtripClient一般就是GPS流动站。登录NtripCaster后，发送自身的坐�
 
 
 
+## 三、stream.c
 
 
 
 
-## 四、rtksvr.c 的函数
 
 
 
@@ -262,177 +298,35 @@ NtripClient一般就是GPS流动站。登录NtripCaster后，发送自身的坐�
 
 
 
-## 五、rtkrcv.c/vt.c/vt.h 的类型、函数
+## 四、streamsvr.c
 
-### 1、虚拟终端
+### 1、通用数据流 API
 
-#### 1. 虚拟终端结构体 vt_t
+* `stropen()`：先根据选项赋值 stream 结构体，然后根据数据流类型调用对应的函数（openXXX），打开数据流。
+* `strclose()`：调用对应的函数（closeXXX），关闭数据流。
+* `strsync()`：用于带时间标签的重放文件，调用 syncfile() 根据时间标签同步时间。
+* `strlock()`、`strunlock()`：读写数据流之前上锁，之后解锁。
+* `strread()`：调用对应的函数（readXXX），读取数据流中高端数据到 buffer。
+* `strwrite()`：调用对应的函数（writeXXX），写 buffer 数据到数据流。
+* `strstat()`：调用对应的函数（stateXXX），获取数据流状态。
+* `strstatx()`：调用对应的函数（statexXXX），获取扩展数据流状态。
+* `strsum()`：获取数据流状态概要。
+* `strsetopt()`：获取全局数据流选项，包括：非活动超时、重新连接的时间间隔、平均数据速率、接收/发送缓冲区大小、文件交换边缘时间。
+* `strsettimeout()`：设置超时时间。
+* `strsetdir()`：设置 ftp/http 下载到的本地目录路径。
+* `strsetproxy()`：设置 http/ntrip 代理地址。
+* `strgettime()`：获取数据流播放文件的当前时间或重放时间。
+* `strsendnmea()`：调用 `outnmea_gga()`、`strwrite()`，向数据流发送 NMEA GPGGA 信息。
+* `gen_hex()`：生成普通十六进制信息。
+* `set_brate()`：生成十六进制信息。
+* `set_brate()`：设置比特率。
+* `strsendcmd()`：根据接收机品牌，发送接收机指令。
 
 
 
-```c
-typedef struct vt_tag {                 /* virtual console type */          // 
-    int state;                          /* state(0:close,1:open) */         // (0:close,1:open)
-    int type;                           /* type (0:dev,1:telnet) */         // (0:dev,1:telnet)
-    int in,out;                         /* input/output file descriptor */  // 输入、输出文件描述符
-    int n,nesc;                         /* number of line buffer/escape */  // 当前行数
-    int cur;                            /* cursor position */               // 光标位置
-    int cur_h;                          /* current history */               // 光标历史位置
-    int brk;                            /* break status */                  // 
-    int blind;                          /* blind inpu mode */               // 屏蔽输入模式
-    struct termios tio;                 /* original terminal attribute */   // 
-    char buff[MAXBUFF];                 /* line buffer */                   // 
-    char esc[8];                        /* escape buffer */                 // 
-    char *hist[MAXHIST];                /* history buffer */                // 历史字符串
-    FILE *logfp;                        /* log file pointer */              // log 文件指针
-} vt_t;
-```
 
-#### 2. 操作虚拟终端的基础函数
 
-
-
-```c
-extern vt_t *vt_open(int sock, const char *dev);
-extern void vt_close(vt_t *vt);
-extern int vt_getc(vt_t *vt, char *c);
-extern int vt_gets(vt_t *vt, char *buff, int n);
-extern int vt_putc(vt_t *vt, char c);
-extern int vt_puts(vt_t *vt, const char *buff);
-extern int vt_printf(vt_t *vt, const char *format, ...);
-extern int vt_chkbrk(vt_t *vt);
-extern int vt_openlog(vt_t *vt, const char *file);
-extern void vt_closelog(vt_t *vt);
-```
-
-#### 6. 虚拟终端输出函数
-
-
-
-```c
-static void prtime(vt_t *vt, gtime_t time);	//输出时间
-static void prsolution(vt_t *vt, const sol_t *sol, const double *rb);	//输出结果
-static void prstatus(vt_t *vt);				// 输出状态
-static void prsatellite(vt_t *vt, int nf);	// 输出卫星数据
-static void probserv(vt_t *vt, int nf);		// 输出观测值数据
-static void prnavidata(vt_t *vt);			// 输出星历数据
-static void prerror(vt_t *vt);				// 输出错误信息
-static void prstream(vt_t *vt);				// 输出数据流
-static void prssr(vt_t *vt);				// 输出 SSR 改正数据
-```
-
-#### 5. 虚拟终端控制结构体 con_t
-
-
-
-```c
-typedef struct {                       /* console type */
-    int state;                         /* 状态 (0:stop,1:run) */
-    vt_t *vt;                          /* 虚拟终端结构体 */
-    pthread_t thread;                  /* 线程控制 */
-} con_t;
-```
-
-#### 6. 处理终端命令函数
-
-
-
-```c
-cmd_start    (char **args, int narg, vt_t *vt);
-cmd_stop     (char **args, int narg, vt_t *vt);
-cmd_restart  (char **args, int narg, vt_t *vt);
-cmd_solution (char **args, int narg, vt_t *vt);
-cmd_status   (char **args, int narg, vt_t *vt);
-cmd_satellite(char **args, int narg, vt_t *vt);
-cmd_observ   (char **args, int narg, vt_t *vt);
-cmd_navidata (char **args, int narg, vt_t *vt);
-cmd_stream   (char **args, int narg, vt_t *vt);
-cmd_ssr      (char **args, int narg, vt_t *vt);
-cmd_error    (char **args, int narg, vt_t *vt); 
-cmd_option   (char **args, int narg, vt_t *vt);
-cmd_set      (char **args, int narg, vt_t *vt); 
-cmd_load     (char **args, int narg, vt_t *vt); 
-cmd_save     (char **args, int narg, vt_t *vt); 
-cmd_log      (char **args, int narg, vt_t *vt); 
-cmd_help     (char **args, int narg, vt_t *vt); 
-cmd_help     (char **args, int narg, vt_t *vt); 
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## 六、程序执行流程
-
-### 1、线程设计
-
-
-
-### 2、程序执行流程图
-
-
-
-
-
-### 3、主要函数
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## 五、str2str.c
 
 
 

@@ -1,6 +1,7 @@
 [TOC]
 
-## 一、GNSS观测量及其误差
+## 一、GNSS观测量
+
 ### 1、时间、伪距
 
 1. 伪距 $\rho \left ( t \right )$的定义：信号接收时间 $t_u\left ( t \right )$与信号的发送时间 $t^{(S)}\left ( t-\tau  \right )$的差乘以光在真空中的速度c，即：
