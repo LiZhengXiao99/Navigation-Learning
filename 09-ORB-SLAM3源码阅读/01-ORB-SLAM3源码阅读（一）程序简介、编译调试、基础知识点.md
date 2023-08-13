@@ -1,12 +1,43 @@
 [TOC]
 
-## 一、视觉SLAM简介
+## 一、程序简介
 
-### 1、定位与建图关系
+### 1、ORB-SLAM 概述
+
+
+
+### 2、资源获取
+
+
+
+### 3、代码分析
+
+
+
+文件结构如下：
+
+* Examples 和Exampleold 根据传感器类型，分别存放新的和旧的代码实例。
+* include 和 src 分别存放代码的 .h 头文件和 cc/cpp 原文件。
+* Thirdparty 存放了 DBOW2、Sophus 和 g2o。DBOW2 是词袋模型，Sophus 是李代数库，g2o 是图优化库。
+* Vocabulary 存放ORB词典。
+
+### 5、第三方库
+
+
+
+
+
+
+
+## 二、基础知识点
+
+### 1、视觉SLAM简介
+
+#### 1. 定位与建图关系
 
 ![1690934934097](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690935198158.png)
 
-### 2、单目、双目、RGB-D
+#### 2. 单目、双目、RGB-D
 
 * **单目相机**：单目相机在环境中移动，不断获得图像帧，通过两帧之间三角化计算，将空间的点投影到相机空间，对环境进行建模。
 * **双目相机**：左右相机同时能得到两图像帧，直接可以获得距离。
@@ -14,14 +45,14 @@
   * **Kinect1**：使用红外光，根据返回结构光图像，计算距离。
   * **Kinect2**：用脉冲信号，根据收发信号时间差计算距离。
 
-### 3、特征点法、直接法
+#### 3. 特征点法、直接法
 
 * **特征点法**：处理的是特征点，先提取图像特征，通过特征匹配估计相机运动，优化的是重投影误差，常见开源方案有 ORB-SLAM。
 * **直接法**：处理的是像素，根据像素灰度信息估计相机的运动，可以不用计算关键点和描述子，优化的是光度误差；根据使用的像素数量可以分为稀疏、半稠密和稠密三种，常见的开源方案有 LSD-SLAM、DSO 等。
 
 ![1690937665104](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690937665104.png)
 
-### 4、框架
+#### 4. 框架
 
 * **传感器数据读取**
 * **视觉里程计**（Visual Odometry，VO）：估算相邻图像间相机的运动，以及局部地图。也称前端（Front END）。
@@ -29,9 +60,7 @@
 * **回环检测**（Loop Closing）：判断出载体是否到达过先前的位置，如果检测到就将数据传给后端。
 * **建图**（Mapping）：根据估计的轨迹，建立与任务要求对应的地图。
 
-## 二、基础知识点
-
-### 1、ORB 图像特征
+### 2、ORB 图像特征
 
 ORB 特征包括特征点和描述子：
 
@@ -92,7 +121,7 @@ BIREF 算法**计算流程**：
 
 例如，特征点 A、B 的描述子分别是：10101011、10101010。首先设定一个**阈值**，比如 85%，当 A、B 的描述子相似程度大于 85% 时，认为是相同特征点。该例中相似度 87.5%，A、B 是匹配的。
 
-### 2、图像关键帧
+### 3、图像关键帧
 
 关键帧是图像帧中具有代表性的帧，目的在于降低信息冗余度、减少计算机资源的消耗、保证系统的实时性。
 
@@ -119,7 +148,7 @@ BIREF 算法**计算流程**：
 
 ![1690957525842](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690957751633.png)
 
-### 3、IMU 预积分
+### 4、IMU 预积分
 
 IMU（Inertial measurement unit）惯性测量单元，包括**加速度计**和**角速度**。加速度计用于测量物体的加速度，陀螺仪可以测量物体的三轴角速度。IMU 与视觉 SLAM 的互补：
 
@@ -139,7 +168,7 @@ $$
 \begin{aligned} \Delta \mathrm{R}_{i j} & \doteq \mathrm{R}_{i}^{\top} \mathrm{R}_{j}=\prod_{k=i}^{j-1} \operatorname{Exp}\left(\left(\tilde{\boldsymbol{\omega}}_{k}-\mathbf{b}_{k}^{g}-\boldsymbol{\eta}_{k}^{g d}\right) \Delta t\right) \\ \Delta \mathbf{v}_{i j} & \doteq \mathrm{R}_{i}^{\top}\left(\mathbf{v}_{j}-\mathbf{v}_{i}-\mathbf{g} \Delta t_{i j}\right)=\sum_{k=i}^{j-1} \Delta \mathrm{R}_{i k}\left(\tilde{\mathbf{a}}_{k}-\mathbf{b}_{k}^{a}-\boldsymbol{\eta}_{k}^{a d}\right) \Delta t \\ \Delta \mathbf{p}_{i j} & \doteq \mathrm{R}_{i}^{\top}\left(\mathbf{p}_{j}-\mathbf{p}_{i}-\mathbf{v}_{i} \Delta t_{i j}-\frac{1}{2} \sum_{k=i}^{j-1} \mathbf{g} \Delta t^{2}\right) \\ & =\sum_{k=i}^{j-1}\left[\Delta \mathbf{v}_{i k} \Delta t+\frac{1}{2} \Delta \mathrm{R}_{i k}\left(\tilde{\mathbf{a}}_{k}-\mathbf{b}_{k}^{a}-\boldsymbol{\eta}_{k}^{a d}\right) \Delta t^{2}\right]\end{aligned}
 $$
 
-### 4、VIO 视觉惯性里程计
+### 5、VIO 视觉惯性里程计
 
 视觉里程计 VO 通过最小化相机帧中地标的重投影误差，计算得到相机的位姿和地标的位置。IMU 对相邻两位姿直接进行约束，而且对没有帧添加了状态量：陀螺仪和加速度计的 Bias 及速度。
 
@@ -151,7 +180,7 @@ J(x)=\underbrace{\sum_{i=1}^{l} \sum_{k=1}^{K} \sum_{j \in J(i, k)} e_{r}^{i, j,
 $$
 其中， $i, j, k$ 分别表示相机、特征点和关键帧的索引， $W_{r}^{i, j, k}$ 表示特征的信息矩阵， $W_{s}^{k}$ 表示IMU 误差的信息矩阵，而 $e_{r}^{i, j, k}$ 为视觉重投影误差， $e_{s}^{k}$ 为 $\mathrm{IMU}$ 误差项。
 
-### 5、相机模型
+### 6、相机模型
 
 相机将三维世界的坐标点投影到二维平面的过程可以用一个几何模型表示，其中最简单的模型是针孔模型，即物理中的小孔成像原理。
 
@@ -169,7 +198,7 @@ $$
 
 
 
-### 6、多视图几何
+### 7、多视图几何
 
 
 
