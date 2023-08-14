@@ -4,11 +4,18 @@
 
 ### 1、ORB-SLAM 概述
 
+ORB 指 Oriented FAST and BRIEF，是一种结合FAST和BRIEF，并引入旋转不变性的一种特征点和描述子；SLAM 指 Simultaneous Localization and Mapping，指的是同时进行实时定位和地图构建。
+
+ORB-SLAM3是一个支持视觉、视觉加惯导、混合地图的 SLAM 系统，可以在单目，双目和RGB-D相机上利用针孔或者鱼眼模型运行。是第一个基于特征的紧耦合的 VIO 系统，仅依赖于最大后验估计(包括 IMU 在初始化时)。这样一个系统的效果就是：不管是在大场景还是小场景，室内还是室外都能鲁棒实时的运行，在精度上相比于上一版提升了2到5倍。第二个创新点是根据改进recall的新的重定位模块来构建的混合地图，因为这个模块他可以让ORB-SLAM3在特征不是很好的场景中长期运行：当里程计失败的时候，系统会重新构建地图并将这个地图和原来构建的地图对齐。和那些仅利用最新的几帧数据的里程计相比，ORB-SLAM3是第一个能够在所有算法阶段重用所有先前信息的系统。这样的机制就可以在BA的时候用有共视关系的关键帧，即使两帧在时间相差很远，或者来自原来的建图过程。
+
 
 
 ### 2、资源获取
 
+* 源码：https://github.com/UZ-SLAMLab/ORB_SLAM3
 
+* 推荐博客：[史上最全slam从零开始-总目录](https://blog.csdn.net/weixin_43013761/article/details/123092806)
+* 网上有很多 ORB-SLAM 源码解析的课，
 
 ### 3、代码分析
 
@@ -18,10 +25,13 @@
 
 * Examples 和Exampleold 根据传感器类型，分别存放新的和旧的代码实例。
 * include 和 src 分别存放代码的 .h 头文件和 cc/cpp 原文件。
-* Thirdparty 存放了 DBOW2、Sophus 和 g2o。DBOW2 是词袋模型，Sophus 是李代数库，g2o 是图优化库。
+* Thirdparty 存放了 DBOW2、Sophus 和 g2o。
+  * DBOW2 是词袋模型，推荐博客：[DBoW2库介绍](https://www.cnblogs.com/luyb/p/6033196.html)
+  * Sophus 是李代数库，
+  * g2o 是图优化库，
 * Vocabulary 存放ORB词典。
 
-### 5、第三方库
+
 
 
 
@@ -77,7 +87,7 @@ FAST 的计算过程，即逐个判断像素是否为特征点：
 
 * 设定一个合适的阙值 $\mathrm{t}$：当 2 个点的灰度值之差的绝对值大于 $\mathrm{t}$ 时，则认为这 2 个点不相同。
 * 考虑该像素点周围的 16 个像素。如果这 16 个点中有连续的 $n$ 个点 都和点不同，那么它就是一个角点。这里 n 设定为 12。
-* 现在提出一个高效的测试，来快速排除一大部分非特征点的点。 该测试仅仅检查在位置 1、9、5 和 13 四个位置的像素。如果是一个角点，那么上述四个像素点中至少有 3 个应该和点相同。如果都 不满足，那么不可能是一个角点。
+* 现在提出一个高效的测试，来快速排除一大部分非特征点的点。 该测试仅仅检查在位置 1、9、5 和 13 四个位置的像素。如果是一个角点，那么上述四个像素点中至少有 3 个应该和点相同。如果都不满足，那么不可能是一个角点。
 
 #### 2. BRIEFF
 
@@ -184,21 +194,95 @@ $$
 
 相机将三维世界的坐标点投影到二维平面的过程可以用一个几何模型表示，其中最简单的模型是针孔模型，即物理中的小孔成像原理。
 
+![image-20230814155112837](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814155112837.png)
 
+$O-x-y-z$ 为**相机坐标系**， $O-x^{\prime}-y^{\prime}-z$ 为**物理成像平面**。空间点 $P$ 通过小孔 $O$ 投影到物理成像平面 ，成像点为 $P^{\prime}$ 。$P$ 的坐标为 $[X, Y, Z], P^{\prime}$ 的坐标为 $\left[X^{\prime}, Y^{\prime}, Z^{\prime}\right]$，物理成像平面到小孔的距离 (即焦距) 为 $f$ 。根据三角形的相似关系，存在：
+$$
+\frac{Z}{f}=-\frac{X}{X^{\prime}}=-\frac{Y}{Y^{\prime}}
+$$
+其中负号表示成像是倒立的。为简化模型，可以将成像平面对称到相机前面 ，即将空间点 $P$ 一起放在相机坐标的同一侧。
 
-![1691021656755](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1691021656755.png)
+![image-20230814155425601](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814155425601.png)
 
+则有：
+$$
+\frac{Z}{f}=\frac{X}{X^{\prime}}=\frac{Y}{Y^{\prime}} \Longrightarrow \begin{aligned} X^{\prime} & =f \frac{X}{Z} \\ Y^{\prime} & =f \frac{Y}{Z}\end{aligned}
+$$
+在相机中获得的像素，需要对物理成像平面上对成像进行采样和量化。因此，假设在物理成像平面上存在一 个像素平面 $O-u-v$ ，设空间点 $P$ 在像素平面的投影为 $P^{\prime}$ ，其坐标为 $[u, v]^{T}$ 。像素坐标系与成像平面之间，相差一个缩放和原点的平移。
+$$
+P^{\prime} \text { 的坐标 }\left\{\begin{array}{l}
+u=\alpha X^{\prime}+c_{x} \\
+v=\beta Y^{\prime}+c_{y}
+\end{array}\right.
+$$
+其中， $\alpha$ 和 $\beta$ 是缩放系数， $\left[c_{x}, c_{y}\right]$ 是原点的平移。
+$$
+\begin{array}{ll}
+X^{\prime}=f \frac{X}{Z} & f_{x}=\alpha f \\
+Y^{\prime}=f \frac{Y}{Z} & f_{y}=\beta f
+\end{array} \Rightarrow\left\{\begin{array}{l}
+u=f_{x} \frac{X}{Z}+c_{x} \\
+v=f_{y} \frac{Y}{Z}+c_{y}
+\end{array}\right.
+$$
 
+$$
+\left\{\begin{array}{l}u=f_{x} \frac{X}{Z}+c_{x} \\ v=f_{y} \frac{Y}{Z}+c_{y}\end{array} \stackrel{\text { 矩阵形式 }}{\rightleftarrows}\left(\begin{array}{l}u \\ v \\ 1\end{array}\right)=\frac{1}{Z}\left(\begin{array}{ccc}f_{x} & 0 & c_{x} \\ 0 & f_{y} & c_{y} \\ 0 & 0 & 1\end{array}\right)\left(\begin{array}{c}X \\ Y \\ Z\end{array}\right) \triangleq \frac{1}{Z} \boldsymbol{K} \boldsymbol{P}\right.
+$$
 
-
-
-
-
-
-
-
+将 $Z$ 移到左边：
+$$
+Z\left(\begin{array}{l}
+u \\
+v \\
+1
+\end{array}\right)=\left(\begin{array}{ccc}
+f_{x} & 0 & c_{x} \\
+0 & f_{y} & c_{y} \\
+0 & 0 & 1
+\end{array}\right)\left(\begin{array}{l}
+X \\
+Y \\
+Z
+\end{array}\right) \triangleq \boldsymbol{K}  \Rightarrow   \boldsymbol{P}_{u v}=Z\left[\begin{array}{l}
+u \\
+v \\
+1
+\end{array}\right]=\boldsymbol{K}\left(\boldsymbol{R} \boldsymbol{P}_{w}+\boldsymbol{t}\right)=\boldsymbol{K} \boldsymbol{T} \boldsymbol{P}_{w}
+$$
+中间矩阵称为**相机的内参数矩阵** (Camera Intrinsics) $\boldsymbol{K}$ ，相机的位姿 $R, t$ 又称为**相机的外参数** (Camera Extrinsics)。相比于不变的内参，**外参会随着相机运动发生改变**，同时也是 **SLAM 中待估计的目标**，代表相机 的运动轨迹。
+$$
+Z \boldsymbol{P}_{u v}=Z\left[\begin{array}{c}
+u \\
+v \\
+1
+\end{array}\right]=\boldsymbol{K}\left(\boldsymbol{R} \boldsymbol{P}_{w}+\boldsymbol{t}\right)=\boldsymbol{K} \boldsymbol{T} \boldsymbol{P}_{w}
+$$
+上式表明：可以把一个世界坐标点先转换到相机坐标系，再去掉它最后一维的数值 (即该点距离相机成像平面的深度）。相当于归一化处理，得到点 $P$ 在相机归一化平面上的投影：
+$$
+\left(R P_{w}+t\right)=\underbrace{[X, Y, Z]}_{\text {相机坐标 }} \rightarrow \frac{[X / Z, Y / Z, 1]}{[\text { 归一化坐标 }}
+$$
+归一化坐标可以看成相机前方 $z=1$ 处的平面上的一点， $z=1$ 平面又称为归一化平面。归一化坐标左乘相机内参 $K$ ，就得到像素坐标。因此，也可以把像素坐标 $[u, v]^{T}$ 看成对归一化平面上点进行量化测量的结果。
 
 ### 7、多视图几何
+
+运动估计指根据特征点匹配情况，恢复出两帧间的相机运动，即求解出旋转矩阵 $\mathrm{R}$ 和平移向量 $t$。针对特征点匹配的情况，运动估计可以分为：2D-2D、3D-2D、3D-3D，上述也称为多视图几何模型。
+
+![image-20230814160947346](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814160947346.png)
+
+#### 1. 2D → 2D
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
