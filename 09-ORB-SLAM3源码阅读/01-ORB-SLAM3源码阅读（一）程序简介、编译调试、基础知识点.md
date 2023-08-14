@@ -4,9 +4,13 @@
 
 ### 1、ORB-SLAM 概述
 
-ORB 指 Oriented FAST and BRIEF，是一种结合FAST和BRIEF，并引入旋转不变性的一种特征点和描述子；SLAM 指 Simultaneous Localization and Mapping，指的是同时进行实时定位和地图构建。
+ORB 指 Oriented FAST and BRIEF，是一种结合FAST和BRIEF，并引入旋转不变性的一种特征点和描述子；SLAM 指 Simultaneous Localization and Mapping，指的是同时进行实时定位和地图构建。ORB-SLAM3 是迄今为止，最完整的视觉惯性 SLAM 系统系统，它是第一个集成了单目相机、双目相机、RGB-D相机，以及单目相机结合 IMU、双目相机结合 IMU 的 SLAM 系统。并且在 ORB-SLAM2 的基础上，改进了相机模型，使其不再局限于传统的小孔成像模型，而是可以扩展到鱼眼模型。在与 IMU 的结合上，它根据运动模型在流形上进行 IMU 的预积分的方式，然后采用非线性优化的思想，将 IMU 的预积分结果和视觉 SLAM 的重投影模型一同进行图优化，使得预积分残差以及重投影误差共同达到最小，以此来完成视觉信息和惯导系统的紧耦合。并且它采用了更为快速的初始化方法，以及丢失跟踪后利用惯导系统快速重定位方法。此外，它还采用地图集的方式，实现了对大场景的定位建图。这也是如今众多开源方案中，功能最强大、最精准的方法。
 
-ORB-SLAM3是一个支持视觉、视觉加惯导、混合地图的 SLAM 系统，可以在单目，双目和RGB-D相机上利用针孔或者鱼眼模型运行。是第一个基于特征的紧耦合的 VIO 系统，仅依赖于最大后验估计(包括 IMU 在初始化时)。这样一个系统的效果就是：不管是在大场景还是小场景，室内还是室外都能鲁棒实时的运行，在精度上相比于上一版提升了2到5倍。第二个创新点是根据改进recall的新的重定位模块来构建的混合地图，因为这个模块他可以让ORB-SLAM3在特征不是很好的场景中长期运行：当里程计失败的时候，系统会重新构建地图并将这个地图和原来构建的地图对齐。和那些仅利用最新的几帧数据的里程计相比，ORB-SLAM3是第一个能够在所有算法阶段重用所有先前信息的系统。这样的机制就可以在BA的时候用有共视关系的关键帧，即使两帧在时间相差很远，或者来自原来的建图过程。
+
+
+是第一个基于特征的紧耦合的 VIO 系统，仅依赖于最大后验估计(包括 IMU 在初始化时)。这样一个系统的效果就是：不管是在大场景还是小场景，室内还是室外都能鲁棒实时的运行，在精度上相比于上一版提升了2到5倍。
+
+第二个创新点是根据改进recall的新的重定位模块来构建的混合地图，因为这个模块他可以让ORB-SLAM3在特征不是很好的场景中长期运行：当里程计失败的时候，系统会重新构建地图并将这个地图和原来构建的地图对齐。和那些仅利用最新的几帧数据的里程计相比，ORB-SLAM3是第一个能够在所有算法阶段重用所有先前信息的系统。这样的机制就可以在BA的时候用有共视关系的关键帧，即使两帧在时间相差很远，或者来自原来的建图过程。
 
 
 
@@ -266,33 +270,173 @@ $$
 
 ### 7、多视图几何
 
-运动估计指根据特征点匹配情况，恢复出两帧间的相机运动，即求解出旋转矩阵 $\mathrm{R}$ 和平移向量 $t$。针对特征点匹配的情况，运动估计可以分为：2D-2D、3D-2D、3D-3D，上述也称为多视图几何模型。
+多视图几何目的是进行运动估计，根据特征点匹配情况，恢复出两帧间的相机运动，即求解出旋转矩阵 $\mathrm{R}$ 和平移向量 $t$。针对特征点匹配的情况，运动估计可以分为：2D-2D、3D-2D、3D-3D。
 
 ![image-20230814160947346](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814160947346.png)
 
-#### 1. 2D → 2D
+#### 1. 2D-2D
+
+![image-20230814211100817](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814211100817.png)
+
+2D-2D 主要是针对单目相机的初始化过程，在不知道空间中 3D 点的情况下（如末进行初始化）通过两帧间匹配的特征点进行帧间相机运动估计。当相机为**单目相机**，只知道 2D 的像素坐标，如何**根据两组 2D 点估计相机运动**，该问题用**对极几何**解决。
+
+![image-20230814204932980](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814204932980.png)
+
+如图， $I_{1}$ 是第一帧， $I_{2}$ 是相机运动后的第二帧， $O_{1}$ 和 $O_{2}$ 是运动前后的相机中心。假设第一帧到到第二帧的运动 **(旋转和平移) 为 $[R, t]$** 。
+
+- $I_{1}$ 中有一个**特征点 $p_{1}$** ，它在 $I_{2}$ 中对应的是**特征点 $p_{2}$** ，这 两个点是同一个**空间点 $P$ 在两个成像平面上的投影**。
+
+- 连线 $\overrightarrow{O_{1} p_{1}}$ 和连线 $\overrightarrow{O_{1} p_{2}}$ 在三维空间中相交于点 $P$ ，这时 $O_{1}, O_{2} ， P$ 三个点可以确定一个**平面 $O_{1} O_{2} P$ ，称为极平面 (Epipolar plane)**。
+- $O_{1} O_{2}$ 连线和像平面 $I_{1} ， I_{2}$ 的交点分别为 $e_{1}, e_{2} 。 O_{1} O_{2}$ 被称为**基线**， $e_{1}$ 和 $e_{2}$ 称为**极点**(Epipoles)。
+- 极平面 $O_{1} O_{2} P$ 与两个像平面 $I_{1} ， I_{2}$ 之间的相交线 $l_{1} ， l_{2}$ 为**极线** (Epipolar line)。
+
+几何方法：主要是根据对极几何理论得到两帧间的对应关系根据针孔相机模型，在齐次坐标情况下：
+$$
+\boldsymbol{p}_{1}=\boldsymbol{K} \boldsymbol{P}, \quad \boldsymbol{p}_{2}=\boldsymbol{K}(\boldsymbol{R P}+\boldsymbol{t})
+$$
+现在，取：
+$$
+\boldsymbol{x}_{1}=\boldsymbol{K}^{-1} \boldsymbol{p}_{1}, \quad \boldsymbol{x}_{2}=\boldsymbol{K}^{-1} \boldsymbol{p}_{2} .
+$$
+其中， $x_{1}, x_{2}$ 是两个像素点的归一化平面上的坐标。 代入上式子，可得：
+$$
+x_{2}=\boldsymbol{R} x_{1}+\boldsymbol{t} .
+$$
+两边同时左乘 $t$ 的反对称矩阵 $t^{\wedge}$ ，接着同时左乘 $x_{2}^{T}$ ，可得：
+$$
+\boldsymbol{x}_{2}^{T} \boldsymbol{t}^{\wedge} \boldsymbol{x}_{2}=\boldsymbol{x}_{2}^{T} \boldsymbol{t}^{\wedge} \boldsymbol{R} \boldsymbol{x}_{1}
+$$
+$t^{\wedge} x_{2}$ 是一个与 $t$ 和 $x_{2}$ 都垂直得到向量，则 $x_{2}^{T} t^{\wedge} R x_{1}=0$ 可得：
+$$
+\boldsymbol{p}_{2}^{T} \boldsymbol{K}^{-T} \boldsymbol{t}^{\wedge} \boldsymbol{R} \boldsymbol{K}^{-1} \boldsymbol{p}_{1}=0
+$$
+上述两个式子称为**对极约束**，它的几何意义是 $O_{1}, O_{2}, P$ 三者共面。对极约束中同时包括**平移**和**旋转**。将中间部分记作两个矩阵，**基础矩阵**(Fundamental Matrix) $\boldsymbol{F}$ 和 **本质矩阵**(Essential Matrix) $\boldsymbol{E}$。进一步简化对极约束：
+$$
+\begin{array}{c}
+\boldsymbol{E}=\boldsymbol{t}^{\wedge} \boldsymbol{R} \\
+\boldsymbol{F}=\boldsymbol{K}^{-T} \boldsymbol{E} \boldsymbol{K}^{-1} \\
+\boldsymbol{x}_{2}^{T} \boldsymbol{E} \boldsymbol{x}_{1}=\boldsymbol{p}_{2}^{T} \boldsymbol{F} \boldsymbol{p}_{1}=0
+\end{array}
+$$
+相机位姿估计问题变为如下两步：
+
+1. 根据配对点的像素位置，求出 $E$ 或 $F$
+2. 根据 $E$ 或 $F$，求出 $R$ 和 $t$
+
+由于 $E$ 和 $F$ 只差相机内参 $K$，而内参由相机提供，通常已知。所以**实际情况中，采用形式更简单的本质矩阵 $E$**。
+
+本质矩阵是一个 $3 \times 3$ 的矩阵，内有 9 个末知数。由于旋转和平移各有 3 个自由度，故 $t^{\wedge} \boldsymbol{R}$ 共有 6 个自由度，但由于尺度等价性， $E$ 实际上有 5 个自由度。估算 $E$ 通常使用 8 对点，也称为八点法(Eight-Point-Algorithm)。八点法只利用 $E$ 的线性性质，因此可以在线性代数框架下求解。
+
+根据估算得到本质矩阵 $E$ ，恢复出相机的运动 $R$ 和 $t$ 。 这个过程采用奇异值分解，假设 $E$ 的SVD 为：
+$$
+\boldsymbol{E}=\boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V}^{T}
+$$
+其中 $U$ 和 $V$ 是正交阵， $\boldsymbol{\Sigma}$ 是奇异值矩阵。可以求得：
+$$
+\begin{array}{l}
+\boldsymbol{t}_{1}^{\hat{1}}=\boldsymbol{U} \boldsymbol{R}_{Z}\left(\frac{\pi}{2}\right) \boldsymbol{\Sigma} \boldsymbol{U}^{T}, \quad \boldsymbol{R}_{1}=\boldsymbol{U} \boldsymbol{R}_{Z}^{T}\left(\frac{\pi}{2}\right) \boldsymbol{V}^{T} \\
+\boldsymbol{t}_{\hat{2}}^{\hat{}}=\boldsymbol{U} \boldsymbol{R}_{Z}\left(-\frac{\pi}{2}\right) \boldsymbol{\Sigma} \boldsymbol{U}^{T}, \quad \boldsymbol{R}_{2}=\boldsymbol{U} \boldsymbol{R}_{Z}^{T}\left(-\frac{\pi}{2}\right) \boldsymbol{V}^{T}
+\end{array}
+$$
+从 $E$ 分解到 $R$ 和 $t$，存在 $4$ 个可能的解：
+
+![image-20230814210707814](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814210707814.png)
+
+$P$ 在两个相机中都有正的深度是正确的解。实际中 ，将一个点代入 4 种解中，检测该点在两个相机下的深度，即可确定哪个是正确的解。
+
+> 【总结】2D-2D
+>
+> * 八点法求本质矩阵 $E$；
+> * 本质矩阵奇异值分解得到 4 个解；
+> * 把一个点带入 4 个解中，看哪个解深度为正值，即为正确的解。
+
+#### 2. 3D-2D
+
+![image-20230814211202142](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814211202142.png)
+
+如果一组为 3D，一组为 2D，即知道了一些 3D 点和它们在相机的投影位置，也能估计相机的运动。该问题用 **PnP**(Perspective-n-Point) 解决。$\mathrm{PnP}$ 是求解 3D 到 2D 点对运动的方法。它描述了当知道 $n$ 个 $3 \mathrm{D}$ 空间点及其投影位置时，如何估计相机的位姿。
+
+* 在双目或 RGB-D 的视觉里程计中，可以直接使用 PnP 估计相机运动;
+* 在单目视觉里程计中，必须先进行初始化，才能使用 PnP。
+
+PnP 有如下解法：
+
+* **P3P**：3 对匹配点，需要相机内参。
+* **DLT**：不需要相机内参，4 点法求单应矩阵，DLT 分解出 K、R、t。
+* **EPnP**：最少4个点，性价比高，精度较高，需要相机内参。
+* **UPnP**：估计出焦距，适合末标定场景。
+* **BA**：构建最小二乘法优化相机位姿。
+
+其中 P3P 需要利用给定的 3 个点的几何关系，它的输入数据为 3 对 2D-2D 的匹配点。
+
+![image-20230814212320673](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814212320673.png)
+
+其中：3D点 (世界坐标系) : $A, B, C$ 。2D点 (相机坐标系)： $a, b, c$ 分别对应 $A, B, C$ 在相机成像平面上的投影。
+
+$P n P$ 问题转换为 ICP问题:
+
+- 通过余弦定理，可以得到 $O A, O B, O C$ 的长度；
+- 3D点在相机坐标下的坐标能够计算出；
+- 3D (相机坐标系) - 3D (相机坐标系) 的对应点；
+- PnP 问题转换为 ICP问题。
+
+除了线性方法，还可以将 **PnP 问题**构建为关于**重投影误差的非线性最小二乘法问题**。线性方法往往先求**相机位姿**，再求**空间点位置**，而非线性优化则是把它们都作为优化变量一起优化。 这一类**把相机和三维点放在一起进行最小化**的问题，称为**光束法平差** (Bundle Adjustment，**BA**)
+
+![image-20230814212522583](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814212522583.png)
+
+考虑到相机位姿末知及观测点的噪声，将误差和构建为最小二乘法问题，**使误差最小化**，**寻找最优的相机位姿**：
+$$
+\boldsymbol{\xi}^{*}=\arg \min _{\boldsymbol{\xi}} \frac{1}{2} \sum_{i=1}^{n}\left\|\boldsymbol{u}_{i}-\frac{1}{s_{i}} \boldsymbol{K} \exp \left(\boldsymbol{\xi}^{\wedge}\right) \boldsymbol{P}_{i}\right\|_{2}^{2}
+$$
+该问题的误差项是将 $3 D$ 点的投影位置与观测位置作差，因此，称为**重投影误差**。
+
+#### 3. 3D-3D
+
+3D-2D 当相机为双目、RGB-D 时，或者通过某种方式得到了距离信息，**根据两组 3D 点估计相机运动**。该问题用 ICP(Iterative Closest Point) 解决。
+
+假设有一组配对好的 3D 点：
+$$
+\boldsymbol{P}=\left\{\boldsymbol{p}_{1}, \ldots, \boldsymbol{p}_{n}\right\}, \quad \boldsymbol{P}^{\prime}=\left\{\boldsymbol{p}_{1}^{\prime}, \ldots, \boldsymbol{p}_{n}^{\prime}\right\}
+$$
+现在希望找到一个欧式变换 $R, t$ ，使得：
+$$
+\forall i, \boldsymbol{p}_{i}=\boldsymbol{R} \boldsymbol{p}_{i}^{\prime}+\boldsymbol{t}
+$$
+该问题使用迭代最近点 ICP 求解。与 PnP 类似，ICP 的求解也分为两种形式：线性优化 SVD、非线性优化：BA。
+
+先来看 SVD 法，分为三个步骤求解：
+
+1. 计算两组点的质心位置 $\boldsymbol{p}, \boldsymbol{p}^{\prime}$, 然后计算每:个点的去质心坐标：
+  $$
+  \boldsymbol{q}{i}=\boldsymbol{p}{i}-\boldsymbol{p}, \quad \boldsymbol{q}{i}^{\prime}=\boldsymbol{p}{i} ({\prime}-\boldsymbol{p}){\prime}
+  $$
+
+2. 根据以下优化问题计算旋转矩阵：
+  $$
+  \boldsymbol{R}^{*}=\arg \min {\boldsymbol{R}} \frac{1}{2} \sum{i=1}^{n}\left|\boldsymbol{q}{i}-\boldsymbol{R} \boldsymbol{q}{i} ({\prime}\right\|){2}
+  $$
+
+3. 根据第二步的 $\boldsymbol{R}$, 计算 $\boldsymbol{t}$：
+  $$
+  t^{*}=p-R p^{\prime}
+  $$
+
+![image-20230814214502837](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814214502837.png)
 
 
 
+求解 ICP 的非线性方法，用迭代的方式寻找最优值。利用李代数优化相机位姿时，目标函数为:
+$$
+\min {\boldsymbol{\xi}}=\frac{1}{2} \sum{i=1}^{n}\left|\left(\boldsymbol{p}{i}-\exp \left(\boldsymbol{\xi}^{\wedge}\right) \boldsymbol{p}{i} ({\prime}\right)\right\|_{2}){2}
+$$
+使用李代数扰动模型，可得：
+$$
+\frac{\partial \boldsymbol{e}}{\partial \delta \boldsymbol{\xi}}=-\left(\exp \left(\boldsymbol{\xi}^{\wedge}\right) \boldsymbol{p}_{i}{ } ({\prime}\right)){\odot}
+$$
+通过不断迭代，最小化误差，就能找到极小值。一个像素的深度可能有，也可能测量不到，实际情况中常常混合着使用 PnP 和 ICP 优化。
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- 深度已知的特征点，建模 3D-3D 误差；
+- 深度末知的特征点，建模 3D-2D 的重投影误差。
 
 ## 三、ORB-SLAM3 历史与演变
 
