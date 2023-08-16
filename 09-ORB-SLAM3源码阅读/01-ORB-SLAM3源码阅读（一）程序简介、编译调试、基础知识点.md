@@ -14,56 +14,9 @@ ORB-SLAM3 是**迄今为止，最完整的视觉惯性 SLAM 系统系统**，它
 
 ![1690952265203](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690952265203.png)
 
-#### 1. PTAM（Parallel Tracking and Mapping）
+### 3、代码分析
 
-基于关键帧，首次将跟踪（Tracking）和建图（Mapping）分成两个独立线程：
-
-- **跟踪线程**负责跟踪相机位姿，同时绘制虚拟的模型。
-- **建图线程**负责建立场景的模型和绘制场景的地图。
-
-#### 2. ORB-SLAM
-
-在 PTAM 基础上，提出基于特征点的单目 SLAM 算法
-
-- **跟踪线程**：提取 ORB 特征，根据上一帧进行初始位姿估计，或者通过全局重定位初始化相机位姿，然后跟踪已重建的局部地图来优化位姿，最后根据一些规则输出关键帧。
-- **建图线程**：包括插入关键帧、验证最近生成的地图点并进行筛选，同时生成新的地图点，使用局部 BA，最后对插入关键帧进行筛选，去除多余的关键帧。
-- **回环检测线程**：分为回环检测和回环校正。首先通过 BOW 加速闭环匹配帧的选择，然后通过 Sim3 计算相似变换，最后通过回环融合和本质图优化，实现闭环检测功能。
-
-![1690940910132](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690940910132.png)
-
-#### 3. ORB-SLAM-VI
-
-加入 IMU，针对单目 SLAM 缺少尺度信息，提出了新的 IMU 初始化方法，以高精度地图快速计算尺度、重力方向、速度以及陀螺仪和加速度计偏差，并重用地图，在已建图区域实现零漂移定位。
-
-![1690941287964](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690941287964.png)
-
-#### 4. ORB-SLAM2
-
-![image-20230815105030876](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230815105030876.png)
-
-- 是第一个适用于单目、双目、RGB-D相机，还包括闭环控制、重定位、地图重用的开源 SLAM 系统。
-- 在 RGB-D 模式下使用 BA 算法，准确率高于基于迭代最近点和光度深度误差最小化算法。
-- 利用远近双目点和单目量测，使得在双目相机的情况下，算法的准确率高于以前最好的直接法双目视觉 SLAM。
-- 设置了一个轻量级定位模式，能暂停地图构建线程，同时能有效地重复利用已建的地图，
-
-#### 5. ORB-SLAM-Atlas
-
-实现多地图合并，包含一个鲁棒的地图合并算法，能处理无限数量非连续的子地图系统。
-
-#### 6. ORB-SLAM3
-
-支持视觉、视觉+惯导、混合地图的 SLAM 系统，可以在单目、双目、RGB-D 相机上利用针孔和鱼眼模型运行。
-
-### 3、资源获取
-
-* 源码：https://github.com/UZ-SLAMLab/ORB_SLAM3
-
-* 推荐博客：[史上最全slam从零开始-总目录](https://blog.csdn.net/weixin_43013761/article/details/123092806)
-* 网上有很多 ORB-SLAM 源码解析的课，
-
-### 4、代码分析
-
-
+源码：https://github.com/UZ-SLAMLab/ORB_SLAM3
 
 文件结构如下：
 
@@ -73,7 +26,7 @@ ORB-SLAM3 是**迄今为止，最完整的视觉惯性 SLAM 系统系统**，它
   * DBOW2 是词袋模型，推荐博客：[DBoW2库介绍](https://www.cnblogs.com/luyb/p/6033196.html)
   * Sophus 是李代数库，
   * g2o 是图优化库，
-* Vocabulary 存放ORB词典。
+* Vocabulary 存放 ORB 词典。
 
 
 
@@ -194,6 +147,11 @@ BIREF 算法**计算流程**：
 
 #### 4. 共视图、生成树、本质图的关系
 
+* **共视图 Covisibility Graph**：共视图是一个加权无向图，图中每个节点是相机的位姿，如果两个位姿的关键帧拍摄到的相同关键点的数量达到一定值（论文设定为至少15个），则认为两个关键帧具有共视关系。此时两个节点之间便生成了一条边，边的权重与共视点的数量有关。
+
+* **生成树 Spanning Tree**：用最少的边连接了所有的关键帧节点（即共视图中所有的节点）。当一个关键帧被加入到共视图当中后，这个关键帧与共视图中具有最多观测点的关键帧之间建立一个边，完成 Spanning Tree 的增长。
+* **本质图 Essential Graph**：根据共视关系得到的共视图是一个连接关系非常稠密的图，即节点之间有较多的边，而这过于稠密而不利于实时的优化。于是构建了 Essential Graph，在保证连接关系的前提下尽可能减少节点之间的边。Essential Graph 中的节点依旧是全部的关键帧对应的位姿，连接的边包含三种边：Spanning Tree 的边、共视图中共视关系强（共视点数量超过100）的边、以及回环时形成的边。
+
 相同点在于都是以关键帧作为节点，帧与帧之间通过边来连接的模型。不同点在于：
 
 * 共视图(Covisibility Graph)最稠密，本质图(Essential Graph)次之，生成树(Spanning tree)最稀疏。
@@ -206,6 +164,10 @@ BIREF 算法**计算流程**：
 ![image-20230814160947346](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814160947346.png)
 
 ### 4、IMU 预积分
+
+![image-20230816132201403](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230816132201403.png)
+
+如图，IMU 量测值频率远高于时间量测，假设了短时间内的积分项为常数，将第 $k$ 帧和第 $k+1$ 帧之间的所有 IMU 进行积分，通过迭代优化估计非积分项的状态值，可得第 $\mathrm{k}+1$ 帧的位置、速度和旋转 (PVQ)，作为视觉估计的初始值，避免了优化过程中的重复积分，主要是为了提高计算效率。具体原理如下：
 
 IMU（Inertial measurement unit）惯性测量单元，包括**加速度计**和**角速度**。加速度计用于测量物体的加速度，陀螺仪可以测量物体的三轴角速度。IMU 与视觉 SLAM 的互补：
 
@@ -378,9 +340,7 @@ $$
 1. 根据配对点的像素位置，求出 $E$ 或 $F$
 2. 根据 $E$ 或 $F$，求出 $R$ 和 $t$
 
-由于 $E$ 和 $F$ 只差相机内参 $K$，而内参由相机提供，通常已知。所以**实际情况中，采用形式更简单的本质矩阵 $E$**。
-
-本质矩阵是一个 $3 \times 3$ 的矩阵，内有 9 个末知数。由于旋转和平移各有 3 个自由度，故 $t^{\wedge} \boldsymbol{R}$ 共有 6 个自由度，但由于尺度等价性， $E$ 实际上有 5 个自由度。估算 $E$ 通常使用 8 对点，也称为八点法(Eight-Point-Algorithm)。八点法只利用 $E$ 的线性性质，因此可以在线性代数框架下求解。
+由于 $E$ 和 $F$ 只差相机内参 $K$，而内参由相机提供，通常已知。所以**实际情况中，采用形式更简单的本质矩阵 $E$**。本质矩阵是一个 $3 \times 3$ 的矩阵，内有 9 个末知数。由于旋转和平移各有 3 个自由度，故 $t^{\wedge} \boldsymbol{R}$ 共有 6 个自由度，但由于尺度等价性， $E$ 实际上有 5 个自由度。估算 $E$ 通常使用 8 对点，也称为**八点法**(Eight-Point-Algorithm)。八点法只利用 $E$ 的线性性质，因此可以在线性代数框架下求解。
 
 根据估算得到本质矩阵 $E$ ，恢复出相机的运动 $R$ 和 $t$ 。 这个过程采用奇异值分解，假设 $E$ 的SVD 为：
 $$
@@ -424,7 +384,7 @@ PnP 有如下解法：
 
 其中 P3P 需要利用给定的 3 个点的几何关系，它的输入数据为 3 对 2D-2D 的匹配点。
 
-![image-20230814212320673](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814212320673.png)
+![image-20230816113216017](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230816113216017.png)
 
 其中：3D点 (世界坐标系) : $A, B, C$ 。2D点 (相机坐标系)： $a, b, c$ 分别对应 $A, B, C$ 在相机成像平面上的投影。
 
@@ -435,7 +395,7 @@ $P n P$ 问题转换为 ICP问题:
 - 3D (相机坐标系) - 3D (相机坐标系) 的对应点；
 - PnP 问题转换为 ICP问题。
 
-除了线性方法，还可以将 **PnP 问题**构建为关于**重投影误差的非线性最小二乘法问题**。线性方法往往先求**相机位姿**，再求**空间点位置**，而非线性优化则是把它们都作为优化变量一起优化。 这一类**把相机和三维点放在一起进行最小化**的问题，称为**光束法平差** (Bundle Adjustment，**BA**)
+除了线性方法，还可以将 **PnP 问题**构建为关于**重投影误差的非线性最小二乘法问题**。线性方法往往先求**相机位姿**，再求**空间点位置**，而非线性优化则是把它们都作为优化变量一起优化。 这一类**把相机和三维点放在一起进行最小化**的问题，称为**光束法平差** (Bundle Adjustment，**BA**)。**重投影误差**是指将三维点云数据或深度图像中的点投影回二维图像中，再与实际观测到的二维图像中的对应点之间的误差：
 
 ![image-20230814212522583](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814212522583.png)
 
@@ -497,6 +457,149 @@ $$
 - 深度已知的特征点，建模 3D-3D 误差；
 - 深度末知的特征点，建模 3D-2D 的重投影误差。
 
+### 8、DBoW
+
+**BoW**（Bag of Words，词袋模型），是自然语言处理领域经常使用的一个概念。以文本为例，一篇文章可能有一万个词，其中可能只有 500 个不同的单词，每个词出现的次数各不相同。词袋就像一个个袋子，每个袋子里装着同样的词。这构成了一种文本的表示方式。这种表示方式不考虑文法以及词的顺序。
+
+在计算机视觉领域，图像通常以特征点及其特征描述来表达。如果把特征描述看做单词，那么就能构建出相应的词袋模型。这就是本文介绍的 DBoW2 库所做的工作。利用 DBoW2 库，**图像可以方便地转化为一个低维的向量表示**。比较两个图像的相似度也就转化为比较**两个向量的相似度**。它本质上是一个信息压缩的过程。
+
+**词袋模型**利用视觉词典（vocabulary）来把图像转化为向量。视觉词典有多种组织方式，对应于不同的搜索复杂度。DBoW2 库采用树状结构存储词袋，搜索复杂度一般在 log(N)，有点像决策树。通过在大量图像中提取特征，利用 K-Means 方法聚类出 $n$ 个单词。这个 $n$ 个单词也不是一次聚类而成的，而是利用了 K 叉树。在每一层依次用 K-means 算法聚类成 $K$ 类。最后形成的叶子节点就是单词。深度为 $d$ 的 $K$ 叉树形成的单词数量为 $n=K^{d}$ 。在 DBoW2 中默认的 $K=10, d=5$ ，可以形成10000个单词。
+
+> 利用 $K$ 叉树的好处是什么呢? 主要是加速：
+>
+> 1. 可以加速判断一个特征属于哪个单词。如果不使用 K 叉树，就需要与每个单词比较 (计算汉明距离），共计需要比较 $K^{d}$ 次。而使用 K 叉树之后，需要的比较次数变为 $K \times(d-1)$ 次。大大提高了速度。这里利用了 K 叉树的快速查找特性。
+> 2. DBoW 中存储了 Direct Index，也就每个节点存储有一幅图像上所有归属与该节点的特征的 index。在两帧进行特征匹配的时候，只需要针对每一个节点进行匹配就好了，大大缩小了匹配空间，加速了匹配速度。ORB-SLAM帧间匹配都使用了这个trick。
+> 3. 除此之外，如下图，DBoW 的每个单词中还存储了 Inverse index，每个 Inverse Index 中存储有所有有此单词的图像 index，以及对应的权重: $<I_{i}, \eta_{i}>$ 。在进行闭环搜索的时候，可以加快搜索过程的。具体的，我们只需要找与当前关键帧有相同单词的关键帧就可以了。
+> 4. **反向索引**：记录每个叶节点对应的图像编号。当识别图像时，根据反向索引选出有着公共叶节点的备选图像并计算得分，而不需要计算与所有图像的得分。
+>
+> * **正向索引**：当两幅图像进行特征匹配时，如果**极线约束未知**，那么只有暴力匹配，**正向索引在此时用于加速特征匹配**。需要指定词典树中的层数，比如第 m 层。每幅图像对应一个正向索引，储存该图像生成 BoW 向量时曾经到达过的第 m 层上节点的编号，以及路过这个节点的那些特征的编号。假设两幅图像为A和B，下图说明如何利用正向索引来加速特征匹配的计算：
+
+![image-20230816114332109](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230816114332109.png)
+
+这棵树里面总共有 $1+K+\cdots+K^{L}=\left(k^{L+1}-1\right) /(K-1)$ 个节点。所有叶节点在 $L$ 层形成 $W=K^{L}$ 类，每一类用该类中所有特征的**平均特征**（meanValue）作为代表，称为单词（word）。每个叶节点被赋予一个权重。作者提供了 TF、IDF、BINARY、TF-IDF 等权重作为备选，默认为 TF-IDF：
+
+* **TF 代表词频 (Term Frequency)**，表示词条在文档中出现的频率。
+
+* **IDF 代表逆向文件频率 (Inverse Document Frequency)**。如果包含词条的文档越少，IDF 越大，表明词条具有很好的类别区分能力。
+
+单词的 IDF 越高，说明单词本身具有高区分度。二者结合起来，即可得到这幅图像的 BoW 描述。如果某个词或短语在一篇文章中出现的频率 TF 高，并且在其他文章中很少出现，则认为此词或者短语具有很好的类别区分能力，适合用来分类。最后当前图像的一次单词的权重取为IDF和TF的乘积：
+$$
+\eta_{i}=T F_{i} \times I D F_{i}
+$$
+这样，就组成了一个带权的词袋向量：
+$$
+A=\left\{\left(w_{1}, \eta_{1}\right),\left(w_{2}, \eta_{2}\right), \cdots,\left(w_{N}, \eta_{N}\right)\right\}: v_{A}
+$$
+下面计算两幅图像A，B的相似度，这里就要考虑权重了。计算相似度的方法由很多，DBoW2的库里 面就有L1、L2、ChiSquare等六种计算方式。比如L1距离为：
+$$
+s\left(v_{A}, v_{B}\right)=\frac{1}{2} \sum_{i}\left\{\left|v_{A i}\right|+\left|v_{B i}\right|-\left|v_{A i}-v_{B i}\right|\right\}
+$$
+实际上，在比较相似度的时候只需要计算上述的分数就好了，这个速度就比特征匹配快的多。
+
+视觉词典可以通过离线训练大量数据得到。**训练中只计算和保存单词的 IDF 值**，即单词在众多图像中的区分度。TF 则是从实际图像中计算得到各个单词的频率。单词的 TF 越高，说明单词在这幅图像中出现的越多；离线生成视觉词典以后，我们就能在线进行图像识别或者场景识别。
+
+### 9、Atlas 地图集
+
+Atlas翻译为“地图集”，即管理着一系列的子地图（sub-map），这些子地图共用同一个 DBoW 数据库，使得能够实现重定位回环等操作。
+
+当相机在正常跟踪状态，所生成关键帧所在的地图称为**活动地图**（active map）。如果跟踪失败，首先将进行重定位操作寻找地图集中对应的关键帧，如果依旧失败，则重新创建一个新的地图。此时旧的地图变成了**非活动地图**（non-active map），新的地图作为活动地图继续进行跟踪与建图过程。在跟踪过程中，当前相机必然是位于活动地图当中，可能存在零或多个子地图。
+
+每次插入关键帧时，都与完整地图的DboW数据库进行匹配。如果发现了相同的场景，且两个关键帧同时位于活动地图，则意味着发生了回环，便按照回环的方式进行融合处理；如果匹配上的关键帧位于非活动地图，则需要将两个子地图进行拼接。ORB-SLAM3 中地图融合的区域被称为**焊接窗口**（welding window）。
+
+地图无缝融合时，当前活跃的地图吞并对应的非活跃地图。通过一系列步骤将非活跃地图的信息补充到当前活跃地图。具体步骤如下：
+
+**1. 检测：**首先由重识别模块检测出当前关键帧Ka与匹配上的待吞并关键帧Ks，并获取两个子地图当中与匹配上的两个关键帧具有共视关系的关键点和关键帧。
+
+**2. 位姿计算**：通过 Horn+RANSAC 方法初步计算两个关键帧之间的变换关系，之后将待吞并地图的地图点通过这个变换投射到当前关键帧Ka上，再利用引导匹配的方法获得更丰富的匹配并进行非线性优化，获得精确的变换。
+
+**3. 地图点合并：**将被吞并地图的关键点变换到当前关键帧位姿下，融合重复的地图点。之后将两个地图的关键帧融合，重新生成生成树和共视图。
+
+**4. 衔接区域的局部 BA 优化：**融合后与Ka具有共视关系的关键帧参与局部BA优化，为避免 gauge freedom，固定之前活跃地图中的关键帧而移动其他的关键帧。优化完成后再次进行地图点的合并与生成树、共视图的更新。
+
+**5. 完整地图的位姿图优化：**对整个合并后的地图进行位姿图优化。
+
+### 10、因子图优化状态估计模型
+
+状态估计问题，就是是寻找 $X$ 来最好地描述观测值 $Z$。根据**贝叶斯法则**，状态量 $X$ 和观测量 $Z$ 的**联合概率等于条件概率乘以边缘概率**：
+$$
+{P(X,Z)  =P(Z \mid X) P(X)}
+$$
+式中：$P(Z|X)$ 为观测量 $Z$ 对应的概率；$P(X)$ 是状态量 $X$ 的先验概率。后验分布 $P(X|Z)$ 是一种常用且直观评估状态集和 观测集之间拟合程度的方法，我们求解期望的状态集可以由通过后验分布的最大化来实现，也就是**极大验后估计**：
+$$
+\hat{X}=\underset{X}{\arg \max } P(X \mid Z)
+$$
+
+> 有些文章用**极大似然估计**来介绍因子图优化，都可以，极大后验估计是极大似然估计在包含了先验“量测”后的特例，就多源融合导航而言，这两种最优估计没有本质上的区别。
+>
+> 用极大似然估计来理解：就视觉/惯性/GNSS 融合导航而言，不同传感器之间的量测，以及同一传感器在不同时刻的量测都是独立的，因此**全局似然函数可以因式分解成关于各独立量测的似然函数的乘积。**
+
+基于因子图的状态估计方法正是将状态估计理解为**对系统联合概率密度函数的极大验后估计问题**。 一个系统可以描述为**状态方程**和**量测方程**两部分，并将状态误差和量测误差视为**零均值白噪声**即：
+$$
+\left\{\begin{array}{rr}
+x_{k}=f_{k}\left(x_{k-1}, u_{k}\right)+w_{k}, & w_{k} \sim N\left(0, \Sigma_{k}\right) \\
+z_{k}=h_{k}\left(x_{k}\right)+v_{k}, & v_{k} \sim N\left(0, \Lambda_{k}\right)
+\end{array}\right.
+$$
+根据正态分布的特性可以得到真实状态 $k_x$ 和理想量测 $k_z$ 的条件概率分布满足：
+$$
+\left\{\begin{array}{l}
+P\left(x_{k} \mid x_{k-1}\right) \propto e^{-\frac{1}{2}\left|f_{k}\left(x_{k-1}\right)-x_{k}\right|_{\varepsilon_{k}}^{2}} \\
+P\left(z_{k} \mid x_{k}\right) \propto e^{-\frac{1}{2} \mid f_{k}\left(x_{k}\right)-z_{k} \|_{k}^{2}}
+\end{array}\right.
+$$
+实际中的状态量 $X$ 往往是不知道的，而当前状态下的观测 $Z$ 是知道的，也就是 $P(Z|X)$ 是知道的，因此在因子图模型中：
+$$
+X_{k}^{*}=\arg \max P\left(X_{k} \mid Z_{k}\right) \propto \arg \max P\left(X_{k}\right) P\left(Z_{k} \mid X_{k}\right)
+$$
+其中，$X_{k}=\left\{x_{0: k}\right\}$ 是状态的集合，$Z_{k}=\left\{z_{0:k}^j\right\}$ 是所有状态下量测的集合。若系统服从马尔科夫假设，那么：
+$$
+\begin{aligned}
+X_{k}^{*} & =\underset{X_{k}}{\arg \max } P\left(X_{k} \mid Z_{k}\right) \propto \underset{k}{\arg \max } P\left(x_{0}\right) \prod^{k}\left[P\left(x_{i} \mid x_{i-1}\right) \prod_{m_{i}}^{m_{i}}\left[P\left(z_{i}^{j} \mid x_{i}\right)\right]\right]
+\end{aligned}
+$$
+对式取对数得到后，将式代入式可以得到，系统的状态估计可等价为全局损失函数的联合优化：
+$$
+X^{*}=\underset{X}{\arg\min } \sum_{i}^{k}\left\{\left\|f_{i}\left(x_{i-1}, u_{i}\right)-x_{i}\right\|_{\Sigma_{i}}^{2}+\sum_{j=1}^{m_{j}}\left\|h_{i}^{j}\left(x_{i}\right)-z_{i}^{j}\right\|_{\Lambda_{i j}}^{2}\right\}
+$$
+上式即为基于因子图优化的估计的一般表达式，其左项为系统状态转移过程，右项为量测过程，$\Sigma$ 和 $\Lambda$ 分别是状态转移过程和量测过程的协方矩阵，进行求解的是状态集合 `X` 。对于式，可以用下图进行表示：
+
+![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1689493564746.png)
+
+- **圆圈**：**变量节点**，表示系统待估计的状态，对应一个变量  $x$ 。
+- **正方形**：**因子节点**，表示先验信息、状态转移和量测过程，对应一个局部函数 $f$ ，其中：
+  - **紫色** $P(x_0)$ 为先验因子。
+  - **黑色** $P(x_1|x_0) \dots P(x_k|x_{k-1})$ 为状态转移，由上一时刻状态推测下一时刻状态。
+  - 其它为量测信息，$P(z|x)$ 表示在参数 $x$ 的条件下得到观测值 $z$。
+- **线**：当且仅当变量 $x$ 是局部函数 $f$ 的的自变量时，相应的变量节点和因子节点之间有一条边连接两个节点。
+- 若在模型中加入其他传感器，只需将其添加到框架中相关的因子节点处即可。
+
+利用因子图模型对估计系统的联合概率密度函数进行表示，可以直观地反映动态系统的动态演化过程和每个状态对应的量测过程。同时，图形化的表示使系统具有更好的通用性和扩展性。
+
+每一个观测变量在上面贝叶斯网络里都是单独求解的（相互独立），所有的条件概率都是乘积的形式，且可分解，在因子图里面，分解的**每一个项就是一个因子**，**乘积乘在一起用图的形式来描述就是因子图**。 整个因子图实际上就是每个因子单独的乘积。 **求解因子图就是将这些因子乘起来，求一个最大值**，得到的系统状态就是概率上最可能的系统状态。 
+
+先找到**残差函数** $e(x)$，由因子节点可以得到我们估计的值和实际的测量值之间的差值，即**每个因子 $f$ 会对应一个残差函数**。根据中心极限定理，绝大多数传感器的**噪声是符合高斯分布**的，所以每个因子都是用高斯分布的指数函数来定义的。
+$$
+g(x)=\frac{1}{\sqrt{2 \pi} \sigma} \exp \left(-\frac{(x-\mu)^{2}}{2 \sigma^{2}}\right)
+$$
+**指数函数对应了残差函数**，包括两个部分：系统状态量和观测量。 残差函数实际上表示的是用状态量去推测的观测量与实际观测量的区别。 残差函数的表达式一般都是非线性的，可以通过改变变量 $X$ 来使残差函数最小化，残差函数最小，估计的值越符合观测值，套到因子图里面来看，因子图的求解是要所有因子的乘积最大化，
+$$
+\hat{X}=\underset{X}{\arg \max } \prod_{i} \exp \left(-\frac{1}{2}\left|e_{i}(X i)\right|_{\Sigma i}^{2}\right)
+$$
+对于负指数函数形式，每一个因子乘积最大化代表里面的 $e(x)$ 最小化，对目标函数取对数，概论问题转为**非线性最小二乘**问题：
+$$
+\hat{X}=\underset{X}{\operatorname{arg} \operatorname{max}} \sum_{i}\left(e_{\dot{\epsilon}}\left(x_{i}\right)\right)^{2}
+$$
+非线性最小二乘可以选择**高斯-牛顿法**、**列文博格-马夸尔特**或者**Dogleg**等迭代优化算法求解，高斯-牛顿法比较简单，但稳定性较差，算法可能不收敛；列文博格-马夸尔特引入**置信区间**概念，约束下降的步长，提高稳定性，Dogleg也类似。**问题性质较好时可用高斯-牛顿法，问题条件恶劣时选择列文博格-马夸尔特或者Dogleg。**几种非线性最小二乘解法比较如下：
+
+- **最速梯度下降法**：目标函数在 $x_k$ 处泰勒展开，保留一阶项，$x*= - J(x_k)$，最速下降法过于贪心，容易走出锯齿路线，反而增加迭代次数。
+- **牛顿法**：二阶泰勒展开，利用二次函数近似原函数。$H*X= - J$，牛顿法需要计算目标函数的海森矩阵阵，计算量大。规模较大时比较困难。
+- **高斯-牛顿法（GN）**：$f(x)$ 进行一阶泰勒展开，$f(x)$ 而不是 $F(x)$ ，高斯牛顿法用雅各比矩阵 $JJ^T$ 来作为牛顿法中二阶海森阵的近似，$HX=g$，在使用高斯牛顿法时，可能出现 $JJ^T$ 为奇异矩阵或者病态的情况，此时增量稳定性较差，导致算法不收敛。
+- **列文伯格–马夸尔特方法（LM）**：基于信赖区域理论，是由于高斯-牛顿方法在计算时需要保证矩阵的正定性，于是引入了一个约束，从而保证计算方法更具普适性。$(H+\lambda I)x=g$，当入较小时，$H$ 占主导，近似于高斯牛顿法，较大时，$\lambda * I$ 占主导，接近最速下降法。
+
+
+
+
+
 
 
 ## 三、编译使用
@@ -529,6 +632,8 @@ $$
 
 * **Viewer 线程**：可视化
 
+
+
 ### 2、主要执行流程
 
 程序有很多的主文件，在 Examples 文件夹中，从网上找了张单目融合IMU的主文件流程图（Mono_inertial_tum_vi.cc）
@@ -536,6 +641,241 @@ $$
 ![Mono_inertial_tum_vi.cc流程](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/Mono_inertial_tum_vi.cc%E6%B5%81%E7%A8%8B.png)
 
 
+
+```c++
+int main(int argc, char **argv)
+{
+    // 输出运行的序列数目
+    const int num_seq = (argc-3)/3;
+    cout << "num_seq = " << num_seq << endl;
+    bool bFileName= ((argc % 3) == 1);
+
+    string file_name;
+    if (bFileName)
+        file_name = string(argv[argc-1]);
+
+    cout << "file name: " << file_name << endl;
+
+    // 按照下面提示至少输入6个参数
+    if(argc < 6)
+    {
+        cerr << endl << "Usage: ./mono_inertial_tum_vi path_to_vocabulary path_to_settings path_to_image_folder_1 path_to_times_file_1 path_to_imu_data_1 (path_to_image_folder_2 path_to_times_file_2 path_to_imu_data_2 ... path_to_image_folder_N path_to_times_file_N path_to_imu_data_N) (trajectory_file_name)" << endl;
+        return 1;
+    }
+
+
+    // Load all sequences:
+    // 准备加载所有序列的数据
+    int seq;
+    vector< vector<string> > vstrImageFilenames;    //图像文件名
+    vector< vector<double> > vTimestampsCam;        //图像时间戳
+    vector< vector<cv::Point3f> > vAcc, vGyro;      //加速度计，陀螺仪
+    vector< vector<double> > vTimestampsImu;        //IMU时间戳
+    vector<int> nImages;                            
+    vector<int> nImu;
+    vector<int> first_imu(num_seq,0);
+
+    vstrImageFilenames.resize(num_seq);
+    vTimestampsCam.resize(num_seq);
+    vAcc.resize(num_seq);
+    vGyro.resize(num_seq);
+    vTimestampsImu.resize(num_seq);
+    nImages.resize(num_seq);
+    nImu.resize(num_seq);
+
+    int tot_images = 0;
+    // 遍历每个序列
+    for (seq = 0; seq<num_seq; seq++)
+    {
+        // Step 1 加载图像名和对应的图像时间戳
+        cout << "Loading images for sequence " << seq << "...";
+        LoadImages(string(argv[3*(seq+1)]), string(argv[3*(seq+1)+1]), vstrImageFilenames[seq], vTimestampsCam[seq]);
+        cout << "LOADED!" << endl;
+
+        // Step 2 加载IMU数据
+        cout << "Loading IMU for sequence " << seq << "...";
+        LoadIMU(string(argv[3*(seq+1)+2]), vTimestampsImu[seq], vAcc[seq], vGyro[seq]);
+        cout << "LOADED!" << endl;
+
+        nImages[seq] = vstrImageFilenames[seq].size();
+        tot_images += nImages[seq];
+        nImu[seq] = vTimestampsImu[seq].size();
+
+        //检查是否存在有效数目的图像和imu数据
+        if((nImages[seq]<=0)||(nImu[seq]<=0))
+        {
+            cerr << "ERROR: Failed to load images or IMU for sequence" << seq << endl;
+            return 1;
+        }
+
+        // Find first imu to be considered, supposing imu measurements start first
+        // Step 3 默认IMU数据早于图像数据记录，找到和第一帧图像时间戳最接近的imu时间戳索引，记录在first_imu[seq]中
+        while(vTimestampsImu[seq][first_imu[seq]]<=vTimestampsCam[seq][0]){
+            first_imu[seq]++;
+            cout << "first_imu[seq] = "  << first_imu[seq] << endl;
+        }
+        // 因为上面退出while循环时IMU时间戳刚刚超过图像时间戳，所以这里需要再减一个索引    
+        first_imu[seq]--; // first imu measurement to be considered
+
+    }
+
+    // Vector for tracking time statistics
+    vector<float> vTimesTrack;
+    vTimesTrack.resize(tot_images);
+
+    cout << endl << "-------" << endl;
+    cout.precision(17);
+
+    /*cout << "Start processing sequence ..." << endl;
+    cout << "Images in the sequence: " << nImages << endl;
+    cout << "IMU data in the sequence: " << nImu << endl << endl;*/
+
+    // Create SLAM system. It initializes all system threads and gets ready to process frames.
+    // Step 4 SLAM系统的初始化，包括读取配置文件、字典，创建跟踪、局部建图、闭环、显示线程
+    ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::IMU_MONOCULAR, true, 0, file_name);
+
+    //遍历所有数据
+    int proccIm = 0;
+    for (seq = 0; seq<num_seq; seq++)
+    {
+        // Main loop
+        cv::Mat im;
+        //存放imu数据容器,包含该加速度,角速度,时间戳
+        vector<ORB_SLAM3::IMU::Point> vImuMeas;
+        proccIm = 0;
+        //直方图均衡化,直方图均衡化的思想就是这样的:
+        //假设我有灰度级255的图像，但是都是属于［100，110］的灰度，图像对比度就很低，我应该尽可能拉到整个［0，255］
+        cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(3.0, cv::Size(8, 8));
+        for(int ni=0; ni<nImages[seq]; ni++, proccIm++)
+        {
+            // Read image from file
+            // Step 5 读取每一帧图像并转换为灰度图存储在im,seq表示第几个数据集,ni表示这个数据集的第几个数据
+            im = cv::imread(vstrImageFilenames[seq][ni],cv::IMREAD_GRAYSCALE);
+
+            // clahe
+            //直方图均衡化
+            clahe->apply(im,im);
+
+
+            // 取出对应的图像时间戳
+            double tframe = vTimestampsCam[seq][ni];
+
+            if(im.empty())
+            {
+                cerr << endl << "Failed to load image at: "
+                     <<  vstrImageFilenames[seq][ni] << endl;
+                return 1;
+            }
+
+
+            // Load imu measurements from previous frame
+            //清空imu测量
+            vImuMeas.clear();
+
+            if(ni>0)
+            {
+                // cout << "t_cam " << tframe << endl;
+                // Step 6 把上一图像帧和当前图像帧之间的imu信息存储在vImuMeas里
+                // 注意第一个图像帧没有对应的imu数据 //?是否存在一帧,因为之前是从最接近图像第一帧的imu算起,可能无效
+                while(vTimestampsImu[seq][first_imu[seq]]<=vTimestampsCam[seq][ni])
+                {
+                    vImuMeas.push_back(ORB_SLAM3::IMU::Point(vAcc[seq][first_imu[seq]].x,vAcc[seq][first_imu[seq]].y,vAcc[seq][first_imu[seq]].z,
+                                                             vGyro[seq][first_imu[seq]].x,vGyro[seq][first_imu[seq]].y,vGyro[seq][first_imu[seq]].z,
+                                                             vTimestampsImu[seq][first_imu[seq]]));
+                    // cout << "t_imu = " << fixed << vImuMeas.back().t << endl;
+                    first_imu[seq]++;
+                }
+            }
+
+            // cout << "first imu: " << first_imu[seq] << endl;
+            /*cout << "first imu time: " << fixed << vTimestampsImu[first_imu] << endl;
+            cout << "size vImu: " << vImuMeas.size() << endl;*/
+    #ifdef COMPILEDWITHC11
+            std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    #else
+            std::chrono::monotonic_clock::time_point t1 = std::chrono::monotonic_clock::now();
+    #endif
+
+            // Pass the image to the SLAM system
+            // cout << "tframe = " << tframe << endl;
+            // Step 7 跟踪线程作为主线程运行
+            SLAM.TrackMonocular(im,tframe,vImuMeas); // TODO change to monocular_inertial
+
+    #ifdef COMPILEDWITHC11
+            std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
+    #else
+            std::chrono::monotonic_clock::time_point t2 = std::chrono::monotonic_clock::now();
+    #endif
+
+            double ttrack= std::chrono::duration_cast<std::chrono::duration<double> >(t2 - t1).count();
+            ttrack_tot += ttrack;
+            // std::cout << "ttrack: " << ttrack << std::endl;
+
+            vTimesTrack[ni]=ttrack;
+
+            // Wait to load the next frame
+            // 等待读取下一帧
+            double T=0;
+            if(ni<nImages[seq]-1)
+                T = vTimestampsCam[seq][ni+1]-tframe;
+            else if(ni>0)
+                T = tframe-vTimestampsCam[seq][ni-1];
+
+            if(ttrack<T)
+                usleep((T-ttrack)*1e6); // 1e6
+
+        }
+        if(seq < num_seq - 1)
+        {
+            cout << "Changing the dataset" << endl;
+            // Step 8 更换数据集 
+            SLAM.ChangeDataset();
+        }
+
+    }
+
+    // cout << "ttrack_tot = " << ttrack_tot << std::endl;
+    // Stop all threads
+    // Step 9 关闭SLAM中所有线程
+    SLAM.Shutdown();
+
+
+    // Tracking time statistics
+
+    // Save camera trajectory
+    // Step 10 保存相机位姿（轨迹）
+    if (bFileName)
+    {
+        const string kf_file =  "kf_" + string(argv[argc-1]) + ".txt";
+        const string f_file =  "f_" + string(argv[argc-1]) + ".txt";
+        SLAM.SaveTrajectoryEuRoC(f_file);
+        SLAM.SaveKeyFrameTrajectoryEuRoC(kf_file);
+    }
+    else
+    {
+        SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
+        SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+    }
+
+    sort(vTimesTrack.begin(),vTimesTrack.end());
+    float totaltime = 0;
+    for(int ni=0; ni<nImages[0]; ni++)
+    {
+        totaltime+=vTimesTrack[ni];
+    }
+    cout << "-------" << endl << endl;
+    cout << "median tracking time: " << vTimesTrack[nImages[0]/2] << endl;
+    cout << "mean tracking time: " << totaltime/proccIm << endl;
+
+    /*const string kf_file =  "kf_" + ss.str() + ".txt";
+    const string f_file =  "f_" + ss.str() + ".txt";
+
+    SLAM.SaveTrajectoryEuRoC(f_file);
+    SLAM.SaveKeyFrameTrajectoryEuRoC(kf_file);*/
+
+    return 0;
+}
+```
 
 
 

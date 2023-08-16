@@ -1,3 +1,5 @@
+![image-20230816151634166](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230816151634166.png)
+
 ## 一、姿态阵微分方程及求解
 
 ### 1、姿态阵微分方程
@@ -492,7 +494,7 @@ $$
 \end{array}\right]^{\mathrm{T}}
 \end{gathered}
 $$
-式中， ${\color{brown}\omega_{\text {ie }}}$ 为地球自转角速率； $L$ 和 $h$ 分别为地理纬度和高度。此方程求解麻烦，所以一般先拆解：
+式中， ${\color{brown}\omega_{\text {ie }}}$ 为地球自转角速率； $L$ 和 $h$ 分别为地理纬度和高度。此方程求解麻烦，所以一般先拆解，b系、n系都不是惯性系，在中间插入 i 系：
 $$
 C_{b(m)}^{n(m)}={\color{blue}C_i^{n(m)}} {\color{green}C_{b(m)}^i}
 $$
@@ -615,7 +617,7 @@ $$
 
 
 
-![1689123602793](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1689123602793.png)
+
 
 #### 1. glv.cs ：圆锥/划桨补偿系数（二到六子样）
 
