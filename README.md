@@ -2,10 +2,6 @@
 
 [TOC]
 
-
-
-
-
 ### RTKLIB：最知名的GNSS数据处理开源软件
 
 
@@ -78,6 +74,7 @@ GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR
 
 软件接收机可在普通的 PC 中运行，并通过 USB 和以太网总线为各种市售或定制的射频前端提供接口，使处理算法适应不同的采样频率、中间频率和采样分辨率。它还可以处理存储在文件中的原始数据样本。软件对可用的卫星信号进行信号采集和跟踪，对导航信息进行解码，并计算定位算法所需的观测值，最终实现完整导航解决方案。处理输出可存储在 RINEX 文件中，或通过 TCP/IP 服务器以 RTCM 3.2 消息形式实时传输。导航结果以 KML 和 GeoJSON 格式存储。
 
+### SVO：半直接法视觉里程计
 
 
 
@@ -95,26 +92,6 @@ GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR
 
 
 
+学习导航定位算法推荐这三本书：
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![9d8bba951ea9a15bc2812e92896a1261](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/9d8bba951ea9a15bc2812e92896a1261.png)
