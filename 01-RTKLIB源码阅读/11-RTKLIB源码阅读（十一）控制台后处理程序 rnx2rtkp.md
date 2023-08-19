@@ -20,6 +20,12 @@
 
 
 
+### 4、后处理流程图
+
+![image-20230819174048239](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230819174048239.png)
+
+
+
 ## 一、从 main 函数到定位解算
 
 ### main()
@@ -358,8 +364,6 @@ static void buff2sysopts(void)
 
 
 ## 三、卫星位置钟差计算
-
-> 我之前的博客有详细解析：[RTKLIB学习总结（六）导航电文、卫星位置计算](https://lizhengxiao.blog.csdn.net/article/details/129986385)
 
 ### satposs()
 
