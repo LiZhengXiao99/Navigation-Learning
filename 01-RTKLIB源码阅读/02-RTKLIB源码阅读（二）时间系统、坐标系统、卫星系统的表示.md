@@ -1027,7 +1027,7 @@ double dms2deg(const double *dms);
     }
     ```
 
-  * **enu2ecef()**：地方坐标(N,E,U)转ECEF坐标（x,y,z）。*参数中要输入(N,E,U)以及其大地坐标(lon,lat)。 
+  * **enu2ecef()**：地方坐标(N,E,U)转ECEF坐标（x,y,z）。参数中要输入(N,E,U)以及其大地坐标(lon,lat)。 
 
     ```c
     extern void enu2ecef(const double *pos, const double *e, double *r)
@@ -1052,7 +1052,7 @@ double dms2deg(const double *dms);
 
   * **covecef()**：将地方坐标（N,E,U）转换为ECEF坐标的协方差阵
 
-    * 先调用xyz2enu()算转换矩阵E，再用协方差传播定律$EP=E*P*E^T$
+    * 先调用 xyz2enu() 算转换矩阵 E，再用协方差传播定律 $EP=E*P*E^T$
 
     ```c
     extern void covecef(const double *pos, const double *Q, double *P)
