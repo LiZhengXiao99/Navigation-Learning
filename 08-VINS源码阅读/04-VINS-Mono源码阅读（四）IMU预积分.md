@@ -2,8 +2,6 @@
 
 ## 一、IMU 预积分原理
 
-> 内容主要摘自**邱笑晨**写的文档：**[IMU-Preintegration-Propogation-Doc](https://github.com/PetWorm/IMU-Preintegration-Propogation-Doc)**，本文所有的 IMU 都指捷联惯导，不考虑平台惯导。
-
 IMU 预积分技术最早由 T Lupton 于 12 年提出，C Forster 于 15 年将其进一步拓展到李代数上，形成了一套优雅的理论体系。Forster 将 IMU 预积分在开源因子图优化库 GTSAM 中进行了实现，并完成了和其另一大作 SVO 的组合。这套理论目前已经被广泛的应用在基于 Bundle Adjustment 优化框架的 Visual Inertial Odometry 中。其中包括 VI-ORBSLAM，港科大 VINS，百度/浙大 ICE-BA 等。
 
 ![image-20230816132201403](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230816132201403.png)
@@ -41,18 +39,4 @@ IMU 预积分技术最早由 T Lupton 于 12 年提出，C Forster 于 15 年将
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-![image-20230817135807292](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230817135807292.png)
 
