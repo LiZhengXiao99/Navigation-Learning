@@ -2,6 +2,8 @@
 
 ![白话VINS-Mono之初始化（三）](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/v2-9195a1bfc959c5b04473be33da6cbacf_720w.png)
 
+![image-20230824140009711](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230824140009711.png)
+
 ### 1. 为什么要进行初始化？
 
 * 因为求解方式类似与梯度下降，VINS 这种基于优化的模式对初始值非常敏感，初始值不好的话，会陷入局部最优解（或者不是我们想要的部分极小值）。
@@ -27,7 +29,23 @@ $$
 
 
 
+## 二、相机与 IMU 间旋转外参标定
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 三、
 
 
 

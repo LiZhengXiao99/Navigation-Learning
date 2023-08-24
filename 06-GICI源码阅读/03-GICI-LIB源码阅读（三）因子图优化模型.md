@@ -102,17 +102,25 @@ $$
 
 ### 4、Ceres 非线性最小二乘库
 
-Ceres是一个用于求解非线性最小二乘问题的开源库，它可以用于许多优化和拟合问题。相关文档写的较为全面完善、原理也较为直观：[http://ceres-solver.org/nnls_tutorial.html#numeric-derivatives](http://ceres-solver.org/nnls_tutorial.html#numeric-derivatives)。基本使用流程如下：
+Ceres是一个用于求解非线性最小二乘问题的开源库，它可以用于许多优化和拟合问题。相关文档写的较为全面完善、原理也较为直观：[http://ceres-solver.org/nnls_tutorial.html#numeric-derivatives](http://ceres-solver.org/nnls_tutorial.html#numeric-derivatives)。
 
-1. **定义问题**：实例化 `Problem` 对象：`ceres::Problem problem`
-2. **添加待估参数**：`problem.AddParameterBlock()`。可以使用 `ParameterBlock` 类来表示参数，它包含了参数的初始值、维度等信息。
-3. **添加残差块**：`AddResidualBlock()` 通过添加 `CostFunction` 及其之类来设置优化目标。`CostFunction` 用于计算成本函数，即目标函数的值。你可以添加多个 `CostFunction` 来定义多个目标函数。
-   - 写**残差**计算的模版仿函数。
-   - **求导**，手动或者用 `AutoDiffCostFunction` 自动求导。
-   - 需要时，可以传入鲁棒核函数进行抗差。
-4. **配置求解器**：实例化 `Summary`、`Option`，并给需要设置的字段赋值。
-5. **运行优化**：`ceres::Solve(options, &problem, &summary);`
-6. **获取结果**：优化器会返回优化后的参数值。你可以通过 `ParameterBlock` 对象的 `getValue()` 方法来获取优化后的参数值。
+Ceres 是一个用于求解各种非线性优化问题的开源 C++ 库, 它的设计理念是提供 一个通用、高效、灵活和易于扩展的优化库，各种非线性优化问题能够被快速构建并求 解。Ceres 求解的一般形式的最小二乘问题如下：
+$$
+min {x} \frac{1}{2} \sum{i} \rho{i}\left(\left|f{i}\left(x{i{1}}, \cdots, x{i{n}}\right)\right|^{2}\right) \quad \text { s.t. } \quad l{i} \leq x{j} \leq u{j}
+$$
+该问题是一个带边界的核函数最小二乘问题，其中，$x_{1}, \cdots, x_{n}$ 在 Ceres 中被称为**参数块** (Parameter Blocks)，表示优化变量，$\rho_{i}\left(\left\|f_{i}\left(x_{i_{1}}, \cdots, x_{i_{n}}\right)\right\|^{2}\right)$ 称为**残差块** (Residual Blocks)，$f_{i}$ 称为**代价函数** (Cost Function)，表示误差项或约束项。 $l_{i}$ 和 $u_{j}$ 分别表示 $x_{j}$ 的上下限，当 $l_{i}=-\infty, u_{j}=\infty$ 时，表示不限制 $x_{j}$ 的边界。目标函数由多个核函数 $\rho(\cdot)$ 求和构成，核函数 的自变量为误差项的平方。 $\rho_{i}$ 也称为损失函数，主要用来消除异常点对求解过程的影响，通过抑制噪声的影响来获得较高的优化精度。若取 $\rho$ 为恒等函数，如 $\rho(s)=s$，则目标函数由多个误差项的平方和组成，得到无约束的最小二乘问题。
+
+
+
+基本使用流程如下：
+
+1. **定义代价函数**：首先，需要定义一个或多个代价函数，用于计算残差或误差的值。在此过程中，可以定义求导方式，包括自动求导（Auto Diff）、数值求导（Numeric Diff）和用户自定义的解析求导形式。
+2. **定义参数块**：参数块表示需要优化的变量。Ceres 支持多种类型的参数块，包括一维数组、动态数组、特殊结构体和用户自定义类型等类型。在 SLAM 中，参数块通常被定义为四元数、李代数。添加参数块之前需要对定义好的参数块进行初始化，设定初始值。
+3. **定义问题对象**：定义的问题对象可以用于管理代价函数和参数块。ceres 作用域下的 Problem 类包含多个成员函数，包括添加参数块函数、添加残差块函数、将某参数块设置为常量函数和设定参数块上下限函数等。
+4. **添加代价函数**：使用 Problem 类中的成员函数将一个或多个代价函数添加到问题对象中。每个代价函数对应一个或多个参数块。
+5. **求解问题**：求解问题通过调用 Solve 函数来实现。该函数的参数列表包括配置信息、问题对象指针和存储求解中各变量的信息的结构体的指针。配置信息定义在 Solver作用域下的 Options 结构体中，它的参数种类繁多，包括迭代求解方法、信赖域策略、求解器类型、最大迭代次数和最大求解时间等参数。通过 Ceres Solver 求解器求解非线性优化问题，最终输出优化后的变量。
+
+> Ceres 与 g2o 都是用于求解非线性优化问题的开源 C++库，但它们在设计理念和功能实现上有一些不同。g2o 的重点在于图优化，它专门用于解决图模型中的非线性优化问题。而 Ceres 则更注重于通用性，它可以用于解决各种类型的非线性最小二乘问题。
 
 可以通过下面《视觉SLAM十四讲》中曲线拟合的示例来简单感受一下 Ceres 的使用：
 
