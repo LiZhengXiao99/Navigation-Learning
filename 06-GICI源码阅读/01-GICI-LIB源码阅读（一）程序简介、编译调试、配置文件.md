@@ -104,7 +104,6 @@ src 和 tools 文件夹内各子**文件夹功能信息**如下表所示：
 
 * **RTKLIB**：知名 GNSS 软件包，由一个程序库和多个应用程序工具库组成，我写过一个[专栏](https://blog.csdn.net/daoge2666/category_12241729.html)。
 * **fast**：Features from Accelerated Segment Test，特征检测算法。
-* **rpg_vikit**：基于视觉的 SLAM 系统，用于机器人在未知环境中的定位和建图。它通过结合视觉传感器（相机）和惯性测量单元（IMU）来实现实时的定位与建图。 
 * **rpg_svo**：稀疏直接法视觉里程计（Visual Odometry）算法，它可以从连续的图像序列中估计相机的运动，用于机器人导航和定位。 
 * **OKVIS**：Open Keyframe-based Visual-Inertial SLAM 
 * **Eigen**：线性代数库，用于处理矩阵和向量的计算，它提供了许多线性代数运算的功能，包括矩阵运算、向量运算、特征值分解、奇异值分解、矩阵求逆等。 
@@ -334,23 +333,20 @@ sudo apt-get install libeigen3-dev
 
 - 下载
 
-  ```
-  
+  ```bash
+  git clone https://github.com/chichengcn/gici-open
   ```
 
 - 编译
 
+  在工程目录下打开终端，输入以下命令：
 
-
-### 3、GICI-LIB 调试
-
-
-
-
-
-
-
-
+  ```bash
+  mkdir build
+  cd build
+  cmake ..
+  make -j4 	# 编译需要一段时间
+  ```
 
 ## 四、glog 日志系统
 
@@ -397,6 +393,8 @@ glog 即 Google Log ，是一个 Google 开源的日志库，它提供了一个�
 在手册的 9~39 面，详细的介绍了配置文件的具体内容。GICI-LIB 采用 YAML 配置文件格式，下面先对 YMAL 做个简单介绍。
 
 ### 1、YAML 简介
+
+> 链接时找不到 yaml-cpp，可以参考博客：[error while loading shared libraries的解决方案](https://blog.csdn.net/weixin_42310458/article/details/125180410)，在 `/etc/ld.so.conf` 文件中加上 `/usr/local/lib`
 
 YAML（YAML Ain't Markup Language）是一种轻量级的数据序列化格式，可以用于配置文件、数据交换、API请求等多种场景。它是一种简单易用的数据序列化格式，使得数据可以以人类可读的方式进行存储和传输。YAML的语法非常简单，它使用缩进和符号来表示数据结构。以下是一些YAML的基本语法：
 
@@ -506,9 +504,134 @@ option 文件夹里有一些配置文件，以伪实时定位解算为主，对�
 2. **sensorType()**：传入 formator_role 字符串，转换成传感器种类枚举值 SensorType 返回。
 3. **loadOptions()**：参一传入文档 18~39 对应 estimate 的选项 Node，转换成对应的 ImuParameters、AmbiguityResolutionOptions 等选项结构体作为参二返回。
 
+## 六、数据集
 
+### 1、数据集介绍
 
+* Github地址：https://github.com/chichengcn/gici-open-dataset
+* 百度网盘下载：https://pan.baidu.com/share/init?surl=xZS-C_42LrGtUB0x6Bw_0A&pwd=6ncd，提取码：6ncd
 
+作者专为开发 GICI-LIB 而搭建的数据采集的平台如下图所示：
 
+![image-20230902170048417](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230902170048417.png)
 
+开发了一块 GICI 板，用于收集 IMU 和摄像头数据，并在整个平台中应用了与其他传感器同步的硬件。板载 IMU 和摄像头分别为博世 BMI088 和 Onsemi MT9V034。GNSS 接收器为 Tersus David30 多频接收器。我们还从千寻 SI 数据流中收集了参考站数据，用于 RTD 和 RTK ，并从国际 GNSS 服务（IGS）数据流中收集了状态空间表示（SSR）数据，用于 PPP。光纤 IMU 通过对其数据和 GNSS 原始数据进行后处理来提供参考值。
 
+收集了两种数据集：不同场景的短期（几分钟）实验（1.1 ~ 4.3）和涵盖多个场景的长期（几十分钟）实验（5.1 ~ 5.2）。在短期实验中，我们将场景分为 4 类： 开阔天空、绿树成荫、典型城市和密集城市。对于每个场景，我们提供 2 ~ 3 条轨迹。在长期实验中，我们提供了在上海市中心收集到的涵盖这些场景的两个轨迹。
+
+| ID   | Scene         | Size   | Date       | Scene View                                                   |
+| ---- | ------------- | ------ | ---------- | ------------------------------------------------------------ |
+| 1.1  | Open-sky      | 0.7 GB | 2023.03.20 | [Images](https://github.com/chichengcn/gici-open-dataset/blob/master/figures/typical_scene/README_1.1.md) |
+| 1.2  | Open-sky      | 0.5 GB | 2023.03.27 | [Images](https://github.com/chichengcn/gici-open-dataset/blob/master/figures/typical_scene/README_1.2.md) |
+| 2.1  | Tree-lined    | 1.4 GB | 2023.03.20 | [Images](https://github.com/chichengcn/gici-open-dataset/blob/master/figures/typical_scene/README_2.1.md) |
+| 2.2  | Tree-lined    | 0.6 GB | 2023.03.27 | [Images](https://github.com/chichengcn/gici-open-dataset/blob/master/figures/typical_scene/README_2.2.md) |
+| 3.1  | Typical urban | 1.7 GB | 2023.03.27 | [Images](https://github.com/chichengcn/gici-open-dataset/blob/master/figures/typical_scene/README_3.1.md) |
+| 3.2  | Typical urban | 1.4 GB | 2023.03.27 | [Images](https://github.com/chichengcn/gici-open-dataset/blob/master/figures/typical_scene/README_3.2.md) |
+| 3.3  | Typical urban | 1.9 GB | 2023.03.27 | [Images](https://github.com/chichengcn/gici-open-dataset/blob/master/figures/typical_scene/README_3.3.md) |
+| 4.1  | Dense urban   | 1.4 GB | 2023.05.21 | [Images](https://github.com/chichengcn/gici-open-dataset/blob/master/figures/typical_scene/README_4.1.md) |
+| 4.2  | Dense urban   | 0.8 GB | 2023.03.27 | [Images](https://github.com/chichengcn/gici-open-dataset/blob/master/figures/typical_scene/README_4.2.md) |
+| 4.3  | Dense urban   | 1.6 GB | 2023.03.27 | [Images](https://github.com/chichengcn/gici-open-dataset/blob/master/figures/typical_scene/README_4.3.md) |
+| 5.1  | Long-term     | 8.2 GB | 2023.05.21 | [Images](https://github.com/chichengcn/gici-open-dataset/blob/master/figures/typical_scene/README_5.1.md) |
+| 5.2  | Long-term     | 5.8 GB | 2023.05.21 | [Images](https://github.com/chichengcn/gici-open-dataset/blob/master/figures/typical_scene/README_5.2.md) |
+
+> 用对应数据的时候记得改时间
+
+### 2、非 ROS 方式使用数据集
+
+提供了各种 YAML 配置文件示例，在` <gici-root-directory>/option`。请记住替换所有 `<path> `和 `"start_time"`。通过命令来运行软件处理数据集：
+
+```bash
+./gici_main <gici-config-file>
+```
+
+要将实时输出流连接到 RTKLIB，应执行以下步骤：
+
+1. 指定 NMEA 格式的 TCP 服务器输出。配置示例见pseudo_real_time_estimation_RTK_RRR.yaml
+2. 在 Windows 计算机中打开 RTKPLOT。想要访问 Linux 计算机的 IP 地址，Windows 计算机必须位于同一网段。
+3. 单击文件->连接设置。启用 TCP 客户端。单击选项配置 TCP 客户端选项。填写服务器地址（Linux 计算机的 IP）和端口（在 GICI YAML 文件中配置）。
+4. 点击文件->连接，形成连接。然后就可以看到实时绘制的结果图了。
+
+### 3、把原始数据转为 rosbag
+
+我们提供了一个将 bin 文件转换为 rosbags 的工具，请参见 `<gichi-root-directory>/tools/ros/gici_tools/src/gici_files_to_rosbag.cpp`。其配置文件位于 `<gici-root-directory>/tools/ros/gici_tools/option/convert_rosbags.yaml` 中。请记住替换所有 `<path>` 和` "start_time"`。
+
+可以通过以下方式编译转换器：
+
+```bash
+cd \<gici-root-directory\>/tools/ros
+catkin_make -DCMAKE_BUILD_TYPE=Release
+```
+
+然后可以通过以下方式运行转换器：
+
+```bash
+./devel/lib/gici_tools/gici_files_to_rosbag <config-file>
+```
+
+### 4、ROS 方式
+
+YAML 配置文件示例，请参见 `<gichi-root-directory>/ros_wrapper/src/gici/option`。使用前要替换所有`<path>`和 `"start_time"`。在运行 ROS 可执行文件之前，请记得运行一个 roscore。然后，可以通过以下方式运行可执行文件：
+
+```bash
+rosrun gici_ros gici_ros_main <gici-config-file>
+```
+
+或者：
+
+```bash
+cd \<gici-root-directory\>/ros_wrapper
+./devel/lib/gici_ros/gici_ros_main <gici-config-file>
+```
+
+之后，您可以通过以下方式播放从我们的 bin 文件转换而来的 rosbags
+
+```bash
+rosbag play <data1.bag> <data2.bag> <data3.bag> ...
+```
+
+为了实现可视化，您可以通过以下方式运行我们的 RVIZ 配置：
+
+```bash
+rviz -d \<gici-root-directory\>/ros_wrapper/src/gici/rviz/gici_gic.rviz
+```
+
+### 5、结果评估
+
+我们为每个数据集提供 ground_truth.txt。参考数据采用光纤 IMU 的框架。在比较结果之前，您应该进行坐标转换。对于包含 IMU 的估计器，GICI 以 IMU 框架输出解决方案。我们提供将参考值转换为 IMU 框架的工具。首先要编译这个工具：
+
+```bash
+cd \<gici-root-directory\>tools/evaluation/alignment
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make -j8
+
+cd \<gici-root-directory\>tools/evaluation/format_converters
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make -j8
+```
+
+然后，您可以通过以下方法转换参考值：
+
+```bash
+\<gici-root-directory\>tools/evaluation/format_converters/build/ie_to_nmea ground_truth.txt
+\<gici-root-directory\>tools/evaluation/alignment/build/nmea_pose_to_pose ground_truth.txt.nmea
+```
+
+nmea_pose_to_pose.cpp 中的默认设置是将姿势从光纤 IMU 帧转换为数据集的 IMU 帧。如果您有其他要求，应修改 nmea_pose_to_pose.cpp 中的参数。现在，您将获得以 NMEA 格式转换的参考值文件 ground_truth.txt.nmea.transformed。为了便于可视化，您可以通过以下方法将该文件转换为 TUM 格式
+
+```bash
+\<gici-root-directory\>tools/evaluation/format_converters/build/nmea_to_tum ground_truth.txt.nmea.transformed
+```
+
+还可以将 GICI NMEA 输出转换为 TUM 格式，然后用任何软件进行比较。
+
+对于纯 GNSS 估计器，GICI 以 GNSS 天线框架输出解决方案。您应进一步将参考值转换为 GNSS 天线，方法是
+
+```bash
+\<gici-root-directory\>tools/evaluation/alignment/build/nmea_pose_to_position ground_truth.txt.nmea.transformed
+```
+
+现在您会得到一个参考值文件 ground_truth.txt.nmea.transformed.translated。然后就可以继续上面的操作了。
