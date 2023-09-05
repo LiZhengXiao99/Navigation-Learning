@@ -85,9 +85,3 @@ GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR
 
 
 
-
-
-
-学习导航定位算法推荐这三本书：
-
-![9d8bba951ea9a15bc2812e92896a1261](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/9d8bba951ea9a15bc2812e92896a1261.png)

@@ -102,7 +102,7 @@ src 和 tools 文件夹内各子**文件夹功能信息**如下表所示：
 
 ### 5、第三方库
 
-* **RTKLIB**：知名 GNSS 软件包，由一个程序库和多个应用程序工具库组成，我写过一个[专栏](https://blog.csdn.net/daoge2666/category_12241729.html)。
+* **RTKLIB**：开源 GNSS 软件包，由一个程序库和多个应用程序工具库组成。
 * **fast**：Features from Accelerated Segment Test，特征检测算法。
 * **rpg_svo**：稀疏直接法视觉里程计（Visual Odometry）算法，它可以从连续的图像序列中估计相机的运动，用于机器人导航和定位。 
 * **OKVIS**：Open Keyframe-based Visual-Inertial SLAM 
