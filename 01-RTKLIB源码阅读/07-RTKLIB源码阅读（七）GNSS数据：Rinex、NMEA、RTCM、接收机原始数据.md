@@ -507,10 +507,10 @@
 2. **执行流程**：
 
    * 初始化对所有数据指针，赋空
-   * 遍历`infile[]`，调用`readrnxt()`读取文件 ,rcv=1:流动站,2:基准站
+   * 遍历 `infile[]`，调用`readrnxt()`读取文件 ,rcv=1:流动站,2:基准站
    * 如果下标和上一次循环的不同，记录当前`index[i]`值到`ind `
    * 检测观测数据数`obs->n`、星历数据数`nav->n` 是否正常 
-   * 调用`sortobs()`,根据time, rcv, sat ，对`obs->data`的元素进行排序、去重，得到历元数`nepoch`
+   * 调用`sortobs()`,根据 time, rcv, sat ，对`obs->data`的元素进行排序、去重，得到历元数`nepoch`
    * 调用`uniqnav()`,进行星历数据的排序去重
 
    ```c
