@@ -191,11 +191,13 @@ $$
 
 **等效旋转矢量要点**：
 
-    1. 刚体的有限转动是不可交换的。刚体的定点有限旋转都可以用绕经过该固定点的一个轴的一次转动来实现。
-    2. 其矢量方向表示旋转的方向，模的大小表示旋转角度大小。
-    3. 当载体的角速度方向随时间变化而不是做 “定轴转动” 时, 直接将传感器角增量测量值代 入方向余弦矩阵或四元数微分方程的求解计算式中，则会带来 “不可交换性误差”。
-    4. **Bortz 方程**： $\dot{\phi}=\boldsymbol{\omega}+\frac{1}{2}(\phi \times \omega)+\frac{1}{\phi^{2}}\left[1-\frac{\phi \sin \phi}{2(1-\cos \phi)}\right] \boldsymbol{\phi} \times(\boldsymbol{\phi} \times \boldsymbol{\omega})$ 。是一种常用的等效旋转矢量微分方程，利用等效旋转矢量进行转动不可交换误差补偿。
-    5. 等效旋转矢量的**双子样**求解式：$\phi_{k}=\Delta \theta_{k}+\frac{1}{12} \Delta \theta_{k-1} \times \Delta \theta_{k}$ 。
+1. 刚体的有限转动是不可交换的。刚体的定点有限旋转都可以用绕经过该固定点的一个轴的一次转动来实现。
+2. 其矢量方向表示旋转的方向，模的大小表示旋转角度大小。
+3. 当载体的角速度方向随时间变化而不是做 “定轴转动” 时, 直接将传感器角增量测量值代 入方向余弦矩阵或四元数微分方程的求解计算式中，则会带来 “不可交换性误差”。
+4. **Bortz 方程**： $\dot{\phi}=\boldsymbol{\omega}+\frac{1}{2}(\phi \times \omega)+\frac{1}{\phi^{2}}\left[1-\frac{\phi \sin \phi}{2(1-\cos \phi)}\right] \boldsymbol{\phi} \times(\boldsymbol{\phi} \times \boldsymbol{\omega})$ 。是一种常用的等效旋转矢量微分方程，利用等效旋转矢量进行转动不可交换误差补偿。
+5. 等效旋转矢量的**双子样**求解式：$\phi_{k}=\Delta \theta_{k}+\frac{1}{12} \Delta \theta_{k-1} \times \Delta \theta_{k}$ 。
+
+
 
 ## 二、PSINS中的表示转换
 
