@@ -6,7 +6,9 @@
 
 ### 1、程序概述
 
-KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以读取 IMU 数据文件、GNSS 结果文件，进行松组合解算。代码量小，有详细的文档、注释和讲解，代码结构很好理解，但里面具体的算法并不是完全按公式来，有一定的工程技巧。
+KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以读取 IMU 数据文件、GNSS 结果文件，进行松组合解算，计算位置、速度、姿态、陀螺仪零偏、加速度计零偏、陀螺仪比例、加速度计比力，共 21 维状态向量。代码量小，有详细的文档、注释和讲解，代码结构很好理解，有一些可以学习的工程技巧。
+
+![image-20230928094541518](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230928094541518.png)
 
 ### 2、相关资料
 
@@ -14,7 +16,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 * **i2NAV组合导航讲义、数据集**：http://www.i2nav.cn/index/newList_zw?newskind_id=13a8654e060c40c69e5f3d4c13069078
 * **介绍视频**：https://www.bilibili.com/video/BV1Zs4y1B7m2/
 
-### 3、代码分析
+### 3、文件结构
 
 ![image-20230925154842096](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925154842096.png)
 
@@ -51,9 +53,9 @@ target_link_libraries(${PROJECT_NAME}
 
 ## 二、编译、调试
 
-基于 WSL + VScode，
+基于 WSL + VScode 编译非常容易，用的几个库都直接放到 ThirdParty 文件夹，并在 CMakeLists 文件中引入了，不用我们再配置。如果已经配置好基础的 C++ 环境（cmake、gcc、gdb），把项目 clone 下来之后，选 KF-GINS 目录的 CMakeLists.txt 作为构建目标直接就能构建、编译成功，调试时能停在 main 函数开头设的断点。
 
- 
+launch.json 中作者已经设置命令行参数为配置文件路径，我们只要改好 config 路径下 kf-gins.yaml 配置文件中的 几个文件路径（imupath、gnsspath、outputpath）和解算时间（starttime、endtime），就可以跑通示例数据了。
 
 ## 三、类型定义
 
@@ -83,11 +85,21 @@ target_link_libraries(${PROJECT_NAME}
 
 ![image-20230925181044694](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925181044694.png)
 
-函数调用关系：
+### 1、函数调用关系
 
 ![image-20230925181228939](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925181228939.png)
 
-### 2、主函数
+### 2、重点函数
+
+* `newImuProcess()` 是松组合的核心函数。
+* `isToUpdate()` 中根据当前 IMU 和 GNSS 时间戳关系，判断要不要进行 GNSS 量测更新。
+* `imuCompensate()` 中进行 IMU 校正，即减去零偏、除以比例。
+* `insPropagation()` 中实现捷联惯导 PVA 和噪声递推、构建 F 矩阵。
+* `insMech()` 中 IMU 机械编排，依次进行速度更新、位置更新、姿态更新。
+* `gnssUpdate()` 中进行 GNSS 量测更新，实现杆臂补偿。
+* `stateFeedback()` GNSS 量测更新后，状态向量误差反馈。
+
+### 3、主函数
 
 首先判断命令行参数，如果不为 2（可执行程序名算第一个参数 `argv[0]`）即没传入配置文件路径，输出提示并退出程序：
 
@@ -231,7 +243,7 @@ giengine.addImuData(imu_cur, true);
 giengine.addGnssData(gnss);
 ```
 
-定义变量，用于保存处理结果、显示处理进程：
+定义变量，用于保存处理结果、显示处理进度：
 ```cpp
 // 用于保存处理结果
 // used to save processing results
@@ -285,7 +297,7 @@ writeNavResult(timestamp, navstate, navfile, imuerrfile);
 writeSTD(timestamp, cov, stdfile);
 ```
 
-显示处理进展：
+显示处理进度：
 
 ```cpp
 percent = int((imu_cur.time - starttime) / interval * 100);
@@ -295,7 +307,7 @@ percent = int((imu_cur.time - starttime) / interval * 100);
 }
 ```
 
-循环处理完成之后，关闭打开的文件、输出结束信息、return 0：
+循环处理完成之后，关闭打开的文件、输出结束信息、return 0 退出程序：
 
 ```cpp
 // 关闭打开的文件
@@ -316,7 +328,7 @@ std::cout << "Cost " << absl::ToDoubleSeconds(te - ts) << " s in total" << std::
 return 0;
 ```
 
-### 3、配置文件读取
+### 4、配置文件读取
 
 KF-GINS 使用 YMAL 格式的配置文件，通过配置文件可以设置数据文件路径、处理时间段、初始PVA、初始比例零偏、杆臂等。KF-GINS 的配置都是键值对形式的： `键 :值`，设置的时候改后面的值即可。程序执行的时候要把配置文件路径作为命令行参数。下面简单介绍读取流程：
 
@@ -343,32 +355,32 @@ if (!loadConfig(config, options)) {
 }
 ```
 
-需要注意 `loadConfig()` 并没有把所有配置信息都读进来，它读取的只是取初始位置、IMU零偏、比例和对应的标准差；大部分参数都是三维的，读取的时候先存成 `vector<double>` 然后进行量纲、单位转换，再存到 `options` 对应的 `vector3d` 类型字段中。以初始PVA为例：
+需要注意 `loadConfig()` 并没有把所有配置信息都读进来，它读取的只是取初始位置、IMU零偏、比例和对应的标准差；大部分参数都是三维的，读取的时候先存成 `vector<double>` 然后进行量纲、单位转换，再存到 `options` 对应的 `vector3d` 类型字段中。以初始 PVA 为例：
 
 ```cpp
-    // 读取初始位置(纬度 经度 高程)、(北向速度 东向速度 垂向速度)、姿态(欧拉角，ZYX旋转顺序, 横滚角、俯仰角、航向角)
-    // load initial position(latitude longitude altitude)
-    //              velocity(speeds in the directions of north, east and down)
-    //              attitude(euler angle, ZYX, roll, pitch and yaw)
-    std::vector<double> vec1, vec2, vec3, vec4, vec5, vec6;
-    try {
-        vec1 = config["initpos"].as<std::vector<double>>();
-        vec2 = config["initvel"].as<std::vector<double>>();
-        vec3 = config["initatt"].as<std::vector<double>>();
-    } catch (YAML::Exception &exception) {
-        std::cout << "Failed when loading configuration. Please check initial position, velocity, and attitude!"
-                  << std::endl;
-        return false;
-    }
-    for (int i = 0; i < 3; i++) {   // 单位转换
-        options.initstate.pos[i]   = vec1[i] * D2R;
-        options.initstate.vel[i]   = vec2[i];
-        options.initstate.euler[i] = vec3[i] * D2R;
-    }
-    options.initstate.pos[2] *= R2D;    // 高程不用转
+// 读取初始位置(纬度 经度 高程)、(北向速度 东向速度 垂向速度)、姿态(欧拉角，ZYX旋转顺序, 横滚角、俯仰角、航向角)
+// load initial position(latitude longitude altitude)
+//              velocity(speeds in the directions of north, east and down)
+//              attitude(euler angle, ZYX, roll, pitch and yaw)
+std::vector<double> vec1, vec2, vec3, vec4, vec5, vec6;
+try {
+    vec1 = config["initpos"].as<std::vector<double>>();
+    vec2 = config["initvel"].as<std::vector<double>>();
+    vec3 = config["initatt"].as<std::vector<double>>();
+} catch (YAML::Exception &exception) {
+    std::cout << "Failed when loading configuration. Please check initial position, velocity, and attitude!"
+              << std::endl;
+    return false;
+}
+for (int i = 0; i < 3; i++) {   // 单位转换
+    options.initstate.pos[i]   = vec1[i] * D2R;
+    options.initstate.vel[i]   = vec2[i];
+    options.initstate.euler[i] = vec3[i] * D2R;
+}
+options.initstate.pos[2] *= R2D;    // 高程不用转
 ```
 
-文件路径和IMU处理配置是在主函数中读取：
+文件路径和 IMU 处理配置是在主函数中读取：
 
 ```cpp
 // 读取文件路径配置
@@ -399,9 +411,9 @@ try {
 }
 ```
 
-### 4、数据文件读取
+### 5、数据文件读取
 
-KF-GINS 中没有一次性把整个文件都读进来；而是先打开文件，获取文件描述符；然后计算一点，读一点，来模仿实时解算。
+KF-GINS 中没有一次性把整个文件都读进来；而是先打开文件，获取文件描述符；然后计算一点，读一点，模仿实时解算。
 
 在主函数中先构造 `GnssFileLoader`、`ImuFileLoader` 类的对象 `gnssfile`、`imufile`：
 
@@ -439,13 +451,45 @@ bool FileLoader::open(const string &filename, int columns, int filetype) {
 }
 ```
 
+调用 `imufile.next()`、`gnssfile.next()`，读取一个数据。
 
+在主文件中，先循环调用 `imufile.next()`、`gnssfile.next()` 读取 IMU、GNSS 数据，直到时间戳在解算时间范围内。循环结束后 `imu_cur`、`gnss` 分别存解算时间内第一个 IMU、GNSS 量测，且文件指针指向的位置也到达解算时间内数据的开头：
 
+```cpp
+IMU imu_cur;
+do {
+    imu_cur = imufile.next();
+} while (imu_cur.time < starttime);
 
+GNSS gnss;
+do {
+    gnss = gnssfile.next();
+} while (gnss.time <= starttime);
+```
 
+之后每次循环解算，都会读取一个 IMU 数据，只有当前 IMU 状态时间新于 GNSS 时间时，才会读取 GNSS 数据：
 
+```cpp
+while (true) {
+    // 当前IMU状态时间新于GNSS时间时，读取并添加新的GNSS数据到GIEngine
+    // load new gnssdata when current state time is newer than GNSS time and add it to GIEngine
+    if (gnss.time < imu_cur.time && !gnssfile.isEof()) {
+        gnss = gnssfile.next();
+        giengine.addGnssData(gnss);
+    }
+    // 读取并添加新的IMU数据到GIEngine
+    // load new imudata and add it to GIEngine
+    imu_cur = imufile.next();
+    if (imu_cur.time > endtime || imufile.isEof()) {
+        break;
+    }
+```
 
-### 5、newImuProcess()：松组合
+### 6、newImuProcess()：松组合
+
+![image-20230929113308389](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230929113308389.png)
+
+这个函数是松组合解算的入口，IMU 量测的频率远远大于 GNSS 量测；所以用 IMU 为基准，得到的系统状态向量和协方差阵是当前 IMU 时间的，每次调用这个函数都会有新 IMU 量测。函数的计算基于当前时刻 IMU 量测和上一时刻 IMU 量测，如果两次量测之间没有 GNSS 数据，就只是进行捷联惯导递推，将系统状态和噪声递推到当前时刻；如果两次量测间有 GNSS 数据，就先捷联惯导递推到 GNSS 时刻，在 GNSS 时刻进行量测更新、误差反馈，最后再捷联惯导递推到当前时刻。
 
 ![image-20230925154404051](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925154404051.png)
 
@@ -498,7 +542,11 @@ if (res == 0) {
     insPropagation(imupre_, imucur_);
 ```
 
-返回 1，表示 GNSS 在两个 IMU 之间，更靠近前一个 IMU，那么先调用 `gnssUpdate()` 进行 GNSS 量测更新，再调用 `stateFeedback()` 进行系统状态反馈，最后调用 `insPropagation()` 根据两帧 IMU 量测将状态递推到当前 IMU 时间戳：
+返回 1，表示 GNSS 在两个 IMU 之间，更靠近前一个 IMU：
+
+* 先调用 `gnssUpdate()` 进行 GNSS 量测更新；
+* 再调用 `stateFeedback()` 进行系统状态反馈；
+* 最后调用 `insPropagation()` 根据两帧 IMU 量测将状态递推到当前 IMU 时间戳：
 
 ```cpp
 } else if (res == 1) {
@@ -511,7 +559,11 @@ if (res == 0) {
     insPropagation(imupre_, imucur_);
 ```
 
-返回 2，表示 GNSS 在两个 IMU 之间，更靠近后一个 IMU，那么先调用 `insPropagation()` 根据两帧 IMU 量测将状态递推到当前 IMU 时间戳，再调用 `gnssUpdate()` 进行 GNSS 量测更新，最后调用 `stateFeedback()` 进行系统状态反馈：
+返回 2，表示 GNSS 在两个 IMU 之间，更靠近后一个 IMU：
+
+* 先调用 `insPropagation()` 根据两帧 IMU 量测将状态递推到当前 IMU 时间戳；
+* 再调用 `gnssUpdate()` 进行 GNSS 量测更新；
+* 最后调用 `stateFeedback()` 进行系统状态反馈：
 
 ```cpp
 } else if (res == 2) {
@@ -523,7 +575,12 @@ if (res == 0) {
 
 ```
 
-返回 3，表示 GNSS 在两个 IMU 之间，不靠近任何一个，那么先调用 imuInterpolate() 根据两帧 IMU 量测插值到 GNSS 时间戳，得到 GNSS 时刻 IMU 量测值 `midimu`；调用 insPropagation 根据前一个 IMU 和 `midimu` 将状态递推到当前 GNSS 时间戳；再调用 `gnssUpdate()` 进行 GNSS 量测更新，调用 `stateFeedback()` 进行系统状态反馈；最后再调用一次 `insPropagation()`  根据 midimu 和当前时刻 IMU 量测将状态递推到当前 IMU 时间戳：
+返回 3，表示 GNSS 在两个 IMU 之间，不靠近任何一个：
+
+* 先调用 `imuInterpolate()` 根据两帧 IMU 量测插值到 GNSS 时间戳，得到 GNSS 时刻 IMU 量测值 `midimu`；
+* 调用 insPropagation 根据前一个 IMU 和 `midimu` 将状态递推到当前 GNSS 时间戳；
+* 再调用 `gnssUpdate()` 进行 GNSS 量测更新，调用 `stateFeedback()` 进行系统状态反馈；
+* 最后再调用一次 `insPropagation()`  根据 midimu 和当前时刻 IMU 量测将状态递推到当前 IMU 时间戳：
 
 ```cpp
 } else {
@@ -560,7 +617,9 @@ pvapre_ = pvacur_;
 imupre_ = imucur_;
 ```
 
-## 六、Earth 类：地球参数和坐标转换
+## 五、Earth 类：地球参数和坐标转换
+
+![image-20230925182052936](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925182052936.png)
 
 `Earth` 类里都是静态函数，使用的时候直接`类名::成员函数()`，文件的开头定义了一些椭球参数：
 
@@ -659,8 +718,9 @@ static Matrix3d cne(const Vector3d &blh) {
 }
 ```
 
-### 5、qne()：n系(北东地)到e系(ECEF)转换四元数
+### 5、qne()：计算n系(北东地)到e系(ECEF)转换四元数
 
+位置更新的时候，调用此函数根据上一时刻经纬度，得到上一时刻的 qne，然后 `qee * qne * qnn` 得到当前时刻的 qne，再调用下面的 blh() 得到经纬度。
 $$
 \boldsymbol{q}_{n}^{e}=\left[\begin{array}{c}\cos (-\pi / 4-\varphi / 2) \cos (\lambda / 2) \\ -\sin (-\pi / 4-\varphi / 2) \sin (\lambda / 2) \\ \sin (-\pi / 4-\varphi / 2) \cos (\lambda / 2) \\ \cos (-\pi / 4-\sin / 2) \sin (\lambda / 2)]\end{array}\right]
 $$
@@ -688,7 +748,7 @@ static Quaterniond qne(const Vector3d &blh) {
 
 ### 6、blh()：从n系到e系转换四元数得到纬度和经度
 
-
+位置更新的时候，通过算当前时刻 n 系到 e 系转换四元数 qne，然后调用此函数得到经纬度。
 
 ```cpp
 /* 从n系到e系转换四元数得到纬度和经度 */
@@ -791,15 +851,52 @@ static Matrix3d DR(const Vector3d &blh) {
 
 ### 10、local2global()：局部坐标(在origin处展开)转大地坐标
 
+在 `enwn()` 中被调用，为了方便能直接传入北东地（n 系）坐标计算 n 系相对于 e 系转动角速度在 n 系的投影。
 
+```cpp
+static Vector3d local2global(const Vector3d &origin, const Vector3d &local) {
 
+    Vector3d ecef0 = blh2ecef(origin);
+    Matrix3d cn0e  = cne(origin);
 
+    Vector3d ecef1 = ecef0 + cn0e * local;
+    Vector3d blh1  = ecef2blh(ecef1);
+
+    return blh1;
+}
+```
 
 ### 11、global2local()：大地坐标转局部坐标(在origin处展开)
 
+好像整个程序中都没用到这个函数。
 
+```cpp
+static Vector3d global2local(const Vector3d &origin, const Vector3d &global) {
+    Vector3d ecef0 = blh2ecef(origin);
+    Matrix3d cn0e  = cne(origin);
 
+    Vector3d ecef1 = blh2ecef(global);
 
+    return cn0e.transpose() * (ecef1 - ecef0);
+}
+```
+
+```cpp
+static Pose global2local(const Vector3d &origin, const Pose &global) {
+    Pose local;
+
+    Vector3d ecef0 = blh2ecef(origin);
+    Matrix3d cn0e  = cne(origin);
+
+    Vector3d ecef1 = blh2ecef(global.t);
+    Matrix3d cn1e  = cne(global.t);
+
+    local.t = cn0e.transpose() * (ecef1 - ecef0);
+    local.R = cn0e.transpose() * cn1e * global.R;
+
+    return local;
+}
+```
 
 ### 12、iewe()：地球自转角速度投影到e系
 
@@ -858,7 +955,7 @@ static Vector3d enwn(const Vector3d &origin, const Vector3d &local, const Vector
 }
 ```
 
-## 七、捷联惯导更新：insPropagation()
+## 六、捷联惯导更新：insPropagation()
 
 ![image-20230922181230280](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230922181230280.png)
 
@@ -922,8 +1019,8 @@ void INSMech::insMech(const PVA &pvapre, PVA &pvacur, const IMU &imupre, const I
 值得一提的是：
 
 * PVA 更新都是先计算中间时刻，再由此计算当前时刻。
-* 位置更新中：先计算n系到e系旋转四元数，再调用 `blh()`计算经纬度。
-* 我觉得因为PVA写成三个函数，部分代码有重复，PVA更新在同一个函数实现能更简洁一些。
+* 位置更新中：先计算 n 系到 e 系旋转四元数，再调用 `blh()`计算经纬度。
+* 我觉得因为 PVA 写成三个函数，部分计算过程有重复，写在同一个函数实现能更简洁一些。
 
 ### 4、velUpdate()：速度更新
 
@@ -947,7 +1044,7 @@ $$
 Eigen::Vector2d rmrn = Earth::meridianPrimeVerticalRadius(pvapre.pos(0));
 ```
 
-计算地球自转引起的导航系旋转 wie_n：
+计算地球自转引起的导航系旋转 `wie_n`：
 $$
 \boldsymbol{\omega}_{i e}^{n}=\left[\begin{array}{lll}\omega_{e} \cos \varphi & 0 & -\omega_{e} \sin \varphi\end{array}\right]^{\mathrm{T}}
 $$
@@ -956,7 +1053,7 @@ $$
 wie_n << WGS84_WIE * cos(pvapre.pos[0]), 0, -WGS84_WIE * sin(pvapre.pos[0]);
 ```
 
-计算载体在地球表面移动因地球曲率引起的导航系旋转 wen_n：
+计算载体在地球表面移动因地球曲率引起的导航系旋转 `wen_n`：
 $$
 \boldsymbol{\omega}_{e n}^{n}=\left[\begin{array}{c}v_{E} /\left(R_{N}+h\right) \\ -v_{N} /\left(R_{M}+h\right) \\ -v_{E} \tan \varphi /\left(R_{N}+h\right)\end{array}\right]
 $$
@@ -966,7 +1063,7 @@ wen_n << pvapre.vel[1] / (rmrn[1] + pvapre.pos[2]), -pvapre.vel[0] / (rmrn[0] + 
     -pvapre.vel[1] * tan(pvapre.pos[0]) / (rmrn[1] + pvapre.pos[2]);
 ```
 
-调用 `gravity()`，根据上一时刻位置计算**重力 ** gravity：
+调用 `gravity()`，根据上一时刻位置计算**重力 ** `gravity`：
 $$
 g_{L}=9.7803267715 \times\left(1+0.0052790414 \times \sin ^{2} L-0.0000232718 \times \sin ^{2} 2 L\right) \\
 +h\times(0.0000000043977311\times\sin ^{2} L-0.0000030876910891)+0.0000000000007211\times\sin ^{4} 2 L
@@ -976,7 +1073,7 @@ $$
 double gravity = Earth::gravity(pvapre.pos);
 ```
 
-计算 b 系比力积分项 d_vfb，单子样+前一周期补偿划桨效应：
+计算 b 系比力积分项 d_vfb，单子样 + 前一周期补偿划桨效应：
 $$
 \underbrace{\Delta \boldsymbol{v}_{f, k-1)}^{b(k-1)}}_{b \text { 系比力积分项 }}=\Delta \boldsymbol{v}_{k}+\frac{1}{2} \Delta \boldsymbol{\theta}_{k} \times \Delta \boldsymbol{v}_{k}+\frac{1}{12}\left(\Delta \boldsymbol{\theta}_{k-1} \times \Delta \boldsymbol{v}_{k}+\Delta \boldsymbol{v}_{k-1} \times \Delta \boldsymbol{\theta}_{k}\right)
 $$
@@ -1035,10 +1132,10 @@ midvel = pvapre.vel + (d_vfn + d_vgn) / 2;
 
 外推得到中间时刻位置：
 
-* 计算两时刻n系旋转四元数 qnn
-* 根据地球自转角速率，计算两时刻e系旋转四元数 qee
-* 调用 qne 根据先前时刻位置，计算先前时刻n系到e系旋转四元数 qne
-* 当前时刻n系到e系旋转四元数 qne = 两时刻e系旋转四元数 * 先前n系到e系旋转四元数 * 两时刻n系旋转四元数
+* 计算两时刻n系旋转四元数 `qnn`
+* 根据地球自转角速率，计算两时刻e系旋转四元数 `qee`
+* 调用 `qne` 根据先前时刻位置，计算先前时刻n系到e系旋转四元数 `qne`
+* 当前时刻 n 系到 e 系旋转四元数 `qne` = 两时刻e系旋转四元数 * 先前n系到e系旋转四元数 * 两时刻 n 系旋转四元数
 * 中间时刻高程 = 先前高程 - 高程方向速度 * 一半采样周期（因为北东地，计算出的速度时地向的，所以减）
 * 调用 `blh()` 根据 n系到e系旋转四元数计算经纬度
 
@@ -1056,9 +1153,9 @@ midpos    = Earth::blh(qne, midpos[2]);
 
 基于用中间时刻的位置，重新做一遍之前的操作：
 
-* 重新计算中间时刻的地理参数：rmrn、wie_n、wen_n（重力没重算）
-* 重新计算 n 系下平均比力积分项：d_vfn
-* 重新计算重力、哥式积分项：d_vgn
+* 重新计算中间时刻的地理参数：`rmrn`、`wie_n`、`wen_n`（重力没重算）
+* 重新计算 n 系下平均比力积分项：`d_vfn`
+* 重新计算重力、哥式积分项：`d_vgn`
 
 ```cpp
 // 重新计算中间时刻的 rmrn, wie_e, wen_n
@@ -1141,7 +1238,7 @@ temp1 = (wie_n + wen_n) * imucur.dt;
 qnn   = Rotation::rotvec2quaternion(temp1);
 ```
 
-e系转动等效旋转矢量 (k-1时刻k时刻，所以取负号)，直接就是地球自转角速率乘以时间差：
+e 系转动等效旋转矢量 (k-1时刻k时刻，所以取负号)，直接就是地球自转角速率乘以时间差：
 
 ```cpp
 // e系转动等效旋转矢量 (k-1时刻k时刻，所以取负号)
@@ -1150,7 +1247,7 @@ temp2 << 0, 0, -WGS84_WIE * imucur.dt;
 qee = Rotation::rotvec2quaternion(temp2);
 ```
 
-由先前时刻位置，调用 qne()，得到先前n系到e系旋转四元数：
+由先前时刻位置，调用 `qne()`，得到先前n系到e系旋转四元数：
 
 ```cpp
 qne = Earth::qne(pvapre.pos);
@@ -1162,7 +1259,7 @@ qne = Earth::qne(pvapre.pos);
 qne = qee * qne * qnn;
 ```
 
-当前时刻高程 = 先前高程 - 高程方向速度 * 采样周期（因为北东地，计算出的速度时地向的，所以减）：
+当前时刻高程 = 先前高程 - 高程方向速度 * 采样间隔（因为北东地，计算出的速度时地向的，所以减）：
 
 ``` C++
 pvacur.pos[2] = pvapre.pos[2] - midvel[2] * imucur.dt;
@@ -1185,13 +1282,13 @@ Eigen::Quaterniond qne_pre, qne_cur, qne_mid, qnn, qbb;
 Eigen::Vector3d temp1, midpos, midvel;
 ```
 
-重新计算中间时刻的速度和位置：
+重新计算中间时刻的速度和位置，中间速度是两时刻平均、中间位置相对于是作了一次位置更新：
 
-* 根据两时刻速度，计算平均速度 midvel
-* 根据上一时刻位置计算n系到e系转换四元数 qne_pre
-* 根据当前时刻位置计算n系到e系转换四元数 qne_cur
-* 根据两时刻转换四元数，计算n系到e系平均转换四元数 qne_mid（注意得通过等效旋转矢量，并非直接插值）
-* 计算当前中间时刻位置 midpos
+* 根据两时刻速度，计算平均速度 `midvel`
+* 根据上一时刻位置计算n系到e系转换四元数 `qne_pre`
+* 根据当前时刻位置计算n系到e系转换四元数 `qne_cur`
+* 根据两时刻转换四元数，计算n系到e系平均转换四元数 `qne_mid`（注意得通过等效旋转矢量，并非直接插值）
+* 计算当前中间时刻位置 `midpos`
 
 ```cpp
 // 重新计算中间时刻的速度和位置
@@ -1218,7 +1315,7 @@ wen_n << midvel[1] / (rmrn[1] + midpos[2]), -midvel[0] / (rmrn[0] + midpos[2]),
     -midvel[1] * tan(midpos[0]) / (rmrn[1] + midpos[2]);
 ```
 
-计算 n 系的旋转四元数 k-1时刻到k时刻系旋转：
+计算 n 系的旋转四元数  k-1 时刻到 k 时刻系旋转：
 $$
 {\omega}_{i n}^{n}={\omega}_{i e}^{n}+{\omega}_{e n}^{n}
 $$
@@ -1268,6 +1365,82 @@ pvacur.att.euler = Rotation::matrix2euler(pvacur.att.cbn);
 $$
 \mathbf{F}=\left[\begin{array}{ccccccc}\mathbf{F}_{r r} & \mathbf{I}_{3 \times 3} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} \\ \mathbf{F}_{v r} & \mathbf{F}_{v v} & {\left[\left(\mathbf{C}_{b}^{n} \boldsymbol{f}^{b}\right) \times\right]} & \mathbf{0} & \mathbf{C}_{b}^{n} & \mathbf{0} & \mathbf{C}_{b}^{n} \operatorname{diag}\left(\boldsymbol{f}^{b}\right) \\ \mathbf{F}_{\phi r} & \mathbf{F}_{\phi v} & -\left(\boldsymbol{\omega}_{i n}^{n} \times\right) & -\mathbf{C}_{b}^{n} & \mathbf{0} & -\mathbf{C}_{b}^{n} \operatorname{diag}\left(\boldsymbol{\omega}_{i b}^{b}\right) & \mathbf{0} \\ \mathbf{0} & \mathbf{0} & \mathbf{0} & \frac{-1}{T_{g b}} \mathbf{I}_{3 \times 3} & \mathbf{0} & \mathbf{0} & \mathbf{0} \\ \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \frac{-1}{T_{a b}} \mathbf{I}_{3 \times 3} & \mathbf{0} & \mathbf{0} \\ \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \frac{-1}{T_{g s}} \mathbf{I}_{3 \times 3} & \mathbf{0} \\ \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \frac{-1}{T_{a s}} \mathbf{I}_{3 \times 3}\end{array}\right]
 $$
+上面 F 矩阵每一块都是一个 $3 \times 3$ 矩阵，分别表示位置、速度、姿态、陀螺仪零偏、加速度计零偏、陀螺仪比例、加速度计比力，共21维。可以很明显的看出左上角几乎是满的，因为位置、速度、姿态之间误差耦合很深；右下的器件误差很稀释，因为我们认为器件与器件之间的量测是相互独立的，处理在对角线上有元素之外，只在与器件相关的位置有元素（陀螺仪和姿态相关、加速度计和速度相关）。
+
+定义了枚举值来索引左上角元素的下标：
+
+```cpp
+enum StateID { P_ID = 0, V_ID = 3, PHI_ID = 6, 
+    BG_ID = 9, BA_ID = 12, SG_ID = 15, SA_ID = 18 };
+```
+
+代码排的很整齐，遵循从左往右、从上往下的顺序计算：
+
+```cpp
+// 位置误差
+// position error
+temp.setZero();
+temp(0, 0)                = -pvapre_.vel[2] / rmh;
+temp(0, 2)                = pvapre_.vel[0] / rmh;
+temp(1, 0)                = pvapre_.vel[1] * tan(pvapre_.pos[0]) / rnh;
+temp(1, 1)                = -(pvapre_.vel[2] + pvapre_.vel[0] * tan(pvapre_.pos[0])) / rnh;
+temp(1, 2)                = pvapre_.vel[1] / rnh;
+F.block(P_ID, P_ID, 3, 3) = temp;
+F.block(P_ID, V_ID, 3, 3) = Eigen::Matrix3d::Identity();
+
+// 速度误差
+// velocity error
+temp.setZero();
+temp(0, 0) = -2 * pvapre_.vel[1] * WGS84_WIE * cos(pvapre_.pos[0]) / rmh -
+             pow(pvapre_.vel[1], 2) / rmh / rnh / pow(cos(pvapre_.pos[0]), 2);
+temp(0, 2) = pvapre_.vel[0] * pvapre_.vel[2] / rmh / rmh - pow(pvapre_.vel[1], 2) * tan(pvapre_.pos[0]) / rnh / rnh;
+temp(1, 0) = 2 * WGS84_WIE * (pvapre_.vel[0] * cos(pvapre_.pos[0]) - pvapre_.vel[2] * sin(pvapre_.pos[0])) / rmh +
+             pvapre_.vel[0] * pvapre_.vel[1] / rmh / rnh / pow(cos(pvapre_.pos[0]), 2);
+temp(1, 2) = (pvapre_.vel[1] * pvapre_.vel[2] + pvapre_.vel[0] * pvapre_.vel[1] * tan(pvapre_.pos[0])) / rnh / rnh;
+temp(2, 0) = 2 * WGS84_WIE * pvapre_.vel[1] * sin(pvapre_.pos[0]) / rmh;
+temp(2, 2) = -pow(pvapre_.vel[1], 2) / rnh / rnh - pow(pvapre_.vel[0], 2) / rmh / rmh +
+             2 * gravity / (sqrt(rmrn[0] * rmrn[1]) + pvapre_.pos[2]);
+F.block(V_ID, P_ID, 3, 3) = temp;
+temp.setZero();
+temp(0, 0)                  = pvapre_.vel[2] / rmh;
+temp(0, 1)                  = -2 * (WGS84_WIE * sin(pvapre_.pos[0]) + pvapre_.vel[1] * tan(pvapre_.pos[0]) / rnh);
+temp(0, 2)                  = pvapre_.vel[0] / rmh;
+temp(1, 0)                  = 2 * WGS84_WIE * sin(pvapre_.pos[0]) + pvapre_.vel[1] * tan(pvapre_.pos[0]) / rnh;
+temp(1, 1)                  = (pvapre_.vel[2] + pvapre_.vel[0] * tan(pvapre_.pos[0])) / rnh;
+temp(1, 2)                  = 2 * WGS84_WIE * cos(pvapre_.pos[0]) + pvapre_.vel[1] / rnh;
+temp(2, 0)                  = -2 * pvapre_.vel[0] / rmh;
+temp(2, 1)                  = -2 * (WGS84_WIE * cos(pvapre_.pos(0)) + pvapre_.vel[1] / rnh);
+F.block(V_ID, V_ID, 3, 3)   = temp;
+F.block(V_ID, PHI_ID, 3, 3) = Rotation::skewSymmetric(pvapre_.att.cbn * accel);
+F.block(V_ID, BA_ID, 3, 3)  = pvapre_.att.cbn;
+F.block(V_ID, SA_ID, 3, 3)  = pvapre_.att.cbn * (accel.asDiagonal());
+
+// 姿态误差
+// attitude error
+temp.setZero();
+temp(0, 0) = -WGS84_WIE * sin(pvapre_.pos[0]) / rmh;
+temp(0, 2) = pvapre_.vel[1] / rnh / rnh;
+temp(1, 2) = -pvapre_.vel[0] / rmh / rmh;
+temp(2, 0) = -WGS84_WIE * cos(pvapre_.pos[0]) / rmh - pvapre_.vel[1] / rmh / rnh / pow(cos(pvapre_.pos[0]), 2);
+temp(2, 2) = -pvapre_.vel[1] * tan(pvapre_.pos[0]) / rnh / rnh;
+F.block(PHI_ID, P_ID, 3, 3) = temp;
+temp.setZero();
+temp(0, 1)                    = 1 / rnh;
+temp(1, 0)                    = -1 / rmh;
+temp(2, 1)                    = -tan(pvapre_.pos[0]) / rnh;
+F.block(PHI_ID, V_ID, 3, 3)   = temp;
+F.block(PHI_ID, PHI_ID, 3, 3) = -Rotation::skewSymmetric(wie_n + wen_n);
+F.block(PHI_ID, BG_ID, 3, 3)  = -pvapre_.att.cbn;
+F.block(PHI_ID, SG_ID, 3, 3)  = -pvapre_.att.cbn * (omega.asDiagonal());
+
+// IMU零偏误差和比例因子误差，建模成一阶高斯-马尔科夫过程
+// imu bias error and scale error, modeled as the first-order Gauss-Markov process
+F.block(BG_ID, BG_ID, 3, 3) = -1 / options_.imunoise.corr_time * Eigen::Matrix3d::Identity();
+F.block(BA_ID, BA_ID, 3, 3) = -1 / options_.imunoise.corr_time * Eigen::Matrix3d::Identity();
+F.block(SG_ID, SG_ID, 3, 3) = -1 / options_.imunoise.corr_time * Eigen::Matrix3d::Identity();
+F.block(SA_ID, SA_ID, 3, 3) = -1 / options_.imunoise.corr_time * Eigen::Matrix3d::Identity();
+```
+
 其中：
 $$
 \mathbf{F}_{r r}=\left[\begin{array}{ccc}-\frac{v_{D}}{R_{M}+h} & 0 & \frac{v_{N}}{R_{M}+h} \\ \frac{v_{E} \tan \varphi}{R_{N}+h} & -\frac{v_{D}+v_{N} \tan \varphi}{R_{N}+h} & \frac{v_{E}}{R_{N}+h} \\ 0 & 0 & 0\end{array}\right]
@@ -1281,10 +1454,8 @@ temp(1, 0) = pvapre_.vel[1] * tan(pvapre_.pos[0]) / rnh;
 temp(1, 1) = -(pvapre_.vel[2] + pvapre_.vel[0] * tan(pvapre_.pos[0])) / rnh;
 temp(1, 2) = pvapre_.vel[1] / rnh;
 F.block(P_ID, P_ID, 3, 3) = temp;
-F.block(P_ID, V_ID, 3, 3) = Eigen::Matrix3d::Identity();
 ```
 
-、
 $$
 \mathbf{F}_{v r}=\left[\begin{array}{ccc}\frac{-2 v_{E} \omega_{e} \cos \varphi}{R_{M}+h}-\frac{v_{E}^{2} \sec ^{2} \varphi}{\left(R_{M}+h\right)\left(R_{N}+h\right)} & 0 & \frac{v_{N} v_{D}}{\left(R_{M}+h\right)^{2}}-\frac{v_{E}^{2} \tan \varphi}{\left(R_{N}+h\right)^{2}} \\ \frac{2 \omega_{e}\left(v_{N} \cos \varphi-v_{D} \sin \varphi\right)}{R_{M}+h}+\frac{v_{N} v_{E} \sec ^{2} \varphi}{\left(R_{M}+h\right)\left(R_{N}+h\right)} & 0 & \frac{v_{E} v_{D}+v_{N} v_{E} \tan \varphi}{\left(R_{N}+h\right)^{2}} \\ \frac{2 \omega_{e} v_{E} \sin \varphi}{R_{M}+h} & 0 & -\frac{v_{E}^{2}}{\left(R_{N}+h\right)^{2}}-\frac{v_{N}^{2}}{\left(R_{M}+h\right)^{2}}+\frac{2 g_{p}}{\sqrt{R_{M} R_{N}+h}}\end{array}\right]
 $$
@@ -1319,9 +1490,6 @@ temp(1, 2) = 2 * WGS84_WIE * cos(pvapre_.pos[0]) + pvapre_.vel[1] / rnh;
 temp(2, 0) = -2 * pvapre_.vel[0] / rmh;
 temp(2, 1) = -2 * (WGS84_WIE * cos(pvapre_.pos(0)) + pvapre_.vel[1] / rnh);
 F.block(V_ID, V_ID, 3, 3)   = temp;
-F.block(V_ID, PHI_ID, 3, 3) = Rotation::skewSymmetric(pvapre_.att.cbn * accel);
-F.block(V_ID, BA_ID, 3, 3)  = pvapre_.att.cbn;
-F.block(V_ID, SA_ID, 3, 3)  = pvapre_.att.cbn * (accel.asDiagonal());
 ```
 
 
@@ -1350,12 +1518,9 @@ temp(0, 1) = 1 / rnh;
 temp(1, 0) = -1 / rmh;
 temp(2, 1) = -tan(pvapre_.pos[0]) / rnh;
 F.block(PHI_ID, V_ID, 3, 3)   = temp;
-F.block(PHI_ID, PHI_ID, 3, 3) = -Rotation::skewSymmetric(wie_n + wen_n);
-F.block(PHI_ID, BG_ID, 3, 3)  = -pvapre_.att.cbn;
-F.block(PHI_ID, SG_ID, 3, 3)  = -pvapre_.att.cbn * (omega.asDiagonal());
 ```
 
-IMU零偏误差和比例因子误差，建模成一阶高斯-马尔科夫过程：
+IMU零偏误差和比例因子误差，建模成一阶高斯-马尔科夫过程，：
 $$
 \frac{-1}{T_{g s}} \mathbf{I}_{3 \times 3}
 $$
@@ -1369,7 +1534,7 @@ F.block(SG_ID, SG_ID, 3, 3) = -1 / options_.imunoise.corr_time * Eigen::Matrix3d
 F.block(SA_ID, SA_ID, 3, 3) = -1 / options_.imunoise.corr_time * Eigen::Matrix3d::Identity();
 ```
 
-系统噪声驱动矩阵：
+然后构建系统噪声驱动矩阵：
 $$
 \underset{21 \times 18}{\mathbf{G}_{18}}=\left[\begin{array}{cccccc}\mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} \\ \mathbf{C}_{b}^{n} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} \\ \mathbf{0} & \mathbf{C}_{b}^{n} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} \\ \mathbf{0} & \mathbf{0} & \mathbf{I}_{3 \times 3} & \mathbf{0} & \mathbf{0} & \mathbf{0} \\ \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{I}_{3 \times 3} & \mathbf{0} & \mathbf{0} \\ \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{I}_{3 \times 3} & \mathbf{0} \\ \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{I}_{3 \times 3}\end{array}\right]
 $$
@@ -1431,39 +1596,164 @@ void GIEngine::EKFPredict(Eigen::MatrixXd &Phi, Eigen::MatrixXd &Qd) {
 }
 ```
 
-## 八、GNSS 量测更新、系统状态反馈
+## 七、GNSS 量测更新、系统状态反馈
 
 ### 1、gnssUpdate()：GNSS 量测更新
 
+先将 IMU 位置 `pvacur_.pos` 转到 GNSS 天线相位中心位置 `antenna_pos`：
+$$
+\hat{\boldsymbol{r}}_{G}=\hat{\boldsymbol{r}}_{I}+\boldsymbol{D}_{R}^{-1} \hat{\boldsymbol{C}}_{b}^{n} \boldsymbol{l}^{b}
+$$
 
+```cpp
+// IMU位置转到GNSS天线相位中心位置
+// convert IMU position to GNSS antenna phase center position
+Eigen::Vector3d antenna_pos;
+Eigen::Matrix3d Dr, Dr_inv;
+Dr_inv      = Earth::DRi(pvacur_.pos);
+Dr          = Earth::DR(pvacur_.pos);
+antenna_pos = pvacur_.pos + Dr_inv * pvacur_.att.cbn * options_.antlever;
+```
 
+计算位置观测向量：IMU 预测天线位置减去 GNSS 观测位置：
+$$
+\boldsymbol{z}_{r}=\boldsymbol{D}_{R}\left(\hat{\boldsymbol{r}}_{G}-\tilde{\boldsymbol{r}}_{G}\right)
+$$
 
+```cpp
+// GNSS位置测量新息
+// compute GNSS position innovation
+Eigen::MatrixXd dz;
+dz = Dr * (antenna_pos - gnssdata.blh);
+```
 
+构造 GNSS 位置观测矩阵：
+$$
+\boldsymbol{H}_{r}=\left[\begin{array}{lllllll}\boldsymbol{I}_{3} & 0_{3} & \left(\boldsymbol{C}_{b}^{n} \boldsymbol{l}^{b}\right) \times & 0_{3} & 0_{3} & 0_{3} & 0_{3}\end{array}\right]
+$$
 
+```cpp
+// 构造GNSS位置观测矩阵
+// construct GNSS position measurement matrix
+Eigen::MatrixXd H_gnsspos;
+H_gnsspos.resize(3, Cov_.rows());
+H_gnsspos.setZero();
+H_gnsspos.block(0, P_ID, 3, 3)   = Eigen::Matrix3d::Identity();
+H_gnsspos.block(0, PHI_ID, 3, 3) = Rotation::skewSymmetric(pvacur_.att.cbn * options_.antlever);
+```
 
+位置观测噪声阵，就是用数据文件中读取到的 GNSS 位置标准差平方得到协方差，组成成协方差阵：
 
+```cpp
+// 位置观测噪声阵
+// construct measurement noise matrix
+Eigen::MatrixXd R_gnsspos;
+R_gnsspos = gnssdata.std.cwiseProduct(gnssdata.std).asDiagonal();
+```
 
+得到观测向量**z**，观测矩阵**H**, 观测噪声矩阵**R**后，调用 `EKFUpdate()`，量测更新：
 
+```cpp
+EKFUpdate(dz, H_gnsspos, R_gnsspos);
+```
 
+最后，GNSS更新之后设置为不可用：
 
+```cpp
+gnssdata.isvalid = false;
+```
 
-### 2、EKFUpdate()：EKF更新协方差和误差状态
+### 2、EKFUpdate()：EKF 更新协方差和误差状态
 
+判断矩阵维度是否合理，不合理直接退出程序：
 
+```cpp
+assert(H.cols() == Cov_.rows());
+assert(dz.rows() == H.rows());
+assert(dz.rows() == R.rows());
+assert(dz.cols() == 1);
+```
 
+计算 Kalman 滤波增益系数 K：
+$$
+\boldsymbol{K}_{k}=\boldsymbol{P}_{k / k-1} \boldsymbol{H}_{k}^{T}\left(\boldsymbol{H}_{k} \boldsymbol{P}_{k / k-1} \boldsymbol{H}_{k}^{T}+\boldsymbol{R}_{k}\right)^{-1}
+$$
 
+```cpp
+// 计算Kalman增益
+// Compute Kalman Gain
+auto temp = H * Cov_ * H.transpose() + R;
+Eigen::MatrixXd K = Cov_ * H.transpose() * temp.inverse();
+```
 
+更新系统误差状态和协方差：
+$$
+\begin{array}{l}\boldsymbol{P}_{k}=\left(\boldsymbol{I}-\boldsymbol{K}_{k} \boldsymbol{H}_{k}\right) \boldsymbol{P}_{k / k-1}\left(\boldsymbol{I}-\boldsymbol{K}_{k} \boldsymbol{H}_{k}\right)^{T}+\boldsymbol{K}_{k} \boldsymbol{R}_{k} \boldsymbol{K}_{k}^{T} \\ \boldsymbol{K}_{k}=\boldsymbol{P}_{k / k-1} \boldsymbol{H}_{k}^{T}\left(\boldsymbol{H}_{k} \boldsymbol{P}_{k / k-1} \boldsymbol{H}_{k}^{T}+\boldsymbol{R}_{k}\right)^{-1}\end{array}
+$$
 
+```cpp
+// 更新系统误差状态和协方差
+// update system error state and covariance
+Eigen::MatrixXd I;
+I.resizeLike(Cov_);
+I.setIdentity();
+I = I - K * H;
+// 如果每次更新后都进行状态反馈，则更新前dx_一直为0，下式可以简化为：dx_ = K * dz;
+// if state feedback is performed after every update, dx_ is always zero before the update
+// the following formula can be simplified as : dx_ = K * dz;
+dx_  = dx_ + K * (dz - H * dx_);
+Cov_ = I * Cov_ * I.transpose() + K * R * K.transpose();
+```
 
 ### 3、stateFeedback()：状态反馈
 
+想清楚卡尔曼滤波到底算的是什么，考虑到底是加还是减。零偏、比例因子残差是加、速度位置残差是减，反馈之后误差状态置 0：
 
+```cpp
+void GIEngine::stateFeedback() {
 
+    Eigen::Vector3d vectemp;
 
+    // 位置误差反馈
+    // posisiton error feedback
+    Eigen::Vector3d delta_r = dx_.block(P_ID, 0, 3, 1);
+    Eigen::Matrix3d Dr_inv  = Earth::DRi(pvacur_.pos);
+    pvacur_.pos -= Dr_inv * delta_r;
 
+    // 速度误差反馈
+    // velocity error feedback
+    vectemp = dx_.block(V_ID, 0, 3, 1);
+    pvacur_.vel -= vectemp;
 
+    // 姿态误差反馈
+    // attitude error feedback
+    vectemp                = dx_.block(PHI_ID, 0, 3, 1);
+    Eigen::Quaterniond qpn = Rotation::rotvec2quaternion(vectemp);
+    pvacur_.att.qbn        = qpn * pvacur_.att.qbn;
+    pvacur_.att.cbn        = Rotation::quaternion2matrix(pvacur_.att.qbn);
+    pvacur_.att.euler      = Rotation::matrix2euler(pvacur_.att.cbn);
 
-## 九、KF-GINS常见问题
+    // IMU零偏误差反馈
+    // IMU bias error feedback
+    vectemp = dx_.block(BG_ID, 0, 3, 1);
+    imuerror_.gyrbias += vectemp;
+    vectemp = dx_.block(BA_ID, 0, 3, 1);
+    imuerror_.accbias += vectemp;
+
+    // IMU比例因子误差反馈
+    // IMU sacle error feedback
+    vectemp = dx_.block(SG_ID, 0, 3, 1);
+    imuerror_.gyrscale += vectemp;
+    vectemp = dx_.block(SA_ID, 0, 3, 1);
+    imuerror_.accscale += vectemp;
+
+    // 误差状态反馈到系统状态后,将误差状态清零
+    // set 'dx' to zero after feedback error state to system state
+    dx_.setZero();
+}
+```
+
+## 八、KF-GINS常见问题
 
 > 复制自PPT
 

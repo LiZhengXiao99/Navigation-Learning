@@ -1,8 +1,10 @@
+>  原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
+
 [TOC]
 
 ## 一、GICI-LIB 简介
 
-**作者介绍**：为了阐明 GNSS 的算法模型，加快在多源融合应用中针对 GNSS 的开发效率，我们开源了 GICI-LIB，并辅以详尽的文档和全面的数据集。GICI-LIB 以可扩展的设计理念，实现了GIC传感器之间多种形式的松紧组合。评估结果表明，GIC 系统能够在多种复杂环境下，提供分米到米级的高精度导航。
+**作者的介绍**：为了阐明 GNSS 的算法模型，加快在多源融合应用中针对 GNSS 的开发效率，我们开源了 GICI-LIB，并辅以详尽的文档和全面的数据集。GICI-LIB 以可扩展的设计理念，实现了GIC传感器之间多种形式的松紧组合。评估结果表明，GIC 系统能够在多种复杂环境下，提供分米到米级的高精度导航。
 
 ### 1、程序概述
 
@@ -104,8 +106,8 @@ src 和 tools 文件夹内各子**文件夹功能信息**如下表所示：
 
 * **RTKLIB**：开源 GNSS 软件包，由一个程序库和多个应用程序工具库组成。
 * **fast**：Features from Accelerated Segment Test，特征检测算法。
-* **rpg_svo**：稀疏直接法视觉里程计（Visual Odometry）算法，它可以从连续的图像序列中估计相机的运动，用于机器人导航和定位。 
-* **OKVIS**：Open Keyframe-based Visual-Inertial SLAM 
+* **svo**：半直接发法稀疏直接法视觉里程计（Visual Odometry）算法，用到其中函数做视觉前端
+* **OKVIS**：Open Keyframe-based Visual-Inertial SLAM，用到了其中的因子图函数
 * **Eigen**：线性代数库，用于处理矩阵和向量的计算，它提供了许多线性代数运算的功能，包括矩阵运算、向量运算、特征值分解、奇异值分解、矩阵求逆等。 
 * **Ceres**：Google 的非线性最小二乘库，用于实现因子图优化解算。
 * **glog**：Google 的日志库。
@@ -173,9 +175,20 @@ GICI-LIB 提供的多种传感器在不同定位模式下的很多因子，并�
 ## 二、GICI-LIB 编译
 
 > * `git clone` 下载不了，可以去 `git clone` 后面的网站上手动下载。
+>
 > * 本文只介绍非 ROS 版。
+>
 > * 我使用的环境是 VSCode + WSl，很多导航定位的开源软件都基于 Linux，比起虚拟机，VSCode + WSl 要流畅一些，不熟悉的推荐看[这篇文章](https://blog.csdn.net/donghening/article/details/124611881)。
+>
 > * 确保之前已经配置好 C++ 环境（g++、Cmake、VScode 插件）。
+>
+> * 看别人的博客，都提到了曾经安装过 glog/gflag 会出问题：[GICI-OPEN多源融合导航框架编译及问题说明](https://blog.csdn.net/zhaolewen/article/details/133245621)
+>
+> * 构建、编译的时候找不到库，可能是因为库装到`/usr/local/lib` 里了，试试创建软链接到  `/usr/lib`
+>
+>   ```bash
+>   ln -s /usr/local/lib/库名.a /usr/lib/库名.a
+>   ```
 
 ### 1、安装需要的库
 
@@ -446,32 +459,7 @@ YAML（YAML Ain't Markup Language）是一种轻量级的数据序列化格式�
 > - ==缩进不允许使用 tab，只允许空格。==
 > - ==缩进的空格数不重要，只要相同层级的元素左对齐即可。==
 
-### 2、GICI-LIB 配置文件结构
-
-配置文件以 **数组 + 键值对** 的方式组织，每一个键值对都是一个配置项，用多级数组来分模块组织配置项键值对。有三大模块：stream、estimate、logging，其中 stream 模块内还分为三个子模块 steamers、formators、replay。如下图：
-
-![1689518262550](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1689518262550.png)
-
-
-
-### 3、示例配置文件
-
-option 文件夹里有一些配置文件，以伪实时定位解算为主，对应于下面的应用方式，图上每个模块都对应着咱们要配置的内容。
-
-![1689512108793](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1689512108793.png)
-
-**使用方式**：
-
-* 建立 data、output 文件夹，存放数据和输出。
-
-- 将 yaml 配置文件中的 `<data-directory>`、`<gici-root-directory>` 和 `<output-directory>` 分别换成你的`数据文件夹路径`、`gici-open 文件夹的路径`、和 `输出文件夹路径`。
-- `streamer` 写了两套，非 ROS 模式和 ROS 模式，想用哪套就把另一套注释掉。
-- 注意看 `streamers` 里一项项 `streamer` 的路径项 `path`，确保数据文件夹中都有对应的数据。
-- 有些 `streamer` 中路径设置在 option 文件夹中，程序会从 `gici-open 文件夹的路径` 找 option 文件夹，确保 option 文件夹和里面数据在对应位置，最好不要动 option 文件夹。
-- 程序运行前，把 yaml 配置文件的路径加到命令行参数中。
-- 结果在 output 文件夹下，`xxx_solution.txt` 文件可以直接用 `rtkplot` 打开查看结果。用`matlab_plot` 里的脚本应该也行。
-
-### 4、读取 YAML 的语法
+### 2、读取 YAML 的语法
 
 1. YMAL 在 C++ 中以 Node 类表示。
 
@@ -504,7 +492,37 @@ option 文件夹里有一些配置文件，以伪实时定位解算为主，对�
 2. **sensorType()**：传入 formator_role 字符串，转换成传感器种类枚举值 SensorType 返回。
 3. **loadOptions()**：参一传入文档 18~39 对应 estimate 的选项 Node，转换成对应的 ImuParameters、AmbiguityResolutionOptions 等选项结构体作为参二返回。
 
+### 3、GICI-LIB 配置文件结构
+
+配置文件以 **数组 + 键值对** 的方式组织，每一个键值对都是一个配置项，用多级数组来分模块组织配置项键值对。有三大模块：stream、estimate、logging，其中 stream 模块内还分为三个子模块 steamers、formators、replay。如下图：
+
+![1689518262550](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1689518262550.png)
+
+### 4、示例配置文件
+
+option 文件夹里有一些配置文件，以伪实时定位解算为主，对应于下面的应用方式，图上每个模块都对应着咱们要配置的内容。
+
+![1689512108793](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1689512108793.png)
+
+**使用方式**：
+
+* 建立 data、output 文件夹，存放数据和输出。
+
+- 将 yaml 配置文件中的 `<data-directory>`、`<gici-root-directory>` 和 `<output-directory>` 分别换成你的`数据文件夹路径`、`gici-open 文件夹的路径`、和 `输出文件夹路径`。
+- 改配置中的 `start_time`，起始时间。
+- `streamer` 写了两套，非 ROS 模式和 ROS 模式，想用哪套就把另一套注释掉。
+- 注意看 `streamers` 里一项项 `streamer` 的路径项 `path`，确保数据文件夹中都有对应的数据。
+- 有些 `streamer` 中路径设置在 option 文件夹中，程序会从 `gici-open 文件夹的路径` 找 option 文件夹，确保 option 文件夹和里面数据在对应位置，最好不要动 option 文件夹。
+- 程序运行前，把 yaml 配置文件的路径加到命令行参数中。
+- 结果在 output 文件夹下，`xxx_solution.txt` 文件可以直接用 `rtkplot` 打开查看结果。用`matlab_plot` 里的脚本应该也行。
+
+> 一定注意，配置文件中有好几处 `<data-directory>`、`<gici-root-directory>` 、 `<output-directory>` 、`start_time` 要改，不能漏，我在这卡了很久。
+>
+> 没运行成功，仔细看看报错信息，INFO不用看，关注ERROR，看对应配置是否正确。
+
 ## 六、数据集
+
+> 对 GitHub 上的介绍简单做个翻译
 
 ### 1、数据集介绍
 

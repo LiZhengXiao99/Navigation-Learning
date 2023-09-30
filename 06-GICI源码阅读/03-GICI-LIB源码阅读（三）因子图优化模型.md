@@ -1,3 +1,4 @@
+> 原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
 [TOC]
 
 ## 三、因子图优化（FGO）
@@ -100,12 +101,6 @@ $$
 - **高斯-牛顿法（GN）**：$f(x)$ 进行一阶泰勒展开，$f(x)$ 而不是 $F(x)$ ，高斯牛顿法用雅各比矩阵 $JJ^T$ 来作为牛顿法中二阶海森阵的近似，$HX=g$，在使用高斯牛顿法时，可能出现 $JJ^T$ 为奇异矩阵或者病态的情况，此时增量稳定性较差，导致算法不收敛。
 - **列文伯格–马夸尔特方法（LM）**：基于信赖区域理论，是由于高斯-牛顿方法在计算时需要保证矩阵的正定性，于是引入了一个约束，从而保证计算方法更具普适性。$(H+\lambda I)x=g$，当入较小时，$H$ 占主导，近似于高斯牛顿法，较大时，$\lambda * I$ 占主导，接近最速下降法。
 
-考了本题。。。。，采用列文伯格–马夸尔特方法（LM）
-
-
-
-
-
 ### 4、Ceres 非线性最小二乘库
 
 Ceres是一个用于求解非线性最小二乘问题的开源库，它可以用于许多优化和拟合问题。相关文档写的较为全面完善、原理也较为直观：[http://ceres-solver.org/nnls_tutorial.html#numeric-derivatives](http://ceres-solver.org/nnls_tutorial.html#numeric-derivatives)。
@@ -115,8 +110,6 @@ $$
 min {x} \frac{1}{2} \sum{i} \rho{i}\left(\left|f{i}\left(x{i{1}}, \cdots, x{i{n}}\right)\right|^{2}\right) \quad \text { s.t. } \quad l{i} \leq x{j} \leq u{j}
 $$
 该问题是一个带边界的核函数最小二乘问题，其中，$x_{1}, \cdots, x_{n}$ 在 Ceres 中被称为**参数块** (Parameter Blocks)，表示优化变量，$\rho_{i}\left(\left\|f_{i}\left(x_{i_{1}}, \cdots, x_{i_{n}}\right)\right\|^{2}\right)$ 称为**残差块** (Residual Blocks)，$f_{i}$ 称为**代价函数** (Cost Function)，表示误差项或约束项。 $l_{i}$ 和 $u_{j}$ 分别表示 $x_{j}$ 的上下限，当 $l_{i}=-\infty, u_{j}=\infty$ 时，表示不限制 $x_{j}$ 的边界。目标函数由多个核函数 $\rho(\cdot)$ 求和构成，核函数 的自变量为误差项的平方。 $\rho_{i}$ 也称为损失函数，主要用来消除异常点对求解过程的影响，通过抑制噪声的影响来获得较高的优化精度。若取 $\rho$ 为恒等函数，如 $\rho(s)=s$，则目标函数由多个误差项的平方和组成，得到无约束的最小二乘问题。
-
-
 
 基本使用流程如下：
 
@@ -279,28 +272,3 @@ int main(int argc, char **argv) {
 GICI-LIB 提供的多种传感器在不同定位模式下的很多因子，并封装了一个基类，为所有传感器提供基础的函数去操作变量因子和量测因子，具体可以看**各种 `xxx_estimator_base.h`，看算法的时候肯定重点要看这些文件**。
 
 ![1690024555067](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690024555067.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

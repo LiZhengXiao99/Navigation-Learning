@@ -1,10 +1,12 @@
+> 原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
+
+[TOC]
+
 ## 一、前言
 
-PSINS（Precise Strapdown Inertial Navigation System 高精度捷联惯导系统算法）工具箱由西北工业大学自动化学院惯性技术教研室严恭敏老师开发和维护。工具箱分为Matlab和C++两部分。主要应用于**捷联惯导**系统的数据处理和算法验证开发，它包括**惯性传感器数据分析**、**惯组标定**、**初始对准**、**惯导AVP**（姿态-速度-位置）更新解算、**组合导航**Kalman滤波等功能。C++部分采用VC6编写，可以用于嵌入式开发。
+PSINS（Precise Strapdown Inertial Navigation System 高精度捷联惯导系统算法）工具箱由西北工业大学自动化学院惯性技术教研室严恭敏老师开发和维护。工具箱分为Matlab和C++两部分。主要应用于**捷联惯导**系统的数据处理和算法验证开发，它包括**惯性传感器数据分析**、**惯组标定**、**初始对准**、**惯导AVP**（姿态-速度-位置）更新解算、**组合导航**Kalman滤波等功能。C++部分采用VC6编写，可以用于嵌入式开发。**如果你之前还没接触过PSINS工具箱，强烈建议先去看严老师的 [视频讲解](https://www.bilibili.com/video/BV1R54y1E7ut/)**
 
-**如果你之前还没接触过PSINS工具箱，强烈建议先去看严老师的 [视频讲解](https://www.bilibili.com/video/BV1R54y1E7ut/)，再看严老师的 [硕士论文](http://www.psins.org.cn/Customer/FileDownloadVerifyPass?fileid=254458&type=img)。把 [PSINS网站 ](http://www.psins.org.cn/zlxz)上的资料全部下载下来作为学习PSINS工具箱的参考。** PSINS的代码由严老师长期研究工作
-
-本人导航工程大二学生，之前还写了 [RTKLIB](https://blog.csdn.net/daoge2666/category_12241729.html) 、[GraphGNSSLib](https://blog.csdn.net/daoge2666/category_12320449.html) 、[测绘程序设计](https://blog.csdn.net/daoge2666/category_12327675.html) 等系列的博客。初学惯导，认识尚浅，有错误欢迎指出。以往的也有一些PSINS的博客，我想在他们的基础上，写套比较系统的专栏。下面推荐一些已有的博客：
+下面再推荐一些已有的博客：
 
 - [十八与她](https://blog.csdn.net/absll) 的专栏 [PSINS工具箱基本原理与应用](https://blog.csdn.net/absll/category_11808766.html)
 - [枯荣有常](https://blog.csdn.net/wuwuku123) 的专栏 [psins代码解析](https://blog.csdn.net/wuwuku123/category_9876792.html)
@@ -14,26 +16,11 @@ PSINS（Precise Strapdown Inertial Navigation System 高精度捷联惯导系统
 
 ## 二、相关资源
 
-* [PSINS网站](http://www.psins.org.cn/) 可下载最新PSINS工具箱源码及课程PPT，导航数据。还有[新浪博客](https://blog.sina.com.cn/ygm905)、[知乎](https://www.zhihu.com/people/yangongmin) 上有技术交流文章、推荐看知乎，一直在更新，排版也好一些。
+* [PSINS网站](http://www.psins.org.cn/) 可下载最新PSINS工具箱源码及课程PPT，导航数据。还有[新浪博客](https://blog.sina.com.cn/ygm905)、[知乎](https://www.zhihu.com/people/yangongmin) 上有技术交流文章、推荐知乎，一直在更新，排版也好一些。
 
 * PSINS导航算法QQ群：46819593，人快满了，不知道还能不能进了。
 
 * bilibili课程视频：[卡尔曼滤波与组合导航原理【西北工业大学 严恭敏】](https://www.bilibili.com/video/BV11K411J7gp/)：共10讲，先讲Kalman滤波，后讲捷联惯导算法。
-
-  * **01讲**：递推最小二乘法、卡尔曼滤波方程的推导
-  * **02讲**：连续时间系统的离散化、连续时间卡尔曼滤波、噪声相关条件下的卡尔曼滤波、序贯滤波
-  * **03讲**：信息滤波与信息融合、平方根滤波
-  * **04讲**：遗忘滤波、自适应滤波、量测故障检测与强跟踪滤波、滤波平滑、扩展卡尔曼滤波/二阶滤波/迭代滤波
-  * **05讲**：无迹卡尔曼滤波、联邦滤波
-  * **06讲**：滤波器稳定性分析、状态估计的误差分配与可观测度分析、最小方差估计与线性最小方差估计
-  * **07讲**：极大似然估计、极大验后估计、加权最小二乘估计、维纳滤波、递推贝叶斯估计。向量及其反对称阵、方向余弦阵与等效旋转矢量
-  * **08讲**：姿态阵微分方程及其求解、四元数微分分方程及其求解、等效旋转矢量微分方程及其泰勒级数解
-  * **09讲**：圆锥运动条件下的多子样优化算法、地球形状及重力场
-  * **10讲**：捷联惯导全套数值更新算法、误差传播方程、初始对准、SINS/GNSS组合导航
-
-  > * 有些没听明白的可以看看配套的书《捷联惯导算法与组合导航原理》，书上讲的比PPT详细。
-  > * 我刚学完，写了套《卡尔曼滤波与组合导航原理》博客，对讲的内容梳理了一下，写的不好，看我这个博客不如直接看书。
-  > * B站的视频是2020年的，现在2023年严老师还在讲课，腾讯会议上每周日开讲（会议号：875 3929 3450），有录屏可以看。直播的开始老师会讲解学生之前的程序作业，此部分没有录屏。
 
 * bilibili课程视频：[PSINS导航工具箱入门与详解【西北工业大学 严恭敏】](https://www.bilibili.com/video/BV1R54y1E7ut/) ：共4讲，对工具箱的功能、使用方式、原理做了很详细的讲解。
 
@@ -71,7 +58,7 @@ PSINS（Precise Strapdown Inertial Navigation System 高精度捷联惯导系统
 
 * 初始化过程也就是将PSINSyymmdd及其所有子文件夹添加到Matlab的搜索路径下并保存路径设置；
 * 初始化之后**尽量不要改动PSINS文件夹位置**，改动要重新初始化。
-* 新版本的安装初始化会移除以往添加到Matlab的含“PSINS”字符的所有路径，减小冲突。
+* 新版本的安装初始化会移除以往添加到 Matlab 的含“PSINS”字符的所有路径，减小冲突。
 * **不要自己用`addpath`添加路径**，如果下多个版本，可能会冲突。
 
 ![1686706404390](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1686706430686.png)
@@ -508,7 +495,7 @@ global glv
 
 #### 7.导航地球相关计算结构体 eth
 
-导航地球相关计算结构体，参见base1文件夹中的`ethinit`函数：
+导航地球相关计算结构体，参见 base1文件夹中的`ethinit`函数：
 
 ```matlab
 function eth = ethinit(pos, vn)
@@ -538,7 +525,7 @@ global glv
 
 #### 8.Kalman滤波结构体 kf
 
-Kalman滤波结构体，会根据定义的维数`psinsdef`进行对应的初始化，参见kf文件夹中的`kfinit`函数：
+Kalman 滤波结构体，会根据定义的维数`psinsdef`进行对应的初始化，参见kf文件夹中的`kfinit`函数：
 
 ```matlab
 function kf = kfinit(ins, varargin)
@@ -652,12 +639,12 @@ kf = kfinit0(kf, nts);
 
 * 二进制（纯double型）格式文件，使用`binfile`函数，这对导入C语言生成的数据文件快速方便；或者可参照`binfile`，使用`fread`自行编程导入特定格式的二进制文件；
 * 文本文件/或`.mat`格式文件，使用Matlab的`load`或`importdata`函数；mat是MATLAB专用的数据文件，有压缩，很方便MATLAB之间存数据，但C语言中没法读。
-* 特殊格式的PSINS-IMU/AVP文件，可用`imufile`、`avpfile`等函数。
+* 特殊格式的 PSINS-IMU/AVP 文件，可用`imufile`、`avpfile`等函数。
 
-从文件直接导入Matlab工作空间的数据通常是一个二维数组，其各列顺序及量纲单位不一定符合PSINS的习惯，需再进行数据提取和转换： 
+从文件直接导入 Matlab 工作空间的数据通常是一个二维数组，其各列顺序及量纲单位不一定符合 PSINS 的习惯，需再进行数据提取和转换： 
 
-* 使用`imuidx`提取IMU数据并进行单位转换，陀螺为角增量、加表为速度增量；如需要，还可借助于`imurfu`函数将IMU转换至右-前-上坐标系；
-* 使用`avpidx`提取AVP数据并进行单位转换，结果姿态/纬经为弧度、方位角北偏西为正；
+* 使用`imuidx`提取 IMU 数据并进行单位转换，陀螺为角增量、加表为速度增量；如需要，还可借助于`imurfu`函数将 IMU 转换至右-前-上坐标系；
+* 使用`avpidx`提取 AVP 数据并进行单位转换，结果姿态/纬经为弧度、方位角北偏西为正；
 * 使用`gpsidx`提取GNSS速度/定位数据并进行单位转换，纬经度为弧度；通常GNSS的频率低于IMU频率，为删除重复数据行可调用`norep`函数；为删除数据为0行可调用`no0`函数；
 * 使用`tshift`或`adddt`函数可将数据的起始时间转换至指定的相对时间。一般用相对时间而不用周内秒，周内秒数值太大了，看着不方便。
 

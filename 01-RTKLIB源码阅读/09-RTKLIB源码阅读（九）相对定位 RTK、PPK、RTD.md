@@ -789,8 +789,6 @@ extern int rtkoutstat(rtk_t *rtk, char *buff)
 * **IL**：`define IL(f,opt)   (NP(opt)+NI(opt)+NT(opt)+(f))`，GLONASS receiver h/w bias 
 * **IB**：`define IB(s,f,opt) (NR(opt)+MAXSAT*(f)+(s)-1)`，整周模糊度参数下标，(s:satno,f:freq) 
 
-
-
 ## 三、relpos()：相对定位算法入口函数
 
 > 适用于 DGPS/DGNSS、Kinematic、Static、Moving-Base、Fixed 5 种模式

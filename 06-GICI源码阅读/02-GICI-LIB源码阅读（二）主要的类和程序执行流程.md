@@ -1,14 +1,16 @@
+> 原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
+
 [TOC]
 
-## 一、C++ 语法知识补充
+## 一、cpp 语法知识补充
 
-### 1、std::function、std::bind
+### 1、std::function()、std::bind()
 
-`std::function` 和 `std::bind` 是 C++ 中用于函数包装和绑定的工具。
+`std::function` 和 `std::bind` 是 cpp 中用于函数包装和绑定的工具，在 GICI中用于绑定数据回调函数。
 
 - `std::function` 是一个可调用对象，可以存储任何可调用对象，例如函数指针、成员函数指针或 lambda 表达式。您可以使用 `std::function` 来创建一个函数对象，以便稍后调用。例如：
 
-  ```c++
+  ```cpp
   #include <iostream>
   #include <functional>
   
@@ -28,7 +30,7 @@
 
 - `std::bind` 用于将函数和其参数绑定到特定的对象。它返回一个可调用对象，可以将其传递给 `std::function` 或直接调用。例如：
 
-  ```c++
+  ```cpp
   #include <iostream>
   #include <functional>
   
@@ -63,43 +65,9 @@
 - **unordered_map**：哈希表实现的无序映射，支持快速查找和插入/删除操作。
 - **unordered_multimap**：类似于unordered_map，但允许重复的键。
 
-### 3、STL算法
+### 3、智能指针
 
-1. **排序算法**：
-   - `sort()`：对给定范围内的元素进行排序。
-   - `stable_sort()`：对给定范围内的元素进行稳定排序。
-   - `partial_sort()`：对给定范围内的元素进行部分排序。
-   - `nth_element()`：找到给定范围内的第 n 个元素。
-2. **查找算法**：
-   - `find()`：在给定范围内查找指定的值。
-   - `find_if()`：在给定范围内查找满足指定条件的元素。
-   - `binary_search()`：在有序范围内查找指定的值。
-3. **计数算法**：
-   - `count()`：计算给定范围内指定值的出现次数。
-   - `count_if()`：计算给定范围内满足指定条件的元素的数量。
-4. **插入算法**：
-   - `inserter()`：在给定位置插入元素。
-   - `back_inserter()`：在容器的末尾插入元素。
-   - `front_inserter()`：在容物的开头插入元素。
-5. **删除算法**：
-   - `erase()`：从给定位置删除元素。
-   - `erase_if()`：从容器中删除满足指定条件的元素。
-6. **比较算法**：
-   - `equal()`：比较两个范围是否相等。
-   - `compare()`：比较两个值的大小关系。
-7. **容器算法**：
-   - `copy()`：将一个范围复制到另一个范围。
-   - `remove()`：从容器中删除指定值的所有元素。
-   - `unique()`：从容器的相邻元素中删除重复元素。
-8. **迭代器算法**：
-   - `next()`：返回给定位置之后的下一个位置。
-   - `prev()`：返回给定位置之前的上一个位置。
-   - `distance()`：计算两个位置之间的距离。
-   - `advance()`：将给定位置向前移动指定的距离。
-
-### 4、智能指针
-
-智能指针用来帮助程序员管理动态分配的内存，可以确保在程序退出使用一块内存之前，该内存会被正确释放，从而避免内存泄漏。 
+GICI 中大量的使用了智能指针来管理对象。智能指针用来帮助程序员管理动态分配的内存，可以确保在程序退出使用一块内存之前，该内存会被正确释放，从而避免内存泄漏。 
 
 - `std::unique_ptr`：独占式智能指针，它拥有对一个对象的独占所有权。当不再需要该指针时，它将自动释放其所拥有的对象。GICI 创建线程的时候都用 `std::unique_ptr`。
 - `std::shared_ptr`：共享式智能指针，用于多个指针共享同一个对象。当最后一个持有`shared_ptr`的指针被销毁时，其所指向的对象才会被销毁。GICI 中使用的最多，对象基本都用此来管理，还用 `using` 给智能指针起别名 `xxxPtr`。
@@ -108,38 +76,55 @@
 ## 二、主要的类
 
 > 想彻底看懂面向对象的程序，先要看懂它的类。
+>
+> 原始 XMind 思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
 
 ### 1、NodeOptionHandle 类：管理配置文件信息
 
 ![1690183598997](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690183598997.png)
 
-
-
 ### 2、StreamerBase 类：数据流读写
+
+StreamerBase 是 各种 Streamer 对象的基类，用于传输数据流，支持 I/O 端口、串口、ROS topics、TCP/IP、NTRIP、V4L2、文件。每个数据流都需要一个 streamer  对象，与配置文件中定义的 streamer 对应。
 
 ![1690184966827](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690185815380.png)
 
-
-
 ### 3、FormatorBase 类：数据解码编码
+
+FormatorBase 是 各种 Formator 对象的基类，用于解析从数据流里读取的数据，支持 RTCM2、RTCM3、 Ublox raw、Septentrio raw、Tersus raw、NMEA、DCB file、ATX file、V4L2 image pack、GICI image pack、GICI IMU pack。每个数据格式都需要一个 Formator 对象，与配置文件中定义的 Formator 对应。
 
 ![1690187409101](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690187409101.png)
 
 ### 4、EstimatorBase 类：定位解算
 
+EstimatorBase 是 各种 Estimator 对象的基类，用于进行定位解算。除了配置文件中定义的解算模式对应的 Estimator，每种模式都会创建 SPP 估计器用于获取初始坐标；GNSS/INS 初始化要创建初始化估计器；松组合要创建 RTK 估计器，用以计算 GNSS-RTK 与 IMU/Camera 组合。
 
+![image-20230927155151067](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230927155151067.png)
 
 ### 5、DataClusters 类
 
 ![1690185521245](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690185521245.png)
 
-
-
 ### 6、EstimatorDataCluster 类
 
+所有用于解算的传感器数据都存成 EstimatorDataCluster，在 MultiSensorEstimating 中有字段：
+
+```cpp
+// Data buffers 数据缓冲区
+std::deque<EstimatorDataCluster> measurements_;  // non propagate measurements
+int last_backend_pending_num_ = 0;
+// the frontend measurements should be processd by frontend, and the output of frontend will 
+// be inserted into measurements_.
+std::deque<EstimatorDataCluster> image_frontend_measurements_; 
+int last_image_pending_num_ = 0;
+// buffer to temporarily store measurements in case the input stream blocking
+std::deque<EstimatorDataCluster> measurement_addin_buffer_;
+// buffer to align timestamps of different sensor streams
+std::deque<EstimatorDataCluster> measurement_align_buffer_;
+double latest_imu_timestamp_;
+```
+
 ![1690203925616](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690203925616.png)
-
-
 
 ### 5、NodeHandle 类：Streaming、Estimating 线程管理与交互
 
@@ -149,27 +134,37 @@
 
 ![1690292045851](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690292045851.png)
 
-
-
 ### 7、DataIntegrationBase 类：数据融合
+
+在 NodeHandle 类对象内有字段：
+
+```cpp
+std::vector<std::vector<std::shared_ptr<DataIntegrationBase>>> data_integrations_;
+```
+
+数据集成处理根据其角色打包数据并将其发送给估算器，outter 向量与 estimatings_ 对齐，后者描述数据目的地，内部向量与相应估计器的输入节点对齐。
 
 ![1690292848614](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690292848614.png)
 
 ### 8、EstimatingBase 类
 
+用于管理 Estimating 线程，是 MultiSensorEstimating 类的基类。
+
 ![1690293594836](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690293594836.png)
 
 ### 9、MultiSensorEstimating 类：Estimating 线程管理
+
+GICI 的核心线程。
 
 ![1690294818955](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690294818955.png)
 
 ### 10、SpinControl 类：线程 spin 控制
 
+GICI 内的线程都是处于 spin 状态，就是每隔一定时间，判断一次有没有数据、需不需要执行对应的函数。SpinControl 用于控制每次休眠的时间、结束线程等。
+
 ![1690203866545](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690203866545.png)
 
 ## 三、程序执行流程
-
-> 很多注释参考了[什么都不会的小澎友](https://blog.csdn.net/weixin_45432823?type=blog)的专栏 [gici-open](https://blog.csdn.net/weixin_45432823/category_12368209.html)
 
 ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230807135432767.png)
 
@@ -202,7 +197,7 @@
 - 调用 `SpinControl::run() ` 以 spin 线程方程启动所有线程，
 - 创建 SpinControl 对象，进入 spin 状态。
 
-```c++
+```cpp
 // Usage: <path>/gici_main <path-to-option>. 
 int main(int argc, char** argv)
 {
@@ -287,7 +282,7 @@ int main(int argc, char** argv)
 
 - 传入 `LoadFile()` 加载配置文件得到的 `yaml_node`。
 - 根据配置文件中的 `streamer`、`formator`、`estimator` 构造对应的对象 StreamerNodeBase、FormatorNodeBase、EstimatorNodeBase。其中会调用构造函数：
-  - 先调用父类 NodeBase 的构造函数：传入 yaml_node，获取各配置项到对应字段，并将 yaml_node 赋值给 this_node
+  - 先调用父类 NodeBase 的构造函数：传入 yaml_node，获取各配置项到对应字段，并将 yaml_node 赋值给 this_node。
   - 子类的构造函数中会对类型进行验证，然后 FormatorNodeBase 会获取 io 配置项，EstimatorNodeBase 会获取 input_tag_roles 配置项。
 - 分别加到 streamers、formators、estimators 字段。
 - 全都转换成基类 NodeBase 对象加到 nodes 字段。
@@ -295,7 +290,7 @@ int main(int argc, char** argv)
 - 将 replay 节点存到 replay_options 字段。
 - 最后整理节点之间的连接关系、判断配置是否合理，判断的结果存到 valid 字段。
 
-```c++
+```cpp
 NodeOptionHandle::NodeOptionHandle(const YAML::Node& yaml_node) :
   valid(true)
 {
@@ -556,7 +551,7 @@ NodeOptionHandle::NodeOptionHandle(const YAML::Node& yaml_node) :
 - 根据三个配置项：enable、speed、start_offset，设置 replay，调用 enableReplay 
 - 循环调用 `start()` 成员函数，开启所有 streaming、estimating 线程。
 
-```c++
+```cpp
 NodeHandle::NodeHandle(const NodeOptionHandlePtr& nodes)
 {
   // 初始化 stream 线程
@@ -656,7 +651,7 @@ NodeHandle::NodeHandle(const NodeOptionHandlePtr& nodes)
 - 把 message 转为 uint8_t，调用成员函数 write 发 start_message 数据 
 - 如果前面执行都顺利，valid_ 字段设为 true。
 
-```c++
+```cpp
 Streaming::Streaming(const NodeOptionHandlePtr& nodes, size_t i_streamer) : 
   valid_(false), opened_(false)
 {
@@ -808,9 +803,15 @@ Streaming::Streaming(const NodeOptionHandlePtr& nodes, size_t i_streamer) :
 }
 ```
 
-#### 2. Streaming::run：Streaming 线程执行的函数
+#### 2. Streaming::run()：Streaming 线程执行的函数
 
-```c++
+整个 Streaming 线程是一个 while 死循环，即 spin 状态，每隔 loop_duration_ 时间，判断一次 `has_input_`、`has_logging_`、`has_output_` 标志。
+
+* 如果 has_input_，调用 processInput() 处理输入。
+* 如果 has_logging_，调用 processLogging() 进行日志输出。
+* 如果 has_output_，调用 processOutput() 进行输出。
+
+```cpp
 void Streaming::run()
 {
   // 直到发出 quit 命令或全局退出，Streaming进程才退出
@@ -838,9 +839,14 @@ void Streaming::run()
 }
 ```
 
-#### 3. processInput：处理输入数据
+#### 3. Streaming::processInput()：处理输入数据
 
-```c++
+* 调用 streamer 的 read 函数读取数据到 buf_input_。
+* 找到对应 formator，调用 formator 的 decode 函数，将 buf_input_ 解码到 dataset。
+* 找到对应数据回调函数，执行。
+* 日志记录。
+
+```cpp
 void Streaming::processInput()
 {
   // 调用 streamer 的 read 函数读取数据到 buf_input_
@@ -891,11 +897,11 @@ void Streaming::processInput()
 }
 ```
 
-#### 4. processLogging：处理日志输出
+#### 4. processLogging()：处理日志输出
 
 先判断 `need_logging_`，再调用 `streamer` 的 `write` 函数，将 `buf_logging_` 输出
 
-```c++
+```cpp
 // Stream logging processing
 void Streaming::processLogging()
 {
@@ -908,11 +914,11 @@ void Streaming::processLogging()
 }
 ```
 
-#### 5. processOutput：处理输出数据
+#### 5. processOutput()：处理输出数据
 
  先判断 `need_output_`，再调用 `streamer` 的 `write` 函数，将 `buf_output_` 输出 
 
-```c++
+```cpp
 void Streaming::processOutput()
 {
   if (!need_output_) return;
@@ -930,7 +936,7 @@ void Streaming::processOutput()
 
 获取到 `estimator` 节点一些基本的配置项 
 
-```c++
+```cpp
 EstimatingBase::EstimatingBase(
   const NodeOptionHandlePtr& nodes, size_t i_estimator) : 
   compute_covariance_(true)
@@ -990,7 +996,7 @@ EstimatingBase::EstimatingBase(
   }
 ```
 
-#### 2. MultiSensorEstimating 构造函数
+#### 2. MultiSensorEstimating() 构造函数
 
 - 先调用父类 `EstimatingBase` 的构造函数，获取到 `estimator` 节点一些基本的配置项。
 - 加载估计器基础选项，赋值对应字段。
@@ -998,7 +1004,7 @@ EstimatingBase::EstimatingBase(
 - 创建 SPP estimator，因为所有解算所有模式都要用 SPP。
 - 结果时间戳设为 0.0 
 
-```c++
+```cpp
 MultiSensorEstimating::MultiSensorEstimating(
   const NodeOptionHandlePtr& nodes, size_t i_estimator) : 
   EstimatingBase(nodes, i_estimator), latest_imu_timestamp_(0.0)
@@ -1306,15 +1312,9 @@ MultiSensorEstimating::MultiSensorEstimating(
 }
 ```
 
+#### 3. MultiSensorEstimating::process()：创建 frontend、MeasurementAddin、Backend 线程
 
-
-
-
-
-
-#### 3. MultiSensorEstimating::process：创建 frontend、MeasurementAddin、Backend 线程
-
-```c++
+```cpp
 void MultiSensorEstimating::process()
 {
   // estimatorTypeContains 检查如果有 Camera，
@@ -1352,9 +1352,18 @@ void MultiSensorEstimating::process()
 }
 ```
 
-#### 4. runImageFrontend
+#### 4. MultiSensorEstimating::runImageFrontend()：视觉前端线程
 
-```c++
+整个视觉前端线程是一个 while 死循环，即 spin 状态，每隔 1.0e-4 时间，执行一次循环。
+
+* 循环开始先检查有没有新 image 数据，然后判断相机类型，只处理单目，其它跳过。
+* 检查时间戳是否有效，当前帧不能早于上一帧。
+* 判断数据量大小，如果图像超过 5 个且大于之前最大值会进行提示。
+* 把图像转为 CV::Mat，获取时间戳、标签，尝试获取当前帧的位姿。
+* 调用 addImageBundle() 添加量测值，并判断能否解算，如果可以处理，调用 processImageBundle() 特征提取追踪。
+* 如果特征提取追踪成功，执行 estimatorDataCallback() 回调；ROS 模式根据特征点绘图
+
+```cpp
 void MultiSensorEstimating::runImageFrontend()
 {
   SpinControl spin(1.0e-4);
@@ -1366,13 +1375,16 @@ void MultiSensorEstimating::runImageFrontend()
       spin.sleep(); continue;
     }
     EstimatorDataCluster& front_measurement = image_frontend_measurements_.front();
+
+    // 判断相机类型，只处理单目，其它跳过
     if (front_measurement.image_role != CameraRole::Mono) {
       image_frontend_measurements_.pop_front();
       mutex_image_input_.unlock(); 
       spin.sleep(); continue;
     }
 
-    // Check if timestamp is valid 检查时间戳是否有效
+    // 检查时间戳是否有效，当前帧不能早于上一帧
+    // Check if timestamp is valid 
     if (!feature_handler_->isFirstFrame() && 
         feature_handler_->getFrameBundle()->getMinTimestampSeconds() >= 
         front_measurement.timestamp) {
@@ -1384,7 +1396,8 @@ void MultiSensorEstimating::runImageFrontend()
       spin.sleep(); continue;
     }
 
-    // Check pending 检查是否对齐
+    // 判断数据量大小，如果图像超过 5 个且大于之前最大值会进行提示
+    // Check pending 
     if (image_frontend_measurements_.size() > 5) {
       if (last_image_pending_num_ != image_frontend_measurements_.size()) {
         LOG(WARNING) << "Large image frontend pending: " 
@@ -1394,8 +1407,10 @@ void MultiSensorEstimating::runImageFrontend()
       last_image_pending_num_ = image_frontend_measurements_.size();
     }
 
-    // Process feature detecting and tracking 进行特征提取和追踪
-    std::shared_ptr<cv::Mat>& image = front_measurement.image;
+
+    // Process feature detecting and tracking 进行特征提取和跟踪 
+    // 把图像转为 CV::Mat，获取时间戳、标签，尝试获取当前帧的位姿
+    std::shared_ptr<cv::Mat>& image = front_measurement.image; 
     double timestamp = front_measurement.timestamp;
     std::string tag = front_measurement.tag;
     bool ret = false;
@@ -1404,18 +1419,25 @@ void MultiSensorEstimating::runImageFrontend()
       ret = feature_handler_->addImageBundle({image}, timestamp);
     }
     else {
+    
+      // 调用 addImageBundle() 添加量测值，并判断能否解算
       ret = feature_handler_->addImageBundle({image}, timestamp, {T_WS});
     }
     image_frontend_measurements_.pop_front();
     mutex_image_input_.unlock();
+
+    // 如果可以处理，调用 processImageBundle() 特征提取追踪
     if (ret) {
       ret = feature_handler_->processImageBundle();
     }
+
+    // 如果特征提取追踪成功
     if (ret) {
       FrameBundlePtr frame_bundle = feature_handler_->getFrameBundle();
       EstimatorDataCluster measurement(frame_bundle, tag);
       estimatorDataCallback(measurement);
 
+      // ROS 模式根据特征点绘图
       // call featured image output and map point output (for ROS)
       const FramePtr& frame = frame_bundle->at(0);
       const MapPtr& map = feature_handler_->getMap();
@@ -1426,15 +1448,22 @@ void MultiSensorEstimating::runImageFrontend()
         callback(tag_, map_data);
       }
     }
-
     spin.sleep();
   }
 }
 ```
 
-#### 5. runMeasurementAddin、putMeasurements：给估计器添加观测数据
+#### 5. runMeasurementAddin()、putMeasurements()：量测添加线程
 
-```c++
+整个量测添加线程是一个 while 死循环，即 spin 状态，每隔 1.0e-4 时间执行一次 putMeasurements()：
+
+* 如果有数据， 从 measurement_addin_buffer_ 容器里获得数据。
+* 调用 handleTimePropagationSensors() 向里面加 IMU 数据，作为时间更新的基准。
+* 调用 handleFrontendSensors() 向里面加图像数据。
+* 不做时间校准直接加 GNSS 基准站数据。
+* 调用 handleNonTimePropagationSensors() 把剩下的数据也加进来，不作为时间传播的基准。
+
+```cpp
 void MultiSensorEstimating::runMeasurementAddin()
 {
   SpinControl spin(1.0e-4);
@@ -1445,7 +1474,7 @@ void MultiSensorEstimating::runMeasurementAddin()
 }
 ```
 
-```c++
+```cpp
 void MultiSensorEstimating::putMeasurements()
 {
   // get data 从measurement_addin_buffer_容器里获得数据
@@ -1478,9 +1507,9 @@ void MultiSensorEstimating::putMeasurements()
 }
 ```
 
-##### handleTimePropagationSensors：添加 IMU 数据
+##### handleTimePropagationSensors()：添加 IMU 数据
 
-```c++
+```cpp
 // Handle time-propagation sensors
 void MultiSensorEstimating::handleTimePropagationSensors(EstimatorDataCluster& data)
 {
@@ -1501,9 +1530,9 @@ void MultiSensorEstimating::handleTimePropagationSensors(EstimatorDataCluster& d
 }
 ```
 
-##### handleFrontendSensors：添加图像数据
+##### handleFrontendSensors()：添加图像数据
 
-```c++
+```cpp
 // Handle sensors that need frontends
 void MultiSensorEstimating::handleFrontendSensors(EstimatorDataCluster& data)
 {
@@ -1516,17 +1545,17 @@ void MultiSensorEstimating::handleFrontendSensors(EstimatorDataCluster& data)
 }
 ```
 
-##### handleNonTimePropagationSensors：添加其它传感器数据（GNSS）、稀疏化
+##### handleNonTimePropagationSensors()：添加其它传感器数据（GNSS）、稀疏化
 
-```c++
+```cpp
 void MultiSensorEstimating::handleNonTimePropagationSensors(EstimatorDataCluster& data)
 {
   // 
   // Input align mode
-  if (enable_input_align_) { // 判断的依据是根据配置文件中的enable input align
+  if (enable_input_align_) { // 判断的依据是根据配置文件中的 enable input align
     // Insert a measurement to addin buffer realigning timestamps
     const double buffer_time = 2.0 * input_align_latency_;
-    if (!needTimeAlign(type_)) {  // 判断是否需要校准，只有GNSS/IMU/Camera三种传感器组合的时候需要进行校准
+    if (!needTimeAlign(type_)) {  // 判断是否需要校准，只有 GNSS/IMU/Camera 三种传感器组合的时候需要进行校准
       measurement_align_buffer_.push_back(data);
     }
     else if (measurement_align_buffer_.size() == 0 ||  
@@ -1607,7 +1636,19 @@ void MultiSensorEstimating::handleNonTimePropagationSensors(EstimatorDataCluster
 
 #### 6. runBackend、processEstimator：定位解算
 
-```c++
+* 检测有没有要处理的数据，没有数据直接返回等下一次再检查。
+* 如果有数据，观测值队列取出并删除最前面的数据。观测量队列数据超过 5，且和之前的数量不一致就报警告。
+* 设置初始坐标和重力，有以下几种方式，如果得不到初始坐标和重力，直接返回。
+  * 手动设置初始坐标
+  * 或调用addMeasurement、estimate 求出 SPP 解作为初始坐标
+  * 或根据收到的 GNSS 结果作为初始坐标
+  * 有 IMU，调用 earthGravity 获取重力
+* 调用 addMeasurement() 向正式估计器因子图加参数块。
+* 调用 estimate() 进行因子图优化估计，并取出估计的结果。
+* 调用 getStatus() 检查估计状态，如果是 Diverged 估计发散，就调用 resetProcessors() 重置估计器。
+* 调用 logIntermediateData() 记录中间结果。
+
+```cpp
 void MultiSensorEstimating::runBackend()
 {
   SpinControl spin(1.0e-4);
@@ -1618,7 +1659,7 @@ void MultiSensorEstimating::runBackend()
 }
 ```
 
-```c++
+```cpp
 bool MultiSensorEstimating::processEstimator()
 {
   // Check if we have data to process 检测有没有要处理的数据
@@ -1717,7 +1758,7 @@ bool MultiSensorEstimating::processEstimator()
   {
     // update flag
     backend_firstly_updated_ = true;
-    // align timeline for output control
+    // align timeline for output control  对齐时间线进行输出控制
     if (output_align_tag_ == measurement.tag) {
       mutex_output_.lock();
       if (checkDownsampling(measurement.tag)) {   // checkDownsampling
@@ -1739,7 +1780,7 @@ bool MultiSensorEstimating::processEstimator()
 
 #### 7. updateSolution：将结果集成，转化成需要的采样率
 
-```c++
+```cpp
 bool MultiSensorEstimating::updateSolution()
 {
   // Backend not working yet 确保已经开启了解算
@@ -1802,8 +1843,3 @@ bool MultiSensorEstimating::updateSolution()
   return true;
 }
 ```
-
-
-
-
-
