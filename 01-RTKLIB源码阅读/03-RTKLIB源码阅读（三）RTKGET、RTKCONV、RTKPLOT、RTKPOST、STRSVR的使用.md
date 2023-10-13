@@ -173,3 +173,4 @@
 
 * 点左下角□框，开Input Stream Monitor查看数据流状态，可选很多种格式
 * 输出也可选很多种，比如Ntrip Server可把自己的数据作为Caster，别人可以通过网络接受你的数据，选File把数据存成文件
+

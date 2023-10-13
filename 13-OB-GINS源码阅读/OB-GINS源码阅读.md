@@ -57,7 +57,13 @@
 
 ## 四、程序主要执行流程
 
+### 1、函数调用关系图
 
+
+
+### 2、main 函数
+
+OB-GINS 主函数很长，将近 500 行。
 
 
 
@@ -407,8 +413,6 @@ static Vector3d enwn(const Vector3d &origin, const Vector3d &local, const Vector
 
 ## 六、Rotation 类：姿态转换
 
-
-
 ### 1、matrix2quaternion()：旋转矩阵转四元数
 
 Eigen 中的四元数可以直接传入旋转矩阵（三维矩阵）构造：
@@ -471,7 +475,7 @@ static Vector3d quaternion2euler(const Quaterniond &quaternion) {
 
 ### 5、rotvec2quaternion()：等效旋转矢量转四元数
 
-根据传入的旋转矢量，计算向量的长度作为旋转的角度，计算向量的归一化版本作为旋转的轴，然后调用 AngleAxisd()，将角度和轴转换为四元数
+根据传入的旋转矢量，计算向量的长度作为旋转的角度，计算向量的归一化版本作为旋转的轴，然后调用 AngleAxisd()，将角度和轴转换为四元数。
 
 ```cpp
 static Quaterniond rotvec2quaternion(const Vector3d &rotvec) {
@@ -494,7 +498,7 @@ static Vector3d quaternion2vector(const Quaterniond &quaternion) {
 
 ### 7、euler2matrix()：欧拉角转旋转矩阵
 
-RPY --> C_b^n, ZYX顺序：
+RPY -> $C_b^n$, ZYX顺序：
 
 ```cpp
 static Matrix3d euler2matrix(const Vector3d &euler) {
@@ -545,6 +549,8 @@ static Matrix3d skewSymmetric(const Vector3d &vector) {
 ### 11、quaternionright()：
 
 
+
+## 七、IMU 预积分
 
 
 

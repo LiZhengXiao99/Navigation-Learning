@@ -1002,6 +1002,8 @@ void GIEngine::imuCompensate(IMU &imu) {
 
 ### 3、insMech()：IMU 状态更新（机械编排）
 
+![image-20230816151634166](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230816151634166.png)
+
 依次进行速度更新、位置更新、姿态更新，不可调换顺序。
 
 ![image-20230925155325909](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925155325909.png)
@@ -1024,7 +1026,21 @@ void INSMech::insMech(const PVA &pvapre, PVA &pvacur, const IMU &imupre, const I
 
 ### 4、velUpdate()：速度更新
 
+#### 1. 算法
+
 ![image-20230925191706967](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925191706967.png)
+
+速度更新主要有两部分要算：
+
+* **比力积分项**：其中需要补偿划桨效应，是快变量，需要仔细积分。
+* **有害加速度积分项**：包括重力、哥氏加速度、向心力，是慢变量，直接梯形积分，用中间时刻来算。
+
+然后，当前时刻的速度 = 上一时刻速度 + 比力积分项 + 有害加速度积分项：
+$$
+\begin{aligned} \boldsymbol{v}_{e b, k}^{n}=\boldsymbol{v}_{e b, k-1}^{n} & +\underbrace{\left[\boldsymbol{I}-\frac{1}{2}\left(\boldsymbol{\zeta}_{n(k-1) n(k)} \times\right)\right] \boldsymbol{C}_{b(k-1)}^{n(k-1)} \Delta \boldsymbol{v}_{f, k}^{b(k-1)}}_{n \text { 系比力积分项 }} \\ & +\underbrace{\boldsymbol{g}_{l}^{n} \Delta t_{k}-\left(2 \boldsymbol{\omega}_{i}^{n}+\boldsymbol{\omega}_{e n}^{n}\right) \times\left.\boldsymbol{v}_{e b}^{n}\right|_{t=t_{k-1 / 2}} \Delta t_{k}}_{\text {重力/哥氏积分项 }}\end{aligned}
+$$
+
+#### 2. 代码实现
 
 先定义解算过程中涉及的中间变量：
 
@@ -1188,7 +1204,20 @@ pvacur.vel = pvapre.vel + d_vfn + d_vgn;
 
 ### 5、posUpdate()：位置更新
 
+#### 1. 算法
+
 ![image-20230925191759173](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925191759173.png)
+
+先计算当前时刻 n 系到 e 系旋转四元数  `qne`，再以此算经纬度。其中，当前时刻 `qne` 的计算分为三部分：
+
+* 先前时刻 qne：通过上一时刻经纬度计算。
+
+* 两时刻 n 系变化 qnn：由地球自转角速度、牵连角速度两部分引起。
+* 两时刻 e 系变化 qee：地球自转角速度乘以时间差。
+
+然后，当前时刻n系到e系旋转四元数 = 两时刻e系旋转四元数 * 先前n系到e系旋转四元数 * 两时刻n系旋转四元数。
+
+#### 2. 代码实现
 
 先定义解算过程中涉及的中间变量：
 
@@ -1232,7 +1261,7 @@ $$
 $$
 
 ```cpp
-// 重新计算 k时刻到k-1时刻 n系旋转矢量
+// 重新计算 k 时刻到 k-1 时刻 n系旋转矢量
 // recompute n-frame rotation vector (n(k) with respect to n(k-1)-frame)
 temp1 = (wie_n + wen_n) * imucur.dt;
 qnn   = Rotation::rotvec2quaternion(temp1);
@@ -1273,7 +1302,21 @@ pvacur.pos = Earth::blh(qne, pvacur.pos[2]);
 
 ### 6、attUpdate()：姿态更新
 
+#### 1. 算法
+
 ![image-20230925191854741](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925191854741.png)
+
+姿态更新主要也算两部分：
+
+* **两时刻 n 系的变化**：由地球自转角速度、牵连角速度两部分引起。
+* **两时刻 b 系的变化**：通过 IMU 角增量量测值计算，需补偿圆锥运动。
+
+然后，两时刻 n 系的旋转四元数 * 上一时刻姿态四元数 * 两时刻 b 系旋转四元数得到当前姿态：
+$$
+\boldsymbol{q}_{b_{k}}^{n_{k}}=\boldsymbol{q}_{n_{k-1}}^{n_{k}} \boldsymbol{q}_{b_{k-1}}^{n_{k-1}} \boldsymbol{q}_{b_{k}}^{b_{k-1}}
+$$
+
+#### 2. 代码实现
 
 先定义解算过程中涉及的中间变量：
 
@@ -1344,7 +1387,7 @@ temp1 = imucur.dtheta + imupre.dtheta.cross(imucur.dtheta) / 12;
 qbb   = Rotation::rotvec2quaternion(temp1);
 ```
 
-两时刻n系的旋转四元数 * 上一时刻姿态四元数 * 两时刻b系旋转四元数得到当前姿态：
+两时刻 n 系的旋转四元数 * 上一时刻姿态四元数 * 两时刻 b 系旋转四元数得到当前姿态：
 $$
 \boldsymbol{q}_{b_{k}}^{n_{k}}=\boldsymbol{q}_{n_{k-1}}^{n_{k}} \boldsymbol{q}_{b_{k-1}}^{n_{k-1}} \boldsymbol{q}_{b_{k}}^{b_{k-1}}
 $$
