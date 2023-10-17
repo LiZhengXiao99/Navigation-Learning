@@ -1,3 +1,5 @@
+> 原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
+
 [TOC]
 
 ## 一、GNSS观测量
@@ -43,7 +45,7 @@
    $$
    \phi=\lambda^{-1}(r+\delta t_u+\delta t^(s)-I+T)+N+\varepsilon_\phi
    $$
-   
+
 2. **多普勒频移**：一个静止不动的信号发射频率为$f$的信号，而接收机以速度$v$运行，那接收机收到的信号频率$f_r$不是信号发设频率频率$f$，而是$f+f_d$，我们将这种信号接收频率随发射源和接收机间相对运动而变化的现象称为多普勒频移，将$f_d$称为多普勒频移。这样多普勒频移$f_d$等于信号接收频率与信号发送频率的差，即：
    $$
    f_d=f_r-f
@@ -76,9 +78,9 @@
 
    - 积分多普勒是一个**平均值**，两时刻间的积分多普勒反应的是这也是断用户相对于卫星的总位移，运动位移反应的是平均速度。
 
-     
+## 二、Rinex 观测文件读取
 
-## 二、Rinex文件概述
+### 1、Rinex 文件概述
 
 - 卫星导航定位都是通过对卫星观测以获得卫星所需的观测量来实现的，卫星发射的信号由**载波**、**测距码**、**导航电文**三部分组成，接收机通过接收处理卫星信号生成定位所需的观测量。
 
@@ -92,57 +94,7 @@
 
   1-60列为数据，60-80列为文件头标签，文件头标签是必须的，且只能是格式描述的那几种选择。
 
-
-
-## 三、存信息的类型
-
-### 1、开头的#define
-
-   ```c
-   #define NAVEXP      "D"                 /* exponent letter in RINEX NAV */
-   #define NUMSYS      7                   /* number of systems */
-   #define MAXRNXLEN   (16*MAXOBSTYPE+4)   /* max RINEX record length */
-   #define MAXPOSHEAD  1024                /* max head line position */
-   #define MINFREQ_GLO -7                  /* min frequency number GLONASS */
-   #define MAXFREQ_GLO 13                  /* max frequency number GLONASS */
-   #define NINCOBS     262144              /* incremental number of obs data */    //2的18次方
-   ```
-
-   
-
-### 2、卫星和卫星系统的表示
-
-   - 7位二进制码表示，对应位写1表示有对应的系统，做与运算可加系统。
-
-     ```c
-     static const int navsys[]={             /* satellite systems */
-         SYS_GPS,SYS_GLO,SYS_GAL,SYS_QZS,SYS_SBS,SYS_CMP,SYS_IRN,0
-     };
-     ```
-
-   - 表示卫星系统的字母：G：GPS、R：GLONASS、E：GALILEO、C：BDS、J：QZSS，I：IRNSS、S：SBAS
-
-   - 相关函数：
-
-     * **satno()**：传入卫星系统(SYS_GPS,SYS_GLO,...) ，和PRN码，转换为连续的satellite number。
-
-     * **satsys()**：传入satellite number ，返回卫星系统(SYS_GPS,SYS_GLO,...) ，通过传入的指针prn传出PRN值。
-
-     * **satid2no()**：传入卫星ID，返回satellite number。
-
-     * **satno2id()**：传入卫星系统，和PRN，返回卫星ID(Gxx,Cxx)。
-
-     * **sat2code()**：传入satellite number，返回卫星ID(Gxx,Cxx)。
-
-     * **code2sys()**：传入卫星系统缩写，返回系统二进制码SYS_XXX。
-
-     * **satexclude()**：检测某颗卫星在定位时是否需要将其排除。
-
-     * **set_sysmask**()：根据opt里“-SYS=”后的字串，设置卫星系统掩码。
-
-       
-
-### 3、观测值类型表示
+### 2、观测值类型表示
 
    * C：伪距、D：多普勒、L：载波相位、S：载噪比
 
@@ -184,7 +136,6 @@
 
      ```c
      static char *obscodes[]={       /* observation code strings */
-         
          ""  ,"1C","1P","1W","1Y", "1M","1N","1S","1L","1E", /*  0- 9 */
          "1A","1B","1X","1Z","2C", "2D","2S","2L","2X","2P", /* 10-19 */
          "2W","2Y","2M","2N","5I", "5Q","5X","7I","7Q","7X", /* 20-29 */
@@ -229,9 +180,8 @@
      };
      ```
 
-     
 
-### 4、存Rinex文件信息的类型：
+### 3、存Rinex文件信息的类型：
 
    * **obsd_t**：用来存储某个历元中的某个卫星的观测值 
 
@@ -339,153 +289,23 @@
    }
    ```
 
+### 4、rinex.c 开头的辅助函数
 
+* setstr()：去除结尾空格，传入字符串`src`，返回去除结尾空格的字符串`dst`。
+* adjweek()：调整时间差到半周内，传入两个时间，算时间差，通过加减整周秒数，将时间差调整到半周内。
+* adjday()：调整时间差到半天内， 传入两个时间，算时间差，通过加减整天秒数，将时间差调整到半天内。
+* timestr_rnx()：获取系统 UTC 时间，字符串形式输出：(yyyymmdd hhmmss UTC) 。
+* init_sta()：初始化测站信息，将结构体`sta_t`中的字段都设为 0。
+* uravalue()：用户距离精度 URA 到名义值，用于计算卫星位置的时候标定方差。
+* uraindex()：URA 值到 URA 下标，
+* sisa_value()：Galileo卫星系统完备性SISA下标到值
+* sisa_index()：Galileo卫星系统完备性SISA值到下标
 
+### 5、Rinex 文件读取函数调用流程
 
-## 四、rinex.c开头的辅助函数
-
-#### 1.setstr()：去除结尾空格
-传入字符串`src`，返回去除结尾空格的字符串`dst`。
-
-  ```c
-  static void setstr(char *dst, const char *src, int n)
-  {
-      char *p=dst;    //目标字符串
-      const char *q=src;  //源字符串
-      while (*q&&q<src+n) *p++=*q++;  //循环把q的前n个字符赋值给p
-      *p--='\0';
-      while (p>=dst&&*p==' ') *p--='\0';  //从后往前循环，把从后往前最后一个空格赋值\0,遇到不是空格就跳出循环
-  }
-  ```
-
-
-#### 2.adjweek()：调整时间差到半周内
-传入两个时间，算时间差，通过加减整周秒数，将时间差调整到半周内
-  ```c
-  static gtime_t adjweek(gtime_t t, gtime_t t0)
-  {
-      double tt=timediff(t,t0);
-      if (tt<-302400.0) return timeadd(t, 604800.0);
-      if (tt> 302400.0) return timeadd(t,-604800.0);
-      return t;
-  }
-  ```
-#### 3.adjday()：调整时间差到半天内
-  传入两个时间，算时间差，通过加减整天秒数，将时间差调整到半天内
-
-
-  ```c
-  static gtime_t adjday(gtime_t t, gtime_t t0)
-  {
-      double tt=timediff(t,t0);
-      if (tt<-43200.0) return timeadd(t, 86400.0);
-      if (tt> 43200.0) return timeadd(t,-86400.0);
-      return t;
-  }
-  ```
-
-
-#### 4.timestr_rnx()：获取系统UTC时间
-字符串形式输出：(yyyymmdd hhmmss UTC) 
-
-  ```c
-  static void timestr_rnx(char *str)
-  {
-      gtime_t time;
-      double ep[6];   
-      time=timeget(); //获取系统UTC时间
-      time.sec=0.0;
-      time2epoch(time,ep);    //将系统时间转为ep数组
-      sprintf(str,"%04.0f%02.0f%02.0f %02.0f%02.0f%02.0f UTC",ep[0],ep[1],ep[2],
-              ep[3],ep[4],ep[5]);
-  }
-  ```
-
-
-
-#### 5.init_sta()：初始化测站信息
-将结构体`sta_t`中的字段都设为0 
-
-  ```c
-  static void init_sta(sta_t *sta)
-  {
-      int i;
-      *sta->name   ='\0';
-      *sta->marker ='\0';
-      *sta->antdes ='\0';
-      *sta->antsno ='\0';
-      *sta->rectype='\0';
-      *sta->recver ='\0';
-      *sta->recsno ='\0';
-      sta->antsetup=sta->itrf=sta->deltype=0;
-      for (i=0;i<3;i++) sta->pos[i]=0.0;
-      for (i=0;i<3;i++) sta->del[i]=0.0;
-      sta->hgt=0.0;
-  }
-  ```
-
-
-#### 6.uravalue()：用户距离精度URA到名义值
-用于计算卫星位置的时候标定方差。
-  ```c
-  static const double ura_nominal[]={     /* URA nominal values */
-      2.0,2.8,4.0,5.7,8.0,11.3,16.0,32.0,64.0,128.0,256.0,512.0,1024.0,
-      2048.0,4096.0,8192.0
-  };
-  
-  static double uravalue(int sva)
-  {
-      return 0<=sva&&sva<15?ura_nominal[sva]:8192.0;
-  }
-  ```
-
-#### 7.uraindex()：URA值到URA下标。
-  ```c
-  static const double ura_eph[]={         /* RAa values (ref [3] 20.3.3.3.1.1) */
-      2.4,3.4,4.85,6.85,9.65,13.65,24.0,48.0,96.0,192.0,384.0,768.0,1536.0,
-      3072.0,6144.0,0.0
-  };
-  static int uraindex(double value)
-  {
-      int i;
-      for (i=0;i<15;i++) if (ura_eph[i]>=value) break;
-      return i;
-  }
-  ```
-
-  
-
-#### 8.sisa_value()：Galileo卫星系统完备性SISA下标到值。
- ```c
-  static double sisa_value(int sisa)
-  {
-      if (sisa<= 49) return sisa*0.01;
-      if (sisa<= 74) return 0.5+(sisa- 50)*0.02;
-      if (sisa<= 99) return 1.0+(sisa- 75)*0.04;
-      if (sisa<=125) return 2.0+(sisa-100)*0.16;
-      return -1.0; /* unknown or NAPA */
-  }
- ```
-
-#### 9.sisa_index()：Galileo卫星系统完备性SISA值到下标。
-
-  ```c
-  static int sisa_index(double value)
-  {
-      if (value<0.0 || value>6.0) return 255; /* unknown or NAPA */
-      else if (value<=0.5) return (int)(value/0.01);
-      else if (value<=1.0) return (int)((value-0.5)/0.02)+50;
-      else if (value<=2.0) return (int)((value-1.0)/0.04)+75;
-      return ((int)(value-2.0)/0.16)+100;
-  }
-  ```
-
-  
-
-## 五、Rinex文件读取函数调用流程
 ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/113f294460084959a70a87b38ae6db7e.png)
 
-### 1、readobsnav()：Rinex文件读取主入口函数
+#### 1. readobsnav()：Rinex 文件读取主入口函数
 
 1. **传入参数**：
 
@@ -685,14 +505,13 @@
      }
      ```
 
-     
 
-### 2、readrnxt()：处理文件路径、赋值测站名
+#### 2. readrnxt()：处理文件路径、赋值测站名
 
-* 如果传入`file`为空，调用`readrnxfp()`从标准输入读取 
-* 展开`file`路径中的通配符`*`到`files[] `
-* 调用`readrnxfile`，循环解压读取`files[]` 
-* 如果测站名字为空，就给依据头文件自动赋4个字符的名字 
+* 如果传入 `file` 为空，调用 `readrnxfp()` 从标准输入读取 
+* 展开 `file` 路径中的通配符`*`到 `files[] `
+* 调用 `readrnxfile`，循环解压读取 `files[]` 
+* 如果测站名字为空，就给依据头文件自动赋 4 个字符的名字 
 
 ```c
 extern int readrnxt(const char *file, int rcv, gtime_t ts, gtime_t te,
@@ -737,7 +556,7 @@ extern int readrnxt(const char *file, int rcv, gtime_t ts, gtime_t te,
 
 
 
-### 3、readrnxfile()：解压、打开文件
+#### 3. readrnxfile()：解压、打开文件
 
 
 * 调用 `rtk_uncompress()` 解压文件`file`到`tmpfile `,如果不需要解压`cstat`值会为0，后面`fopen`会根据` cstat` 的值决定要读取的文件
@@ -783,7 +602,7 @@ static int readrnxfile(const char *file, gtime_t ts, gtime_t te, double tint,
 
 
 
-### 4、readrnxfp()：根据文件类型调用对应的读取函数
+#### 4. readrnxfp()：根据文件类型调用对应的读取函数
 
 * 调用`readrnxh()`读取头文件。并获取文件类型`type`
 * 根据type调用对应的函数进行分类读取，`readrnxobs()`读OBS文件，`readrnxnav()`读NAV文件，调用`readrnxnav()`读clock文件。
@@ -825,7 +644,7 @@ static int readrnxfp(FILE *fp, gtime_t ts, gtime_t te, double tint,
 
 
 
-### 5、readrnxh()：读取文件头
+#### 5. readrnxh()：读取文件头
 
 * 函数的主体在一个while大循环中，循环读取每一行，直到出现"END OF HEADER" 
 
@@ -897,14 +716,13 @@ static int readrnxh(FILE *fp, double *ver, char *type, int *sys, int *tsys,
 }
 ```
 
+### 6、OBS 观测文件读取
 
-
-## 六、OBS观测文件读取
 decode_obsh()、readrnxobs()->readrnxobsb()->decode_obsepoch()、decode_obsdata()
 
-### 1、decode_obsh()：解析观测数据文件头
+#### 1. decode_obsh()：解析观测数据文件头
 
-  	最关键的是解析观测值类型如下图，存到tobs三维数组中，【星座类型】【观测类型】【字符串数4】 
+最关键的是解析观测值类型如下图，存到tobs三维数组中，【星座类型】【观测类型】【字符串数4】 
 
 ![在这里插入图片描述](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/9a77a8b017d54244a016a9debac3193a.png)
 
@@ -913,21 +731,21 @@ decode_obsh()、readrnxobs()->readrnxobsb()->decode_obsepoch()、decode_obsdata(
 >
 > ```c
 > else if (strstr(label,"SYS / # / OBS TYPES" )) { /* ver.3 */
->      //如果卫星系统不在static const char syscodes[]="GREJSCI"; 中输出错误消息
->      if (!(p=strchr(syscodes,buff[0]))) {
->          trace(2,"invalid system code: sys=%c\n",buff[0]);
->          return;
->      }   
->      i=(int)(p-syscodes);        //i为系统在syscodes[]="GREJSCI"的下标
->      n=(int)str2num(buff,3,3);   //一个系统下的观测值类型数量
->      for (j=nt=0,k=7;j<n;j++,k+=4) { //读取具体观测值类型，每行第7位开始，每次读4位
->          if (k>58) {     //读完一行
->              if (!fgets(buff,MAXRNXLEN,fp)) break;   //再读取一行
->              k=7;
->          }
->          if (nt<MAXOBSTYPE-1) setstr(tobs[i][nt++],buff+k,3);
->      }
->      *tobs[i][nt]='\0';  //存储观测类型，分星座类型用三维数组进行存储【星座类型】【观测类型】【字符串数4】
+>   //如果卫星系统不在static const char syscodes[]="GREJSCI"; 中输出错误消息
+>   if (!(p=strchr(syscodes,buff[0]))) {
+>       trace(2,"invalid system code: sys=%c\n",buff[0]);
+>       return;
+>   }   
+>   i=(int)(p-syscodes);        //i为系统在syscodes[]="GREJSCI"的下标
+>   n=(int)str2num(buff,3,3);   //一个系统下的观测值类型数量
+>   for (j=nt=0,k=7;j<n;j++,k+=4) { //读取具体观测值类型，每行第7位开始，每次读4位
+>       if (k>58) {     //读完一行
+>           if (!fgets(buff,MAXRNXLEN,fp)) break;   //再读取一行
+>           k=7;
+>       }
+>       if (nt<MAXOBSTYPE-1) setstr(tobs[i][nt++],buff+k,3);
+>   }
+>   *tobs[i][nt]='\0';  //存储观测类型，分星座类型用三维数组进行存储【星座类型】【观测类型】【字符串数4】
 > ```
 
 ```c
@@ -1106,7 +924,8 @@ static void decode_obsh(FILE *fp, char *buff, double ver, int *tsys,
 
 
 
-### 2、readrnxobs()：读取o文件中全部观测值数据
+#### 2. readrnxobs()：读取o文件中全部观测值数据
+
 重复调用`readrnxobsb()`函数，直到所有的观测值全被读完，或者是出现了某个历元没有卫星的情况为止 
 
 1. **传入参数**：
@@ -1128,7 +947,8 @@ static void decode_obsh(FILE *fp, char *buff, double ver, int *tsys,
    
 
 2. **执行流程**：
-	  * 为`data[]` 开辟空间
+
+   * 为`data[]` 开辟空间
 
   	* while大循环调用`readrnxobsb()`每次读取一个历元的观测数据，获取观测值数n
   	 * 遍历`data[]`，如果时间系统为UTC，转为GPST，调用`saveslips()`
@@ -1177,7 +997,7 @@ static void decode_obsh(FILE *fp, char *buff, double ver, int *tsys,
 
      
 
-### 3、readrnxobsb()：读取一个观测历元的观测数据 
+#### 3. readrnxobsb()：读取一个观测历元的观测数据
 
 1. **传入参数**：
 
@@ -1345,7 +1165,7 @@ static void decode_obsh(FILE *fp, char *buff, double ver, int *tsys,
 
      
 
-### 4、decode_obsepoch()：解码历元首行数据
+#### 4. decode_obsepoch()：解码历元首行数据
 
 1. 2、3版本观测值文件差异：
 
@@ -1451,7 +1271,7 @@ static void decode_obsh(FILE *fp, char *buff, double ver, int *tsys,
 
    
 
-### 5、decode_obsdata()：读取一个历元内一颗卫星的观测值 
+#### 5. decode_obsdata()：读取一个历元内一颗卫星的观测值
 
 1. **传入参数**：
 
@@ -1609,267 +1429,13 @@ static void decode_obsh(FILE *fp, char *buff, double ver, int *tsys,
 
 
 
-## 七、NAV星历文件读取
-
-### 1、decode_navh()、decode_gnavh()、decode_hnavh()
-
-以decode_navh()为例：![在这里插入图片描述](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/819ea1b1474442a09edd951a7d9409dd.png)
-
-
-```c
-static void decode_navh(char *buff, nav_t *nav) 
-{
-    int i,j; 
-    char *label=buff+60; 
-    
-    trace(4,"decode_navh:\n"); 
-    
-    //读取电离层模型参数
-    if      (strstr(label,"ION ALPHA"           )) { /* opt ver.2 */ 
-        if (nav) {
-            for (i=0,j=2;i<4;i++,j+=12) nav->ion_gps[i]=str2num(buff,j,12);
-        }
-    }
-    else if (strstr(label,"ION BETA"            )) { /* opt ver.2 */
-        if (nav) {
-            for (i=0,j=2;i<4;i++,j+=12) nav->ion_gps[i+4]=str2num(buff,j,12);
-        }
-    }
-    else if (strstr(label,"DELTA-UTC: A0,A1,T,W")) { /* opt ver.2 */
-        if (nav) {
-            for (i=0,j=3;i<2;i++,j+=19) nav->utc_gps[i]=str2num(buff,j,19);
-            for (;i<4;i++,j+=9) nav->utc_gps[i]=str2num(buff,j,9);
-        }
-    }
-    else if (strstr(label,"IONOSPHERIC CORR"    )) { /* opt ver.3 */
-        if (nav) {
-            if (!strncmp(buff,"GPSA",4)) {
-                for (i=0,j=5;i<4;i++,j+=12) nav->ion_gps[i]=str2num(buff,j,12);
-            }
-            else if (!strncmp(buff,"GPSB",4)) {
-                for (i=0,j=5;i<4;i++,j+=12) nav->ion_gps[i+4]=str2num(buff,j,12);
-            }
-            else if (!strncmp(buff,"GAL",3)) {
-                for (i=0,j=5;i<4;i++,j+=12) nav->ion_gal[i]=str2num(buff,j,12);
-            }
-            else if (!strncmp(buff,"QZSA",4)) { /* v.3.02 */
-                for (i=0,j=5;i<4;i++,j+=12) nav->ion_qzs[i]=str2num(buff,j,12);
-            }
-            else if (!strncmp(buff,"QZSB",4)) { /* v.3.02 */
-                for (i=0,j=5;i<4;i++,j+=12) nav->ion_qzs[i+4]=str2num(buff,j,12);
-            }
-            else if (!strncmp(buff,"BDSA",4)) { /* v.3.02 */
-                for (i=0,j=5;i<4;i++,j+=12) nav->ion_cmp[i]=str2num(buff,j,12);
-            }
-            else if (!strncmp(buff,"BDSB",4)) { /* v.3.02 */
-                for (i=0,j=5;i<4;i++,j+=12) nav->ion_cmp[i+4]=str2num(buff,j,12);
-            }
-            else if (!strncmp(buff,"IRNA",4)) { /* v.3.03 */
-                for (i=0,j=5;i<4;i++,j+=12) nav->ion_irn[i]=str2num(buff,j,12);
-            }
-            else if (!strncmp(buff,"IRNB",4)) { /* v.3.03 */
-                for (i=0,j=5;i<4;i++,j+=12) nav->ion_irn[i+4]=str2num(buff,j,12);
-            }
-        }
-    }
-    
-    //读取时间系统改正参数
-    else if (strstr(label,"TIME SYSTEM CORR"    )) { /* opt ver.3 */
-        if (nav) {
-            if (!strncmp(buff,"GPUT",4)) {
-                nav->utc_gps[0]=str2num(buff, 5,17);
-                nav->utc_gps[1]=str2num(buff,22,16);
-                nav->utc_gps[2]=str2num(buff,38, 7);
-                nav->utc_gps[3]=str2num(buff,45, 5);
-            }
-            else if (!strncmp(buff,"GLUT",4)) {
-                nav->utc_glo[0]=-str2num(buff,5,17); /* tau_C */
-            }
-            else if (!strncmp(buff,"GLGP",4)) {
-                nav->utc_glo[1]=str2num(buff, 5,17); /* tau_GPS */
-            }
-            else if (!strncmp(buff,"GAUT",4)) { /* v.3.02 */
-                nav->utc_gal[0]=str2num(buff, 5,17);
-                nav->utc_gal[1]=str2num(buff,22,16);
-                nav->utc_gal[2]=str2num(buff,38, 7);
-                nav->utc_gal[3]=str2num(buff,45, 5);
-            }
-            else if (!strncmp(buff,"QZUT",4)) { /* v.3.02 */
-                nav->utc_qzs[0]=str2num(buff, 5,17);
-                nav->utc_qzs[1]=str2num(buff,22,16);
-                nav->utc_qzs[2]=str2num(buff,38, 7);
-                nav->utc_qzs[3]=str2num(buff,45, 5);
-            }
-            else if (!strncmp(buff,"BDUT",4)) { /* v.3.02 */
-                nav->utc_cmp[0]=str2num(buff, 5,17);
-                nav->utc_cmp[1]=str2num(buff,22,16);
-                nav->utc_cmp[2]=str2num(buff,38, 7);
-                nav->utc_cmp[3]=str2num(buff,45, 5);
-            }
-            else if (!strncmp(buff,"SBUT",4)) { /* v.3.02 */
-                nav->utc_sbs[0]=str2num(buff, 5,17);
-                nav->utc_sbs[1]=str2num(buff,22,16);
-                nav->utc_sbs[2]=str2num(buff,38, 7);
-                nav->utc_sbs[3]=str2num(buff,45, 5);
-            }
-            else if (!strncmp(buff,"IRUT",4)) { /* v.3.03 */
-                nav->utc_irn[0]=str2num(buff, 5,17);
-                nav->utc_irn[1]=str2num(buff,22,16);
-                nav->utc_irn[2]=str2num(buff,38, 7);
-                nav->utc_irn[3]=str2num(buff,45, 5);
-                nav->utc_irn[8]=0.0; /* A2 */
-            }
-        }
-    }
-    //读取跳秒参数
-    else if (strstr(label,"LEAP SECONDS"        )) { /* opt */
-        if (nav) {
-            nav->utc_gps[4]=str2num(buff, 0,6);
-            nav->utc_gps[7]=str2num(buff, 6,6);
-            nav->utc_gps[5]=str2num(buff,12,6);
-            nav->utc_gps[6]=str2num(buff,18,6);
-        }
-    }
-}
-```
 
 
 
-### 2、readrnxnav()：读取星历文件，添加到nav结构体中
-
-* **add_eph**()：nav->eph[] 中添加eph星历数据，nav->n 表示NAV数量。
-* **add_geph**()：nav->geph[] 中添加GLONASS星历数据，nav->ng 表示geph数量。
-* **add_seph**()：nav->seph[] 中添加SBAS星历数据，nav->ns 表示seph数量。
-
-```c
-static int readrnxnav(FILE *fp, const char *opt, double ver, int sys,
-                      nav_t *nav)
-{
-    eph_t eph;
-    geph_t geph;
-    seph_t seph;
-    int stat,type;
-    
-    trace(3,"readrnxnav: ver=%.2f sys=%d\n",ver,sys);
-    
-    if (!nav) return 0;
-    //调用readrnxnavb读取文件，然后根据星历类型选择函数保存
-    /* read RINEX navigation data body */
-    while ((stat=readrnxnavb(fp,opt,ver,sys,&type,&eph,&geph,&seph))>=0) {
-        
-        /* add ephemeris to navigation data */
-        if (stat) {
-            switch (type) {
-                case 1 : stat=add_geph(nav,&geph); break;
-                case 2 : stat=add_seph(nav,&seph); break;
-                default: stat=add_eph (nav,&eph ); break;
-            }
-            if (!stat) return 0;
-        }
-    }
-    return nav->n>0||nav->ng>0||nav->ns>0;
-}
-```
 
 
 
-### 3、readrnxnavb()：读取一个历元的星历数据，添加到eph结构体中
-
-1. nav数据文件体结构：卫星PRN号、卫星时间TOC、参数
-
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/7c62093881b847b8943b0910e78b23b8.png)
 
 
-2. **执行流程**：
 
-	* 调用`set_sysmask()`获取卫星系统掩码
 
-	* 循环读取一行行，记录TOC，读取到`data[]`，i记录读取的数据数量，读够数量调用`decode_eph()`等函数赋值给`eph_t`结构体 
-
-  ```c
-  static int readrnxnavb(FILE *fp, const char *opt, double ver, int sys,
-                         int *type, eph_t *eph, geph_t *geph, seph_t *seph)
-  {
-      gtime_t toc;
-      double data[64];
-      int i=0,j,prn,sat=0,sp=3,mask;
-      char buff[MAXRNXLEN],id[8]="",*p;
-      
-      trace(4,"readrnxnavb: ver=%.2f sys=%d\n",ver,sys);
-      
-      /* set system mask */
-      mask=set_sysmask(opt);  //设置卫星系统掩码
-      
-      //循环读取一行行，读取到data[]，i记录读取的数据数量，读够数量进入decode_eph()赋值给eph_t结构体
-      while (fgets(buff,MAXRNXLEN,fp)) {
-          
-          if (i==0) {
-              
-              /* decode satellite field */
-              if (ver>=3.0||sys==SYS_GAL||sys==SYS_QZS) { /* ver.3 or GAL/QZS */
-                  sprintf(id,"%.3s",buff);
-                  sat=satid2no(id);
-                  sp=4;               //3以上版本，GALileo，QZSS sp都为4
-                  if (ver>=3.0) {
-                      sys=satsys(sat,NULL);
-                      if (!sys) {
-                          sys=(id[0]=='S')?SYS_SBS:((id[0]=='R')?SYS_GLO:SYS_GPS);
-                      }
-                  }
-              }
-              else {
-                  prn=(int)str2num(buff,0,2);
-                  
-                  if (sys==SYS_SBS) {
-                      sat=satno(SYS_SBS,prn+100);
-                  }
-                  else if (sys==SYS_GLO) {
-                      sat=satno(SYS_GLO,prn);
-                  }
-                  else if (93<=prn&&prn<=97) { /* extension */
-                      sat=satno(SYS_QZS,prn+100);
-                  }
-                  else sat=satno(SYS_GPS,prn);
-              }
-              /* decode Toc field */
-              if (str2time(buff+sp,0,19,&toc)) {      //读取卫星钟时间TOC
-                  trace(2,"rinex nav toc error: %23.23s\n",buff);
-                  return 0;
-              }
-              /* decode data fields */
-              for (j=0,p=buff+sp+19;j<3;j++,p+=19) {  //首行数据读3列，除了TOC还有3列
-                  data[i++]=str2num(p,0,19);
-              }
-          }
-          else {
-              /* decode data fields */
-              for (j=0,p=buff+sp;j<4;j++,p+=19) { //其它行数据都读4列
-                  data[i++]=str2num(p,0,19);
-              }
-              
-              /* decode ephemeris */
-              if (sys==SYS_GLO&&i>=15) {
-                  if (!(mask&sys)) return 0;
-                  *type=1;
-                  return decode_geph(ver,sat,toc,data,geph);
-              }
-              else if (sys==SYS_SBS&&i>=15) {
-                  if (!(mask&sys)) return 0;
-                  *type=2;
-                  return decode_seph(ver,sat,toc,data,seph);
-              }
-              else if (i>=31) {
-                  if (!(mask&sys)) return 0;
-                  *type=0;
-                  return decode_eph(ver,sat,toc,data,eph);
-              }
-          }
-      }
-      return -1;
-  }
-  ```
-
-3. **调用函数**：
-   * **decode_eph()**：将`data[]`中信息赋值到`eph_t` 类型结构体`eph`
-   * **decode_geph()**：将`data[]`中信息赋值到`geph_t`  类型结构体`geph`
-   * **decode_seph()**：将`data[]`中信息赋值到`seph_t`  类型结构体`seph`

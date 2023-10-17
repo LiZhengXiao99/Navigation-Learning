@@ -1,0 +1,1088 @@
+> 原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
+
+最初写
+
+本系列的第一篇文章，
+
+* 先对 RTKLIB 做个介绍
+* VS2022下编译调试步骤
+* 介绍 VScode + WSL 下编译成动态库，同时编译 5 个命令行程序，在自己项目中引入核心代码库的方法。
+* 介绍如何用 RTKLIB 做后处理解算，由 RINEX 文件得出定位解，rnx2rtkp 主函数，自己写后处理主函数的方法。
+* 介绍界面程序 RTKGET、RTKCONV、RTKPLOT、RTKPOST、STRSVR 的使用
+* 最后介绍核心代码库，主要是头文件 rtklib.h 的内容，包括宏定义、结构体定义、函数定义
+
+[TOC]
+
+## 一、RTKLIB 介绍
+
+### 1、概述
+
+#### 1. 简介
+
+RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本东京海洋大学的高须知二（Tomoji Takasu）开发，由一个**核心程序库**和多个**命令行程序**、**界面程序**组成；代码规范、功能完善、可拓展性好，许多 GNSS 导航定位程序开源程序都是基于 RTKLIB 二次开发衍生而来，适合作为 GNSS 入门学习的代码。
+
+![image-20231012215849180](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231012215849180.png)
+
+#### 2. 主要功能
+
+* **支持多个 GNSS 系统的标准和精密定位算法**，包括 GPS，GLONASS，Beidou，Galileo，QZSS 和 SBAS
+
+* **支持 9 种GNSS实时和后处理定位模式**：
+  * **single**：伪距单点定位
+  * **DGPS/DGNSS**：伪距差分
+  * **kinematic**：载波动态相对定位，动态RTK，假设流动站是移动的，可以做车载定位
+  * **Static**：载波静态相对定位，静态RTK，两站都是静止的，可以得到很高的精度
+  * **Moving-Baseline**：两站都动，主要用来定姿
+  * **Fixed**：固定坐标，解算模糊度、对流层、电离层等参数
+  * **PPP-Kinematic**：动态精密单点定位
+  * **PPP-Static**：静态精密单点定位
+  * **PPP-Fixed**：PPP 固定坐标，解算模糊度、对流层、电离层等参数
+
+* **支持多种GNSS标准格式和协议**：RINEX2.10、RINEX2.11、RINEX2.12、RINEX3.00、RINEX3.01、RINEX3.02、RTCM2.3、RTCM3.1、RTCM3.2、BINEX、NTRIP、NMEA0183、SP3、ANTEX1.4、IONEX1.0、NGS PCV、EMS 2.0。
+
+* **支持多种GNSS接收机专有数据协议格式**：NovAtel:OEM4/V/6，OEM3, OEMStar、Superstar II、 Hemisphere、Crescent、u‐blox:LEA-4T/5T/6T、SkyTraq、JAVAD 、GW10-II/III 和 NVS。
+
+* **支持外部通信**：Serial、TCP/IP、NTRIP、本地日志文件、FTP 和 HTTP。
+
+* **提供许多代码库和API**：卫星和导航系统函数、矩阵和向量函数，时间和字符串函数、坐标的转换，输入和输出函数、调试跟踪函数、平台依赖函数、定位模型、大气模型、天线模型、地球潮汐模型、大地水准面模型、基准转换、RINEX函数、星历和时钟函数、精密星历和时钟、接收机原始数据函数、RTCM函数，解算函数、谷歌地球KML转换、SBAS函数、选项（option）函数、流数据输入和输出函数、整周模糊度解算、标准定位、精密定位、后处理定位（解算）、流服务器函数、RTK服务器函数、下载函数。
+
+RTKLIB 可以初步实现以下功能，相对于商业软件，可靠性没那么高，精度没那么高，但对于部分科研已经能够满足：
+
+* **静态短基线解算**：相对定位，比如把一个测站安装在比较稳定的地区，把另一个测站安装在比较容易形变的地区做变形监测。
+* **动态后处理差分 PPK**：比如无人机遥感、倾斜摄影测量等，需要高精度的位置和姿态解算精度。
+* **实时动态差分 RTK**：导航定位。
+* **精密单点定位 PPP**：可以用来算基准站坐标，地震监测、精密定轨、电离层对流层建模、时间传递。
+* **实时精密单点定位 RT-PPP**： 比如接收实时的精密卫星的改正数，靠本地接收机的数据进行实时单点定位。用途比较广泛在海洋上，海啸的监测预警、海平面变化的监测、船只定位、海上石油平台作业等。
+
+#### 3. 开源协议
+
+基于的 BDS2-Clause 开源协议，用户能够自由地使用，修改源代码，也可以将修改后的代码选择继续开源或者闭源，须遵守如下两项要求：
+
+* 如果分发的软件包含**源代码**，需在源代码中**保留原始的 BSD 许可证声明**；
+
+* 如果分发的软件仅**包含二进制程序**，需在文档或版权说明中**保留原始的 BSD 许可证声明**。
+
+#### 4. 我用 RTKLIB 做的事
+
+RTKLIB 自带的程序除了 rtkplot 之外我都没咋用过，我主要是用 RTKLIB 的代码库，比如正在写的多源融合定位解算程序，GNSS+INS+Camera+Lidar 组合定位，引入了 RTKLIB 的代码库，主要用下面几部分内容：
+
+* **时间系统**：用 `gtime_t` 作为量测数据的时间戳，时间转换都用 RTKLIB 提供的接口。
+* **坐标转换**：我程序的坐标都用 Eigen 库的 Vector3d 向量表示；为方便调用，我对 ENU、ECEF、BLH 坐标之间的转换函数做了一层封装，接口为 Eigen 形式。
+* **结果输出**：为了能输出姿态，扩展了 sol_t 结构体，加上三个欧拉角，输出结果的语句上加上欧拉角；然后拓展 rtkplot，把姿态角结果也画出来。
+* **GNSS相关的类型定义**：卫星系统、卫星、观测值定义
+* **数据读取**：RINEX、RTCM、NMEA
+* **数据流**：
+* 
+
+项目文件结构和 CMakeLists.txt 文件内容如下：
+
+![26b7f5cba7ef6929f88b4cc7bb85a6b3](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/26b7f5cba7ef6929f88b4cc7bb85a6b3.png)
+
+
+
+### 2、下载 RTKLIB
+
+在[RTKLIB官网](https://www.rtklib.com/)选最新版 **2.4.3 b34**，点 **Source Programs and Data** 和 **Binary APs for Windows** 下面的**GitHub**进入**GitHub页面**：
+
+![image-20231015225119927](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231015225119927.png)
+
+点开绿色的 **Code** 下拉菜单，再点 **Download ZIP**：
+
+![image-20231016092003733](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231016092003733.png)
+
+解压两个压缩文件，得到的文件目录如下：
+
+
+
+**Source Programs and Data** 是程序的源文件，
+
+
+
+rtkplot 用于原始数据和结果数据绘图，使用很频繁，可以放一个在桌面，把数据文件、结果文件拖到图标上直接就画图。
+
+
+
+
+
+
+
+### 3、界面程序简介
+
+![image-20231016115135014](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231016115135014.png)
+
+* **rtklaunch**：界面程序启动器，
+
+  ![image-20231016114907087](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231016114907087.png)
+
+* **rtkget**：下载 GNSS 数据，
+
+* **rtkcov**：GNSS 数据转换，
+
+* **rtkplot**：原始数据绘图、结果绘图，
+
+* **rtkpost**：后处理定位解算，
+
+* **rtknavi**：实时定位解算，
+
+* **strsvr**：数据流转换播发，
+
+* **srctblbrows**：NTRIP  资源列表浏览器，
+
+
+
+### 4、命令行程序简介
+
+命令行功能的程序和界面程序功能基本对应。界面程序好用，命令行程序代码好读。可以通过界面程序学软件的用法，理解程序运行逻辑；然后再通过阅读命令行程序的源码，来更深入的理解。
+
+* **rnx2rtkp**：后处理定位解算
+* **rtkrcv**：实时定位解算
+* **str2str**：数据流转换播发
+* **convbin**：数据转换
+* **pos2kml**：定位结果转谷歌地图数据格式
+
+
+
+### 5、源码学习建议
+
+#### 1. 编程基础差怎么办
+
+* 有一点点 C 语言基础就可以了，之前上课学过那一点点 C 语言就足够了，不需要再特意的学语法，直接看代码，没见过的语法查一下，下次就会了；学编程光看书看网课是远远不够的，得多练，先看别人写的代码，然后才能自己写。
+* 如果语法基础不好，一开始看的可能会比较艰难；可以先不想那么多，就从最基础的矩阵计算开始看；说看不懂、看不下去，这几个小函数总能看不下去吧。看完矩阵运算就继续看时间系统、坐标系统，RINEX文件读取......，一点点看，拼命的看，坚持下去；刚开始看的慢没关系，过了最初的坎，熟悉起来之后，后面就会很顺，无论是再继续看别的程序还是自己写都能得心应手。
+
+#### 2. 代码看不懂怎么办
+
+* 现在人工智能越来越强，把 RTKLIB 的代码段扔给 AI，基本都能给你解释解释。
+* 网上 RTKLIB 的资料很丰富，基本上能把每一行代码的意思都给你讲明白了；可以先照着博客，把代码快速的过一遍，把博客上的注释、讲解复制到你手头的代码里，自己再看能顺很多。当然，博客大多写的很随意，不严谨，但有个参考总比没有好。
+* 算法入门建议看硕博论文，比如可以看我的老师陈健和杨旭的硕士论文，写的简单而且系统，算法很多和 RTKLIB 一模一样。
+* 代码量很大，直接看可能会一头雾水，很难一下记住那么复杂的代码逻辑；可以通过流程图、函数调用关系图、思维导图，来辅助理解；通过画图来理清思路，画出的图也可以用来复习。
+
+#### 3. 学习顺序
+
+* 命令行功能的程序和界面程序功能基本对应。界面程序好用，命令行程序代码好读。可以通过界面程序学软件的用法，理解程序运行逻辑；然后再通过阅读命令行程序的源码，来更深入的理解。
+* 学的时候先从后处理开始，先看 [postpos 的用法](https://www.bilibili.com/video/BV1m5411Y7xV)，然后顺着 rnx2rtkp 的源码，把从读取 RINEX 文件到算出定位结果整个过程看明白，建议代码的学习顺序如下：
+
+  * **矩阵运算**：矩阵都是用一维 double 数组表示、列优先，
+  * **参数估计**：最小二乘、卡尔曼滤波，
+  * **时间系统**：理解 gtime_t 类型，知道
+  * **坐标系统**：矩阵有三维向量表示，要掌握 ECEF（xyz）、LLH（经纬高）、ENU（东北天）的用途、转换函数。
+  * **卫星系统、观测值类型定义**：
+  * **配置选项**：存在三个结构体里：`prcopt_t` 存处理选项、`filopt_t` 存文件路径、`solopt_t` 存结果输出格式；默认处理选项、结果选项要理解。
+  * **定位解算大致流程**：结合流程图把 rnx2rtkp、postpos、procpos、rtkpos 看明白，知道配置存到哪、数据存到哪、结果存到哪、哪个函数把数据读进来、SPP/RTK/PPP 分别在哪些函数进行、前向滤波/后向滤波区别。
+  * **数据读取**：RINEX、RTCM、NMEA，不用太细看，对数据格式有个基本的认识，知道读进来的数据以什么形式，存到什么变量里就 OK。
+  * **Trace输出**：知道怎么打开和关闭 Trace 输出、设置 Trace 等级，出来问题能根据 Trace 输出定位到出错位置、看明白出错原因。
+  * **卫星位置钟差计算**：
+  * **电离层改正**：克罗布歇模型、估计斜电离层总电子含量、IONEX文件改正
+  * **对流层改正**：对流层分干延迟、湿延迟，标准大气模型，估计对流层湿延迟、投影映射函数
+  * **天线改正**：包括 PCV、PCO，
+  * **地球自转改正**：
+  * **潮汐改正**：固体潮、极潮、海洋潮
+  * **观测值排除**：星历缺失、高度角、信噪比、人为排除卫星、URA
+  * **伪距单点定位**：
+  * **周跳检测**：检测到周跳要重置模糊度估计参数。
+  * **模糊度固定**：
+  * **差分定位**：
+  * **精密单点定位**：
+  * 
+
+
+
+### 6、manual
+
+RTKLIB 的 manual 有 181 面，先介绍附带工具包的使用，然后介绍核心代码库定义的API，最后介绍算法模型，
+
+![image-20231012203219194](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231012203219194.png)
+
+### 7、后处理程序执行流程图
+
+![image-20231012211635669](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231012211635669.png)
+
+### 8、后处理函数调用关系
+
+![image-20231012212121216](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231012212121216.png)
+
+## 二、VS2022 下编译调试
+
+### 1、下载 RTKLIB
+
+​	在[RTKLIB官网](https://www.rtklib.com/)选最新版 **2.4.3 b34**，点**Source Programs and Data**下面的**GitHub**进入**GitHub页面**，点开绿色的**Code**下拉菜单，再点**Download ZIP**，下载解压即可。
+
+![1689207739592](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1689207739592.png)
+
+### 2、在 VS2022 中创建空 C++ 项目、导入源码文件
+
+1. 创建**C++空项目**，可以勾选“解决方案和项目放在统一目录中”，记住创建的项目目录。
+
+2. 把 RTKLIB 源码文件中**整个src文件夹**复制到创建的项目文件目录中。
+
+3. 把 RTKLIB 源码文件中 **\app\consapp** 中的 **rnx2rtkp.c** 放到刚刚复制过去的 **src文件夹**。
+
+4. 在解决源文件中添加名为 “src” 的筛选器，再在 src 筛选器下面添加名为 “rcv” 的筛选器 。
+
+   右键添加现有项目把 **src/rcv文件夹** 中的所有文件加到 **src/rcv筛选器** 中，src 中所有代码文件加到 src 筛选器中。
+
+5. 把主函数 **rnx2rtkp.c** 文件中的 **#include "rtklib.h"** 修改为 **#include "./rtklib.h“** 
+
+   把在 **src/rcv文件夹几个的.c文件** 中的 **#include "rtklib.h"** 修改为 **#include "../rtklib.h”** 
+
+### 3、项目属性设置
+
+1. 打开项目属性，在**链接器—输入—附加依赖项**中添加依赖库**winmm.lib**和**ws2_32.lib**。 
+
+2. **配置属性—高级—字符集**中设置为用**使用多字节字符集** 。
+
+3. **C/C++**中的**SDL检查设置为否**，**附加包含目录**添加**.\src** 、预编译头为**不使用预编译头** 。
+
+   预处理器中添加如下内容： 
+
+   ```
+   _LIB
+   _CRT_SECURE_NO_WARNINGS
+   _WINSOCK_DEPRECATED_NO_WARNINGS             
+   ENAGLO
+   ENACMP
+   DENAGAL
+   DLL
+   WIN32
+   ```
+
+   > 尤其主要加WIN32，好多博客都没加这一项，加了这一项后RTKLIB就不会用Linux下的<pthread.h>和<sys/select.h>，咱们项目要在Windows下编译运行的，不加会报”找不到<pthread.h>和<sys/select.h>“的错。
+
+4. 将常规中的目标文件名改为 rnx2rtkp 。
+
+   > 改不改都行，默认目标文件名是项目名。
+
+### 4、改代码的 BUG
+
+​	可能会报“使用了可能未初始化的本地指针变量 “sbs” 的错误，解决方式是对指针变量进行初始化，将 ephemeris.c 文件中的第 579 行改为 “const sbssatp_t *sbs=NULL;” 。
+
+## 三、VScode + WSL 下编译调试
+
+开发中经常要用到 Linux，
+
+WSL 
+
+### 1、WSL 环境配置
+
+* **安装 WSL**：建议安装 WSL2，先在系统设置里启用虚拟机，然后在微软商城安装 Ubuntu，
+
+
+
+* **更新软件列表**
+
+  ```bash
+  sudo apt update
+  ```
+
+* **安装编译器和调试器** GCC、G++、GDB
+
+  ```bash
+  sudo apt install build-essential gdb
+  ```
+
+* **安装 CMake**
+
+  ```bash
+  sudo apt install cmake
+  ```
+
+* **检测安装是否成功**
+
+  ```bash
+  cmake -version
+  ```
+
+* **安装 ssh**
+
+  ```bash
+  sudo apt install ssh
+  ```
+
+* 其它推荐软件的安装：安装方式都是 `sudo apt install 软件名`
+
+  - **vim**：LInux 系统必备的文件编辑器，
+  - **git**：
+  - **ranger**：资源管理器
+  - **mc**：
+  - **exa**：代替 ls
+  - **tree**：用于查看树状目录结构
+  - **cloc**：统计代码行数
+  - **ack**：替代grep
+  - **glances**：系统监控工具
+  - **colordiff**：替代bat
+  - **bat**：替代cat
+  - **dstat**：
+
+### 2、VScode 插件安装
+
+
+
+插件下载，可能会比较慢，可以官网下载，然后导入VScode，
+
+注意插件要装在 WSL 中，而不是本地(Local)。
+
+
+
+### 3、把 RTKLIB 编译成第三方库
+
+
+
+* 指定最小 CMake 版本、子项目名
+
+  ```cmake
+  cmake_minimum_required(VERSION 3.0)
+  project(rtklib)
+  ```
+
+* 设置编译时 gcc 参数：
+
+  ```cmake
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -Wall -O3 -ansi -pedantic")
+  set(CMAKE_C_FLAGS "-Wno-unused-but-set-variable -Wno-format-overflow -Wno-unused-result -Wpointer-to-int-cast")
+  ```
+
+* 指定头文件目录：
+
+  ```cmake
+  include_directories(include)
+  ```
+
+* 指定可执行文件的输出路径为：rtklib/bin、库文件的输出路径为：rtklib/lib：
+
+  ```cmake
+  set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+  set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+  ```
+
+* 将 src、src/rcv 目录下源文件加到 DIR_SRCS 列表：
+
+  ```cmake
+  aux_source_directory(src DIR_SRCS_RTKLIB)
+  aux_source_directory(src/rcv DIR_SRCS_RTKLIB_RCV)
+  list(APPEND DIR_SRCS ${DIR_SRCS_RTKLIB} ${DIR_SRCS_RTKLIB_RCV})
+  ```
+
+* 把代码编译成动态库，链接上 pthread m 库：
+
+  ```cmake
+  add_library(${PROJECT_NAME} SHARED ${DIR_SRCS})
+  target_link_libraries(${PROJECT_NAME} pthread m)
+  target_include_directories(${PROJECT_NAME}
+      PUBLIC ${PROJECT_SOURCE_DIR}/include
+  )
+  ```
+
+* 如果是 WIN32 还有链接上 wsock32 ws2_32 winmm 库，加上宏定义 -DWIN_DLL：
+
+  ```cmake
+  if(WIN32)
+    target_link_libraries(${PROJECT_NAME} wsock32 ws2_32 winmm)
+    add_definitions(-DWIN_DLL)
+  endif()
+  ```
+
+
+
+
+
+### 4、编译调试命令行程序、链接 RTKLIB
+
+RTKLIB APP 目录下有 5 个命令行程序
+
+* **rnx2rtkp**：后处理定位解算
+* **rtkrcv**：实时定位解算
+* **str2str**：数据流转换播发
+* **convbin**：数据转换
+* **pos2kml**：定位结果转谷歌地图数据格式
+
+
+
+
+
+### 5、编译调试自己写的程序、链接 RTKLIB
+
+
+
+比如我用 C++ 语法，通过调用 RTKLIB 的函数，实现获取当前系统时间，输出年月日时分秒、GPS周 + 周内秒：
+
+```C++
+```
+
+
+
+## 四、Qt 编译调试
+
+
+
+
+
+## 五、后处理解算
+
+### 1、使用 rnx2rtkp 后处理解算
+
+rnx2rtkp 全称 RINEX to RTK pos，通过原始 RINEX 文件，输出 RTKLIB 的定位坐标，下图可以很好的表示整个程序的逻辑：
+
+![image-20231016123911526](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231016123911526.png)
+
+#### 1. rnx2rtkp 命令行程序使用方式
+
+* 使用方式：`rnx2rtkp [option]... file file [...] `
+
+* 读取 RINEX：OBS/NAV/GNAV/HNAV/CLK, SP3, SBAS 等文件，计算接收机、流动站坐标，并输出结果。
+
+* 对于相对定位，第一个 OBS 观测值文件需含接收机、流动站观测值，第二个 OBS 文件需含基准站观测值。
+
+* 输入文件至少要有一个星历文件，RINEX NAV/GNAV/HNAV 。
+
+* 想用 SP3 精密星历文件，需提供.sp3/.eph文件的路径。
+
+* 输入文件路径可包含通配符 *，为了防止与命令行命令冲突，要用 `"..."`  括起带通配符符路径。
+
+* 输命令行参数的几种方式：
+  * **VS**：
+  * **VScode**：
+  * **Clion**：
+  * **Windows 终端**：
+  * **Linux 终端**：
+
+
+
+#### 2. 命令行参数
+
+1. **-？**：打印 help
+2. **-k** file：配置文件的输入选项，默认值是 [off]
+3. **-o** file：输出文件选项，默认值是 [stdout]
+4. **-ts** ds ts：设置开始解算时间`(ds=y/m/d ts=h:m:s) `，默认值是 [obs start time] 
+5. **-te** de ds：设置结束解算时间`(de=y/m/d te=h:m:s) `，默认值是 [obs end time] 
+6. **-ti** tint：设置解算时间间隔频率`(sec) `，默认值是[all]
+7. **-p** mode：设置解算模式，(**0**:single,**1**:dgps,**2**:kinematic,**3**:static,**4**:moving-base,**5**:fixed,**6**:ppp-kinematic,**7**:ppp-static)，默认值是 [2]
+8. **-m** mask：设置截止高度角，`(deg) `,默认值是 [15]
+9. **-sys** s：设置用于计算的导航系统，`(s=G:GPS,R:GLO,E:GAL,J:QZS,C:BDS,I:IRN) `，默认值是 [G|R] ，想用除 GPS 以外的系统，还得加宏定义 ENAGLO、ENACMP、ENAGAL
+10. **-f** freq：设置用于计算的频率，` (1:L1,2:L1+L2,3:L1+L2+L5) `，默认值是 [2]
+11. **-v** thres：设置整周模糊度 Ratio 值，写 0.0 为不固定整周模糊度，默认值是 [3.0] 
+12. **-b**：后向滤波
+13. **-c**：前后向滤波组合
+14. **-i**：单历元模糊度固定 instantaneous 
+15. **-h**：fix and hold 模糊度固定
+16. **-e**：输出 XYZ-ecef 坐标
+17. **-a**：输出 ENU-baseline
+18. **-n**：输出 NMEA-0183 GGA
+19. **-g**：输出经纬度格式为 ddd mm ss.ss ，默认为 [ddd.ddd] 
+20. **-t**：输出时间格式为 yyyy/mm/dd hh:mm:ss.ss ，默认为 [sssss.ss] 
+21. **-u**：输出为 UTC 时间，默认为 [gpst] 
+22. **-d** col：设置时间的小数位数，默认为 [3] 
+23. **-s** sep：设置文件分隔符，要写在单引号中，默认为 [' '] 
+24. **-r** x y z：基站位置 ECEF-XYZ (m)，默认 [average of single pos] ，流动站位置用于 fixed 模式
+25. **-l** lat lon hgt：基站位置 LLH (deg/m)，默认 [average of single pos]，流动站位置用于 fixed模式
+26. **-y** level：输出结果信息 (**0**:off,**1**:states,**2**:residuals) ，默认为 [0] 
+27. **-x** level：输出 debug trace 等级，默认为 [0] 
+
+#### 3. 错误解决
+
+rnx2rtkp 的命令行参数很复杂，一不下心就会出错，这时候可以去看 trace 文件，重点看出现 error 的部分，复制 error 信息的前半部分，去程序里搜索，定位到出现错误的地方，在附近设几个断点，看看到的是咋错的。
+
+比如我的朋友按照吴桐的[博客](https://zhuanlan.zhihu.com/p/528855325)运行 rnx2rtkp，出错了来问我：
+
+![image-20231015211515575](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231015211515575.png)
+
+* 首先看左边的 trace 输出，有两行里显示 error，说是打开观测文件和星历文件时候出错了。
+
+* 复制前面的 ”rinex file error“，在代码中全局搜索，发现只有在 `readrnxfile()` 函数里有可能输出这段信息。
+
+* 可以明显看出来是 `fopen()` 根据路径打开文件的时刻出错了，那就在 `fopen()` 的那一行设断点，看看打开文件路径到的是什么。
+
+* 最后调试发现，路径中 `\` 都是连续出现四个。推测分析是因为朋友的 VS 版本，输完的命令行参数，会自动把其中的 `\` 换成 `\\`，自己输文件路径的时候只要一个 `\` 就行了。
+
+  ```
+  -x 5 -p 0 -m 15 -n -o D:\\source\\RTKLIB-rtklib_2.4.3\\rtklib\\out.pos D:\\source\\RTKLIB-rtklib_2.4.3\\test\\data\\rinex\\07590920.05o D:\\source\\RTKLIB-rtklib_2.4.3\\test\\data\\rinex\\07590920.05n
+  ```
+
+  要改成：
+
+  ```
+  -x 5 -p 0 -m 15 -n -o D:\source\RTKLIB-rtklib_2.4.3\rtklib\out.pos D:\source\RTKLIB-rtklib_2.4.3\test\data\rinex\07590920.05o D:\source\RTKLIB-rtklib_2.4.3\test\data\rinex\07590920.05n
+  ```
+
+#### 4.  stdarg 库：解析命令行参数
+
+stdarg.h 是 C 标准函数库的头文件，名称由 standard（标准）和 arguments（参数）简化而来，主要目的为让函数能够接收可变参数。 用法如下：
+
+- 首先在函数里定义一具 `VA_LIST` 型的变量，这个变量是指向参数的指针 。
+- 然后用 `VA_START` 宏初始化变量刚定义的 `VA_LIST` 变量 。
+- 然后用 `VA_ARG` 返回可变的参数，`VA_ARG` 的第二个参数是你要返回的参数的类型（如果函数有多个可变参数的，依次调用 `VA_ARG` 获取各个参数） 
+- 最后用 `VA_END` 宏结束可变参数的获取。
+
+### 2、rnx2rtkp 主函数
+
+在文章的最后，对 rnx2rtkp 的主函数做一个介绍，
+
+* 读取配置文件过程：
+  * 循环判断参数是否有 `-k`，如果有就代表传入了配置文件，需要读取进来
+  * 创建 `porcopt_t`、`solopt_t`、`filopt_t` 变量用于接受读取到的配置
+  * 调用 `resetsysopts()` ，重置配置为默认
+  * 调用 `loadopts()`，从文件中读取配置，存到 `opt_t` 类型的 `sysopt` 中
+  * 调用 `getsysopts()`，把 `opt_t` 类型的 `sysopt` 转到 `porcopt_t`、`solopt_t`、`filopt_t` 变量中，会调用 `buff2sysopts()`
+* 读其它参数：
+  * 循环内，`if-else if`，判断参数，根据参数赋值
+  * 若都不是参数，最后一个到 `else if`，认为是文件路径，用 `infile` 数组接收
+* 最后调用 `postpos()` 后处理解算
+
+我根据自己的理解给代码加了中文注释，代码如下：
+
+```c
+int main(int argc, char **argv)
+{
+    prcopt_t prcopt=prcopt_default;     // 定位处理模式
+    solopt_t solopt=solopt_default;     // 结果输出形式
+    filopt_t filopt={""};               // 文件路径选项
+    gtime_t ts={0},te={0};              // ts开始时间、te结束时间
+    double tint=0.0,
+            es[]={2000,1,1,0,0,0},
+            ee[]={2000,12,31,23,59,59},
+            pos[3];
+    int i,      // for循环的计数
+        j,      // 嵌套的for循环计数
+        n,      // 记录读入文件数
+        ret;    // 接受postpos的返回值
+    char *infile[MAXFILE],  // 读入文件，默认最多16个，可改MAXFILE定义
+         *outfile="",       // 输出文件
+         *p;                // 指向字符串的指针，用于循环指向各main函数参数
+    
+    prcopt.mode  =PMODE_KINEMA;     // 定位模式默认动态相对定位Kinematic
+    prcopt.navsys=0;                // 卫星系统，先设置无
+    prcopt.refpos=1;                // 基准站坐标
+    prcopt.glomodear=1;             // GLONASS AR mode,先设on
+    solopt.timef=0;                 // 输出时间格式，先设sssss.s
+    sprintf(solopt.prog ,"%s ver.%s %s",PROGNAME,VER_RTKLIB,PATCH_LEVEL);   // 项目名称
+    sprintf(filopt.trace,"%s.trace",PROGNAME);
+    
+    /* load options from configuration file */
+    for (i=1;i<argc;i++) {
+        if (!strcmp(argv[i],"-k")&&i+1<argc) {          // 如果有-k和配置文件输入
+            resetsysopts();                             // 先重置所有配置
+            if (!loadopts(argv[++i],sysopts)) return -1;// 再读取配置文件内容，存入opt_t的sysopt中
+            getsysopts(&prcopt,&solopt,&filopt);        // opt_t转到porcopt_t/solopt_t/filopt_t，
+        }   
+    }          
+    // for 循环判断 main 函数参数
+    for (i=1,n=0;i<argc;i++) {  
+        if      (!strcmp(argv[i],"-o")&&i+1<argc) outfile=argv[++i];//读取输出文件路径，赋值给outfile
+        else if (!strcmp(argv[i],"-ts")&&i+2<argc) {    // 读取开始解算时间   
+            sscanf(argv[++i],"%lf/%lf/%lf",es,es+1,es+2);
+            sscanf(argv[++i],"%lf:%lf:%lf",es+3,es+4,es+5);
+            ts=epoch2time(es);      // 转为gtime_t
+        }
+        else if (!strcmp(argv[i],"-te")&&i+2<argc) {    // 读取结束解算时间
+            sscanf(argv[++i],"%lf/%lf/%lf",ee,ee+1,ee+2);   
+            sscanf(argv[++i],"%lf:%lf:%lf",ee+3,ee+4,ee+5);
+            te=epoch2time(ee);  // 转为gtime_t
+        }
+        else if (!strcmp(argv[i],"-ti")&&i+1<argc) tint=atof(argv[++i]);        // 读取解算时间间隔频率
+        else if (!strcmp(argv[i],"-k")&&i+1<argc) {++i; continue;}              // 有-k，跳过
+        else if (!strcmp(argv[i],"-p")&&i+1<argc) prcopt.mode=atoi(argv[++i]);  // 读取解算模式
+        else if (!strcmp(argv[i],"-f")&&i+1<argc) prcopt.nf=atoi(argv[++i]);    // 读取用于计算的频率
+        else if (!strcmp(argv[i],"-sys")&&i+1<argc) {       // 读取用于计算的导航系统
+            for (p=argv[++i];*p;p++) {      
+                switch (*p) {                           //有对应导航系统，就把它的码做与运算加上                 
+                    case 'G': prcopt.navsys|=SYS_GPS;
+                    case 'R': prcopt.navsys|=SYS_GLO;
+                    case 'E': prcopt.navsys|=SYS_GAL;
+                    case 'J': prcopt.navsys|=SYS_QZS;
+                    case 'C': prcopt.navsys|=SYS_CMP;
+                    case 'I': prcopt.navsys|=SYS_IRN;
+                }
+                if (!(p=strchr(p,','))) break;  
+            }
+        }
+        else if (!strcmp(argv[i],"-m")&&i+1<argc) prcopt.elmin=atof(argv[++i])*D2R;     // 设置截止高度角     
+        else if (!strcmp(argv[i],"-v")&&i+1<argc) prcopt.thresar[0]=atof(argv[++i]);    // 设置整周模糊度Ratio值
+        else if (!strcmp(argv[i],"-s")&&i+1<argc) strcpy(solopt.sep,argv[++i]);         // 设置文件路径分隔符
+        else if (!strcmp(argv[i],"-d")&&i+1<argc) solopt.timeu=atoi(argv[++i]);         // 设置时间小数位数
+        else if (!strcmp(argv[i],"-b")) prcopt.soltype=1;           // 后向滤波
+        else if (!strcmp(argv[i],"-c")) prcopt.soltype=2;           // 前后向滤波组合
+        else if (!strcmp(argv[i],"-i")) prcopt.modear=2;            // 单历元模糊度固定
+        else if (!strcmp(argv[i],"-h")) prcopt.modear=3;            // fix and hold模糊度固定
+        else if (!strcmp(argv[i],"-t")) solopt.timef=1;             // 输出时间格式为yyyy/mm/dd hh:mm:ss.ss
+        else if (!strcmp(argv[i],"-u")) solopt.times=TIMES_UTC;     // 输出为UTC时间
+        else if (!strcmp(argv[i],"-e")) solopt.posf=SOLF_XYZ;       // 输出XYZ-ecef坐标
+        else if (!strcmp(argv[i],"-a")) solopt.posf=SOLF_ENU;       // 输出ENU-baseline
+        else if (!strcmp(argv[i],"-n")) solopt.posf=SOLF_NMEA;      // 输出NMEA-0183 GGA
+        else if (!strcmp(argv[i],"-g")) solopt.degf=1;              // 输出经纬度格式为ddd mm ss.ss
+        else if (!strcmp(argv[i],"-r")&&i+3<argc) {                 // 基站位置ECEF-XYZ (m)              
+            prcopt.refpos=prcopt.rovpos=0;                  // 基准站和流动站位置都先设0
+            for (j=0;j<3;j++) prcopt.rb[j]=atof(argv[++i]); // 循环存入基准站坐标
+            matcpy(prcopt.ru,prcopt.rb,3,1);    
+        }
+        else if (!strcmp(argv[i],"-l")&&i+3<argc) {     // 循环存入基站位置基站位置LLH (deg/m)
+            prcopt.refpos=prcopt.rovpos=0;              // 基准站和流动站位置都先设0
+            for (j=0;j<3;j++) pos[j]=atof(argv[++i]);   
+            for (j=0;j<2;j++) pos[j]*=D2R;              // 角度转弧度   
+            pos2ecef(pos,prcopt.rb);                    // LLH转XYZ
+            matcpy(prcopt.ru,prcopt.rb,3,1);
+        }
+        else if (!strcmp(argv[i],"-y")&&i+1<argc) solopt.sstat=atoi(argv[++i]); //输出结果信息
+        else if (!strcmp(argv[i],"-x")&&i+1<argc) solopt.trace=atoi(argv[++i]); //输出debug trace等级
+        else if (*argv[i]=='-') printhelp();    //输入-，打印帮助
+        else if (n<MAXFILE) infile[n++]=argv[i];    //循环判断完一遍参数之后，认为参数是文件路径，用infile数组接收
+    }
+    if (!prcopt.navsys) {               //如果没设卫星系统，默认为GPS、GLONASS
+        prcopt.navsys=SYS_GPS|SYS_GLO;
+    }
+    if (n<=0) {         //如果读入文件数为0,报错，-2退出
+        showmsg("error : no input file");
+        return -2;
+    }
+
+    
+    //   gtime_t ts       I   processing start time (ts.time==0: no limit)
+    //   gtime_t te       I   processing end time   (te.time==0: no limit)
+    //   double ti        I   processing interval  (s) (0:all)
+    //   double tu        I   processing unit time (s) (0:all)
+    //   prcopt_t *popt   I   processing options
+    //   solopt_t *sopt   I   solution options
+    //   filopt_t *fopt   I   file options
+    //   char   **infile  I   input files (see below)
+    //   int    n         I   number of input files
+    //   char   *outfile  I   output file ("":stdout, see below)
+    //   char   *rov      I   rover id list        (separated by " ")
+    //   char   *base     I   base station id list (separated by " ")
+    //后处理定位解算
+    ret=postpos(ts,te,tint,0.0,&prcopt,&solopt,&filopt,infile,n,outfile,"",""); 
+    
+    if (!ret) fprintf(stderr,"%40s\r","");
+    return ret;
+}
+```
+
+后续
+
+![image-20231012211635669](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231012211635669.png)
+
+### 3、自己写后处理主函数
+
+rnx2rtkp 程序比较复杂，要传入很多命令行参数，可以自己写主函数。再比如说我松组合程序，可以先调用 `postpos()` 通过GNSS原始原始数据算出定位解，然后与 INS 组合。
+
+rtklib 后处理主函数需要做的主要就是，设置处理选项、传入文件路径、调用 postpos()，先来看看需要传入的参数：
+
+```c
+gtime_t ts       I   处理的起始时间，写0表示不限制
+gtime_t te       I   处理的起始时间，写0表示不限制
+double ti        I   处理的间隔时间 (s)，写0表示不限制，全处理
+double tu        I   处理的单元时间（s)，写0表示全部做一个单元处理
+prcopt_t *popt   I   处理选项结构体
+solopt_t *sopt   I   结果选项结构体
+filopt_t *fopt   I   文件选项结构体
+char   **infile  I   传入文件路径数组首地址
+int    n         I   传入文件数量
+char   *outfile  I   输出文件的路径，写0表示stdout终端
+char   *rov      I   流动站ID列表，空格隔开
+char   *base     I   基准站ID列表，空格隔开
+```
+
+* `ts`、`te`、`ti`、`tu`：这几个参数用于设置解算时间，可以都填 0，让程序把传入的观测文件全解算了.
+* `popt`、`sopt`、`fopt`：这几个选项结构体是设置的重点
+  * `filopt_t`：
+  * `solopt_t`：
+  * `prcopt_t`：处理选项配置，是配置的重头戏，可以先看 [postpos 的用法](https://www.bilibili.com/video/BV1m5411Y7xV) 学习界面程序的配置方式。写代码配置和界面程序需要配置的东西是一样的，只是从在界面上点，换成在了代码里给对应字段赋值。
+
+* 
+
+#### 1. 伪距单点定位
+
+
+
+
+
+#### 2. 精密单点定位
+
+```c
+int main() {
+	int i, n, ret;
+	double tint = 0.0;       /* 求解时间间隔(0:默认) */
+	gtime_t ts = { 0 }, te = { 0 }; /* 历元时段始末控制变量 */
+	char *infile[MAXFILE], outfile[MAXSTRPATH] = { '\0' };
+	char resultpath[MAXSTRPATH] = "H:\\20211108\\result"; /* 结果输出路径 */
+	char sep = (char)FILEPATHSEP;
+	prcopt_t prcopt = prcopt_default; /* 默认处理选项设置 */
+	solopt_t solopt = solopt_default; /* 默认求解格式设置 */
+	filopt_t filopt = { /* 参数文件路径设置 */
+		"", /* 卫星天线参数文件 */
+		"", /* 接收机天线参数文件 */
+		"", /* 测站位置文件 */
+		"", /* 扩展大地水准面数据文件 */
+		"", /* 电离层数据文件 */
+		"", /* DCB数据文件 */
+		"", /* 地球自转参数文件 */
+		"", /* 海洋潮汐负荷文件 */
+	};
+	char infile_[MAXFILE][MAXSTRPATH] = {
+		"H:\\20211108\\chan2690.20o",
+		"H:\\20211108\\brdc2690.20n",
+		"H:\\20211108\\igs21245.sp3",
+		"",
+		"",
+		"",
+		"",
+		""
+	};
+	long t1, t2;
+	double eps[]={2020,9,25,0,0,0},epe[]={2020,9,25,23,0,0}; /* 设置计算的历元时段 */
+	ts=epoch2time(eps);te=epoch2time(epe);
+
+	for (i = 0, n = 0; i < MAXFILE; i++)
+		if (strcmp(infile_[i], "")) infile[n++] = &infile_[i][0];
+
+	sprintf(outfile, "%s%c", resultpath, sep);//设置输出路径
+
+	/* 自定义求解格式 --------------------------------------------------------*/
+	solopt.posf = SOLF_XYZ;   /* 选择输出的坐标格式，经纬度或是XYZ坐标等 */
+	solopt.times  =TIMES_UTC; /* 控制输出解的时间系统类型 */
+	solopt.degf   =0;         /* 输出经纬度格式(0:°, 1:°′″) */
+	solopt.outhead=1;         /* 是否输出头文件(0:否,1:是) */
+	solopt.outopt =1;         /* 是否输出prcopt变量(0:否,1:是) */
+	solopt.height =1;         /* 高程(0:椭球高,1:大地高) */
+
+	/* 自定义处理选项设置 ----------------------------------------------------*/
+	prcopt.mode = PMODE_PPP_KINEMA; /* PPP动态处理 */
+	prcopt.modear = 4;     /* 求解模糊度类型 */
+	prcopt.sateph = EPHOPT_PREC;      /* 使用精密星历 */
+	prcopt.ionoopt = IONOOPT_IFLC;     /* 使用双频消电离层组合模型 */
+	prcopt.tropopt = TROPOPT_EST;      /* 使用对流层天顶延迟估计模型 */
+	prcopt.tidecorr = 0; /* 地球潮汐改正选项(0:关闭,1:固体潮,2:固体潮+?+极移) */
+	prcopt.posopt[0] = 0; /* 卫星天线模型 */
+	prcopt.posopt[1] = 0; /* 接收机天线模型 */
+	prcopt.posopt[2] = 0; /* 相位缠绕改正 */
+	prcopt.posopt[3] = 0; /* 排除掩星 */
+	prcopt.posopt[4] = 0; /* 求解接收机坐标出错后的检查选项 */
+	prcopt.navsys = SYS_GPS; /* 处理的导航系统 */
+	sprintf(outfile, "%s%cChan200925.pos", resultpath, sep); /* 输出结果名称 */
+	prcopt.nf       =2;       /* 参与计算的载波频率个数 */
+	prcopt.elmin    =10.0*D2R;/* 卫星截止高度角 */
+	prcopt.soltype  =0;       /* 求解类型(0:向前滤波,1:向后滤波,2:混合滤波) */
+
+	t1 = clock();
+	ret = postpos(ts, te, tint, 0.0, &prcopt, &solopt, &filopt, infile, n, outfile, "", "");
+	t2 = clock();
+
+	if (!ret) fprintf(stderr, "%40s\r", "");
+
+	printf("\n * The total time for running the program: %6.3f seconds\n%c", (double)(t2 - t1) / CLOCKS_PER_SEC, '\0');
+	printf("Press any key to exit!\n");
+	getchar();
+	return ret;
+}
+```
+
+
+
+#### 3. 差分定位
+
+在差分定位中，需要至少两个站的观测值，在RTKLIB中只有第一个观测值文件会被当做移动站处理
+
+```c
+int main() {
+	int i, n, ret;
+	double tint = 0.0;       /* 求解时间间隔(0:默认) */
+	gtime_t ts = { 0 }, te = { 0 }; /* 历元时段始末控制变量 */
+	char *infile[MAXFILE], outfile[MAXSTRPATH] = { '\0' };
+	char resultpath[MAXSTRPATH] = "H:\\20211108\\result"; /* 结果输出路径 */
+	char sep = (char)FILEPATHSEP;
+	prcopt_t prcopt = prcopt_default; /* 默认处理选项设置 */
+	solopt_t solopt = solopt_default; /* 默认求解格式设置 */
+	filopt_t filopt = { /* 参数文件路径设置 */
+		"", /* 卫星天线参数文件 */
+		"", /* 接收机天线参数文件 */
+		"", /* 测站位置文件 */
+		"", /* 扩展大地水准面数据文件 */
+		"", /* 电离层数据文件 */
+		"", /* DCB数据文件 */
+		"", /* 地球自转参数文件 */
+		"", /* 海洋潮汐负荷文件 */
+	};
+	char infile_[MAXFILE][MAXSTRPATH] = { /* 前面观测值为移动站,后面观测值为基准站 */
+		"H:\\20211108\\chan2690.20o",
+		"H:\\20211108\\brdc2690.20n",
+		"H:\\20211108\\igs21245.sp3",
+		"H:\\20211108\\bjfs2690.20o",
+		"",
+		"",
+		"",
+		""
+	};
+	long t1, t2;
+	double eps[]={2020,9,25,0,0,0},epe[]={2020,9,25,23,0,0}; /* 设置计算的历元时段 */
+	ts=epoch2time(eps);te=epoch2time(epe);
+
+	for (i = 0, n = 0; i < MAXFILE; i++)
+		if (strcmp(infile_[i], "")) infile[n++] = &infile_[i][0];
+
+	sprintf(outfile, "%s%c", resultpath, sep);
+
+	/* 自定义求解格式 --------------------------------------------------------*/
+	solopt.timef = 1;       /* 时间格式(0:sssss.s, 1:yyyy/mm/dd hh:mm:ss.s) */
+	solopt.outhead = 1;       /* 是否输出头文件(0:否,1:是) */
+	solopt.posf = SOLF_XYZ;  /* 输出的坐标格式 */
+	//solopt.sstat =1;         /* 输出状态文件 */
+	solopt.times =TIMES_UTC; /* 控制输出解的时间系统类型 */
+	//solopt.degf  =0;         /* 输出经纬度格式(0:°, 1:°′″) */
+	solopt.outopt=1;         /* 是否输出prcopt变量(0:否,1:是) */
+	solopt.height=1;         /* 高程(0:椭球高,1:大地高) */
+	//solopt.sstat =1;         /* 输出求解状态 */
+
+	/* 自定义处理选项设置 ----------------------------------------------------*/
+	prcopt.mode = PMODE_DGPS; /* 差分GPS处理 */
+	prcopt.modear = ARMODE_FIXHOLD;  /* 求解模糊度类型 */
+	prcopt.sateph = EPHOPT_BRDC; /* 使用广播星历 */
+	prcopt.ionoopt = IONOOPT_BRDC;  /* 使用广播电离层模型 */
+	prcopt.tropopt = TROPOPT_SAAS;  /* 使用萨斯坦莫宁模型 */
+	prcopt.refpos =3;       /* 相对模式中基站位置获得方式 */
+							/* (0:pos in prcopt,  1:average of single pos, */
+							/*  2:read from file, 3:rinex header, 4:rtcm pos) */
+	//freqindex     =0;       /* 单频计算时设置所用计算的波段 */
+	prcopt.nf     =2;       /* 参与计算的载波频率个数 L1+L2*/
+	//prcopt.glomodear =2;
+	//prcopt.thresar[0]=2;
+	//prcopt.posopt[4]=1;     /* 求解接收机坐标出错后的检查选项 */
+	//prcopt.intpref=1;
+	prcopt.elmin  =10.0*D2R;/* 卫星截止高度角 */
+	prcopt.soltype=0;       /* 求解类型(0:向前滤波,1:向后滤波,2:混合滤波) */
+
+
+	prcopt.navsys = SYS_GPS; /* 处理的导航系统 */
+	sprintf(outfile, "%s%cchan200925DGPS.pos", resultpath, sep); /* 输出结果名称 */
+
+	//prcopt.navsys =SYS_GPS|SYS_CMP; /* 处理的导航系统 */
+	//sprintf(outfile,"%s%cresult_MIX.txt",resultpath,sep);
+
+	t1 = clock();
+	ret = postpos(ts, te, tint, 0.0, &prcopt, &solopt, &filopt, infile, n, outfile, "", "");
+	t2 = clock();
+
+	if (!ret) fprintf(stderr, "%40s\r", "");
+
+	printf("\n * The total time for running the program: %6.3f seconds\n%c", (double)(t2 - t1) / CLOCKS_PER_SEC, '\0');
+	printf("Press any key to exit!\n");
+	getchar();
+	return ret;
+}
+```
+
+
+
+
+
+
+
+## 六、界面程序的使用
+
+> 再次推荐一下 B 站赵老师的[视频讲解](https://space.bilibili.com/479790048?spm_id_from=333.337.search-card.all.click)，看视频学软件操作更直观。我主要是用 RTKLIB 的代码库，自带的程序除了 rtkplot 之外我都没咋用过，下面写的内容是看赵老师视频的时候做的笔记。
+
+### 1、RTKGET 数据下载
+
+> 视频里的下载地址有些不能用了，可以参考[GNSS观测数据及各种产品下载网址分享](https://blog.csdn.net/qq_38607471/article/details/129952202)
+
+1. 观测值下载
+   * 选择下载数据的时间：起始时间，结束时间
+
+   * options 设置 URL_LIST，可以用 RTKLIB 默认配置，选择 rtklib 中 data 文件夹下 URL_LIST.txt 文件（我在 bin 版的 rtklib 里没找到，用的源码版的 rtklib 里的文件），加载进来，左边就有了两列内容。
+
+   * OBS 为观测值文件，NAV 为导航电文，EPH 为精密轨道，CLK 精密钟差、ATX 天线文件
+
+   * 做相对定位要下观测值，
+     * 先选择分析中心，IGS、MGES 等。
+
+     * 后在右边选测站，点...把测站加上去，ALIC、KARR
+
+     * 把测站名点选，再点 Download，理论上就可把数据下到指定目录，但会比较慢
+
+       * 可复制 FTP 路径直接进网页下载
+
+       * 要在 Linux 下大量处理，可写脚本
+
+2. 用 RTKGET 做时间转换：输入年月日时分秒，点问号 ？，就可看各种时间，下载观测值需要年积日 DOY，改链接的日期就可下载对应的观测值文件
+
+3. 数据命名格式：测站名（4位）+机构信息+年+年积日+采样间隔，crx 是压缩格式，gz 也是压缩格式，还有一种是 o.z 结尾只进行一次压缩
+
+4. 广播星历文件和精密星历文件：也可用 rtkget 和 ftp下载
+
+### 2、RTKCONV 数据转换
+
+1. 为啥要介绍此模块：老师刚刚拿到了ublox 接收机连天宝天线采集的数据，想分析一下数据的质量。
+2. ublox 通过串口导出的二进制文件，COM3 开头，.ublox 结尾，除了原始观测数据之外还有 NMEA 数据。通过 notepad++ 打开查看，开头乱码是二进制数据，后面是 NMEA 文本格式。
+3. ublox 数据还可用 ucenter 接收机配置软件查看
+4. RTKCONV 使用
+   * 先选择需要转换数据的起止时间，采样率 Interval。
+   * 输入原始数据地址。
+   * 选格式，u-blox、RINEX、RTCM3...，不知道格式可选自动 Auto。
+   * 勾选选输出数据，一般得要obs观测数据，如果实时数据从网上不能在网上下导航电文，需要转换出的 nav 文件。
+   * 配置信息：RINEX 版本号、测站 ID 可以不写、RunBy 可以写自己、天线类型接收机类型有需要可以写，近视坐标，加哪些改正信息，输出哪些系统、观测值类型可都勾上，观测频率，信号通道。
+   * 点 Convert 转换。 
+   * 点 Plot 可以直观展示卫星数据质量
+     * Sat Vis：卫星可见性，选频率，颜色代表信噪比 SNR。
+     * Skyplot：卫星天空视图，站心地平级坐标系，可看出低高度角卫星信号差
+     * DOP：上面是可视卫星数，下面是DOP值
+     * SNR：载噪比、多路径，可选某一颗卫星指定频率，横坐标可选时间、高度角
+
+### 3、RTKPOST 数据后处理
+
+1. 主界面
+   * 设置解算起止时间，解算间隔
+   * 加载 RINEX OBS 数据：Rover 流动站、Base 基准站，右上角点天空图标开 RTKPLOT 看数据状态。基准站整天的数据非常大，截取流动站对应部分即可。
+   * 加载其它数据：NAV、CLK、SP3 等。每个接收机输出的 NAV 只有它能观测到的卫星星历，从网上可下全部所有卫星所有系统的导航电文。
+   * 输出默认在流动站文件路径，后缀为 .pos。 
+2. Options设置
+   * **定位模式**
+     * Single：伪距单点定位
+     * DGPS/DGNSS：伪距差分
+     * Kinematic：载波动态相对定位，动态RTK，假设流动站是移动的，可以做车载定位
+     * Static：载波静态相对定位，静态RTK，两站都是静止的，可以得到很高的精度
+     * Static-Start：冷启动：先在比较开阔的地方，进行短时期的静态定位，模糊度固定，再动起来
+     * Moving-Base：两站都动，主要用来定姿
+     * Fixed：固定坐标，解算模糊度、对流层、电离层等参数
+     * PPP Kinematic、PPP-Static、PPP Fixed
+
+* * **频率**：可选不同频率组合，如L1+L2
+  * **滤波**：前向（后面结果更可靠）、后向（可使刚开始的时候有高的精度）、Combind（正向一个结果，反向一个结果，根据方差加权平均），RTKLIB里除了SPP都用卡尔曼滤波，滤波有一个收敛的过程，后面更准。
+  * **设置截止高度角**：可以看天空视图，如果低高度角数据很差，可设置更高的截止高度角。质量好可以不管，有残差检验也可剔除一些数据。
+  * **设置截止信噪比**：做工程一般环境都不会很好，想做的序列稳定，要设置截止信噪比。RTK有很多算法，但其实传统算法效果已经很好了，算法不用做的太复杂，把数据质量控制做好就行，RTK就不会有太大的问题。
+  * **Rec Dynamics**：动力学模式，选ON会估计速度加速度参数，，选OFF就只估算动态坐标参数
+    * Kinematic动态模式：把位置参数当白噪声估计
+    * Dynamics动力学模型：估计速度、加速度
+  * **RCV、潮汐改正等**：PPP才用的到
+  * **电离层、对流层改正**：双差已经可以消除部分电离层对流层误差，可以关闭此改正，也可以直接采用广播星历的模型改正。RTKLIB做RTK最好用非组合模式，短基线电离层可以关闭，对流层可以用saastamoinen模型直接修正。
+  * **卫星星历**：RTK相对定位距离近可以直接用广播星历，长距离相对定位可选精密星历。
+    * SSR APC：参考天线相位中心
+    * SSR CoM：参考质心，还需要天线相位中心改正
+  * **剔除卫星**：写卫星号，空格隔开，如：C01 C02
+  * **RAIM FDE完好性检验**：算法不是很稳健，不选
+  * **模糊度固定模式ARMODE**
+    * OFF：浮点解，不固定
+    * Continues：认为模糊度是连续解，通过前面历元的解算结果滤波提高后续历元模糊度固定精度。
+    * Instantaneous：瞬时模糊度固定，单历元模糊度固定，每个历元都初始化一个参数，这个历元和上个历元模糊度不相关。
+    * Fix and Hold：先 Continues，在不发生周跳情况下都采用之前模糊度固定的结果作为约束，也有问题：固定错了，时间序列会一直飘，到一定程度变成浮点解，会重置模糊度重新算。
+      * 做工程可做两套，Instantaneous和Fix and Hold，发现 Fix and Hold 错了，就用 Instantaneous 的解把它替换掉，相当于把模糊度和方差初始化了一次，避免漂移和模糊度重新收敛的过程。
+    * PPP-AR：PPP时固定模糊度，不支持，需要额外产品。
+
+  * **Ratio值**：用于检验模糊度是否固定成功，设为 3 即可。
+
+  * **最小LOCK**：连续锁定这颗卫星几次，才用于计算模糊度固定。
+  * **用于模糊度固定的最低高度角设置**：可设15°
+  * **最小Fix**：这个历元最少固定多少个模糊度才认为模糊度是固定的，可设10，现在卫星系统多了，而且组合模式，双频一颗卫星就2个模糊度，5颗卫星固定就能凑10个。
+  * **Fix hold**：选择哪些模糊度固定结果用于约束后续。
+  * **输出结果**：可选LLH、XYZ、ENU、NMEA
+  * **输出解算状态**：可选OFF、Residuals残差、State
+  * **Debug Trace等级**：1-5级，level越高输出越多
+  * **基准站坐标**：可输入、也可选伪距单点定位
+  * **天线类型**：选*，自动获取O文件里的
+
+3. 算完之后
+   * **Plot**：对解算结果可视化分析，黄色没固定，绿色固定
+   * **view**：查看解算结果，类似记事本
+   * **KML**：转为GoogleXML可把地图展示到地图上
+
+> 建议：下静态数据，找动态车载数据，分别处理静态相对定位和处理动态相对定位，设置不同处理模式，分析定位结果的差异。
+
+4. PPP数据处理
+   * 实时PPP：IGS/MGEX分析中心播发的实时卫星轨道和钟差产品，结合广播星历
+   * 事后或近实时：下载精密星历、钟差产品，结合其它精密改正信息实现定位
+   * RTKLIB使用必须给广播星历，因为解算前都会先进行一次伪距单点定位
+
+### 4、SRTSVR 数据流收发
+
+1. 功能概述
+
+   * **TCP Server**：等待来自客户端的连接请求，处理请求并返回结果。
+
+   * **TCP Client**：主动角色，发送连接请求，等待服务器响应。
+
+   * **Ntrip Server**：将本地接收机的 RTCM 数据推送到 Ntrip Caster。
+
+   * **Ntrip Caster**：用户管理和播发 RTCM 数据。
+
+   * **Ntrip Client**：登录 Ntrip Caster 获取 RTCM 数据。
+
+
+2. 界面
+
+   * 一个输入，多个输出
+
+   * 输入输出可以是：Serial，TCP Client、TCP Server、Ntrip Client、Ntrip Server、UDP Server、File、FTP、HTTP
+
+
+3. RTK2GO
+
+   * 相当于免费的 Ntrip Caster，所有的用户都可把自己的数据源上传到 Caster 中，其它的用户都可以用 Caster 接受数据
+
+   * 连接：输入模式选 Ntrip Client，通过网址和端口，点 Ntrip 就会弹出弹出数据源
+
+
+#### 4. 输出
+
+* 点左下角□框，开Input Stream Monitor查看数据流状态，可选很多种格式
+* 输出也可选很多种，比如Ntrip Server可把自己的数据作为Caster，别人可以通过网络接受你的数据，选File把数据存成文件
+
+
+
+## 七、核心代码库
+
+代码库是 RTKLIB 的核心，要不咋能叫"LIB"呢？
+
+RTKLIB 提供许多代码库和 API，包括：卫星和导航系统函数、矩阵和向量函数，时间和字符串函数、坐标的转换，输入和输出函数、调试跟踪函数、平台依赖函数、定位模型、大气模型、天线模型、地球潮汐模型、大地水准面模型、基准转换、RINEX函数、星历和时钟函数、精密星历和时钟、接收机原始数据函数、RTCM函数，解算函数、谷歌地球KML转换、SBAS函数、选项（option）函数、流数据输入和输出函数、整周模糊度解算、标准定位、精密定位、后处理定位（解算）、流服务器函数、RTK服务器函数、下载函数。
+
+头文件 rtklib.h 是库的核心 ，rtklib.h主要有三大部分：**宏定义**、**结构体定义**、**全局变量**、**函数定义**
+
+
+
+>  并不是所有函数都可以直接调用，只有加了 EXPORT 前缀，而且在 RTKLIB.h 中声明了才行。想用 static 前缀的函数也很简单，只需要把前缀改成 EXPORT，然后在 rtklib.h 中加上声明
+
+
+
+### 1、宏定义
+
+
+
+
+
+### 2、结构体定义
+
+
+
+### 3、全局变量
+
+
+
+### 4、函数定义
+
+
+
+
+
+## 七、Navigation-Learning 仓库
+
+在文章的最后，介绍一下我的 GitHub 仓库：[Navigation-Learning](https://github.com/LiZhengXiao99/Navigation-Learning)
+
+
+
+原始 Markdown文档、Visio流程图、XMind思维导图；还会放一些有用的论文、资料在里面，GitHub
+
+
+
+这个仓库会长期更新，
+
+
+
+列的开源代码很多，但其实目前只有 RTKLIB、GAMP、PSINS、GICI、KF-GINS 内容稍微多一点，
+
+
+
+直接下载，想用的话，建议通过 GitHub desktop，
+
+
+
+
+
+
+
+
+
+
+

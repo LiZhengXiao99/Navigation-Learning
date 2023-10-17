@@ -531,7 +531,9 @@ int GIEngine::isToUpdate(double imutime1, double imutime2, double updatetime) co
 }
 ```
 
-> 根据更新时间对齐误差 `TIME_ALIGN_ERR` 评定是否靠近，默认为 0.001，也就是说时间差距在 1ms 内，认为是靠近的。文档和注释都用“靠近”这个词，起始与其说是“靠近”，更像是在说是“重合”。
+> 根据更新时间对齐误差 `TIME_ALIGN_ERR` 评定是否对齐，默认为 0.001，也就是说时间差距在 1ms 内，认为对齐的。
+>
+> KF-GINS 的数据采集的时候进行了时间对齐，每个有 GNSS 数据的时刻正常都应该有一个 IMU 数据，判断出有 GNSS 数据前后 0.001s 都没有 IMU 数据，就说明，插值一个IMU量测到GNSS时刻。
 
 返回 0，表示 GNSS 不在两个 IMU 之间，在当前 IMU 量测之后，那么只进行捷联惯导递推，调用 `insPropagation()` 根据两帧 IMU 量测将状态递推到当前 IMU 时间戳：
 

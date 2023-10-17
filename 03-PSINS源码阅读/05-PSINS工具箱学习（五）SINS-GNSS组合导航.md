@@ -30,15 +30,15 @@ imuadder()：设置误差参数后，向理想的 IMU 数据注入误差
 
 
 
-psinstypedef(nnm)：KF状态维数nn/量测维数m定义（一般可直接用于SINS/GNSS组合），或用户自定义字符串，在kfinit/kffk/kfhk/kfplot等函数中作为类型区分标识
+psinstypedef(nnm)：KF 状态维数 nn/ 量测维数m定义（一般可直接用于SINS/GNSS组合），或用户自定义字符串，在 kfinit/kffk/kfhk/kfplot 等函数中作为类型区分标识
 
-kfinit：滤波器主要参数初始化，再用kfinit0更多的参数初始化
+kfinit：滤波器主要参数初始化，再用 kfinit0 更多的参数初始化
 
-kfsetting：直接设置几种特定类型IMU的滤波器参数
+kfsetting：直接设置几种特定类型 IMU 的滤波器参数
 
-kffk/kfhk：计算状态转移矩阵/量测矩阵，etm惯导误差传播函数
+kffk/kfhk：计算状态转移矩阵/量测矩阵，etm 惯导误差传播函数
 
-kfupdate：KF时间/量测更新，采用序贯量测自适应/方差限制方法
+kfupdate：KF 时间/量测更新，采用序贯量测自适应/方差限制方法
 
 kffeedback：滤波状态反馈，可用部分反馈方法
 
@@ -46,9 +46,9 @@ kfstat：滤波误差分配与可观测度分析
 
 kfplot/xpplot/rvpplot：滤波结果绘图
 
-sinsgps：典型的193或196维SINS/GNSS松组合函数
+sinsgps：典型的193或196维 SINS/GNSS 松组合函数
 
-POSProcessing：343或346维SINS/GNSS双向滤波松组合函数
+POSProcessing：343或346维 SINS/GNSS 双向滤波松组合函数
 
 POSFusion：对双向滤波结果做加权平均，
 

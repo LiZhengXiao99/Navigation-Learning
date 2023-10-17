@@ -1,5 +1,11 @@
 [TOC]
 
+
+
+
+
+
+
 ## 一、伪距单点定位流程
 
 
@@ -248,6 +254,7 @@
   
 
 ### 3、rescode()：残差计算、设计矩阵构建
+
 计算当前迭代的伪距残差 v、设计矩阵 H、伪距残差的方差 var、所有观测卫星的方位角和仰角 azel，定位时有效性 vsat、定位后伪距残差 resp、参与定位的卫星个数 ns 和方程个数 nv 
 
 > `dion`,`dtrp`,`vmeas`,`vion`,`vtrp`四个局部变量没有初始化， 运行时会报错，可赋初值0.0
@@ -295,9 +302,8 @@
 
      ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/8bf06744b5c24e25bb1c543afdaca29b.png)
 
-
-     * 处理不同系统（GPS、GLO、GAL、CMP）之间的时间偏差，修改矩阵`H `。
-     * 调用`varerr()`函数，计算此时的导航系统误差
+ * 处理不同系统（GPS、GLO、GAL、CMP）之间的时间偏差，修改矩阵`H `。
+ * 调用`varerr()`函数，计算此时的导航系统误差
 
    * 为了防止不满秩的情况，把矩阵`H`补满秩了，`H[j+nv*NX]=j==i+3?1.0:0.0; `
 
@@ -452,25 +458,25 @@
 #### 3.geodist()：计算站心几何距离
 计算卫星和当前接收机位置之间的萨格纳克效应改正的几何距离r和接收机到卫星方向的观测矢量。
 
-     ![](https://img-blog.csdnimg.cn/20d04d6662c44f3498de3bd94421c705.png)
+![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/20d04d6662c44f3498de3bd94421c705.png)
+
+ ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/05a3f827642b46b983533b78e9661b34.png)
 
 
-     ![](https://img-blog.csdnimg.cn/05a3f827642b46b983533b78e9661b34.png)
+```c
 
-
-     ```c
-     extern double geodist(const double *rs, const double *rr, double *e)
-     {
-         double r;
-         int i;
-         
-         if (norm(rs,3)<RE_WGS84) return -1.0;   //检查卫星到 WGS84坐标系原点的距离是否大于基准椭球体的长半径。
-         for (i=0;i<3;i++) e[i]=rs[i]-rr[i];     //求卫星和接收机坐标差e[]
-         r=norm(e,3);                            //求未经萨格纳克效应改正的距离
-         for (i=0;i<3;i++) e[i]/=r;  //接收机到卫星的单位向量e[]	(E.3.9)
-         return r+OMGE*(rs[0]*rr[1]-rs[1]*rr[0])/CLIGHT; 	//(E.3.8b)
-     }
-     ```
+ extern double geodist(const double *rs, const double *rr, double *e)
+ {
+     double r;
+     int i;
+     
+     if (norm(rs,3)<RE_WGS84) return -1.0;   //检查卫星到 WGS84坐标系原点的距离是否大于基准椭球体的长半径。
+     for (i=0;i<3;i++) e[i]=rs[i]-rr[i];     //求卫星和接收机坐标差e[]
+     r=norm(e,3);                            //求未经萨格纳克效应改正的距离
+     for (i=0;i<3;i++) e[i]/=r;  //接收机到卫星的单位向量e[]	(E.3.9)
+     return r+OMGE*(rs[0]*rr[1]-rs[1]*rr[0])/CLIGHT; 	//(E.3.8b)
+ }
+```
 
 
 ​     
@@ -478,11 +484,10 @@
  #### 4.satazel()：计算方位角、高度角
  计算卫星方位角`azel[0]`，高度角`azel[1]`，(0.0<=`azel[0]`<2*pi,-pi/2<=`azel[1]`<=pi/2) 
 
-     ![](https://img-blog.csdnimg.cn/b2e252ae8766496a92c99f38490d5bf2.png)
+ ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/b2e252ae8766496a92c99f38490d5bf2.png)
 
 
-     ```c
-     //double *pos      I   geodetic position {lat,lon,h} (rad,m)
+    //double *pos      I   geodetic position {lat,lon,h} (rad,m)
      //double *e        I   receiver-to-satellilte unit vevtor (ecef)
      //double *azel     IO  azimuth/elevation {az,el} (rad) (NULL: no output)
      //                     (0.0<=azel[0]<2*pi,-pi/2<=azel[1]<=pi/2)
@@ -500,7 +505,6 @@
          if (azel) {azel[0]=az; azel[1]=el;}
          return el;
      }
-     ```
 
 
 ​     
@@ -1492,3 +1496,4 @@ extern double tropmodel(gtime_t time, const double *pos, const double *azel,
     return trph+trpw;       //Saastamoinen中对流层延迟为静力学延迟Th湿延迟Tw的和
 }
 ```
+

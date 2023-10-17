@@ -2,8 +2,7 @@
 
 > 参考文章：[小白如何学习GNSS（三）-如何阅读rtklib源码](https://zhuanlan.zhihu.com/p/589140780)、[RTKlib相对定位学习笔记](https://zhuanlan.zhihu.com/p/585236517)
 
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/b32549479b194f7eb5f706b27b22e3c7.png)
-
+![](C:/Users/李郑骁的spin5/Desktop/UWB/b32549479b194f7eb5f706b27b22e3c7.png)
 
 ## 一、RTK算法数据类型
 
