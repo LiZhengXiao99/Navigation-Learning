@@ -435,7 +435,7 @@ static Matrix3d quaternion2matrix(const Quaterniond &quaternion) {
 
 ### 3、matrix2euler()：旋转矩阵转欧拉角
 
-ZYX旋转顺序，前右下的IMU，输出RPY：
+ZYX 旋转顺序，前右下的 IMU，输出 RPY：
 
 ```cpp
 static Vector3d matrix2euler(const Eigen::Matrix3d &dcm) {
@@ -475,7 +475,7 @@ static Vector3d quaternion2euler(const Quaterniond &quaternion) {
 
 ### 5、rotvec2quaternion()：等效旋转矢量转四元数
 
-根据传入的旋转矢量，计算向量的长度作为旋转的角度，计算向量的归一化版本作为旋转的轴，然后调用 AngleAxisd()，将角度和轴转换为四元数。
+根据传入的旋转矢量，计算向量的长度作为旋转的角度，计算向量的归一化版本作为旋转的轴，然后调用 `AngleAxisd()`，将角度和轴转换为四元数。
 
 ```cpp
 static Quaterniond rotvec2quaternion(const Vector3d &rotvec) {
@@ -498,7 +498,7 @@ static Vector3d quaternion2vector(const Quaterniond &quaternion) {
 
 ### 7、euler2matrix()：欧拉角转旋转矩阵
 
-RPY -> $C_b^n$, ZYX顺序：
+三个欧拉角分别转为 ZYX 角轴，相乘之后构造旋转矩阵
 
 ```cpp
 static Matrix3d euler2matrix(const Vector3d &euler) {
@@ -508,13 +508,9 @@ static Matrix3d euler2matrix(const Vector3d &euler) {
 }
 ```
 
+### 8、euler2quaternion()：欧拉角转四元数
 
-
-
-
-### 8、euler2quaternion()：
-
-
+三个欧拉角分别转为 ZYX 角轴，相乘之后构造四元数
 
 ```cpp
 static Quaterniond euler2quaternion(const Vector3d &euler) {
@@ -524,13 +520,7 @@ static Quaterniond euler2quaternion(const Vector3d &euler) {
 }
 ```
 
-
-
-
-
-### 9、skewSymmetric()：
-
-计算向量反对称阵：
+### 9、skewSymmetric()：计算三维向量反对称阵
 
 ```cpp
 static Matrix3d skewSymmetric(const Vector3d &vector) {
@@ -540,13 +530,42 @@ static Matrix3d skewSymmetric(const Vector3d &vector) {
 }
 ```
 
-### 10、quaternionleft()：
+### 10、quaternionleft()、quaternionright()：四元数矩阵
 
 
+$$
+\boldsymbol{P} \circ \boldsymbol{Q}=\left[\begin{array}{cccc}p_{0} & -p_{1} & -p_{2} & -p_{3} \\ p_{1} & p_{0} & -p_{3} & p_{2} \\ p_{2} & p_{3} & p_{0} & -p_{1} \\ p_{3} & -p_{2} & p_{1} & p_{0}\end{array}\right]\left[\begin{array}{l}q_{0} \\ q_{1} \\ q_{2} \\ q_{3}\end{array}\right]=\boldsymbol{M}_{P} \boldsymbol{Q}=\left[\begin{array}{cccc}q_{0} & -q_{1} & -q_{2} & -q_{3} \\ q_{1} & q_{0} & q_{3} & -q_{2} \\ q_{2} & -q_{3} & q_{0} & q_{1} \\ q_{3} & q_{2} & -q_{1} & q_{0}\end{array}\right]\left[\begin{array}{l}p_{0} \\ p_{1} \\ p_{2} \\ p_{3}\end{array}\right]=\boldsymbol{M}_{Q}^{\prime} \boldsymbol{P}
+$$
 
+$$
+\boldsymbol{M}_{P}=\left[\begin{array}{cccc}p_{0} & -p_{1} & -p_{2} & -p_{3} \\ p_{1} & p_{0} & -p_{3} & p_{2} \\ p_{2} & p_{3} & p_{0} & -p_{1} \\ p_{3} & -p_{2} & p_{1} & p_{0}\end{array}\right]=\left[\begin{array}{cc}p_{0} & -\boldsymbol{p}_{v}^{\mathrm{T}} \\ \boldsymbol{p}_{v} & p_{0} \boldsymbol{I}+\left(\boldsymbol{p}_{v} \times\right)\end{array}\right]
+$$
 
+```cpp
+static Eigen::Matrix4d quaternionleft(const Quaterniond &q) {
+    Eigen::Matrix4d ans;
+    ans(0, 0)             = q.w();
+    ans.block<1, 3>(0, 1) = -q.vec().transpose();
+    ans.block<3, 1>(1, 0) = q.vec();
+    ans.block<3, 3>(1, 1) = q.w() * Eigen::Matrix3d::Identity() + skewSymmetric(q.vec());
+    return ans;
+}
+```
 
-### 11、quaternionright()：
+$$
+\boldsymbol{M}_{Q}^{\prime}=\left[\begin{array}{cccc}q_{0} & -q_{1} & -q_{2} & -q_{3} \\ q_{1} & q_{0} & q_{3} & -q_{2} \\ q_{2} & -q_{3} & q_{0} & q_{1} \\ q_{3} & q_{2} & -q_{1} & q_{0}\end{array}\right]=\left[\begin{array}{cc}q_{0} & -\boldsymbol{q}_{v}^{\mathrm{T}} \\ \boldsymbol{q}_{v} & q_{0} \boldsymbol{I}-\left(\boldsymbol{q}_{v} \times\right)\end{array}\right]
+$$
+
+```cpp
+static Eigen::Matrix4d quaternionright(const Quaterniond &p) {
+    Eigen::Matrix4d ans;
+    ans(0, 0)             = p.w();
+    ans.block<1, 3>(0, 1) = -p.vec().transpose();
+    ans.block<3, 1>(1, 0) = p.vec();
+    ans.block<3, 3>(1, 1) = p.w() * Eigen::Matrix3d::Identity() - skewSymmetric(p.vec());
+    return ans;
+}
+```
 
 
 

@@ -2488,13 +2488,13 @@ typedef struct {        /* navigation data type */
 } nav_t;
 ```
 
-
-
 #### 10.traceb()：写入buff缓冲区数据
 
 在 skytraq.c 和 ublox.c 中被调用。
 
   ```c
+
+
 extern void traceb(int level, const uint8_t *p, int n)
 {
     int i;
@@ -2512,9 +2512,151 @@ extern void traceb(int level, const uint8_t *p, int n)
 
 
 
+### 1、
+
+#### 1. solopt_t 结构体：存结果输出选项
+
+![image-20231018181736061](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231018181736061.png)
+
+#### 2. sol_t、solbuf_t：存结果
 
 
 
+```c
+typedef struct {        /* solution type */
+    gtime_t time;       /* time (GPST) */
+    double rr[6];       /* position/velocity (m|m/s) */
+                        /* {x,y,z,vx,vy,vz} or {e,n,u,ve,vn,vu} */
+    float  qr[6];       /* position variance/covariance (m^2) */
+                        /* {c_xx,c_yy,c_zz,c_xy,c_yz,c_zx} or */
+                        /* {c_ee,c_nn,c_uu,c_en,c_nu,c_ue} */
+    float  qv[6];       /* velocity variance/covariance (m^2/s^2) */
+    double dtr[6];      /* receiver clock bias to time systems (s) */
+    uint8_t type;       /* type (0:xyz-ecef,1:enu-baseline) */
+    uint8_t stat;       /* solution status (SOLQ_???) */
+    uint8_t ns;         /* number of valid satellites */
+    float age;          /* age of differential (s) */
+    float ratio;        /* AR ratio factor for valiation */
+    float thres;        /* AR ratio threshold for valiation */
+} sol_t;
+```
+
+* `time`：结果时间。
+* `rr`：结果位置速度，可以存 ECEF 下的 XYZ，也可以存 ENU。
+* `qr`：结果位置的协方差，协方差阵右上和左下是对称的，所以存 6 个元素就行。
+* `qv`：结果速度协方差。
+* `dtr`：接收机钟差。
+* `type`：标识结果是 ECEF 还是 ENU。
+* `stat`：结果种类（单点解、浮点解、固定解）。
+* `ns`：有效卫星数。
+* `age`：差分龄期，相对定位基准站流动站时间差。
+* `ratio`：模糊度固定阈值。
+* `thres`：模糊度固定阈值。
+
+
+
+#### 3. solstat_t、solstatbuf_t 存结果的状态
+
+
+
+```c
+typedef struct {        /* solution status type */
+    gtime_t time;       /* time (GPST) */
+    uint8_t sat;        /* satellite number */
+    uint8_t frq;        /* frequency (1:L1,2:L2,...) */
+    float az,el;        /* azimuth/elevation angle (rad) */
+    float resp;         /* pseudorange residual (m) */
+    float resc;         /* carrier-phase residual (m) */
+    uint8_t flag;       /* flags: (vsat<<5)+(slip<<3)+fix */
+    uint16_t snr;       /* signal strength (*SNR_UNIT dBHz) */
+    uint16_t lock;      /* lock counter */
+    uint16_t outc;      /* outage counter */
+    uint16_t slipc;     /* slip counter */
+    uint16_t rejc;      /* reject counter */
+} solstat_t;
+```
+
+* 结果时间
+
+
+
+
+
+### 2、结果文件头输出
+
+#### 1. outhead
+
+* 如果指定了文件输出路径 outfile，递归创建结构文件，没指定则输出到终端，然后以写的方式打开结果文件。
+* 调用 `outheader` 写文件头内容，写完之后关闭文件。
+
+```c
+static int outhead(const char *outfile, char **infile, int n,
+                   const prcopt_t *popt, const solopt_t *sopt)
+{
+    FILE *fp=stdout;    // fp 默认初始为stdout
+    
+    trace(3,"outhead: outfile=%s n=%d\n",outfile,n);
+    
+    if (*outfile) {
+        createdir(outfile); //递归的创建文件夹
+        
+        if (!(fp=fopen(outfile,"wb"))) {    //wb：以写的方式打开二进制文件
+            showmsg("error : open output file %s",outfile);
+            return 0;
+        }
+    }
+    /* output header */
+    outheader(fp,infile,n,popt,sopt);
+    
+    if (*outfile) fclose(fp);
+    
+    return 1;
+}
+```
+
+#### 4. outheader
+
+* 如果是 NMEA、STAT 格式的结果，不需要输出文件头，直接返回
+* 
+
+* 调用 `outprcopt()` 输出处理选项
+
+* 相对定位模式调用 `outrpos()` 输出基准站坐标
+
+* 调用 `outsolhead()` ，其通过调用 `outsolheads()` 输出结果字段头，如：
+
+  ```c
+  p+=sprintf(p,"%14s%s%14s%s%14s%s%3s%s%3s%s%8s%s%8s%s%8s%s%8s%s%8s%s%8s"
+                "%s%6s%s%6s",
+                "x-ecef(m)",sep,"y-ecef(m)",sep,"z-ecef(m)",sep,"Q",sep,"ns",
+                sep,"sdx(m)",sep,"sdy(m)",sep,"sdz(m)",sep,"sdxy(m)",sep,
+                "sdyz(m)",sep,"sdzx(m)",sep,"age(s)",sep,"ratio");
+  ```
+
+### 3、结果文件体输出
+
+#### 1. outsol
+
+
+
+![image-20231018181248650](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231018181248650.png)
+
+```c
+extern void outsol(FILE *fp, const sol_t *sol, const double *rb,
+                   const solopt_t *opt)
+{
+    uint8_t buff[MAXSOLMSG+1];
+    int n;
+    
+    trace(3,"outsol  :\n");
+    
+    if ((n=outsols(buff,sol,rb,opt))>0) {
+        fwrite(buff,n,1,fp);
+    }
+}
+```
+
+`outsol()` 调用 `outsols()`，然后通过调用 `outpos()`、`outecef()`、`outenu()`、`outnmea_rmc()`、`outnmea_gga()` 来输出对应形式的结果
 
 
 

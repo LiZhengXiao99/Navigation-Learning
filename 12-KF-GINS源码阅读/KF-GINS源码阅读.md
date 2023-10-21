@@ -55,7 +55,7 @@ target_link_libraries(${PROJECT_NAME}
 
 基于 WSL + VScode 编译非常容易，用的几个库都直接放到 ThirdParty 文件夹，并在 CMakeLists 文件中引入了，不用我们再配置。如果已经配置好基础的 C++ 环境（cmake、gcc、gdb），把项目 clone 下来之后，选 KF-GINS 目录的 CMakeLists.txt 作为构建目标直接就能构建、编译成功，调试时能停在 main 函数开头设的断点。
 
-launch.json 中作者已经设置命令行参数为配置文件路径，我们只要改好 config 路径下 kf-gins.yaml 配置文件中的 几个文件路径（imupath、gnsspath、outputpath）和解算时间（starttime、endtime），就可以跑通示例数据了。
+launch.json 中作者已经设置命令行参数为配置文件路径，我们只要改好 config 路径下 kf-gins.yaml 配置文件中的几个文件路径（imupath、gnsspath、outputpath）和解算时间（starttime、endtime），就可以跑通示例数据了。
 
 ## 三、类型定义
 
@@ -80,6 +80,12 @@ launch.json 中作者已经设置命令行参数为配置文件路径，我们�
 ### 5、角度弧度转换静态类：Angle
 
 ![image-20230925182624597](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925182624597.png)
+
+### 6、姿态转静态类：Rotation
+
+![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231020105459334.png)
+
+> Rotation、Earth、Angle 里面都只是写了静态函数，没有用到相关的字段，也可以写成命名空间。写命名空间的话，在源文件开头 using 之后，可以省略前面的 `Rotation::`、`Earth::`。
 
 ## 四、程序执行流程
 
@@ -205,7 +211,7 @@ if (!gnssfile.isOpen() || !imufile.isOpen() || !navfile.isOpen() || !imuerrfile.
 }
 ```
 
-检查处理起止时间是否合理：
+检查处理起止时间是否合理，不能小于 0，不能大于周内秒：
 
 ```cpp
 if (endtime < 0) {
@@ -217,7 +223,7 @@ if (endtime > 604800 || starttime < imufile.starttime() || starttime > endtime) 
 }
 ```
 
-循环调用 `imufile.next()`、`gnssfile.next()` 读取 IMU、GNSS 数据，直到时间戳在解算时间范围内。循环结束后 `imu_cur`、`gnss` 分别存解算时间内第一个IMU、GNSS量测，且文件指针指向的位置也到达解算时间内数据的开头：
+循环调用 `imufile.next()`、`gnssfile.next()` 读取 IMU、GNSS 数据，直到时间戳在解算时间范围内。循环结束后 `imu_cur`、`gnss` 分别存解算时间内第一个 IMU、GNSS 量测，且文件指针指向的位置也到达解算时间内数据的开头：
 
 ```cpp
 IMU imu_cur;
@@ -330,7 +336,7 @@ return 0;
 
 ### 4、配置文件读取
 
-KF-GINS 使用 YMAL 格式的配置文件，通过配置文件可以设置数据文件路径、处理时间段、初始PVA、初始比例零偏、杆臂等。KF-GINS 的配置都是键值对形式的： `键 :值`，设置的时候改后面的值即可。程序执行的时候要把配置文件路径作为命令行参数。下面简单介绍读取流程：
+KF-GINS 使用 YMAL 格式的配置文件，通过配置文件可以设置数据文件路径、处理时间段、初始PVA、初始比例零偏、杆臂等。KF-GINS 的配置都是键值对形式的： `键 :值`，设置的时候改后面的值即可（注意缩进要用空格而不能用 Tab）。程序执行的时候要把配置文件路径作为命令行参数。下面简单介绍读取流程：
 
 在主函数中先调用 yaml-cpp 的接口 `YAML::LoadFile()` 通过 YMAL 配置文件路径，将配置导入为 YMAL 节点 `config`：
 
@@ -413,7 +419,7 @@ try {
 
 ### 5、数据文件读取
 
-KF-GINS 中没有一次性把整个文件都读进来；而是先打开文件，获取文件描述符；然后计算一点，读一点，模仿实时解算。
+KF-GINS 中没有一次性把整个文件都读进来；而是先打开文件，获取文件描述符；然后计算一点，读一点。
 
 在主函数中先构造 `GnssFileLoader`、`ImuFileLoader` 类的对象 `gnssfile`、`imufile`：
 
@@ -485,11 +491,83 @@ while (true) {
     }
 ```
 
-### 6、newImuProcess()：松组合
+### 6、GIEngine 构造函数
+
+传入配置选项来构造，输出配置选项、时间戳置 0、设置协方差矩阵，系统噪声阵和系统误差状态矩阵大小、初始化系统噪声阵，最后调用 initialize() 赋值初始的状态量、协方差。
+$$
+\underset{18 \times 18}{\mathbf{q}}(t)=\left[\begin{array}{cccccc}\mathrm{VRW}^{2} \mathbf{I}_{3 \times 3} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} \\ \mathbf{0} & \mathrm{ARW}^{2} \mathbf{I}_{3 \times 3} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} \\ \mathbf{0} & \mathbf{0} & \frac{2 \sigma_{g b}^{2}}{T_{g b}} \mathbf{I}_{3 \times 3} & \mathbf{0} & \mathbf{0} & \mathbf{0} \\ \mathbf{0} & \mathbf{0} & \mathbf{0} & \frac{2 \sigma_{a b}^{2}}{T_{a b}} \mathbf{I}_{3 \times 3} & \mathbf{0} & \mathbf{0} \\ \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \frac{2 \sigma_{g s}^{2}}{T_{g s}} \mathbf{I}_{3 \times 3} & \mathbf{0} \\ \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \frac{2 \sigma_{a s}^{2}}{T_{a s}} \mathbf{I}_{3 \times 3}\end{array}\right]
+$$
+
+```cpp
+GIEngine::GIEngine(GINSOptions &options) {
+
+    this->options_ = options;
+    options_.print_options();
+    timestamp_ = 0;
+
+    // 设置协方差矩阵，系统噪声阵和系统误差状态矩阵大小
+    // resize covariance matrix, system noise matrix, and system error state matrix
+    Cov_.resize(RANK, RANK);
+    Qc_.resize(NOISERANK, NOISERANK);
+    dx_.resize(RANK, 1);
+    Cov_.setZero();
+    Qc_.setZero();
+    dx_.setZero();
+
+    // 初始化系统噪声阵
+    // initialize noise matrix
+    auto imunoise                   = options_.imunoise;
+    Qc_.block(ARW_ID, ARW_ID, 3, 3) = imunoise.gyr_arw.cwiseProduct(imunoise.gyr_arw).asDiagonal();
+    Qc_.block(VRW_ID, VRW_ID, 3, 3) = imunoise.acc_vrw.cwiseProduct(imunoise.acc_vrw).asDiagonal();
+    Qc_.block(BGSTD_ID, BGSTD_ID, 3, 3) =
+        2 / imunoise.corr_time * imunoise.gyrbias_std.cwiseProduct(imunoise.gyrbias_std).asDiagonal();
+    Qc_.block(BASTD_ID, BASTD_ID, 3, 3) =
+        2 / imunoise.corr_time * imunoise.accbias_std.cwiseProduct(imunoise.accbias_std).asDiagonal();
+    Qc_.block(SGSTD_ID, SGSTD_ID, 3, 3) =
+        2 / imunoise.corr_time * imunoise.gyrscale_std.cwiseProduct(imunoise.gyrscale_std).asDiagonal();
+    Qc_.block(SASTD_ID, SASTD_ID, 3, 3) =
+        2 / imunoise.corr_time * imunoise.accscale_std.cwiseProduct(imunoise.accscale_std).asDiagonal();
+
+    // 设置系统状态(位置、速度、姿态和IMU误差)初值和初始协方差
+    // set initial state (position, velocity, attitude and IMU error) and covariance
+    initialize(options_.initstate, options_.initstate_std);
+}
+
+void GIEngine::initialize(const NavState &initstate, const NavState &initstate_std) {
+
+    // 初始化位置、速度、姿态
+    // initialize position, velocity and attitude
+    pvacur_.pos       = initstate.pos;
+    pvacur_.vel       = initstate.vel;
+    pvacur_.att.euler = initstate.euler;
+    pvacur_.att.cbn   = Rotation::euler2matrix(pvacur_.att.euler);
+    pvacur_.att.qbn   = Rotation::euler2quaternion(pvacur_.att.euler);
+    // 初始化IMU误差
+    // initialize imu error
+    imuerror_ = initstate.imuerror;
+
+    // 给上一时刻状态赋同样的初值
+    // set the same value to the previous state
+    pvapre_ = pvacur_;
+
+    // 初始化协方差
+    // initialize covariance
+    ImuError imuerror_std            = initstate_std.imuerror;
+    Cov_.block(P_ID, P_ID, 3, 3)     = initstate_std.pos.cwiseProduct(initstate_std.pos).asDiagonal();
+    Cov_.block(V_ID, V_ID, 3, 3)     = initstate_std.vel.cwiseProduct(initstate_std.vel).asDiagonal();
+    Cov_.block(PHI_ID, PHI_ID, 3, 3) = initstate_std.euler.cwiseProduct(initstate_std.euler).asDiagonal();
+    Cov_.block(BG_ID, BG_ID, 3, 3)   = imuerror_std.gyrbias.cwiseProduct(imuerror_std.gyrbias).asDiagonal();
+    Cov_.block(BA_ID, BA_ID, 3, 3)   = imuerror_std.accbias.cwiseProduct(imuerror_std.accbias).asDiagonal();
+    Cov_.block(SG_ID, SG_ID, 3, 3)   = imuerror_std.gyrscale.cwiseProduct(imuerror_std.gyrscale).asDiagonal();
+    Cov_.block(SA_ID, SA_ID, 3, 3)   = imuerror_std.accscale.cwiseProduct(imuerror_std.accscale).asDiagonal();
+} 
+```
+
+### 7、newImuProcess()：松组合
 
 ![image-20230929113308389](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230929113308389.png)
 
-这个函数是松组合解算的入口，IMU 量测的频率远远大于 GNSS 量测；所以用 IMU 为基准，得到的系统状态向量和协方差阵是当前 IMU 时间的，每次调用这个函数都会有新 IMU 量测。函数的计算基于当前时刻 IMU 量测和上一时刻 IMU 量测，如果两次量测之间没有 GNSS 数据，就只是进行捷联惯导递推，将系统状态和噪声递推到当前时刻；如果两次量测间有 GNSS 数据，就先捷联惯导递推到 GNSS 时刻，在 GNSS 时刻进行量测更新、误差反馈，最后再捷联惯导递推到当前时刻。
+这个函数是松组合解算的入口，IMU 量测的频率远远大于 GNSS 量测；所以用 IMU 为基准，得到的系统状态向量和协方差阵是当前 IMU 时间的，每次调用这个函数都会取新 IMU 量测。函数的计算基于当前时刻 IMU 量测和上一时刻 IMU 量测，如果两次量测之间没有 GNSS 数据，就只是进行捷联惯导递推，将系统状态和噪声递推到当前时刻；如果两次量测间有 GNSS 数据，就先捷联惯导递推到 GNSS 时刻，在 GNSS 时刻进行量测更新、误差反馈，最后再捷联惯导递推到当前时刻。
 
 ![image-20230925154404051](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925154404051.png)
 
@@ -531,9 +609,10 @@ int GIEngine::isToUpdate(double imutime1, double imutime2, double updatetime) co
 }
 ```
 
-> 根据更新时间对齐误差 `TIME_ALIGN_ERR` 评定是否对齐，默认为 0.001，也就是说时间差距在 1ms 内，认为对齐的。
+> * 根据更新时间对齐误差 `TIME_ALIGN_ERR` 评定是否对齐，默认为 0.001，也就是说时间差距在 1ms 内，认为对齐的。
 >
-> KF-GINS 的数据采集的时候进行了时间对齐，每个有 GNSS 数据的时刻正常都应该有一个 IMU 数据，判断出有 GNSS 数据前后 0.001s 都没有 IMU 数据，就说明，插值一个IMU量测到GNSS时刻。
+> * KF-GINS 的数据采集的时候进行了时间对齐，每个有 GNSS 数据的时刻正常都应该有一个 IMU 数据，判断出有 GNSS 数据前后 0.001s 都没有 IMU 数据，就说明，插值一个IMU量测到GNSS时刻。
+> * 内插的方法不适合实时导航，想实时得外推。
 
 返回 0，表示 GNSS 不在两个 IMU 之间，在当前 IMU 量测之后，那么只进行捷联惯导递推，调用 `insPropagation()` 根据两帧 IMU 量测将状态递推到当前 IMU 时间戳：
 
@@ -759,7 +838,7 @@ static Vector3d blh(const Quaterniond &qne, double height) {
 }
 ```
 
-### 7、blh2ecef()：大地坐标(纬度、经度和高程)转地心地固坐标
+### 7、blh2ecef()：大地坐标(经纬高)转地心地固坐标
 
 $$
 \begin{array}{l}x=\left(R_{N}+h\right) \cos L \cos \lambda \\ y=\left(R_{N}+h\right) \cos L \sin \lambda \\ z=\left[R_{N}\left(1-e^{2}\right)+h\right] \sin L\end{array}
@@ -811,7 +890,13 @@ static Vector3d ecef2blh(const Vector3d &ecef) {
 }
 ```
 
-### 8、DRi()：n系相对位置转大地坐标相对位置
+### 8、DRi()： 计算 n 系相对位置转大地坐标相对位置的矩阵
+
+通过算出来的矩阵实现 ENU 和 LLH 之间的转换：
+
+* 捷联惯导求出的速度是 n 系的，要转成经纬度增量就得用这个矩阵。
+* 杆臂误差补偿时也需要用这个函数，因为杆臂是 n 系的，算出的 IMU 坐标和给的 GNSS 解都是经纬高。
+* 存的位置是经纬高，GNSS 量测更新时候计算的是 ENU 下位置的增量，反馈的时候也需要此矩阵。
 
 $$
 \left[\begin{array}{l}\delta \varphi \\ \delta L \\ \delta H\end{array}\right]=\left[\begin{array}{ccc}\left(R_{M}+H\right)^{-1} & 0 & 0 \\ 0 & \left(R_{N}+H\right)^{-1} & 0 \\ 0 & 0 & -1 \end{array}\right]\left[\begin{array}{l}\delta \boldsymbol{p}_{N} \\ \delta \boldsymbol{p}_{E} \\ \delta \boldsymbol{p}_{B}\end{array}\right]
@@ -831,10 +916,11 @@ static Matrix3d DRi(const Vector3d &blh) {
 }
 ```
 
-### 9、DR()：大地坐标相对位置转n系相对位置
+### 9、DR()：计算大地坐标相对位置转 n 系相对位置的矩阵
 
+就是上面 `DRI()` 计算矩阵的倒数。
 $$
-\left[\begin{array}{l}\delta \varphi \\ \delta L \\ \delta H\end{array}\right]=\left[\begin{array}{ccc}\left(R_{M}+H\right)^{-1} & 0 & 0 \\ 0 & \left(R_{N}+H\right)^{-1} & 0 \\ 0 & 0 & -1 \end{array}\right]\left[\begin{array}{l}\delta \boldsymbol{p}_{N} \\ \delta \boldsymbol{p}_{E} \\ \delta \boldsymbol{p}_{B}\end{array}\right]
+\left[\begin{array}{l}\delta \varphi \\ \delta L \\ \delta H\end{array}\right]=\left[\begin{array}{ccc}\left(R_{M}+H\right) & 0 & 0 \\ 0 & \left(R_{N}+H\right) & 0 \\ 0 & 0 & -1 \end{array}\right]\left[\begin{array}{l}\delta \boldsymbol{p}_{N} \\ \delta \boldsymbol{p}_{E} \\ \delta \boldsymbol{p}_{B}\end{array}\right]
 $$
 
 ```cpp
@@ -957,7 +1043,165 @@ static Vector3d enwn(const Vector3d &origin, const Vector3d &local, const Vector
 }
 ```
 
-## 六、捷联惯导更新：insPropagation()
+## 六、Rotation 类：姿态转换
+
+![image-20231020105459334](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231020105459334.png)
+
+### 1、matrix2quaternion()：旋转矩阵转四元数
+
+Eigen 中的四元数可以直接传入旋转矩阵（三维矩阵）构造：
+
+```cpp
+static Quaterniond matrix2quaternion(const Matrix3d &matrix) {
+    return Quaterniond(matrix);
+}
+```
+
+### 2、quaternion2matrix()：四元数转旋转矩阵
+
+四元数调用 `toRotationMatrix()` 函数，转为旋转矩阵：
+
+```cpp
+static Matrix3d quaternion2matrix(const Quaterniond &quaternion) {
+    return quaternion.toRotationMatrix();
+}
+```
+
+### 3、matrix2euler()：旋转矩阵转欧拉角
+
+ZYX 旋转顺序，前右下的 IMU，输出 RPY：
+
+```cpp
+static Vector3d matrix2euler(const Eigen::Matrix3d &dcm) {
+    Vector3d euler;
+
+    euler[1] = atan(-dcm(2, 0) / sqrt(dcm(2, 1) * dcm(2, 1) + dcm(2, 2) * dcm(2, 2)));
+
+    if (dcm(2, 0) <= -0.999) {
+        euler[0] = atan2(dcm(2, 1), dcm(2, 2));
+        euler[2] = atan2((dcm(1, 2) - dcm(0, 1)), (dcm(0, 2) + dcm(1, 1)));
+    } else if (dcm(2, 0) >= 0.999) {
+        euler[0] = atan2(dcm(2, 1), dcm(2, 2));
+        euler[2] = M_PI + atan2((dcm(1, 2) + dcm(0, 1)), (dcm(0, 2) - dcm(1, 1)));
+    } else {
+        euler[0] = atan2(dcm(2, 1), dcm(2, 2));
+        euler[2] = atan2(dcm(1, 0), dcm(0, 0));
+    }
+
+    // heading 0~2PI
+    if (euler[2] < 0) {
+        euler[2] = M_PI * 2 + euler[2];
+    }
+
+    return euler;
+}
+```
+
+### 4、quaternion2euler()：四元数转欧拉角
+
+先调用 `toRotationMatrix()` 转为旋转矩阵，再调用 `matrix2euler()` 转欧拉角：
+
+```cpp
+static Vector3d quaternion2euler(const Quaterniond &quaternion) {
+    return matrix2euler(quaternion.toRotationMatrix());
+}
+```
+
+### 5、rotvec2quaternion()：等效旋转矢量转四元数
+
+根据传入的旋转矢量，计算向量的长度作为旋转的角度，计算向量的归一化版本作为旋转的轴，然后调用 `AngleAxisd()`，将角度和轴转换为四元数。
+
+```cpp
+static Quaterniond rotvec2quaternion(const Vector3d &rotvec) {
+    double angle = rotvec.norm();       // 计算向量的长度作为旋转的角度
+    Vector3d vec = rotvec.normalized(); // 计算向量的归一化版本作为旋转的轴
+    return Quaterniond(Eigen::AngleAxisd(angle, vec));  // 调用 AngleAxisd()，将角度和轴转换为四元数
+}
+```
+
+## 6、quaternion2vector()：四元数转旋转矢量
+
+传入的四元数通过 Eigen::AngleAxisd 类的构造函数转换为角度轴（angle-axis）表示。角度轴是一个描述旋转的方法，其中旋转角度和旋转轴是两个独立的部分。然后，该函数返回这个角度轴表示的旋转的角度乘以旋转的轴，得到一个三维向量。这个向量的 x、y 和 z 分量分别对应于旋转轴在x、y 和 z 轴上的分量，而其长度（或者说范数）等于旋转角度。
+
+```cpp
+static Vector3d quaternion2vector(const Quaterniond &quaternion) {
+    Eigen::AngleAxisd axisd(quaternion);
+    return axisd.angle() * axisd.axis();
+}
+```
+
+### 7、euler2matrix()：欧拉角转旋转矩阵
+
+三个欧拉角分别转为 ZYX 角轴，相乘之后构造旋转矩阵
+
+```cpp
+static Matrix3d euler2matrix(const Vector3d &euler) {
+    return Matrix3d(Eigen::AngleAxisd(euler[2], Vector3d::UnitZ()) *
+                    Eigen::AngleAxisd(euler[1], Vector3d::UnitY()) *
+                    Eigen::AngleAxisd(euler[0], Vector3d::UnitX()));
+}
+```
+
+### 8、euler2quaternion()：欧拉角转四元数
+
+三个欧拉角分别转为 ZYX 角轴，相乘之后构造四元数
+
+```cpp
+static Quaterniond euler2quaternion(const Vector3d &euler) {
+    return Quaterniond(Eigen::AngleAxisd(euler[2], Vector3d::UnitZ()) *
+                       Eigen::AngleAxisd(euler[1], Vector3d::UnitY()) *
+                       Eigen::AngleAxisd(euler[0], Vector3d::UnitX()));
+}
+```
+
+### 9、skewSymmetric()：计算三维向量反对称阵
+
+```cpp
+static Matrix3d skewSymmetric(const Vector3d &vector) {
+    Matrix3d mat;
+    mat << 0, -vector(2), vector(1), vector(2), 0, -vector(0), -vector(1), vector(0), 0;
+    return mat;
+}
+```
+
+### 10、quaternionleft()、quaternionright()：四元数矩阵
+
+
+$$
+\boldsymbol{P} \circ \boldsymbol{Q}=\left[\begin{array}{cccc}p_{0} & -p_{1} & -p_{2} & -p_{3} \\ p_{1} & p_{0} & -p_{3} & p_{2} \\ p_{2} & p_{3} & p_{0} & -p_{1} \\ p_{3} & -p_{2} & p_{1} & p_{0}\end{array}\right]\left[\begin{array}{l}q_{0} \\ q_{1} \\ q_{2} \\ q_{3}\end{array}\right]=\boldsymbol{M}_{P} \boldsymbol{Q}=\left[\begin{array}{cccc}q_{0} & -q_{1} & -q_{2} & -q_{3} \\ q_{1} & q_{0} & q_{3} & -q_{2} \\ q_{2} & -q_{3} & q_{0} & q_{1} \\ q_{3} & q_{2} & -q_{1} & q_{0}\end{array}\right]\left[\begin{array}{l}p_{0} \\ p_{1} \\ p_{2} \\ p_{3}\end{array}\right]=\boldsymbol{M}_{Q}^{\prime} \boldsymbol{P}
+$$
+
+$$
+\boldsymbol{M}_{P}=\left[\begin{array}{cccc}p_{0} & -p_{1} & -p_{2} & -p_{3} \\ p_{1} & p_{0} & -p_{3} & p_{2} \\ p_{2} & p_{3} & p_{0} & -p_{1} \\ p_{3} & -p_{2} & p_{1} & p_{0}\end{array}\right]=\left[\begin{array}{cc}p_{0} & -\boldsymbol{p}_{v}^{\mathrm{T}} \\ \boldsymbol{p}_{v} & p_{0} \boldsymbol{I}+\left(\boldsymbol{p}_{v} \times\right)\end{array}\right]
+$$
+
+```cpp
+static Eigen::Matrix4d quaternionleft(const Quaterniond &q) {
+    Eigen::Matrix4d ans;
+    ans(0, 0)             = q.w();
+    ans.block<1, 3>(0, 1) = -q.vec().transpose();
+    ans.block<3, 1>(1, 0) = q.vec();
+    ans.block<3, 3>(1, 1) = q.w() * Eigen::Matrix3d::Identity() + skewSymmetric(q.vec());
+    return ans;
+}
+```
+
+$$
+\boldsymbol{M}_{Q}^{\prime}=\left[\begin{array}{cccc}q_{0} & -q_{1} & -q_{2} & -q_{3} \\ q_{1} & q_{0} & q_{3} & -q_{2} \\ q_{2} & -q_{3} & q_{0} & q_{1} \\ q_{3} & q_{2} & -q_{1} & q_{0}\end{array}\right]=\left[\begin{array}{cc}q_{0} & -\boldsymbol{q}_{v}^{\mathrm{T}} \\ \boldsymbol{q}_{v} & q_{0} \boldsymbol{I}-\left(\boldsymbol{q}_{v} \times\right)\end{array}\right]
+$$
+
+```cpp
+static Eigen::Matrix4d quaternionright(const Quaterniond &p) {
+    Eigen::Matrix4d ans;
+    ans(0, 0)             = p.w();
+    ans.block<1, 3>(0, 1) = -p.vec().transpose();
+    ans.block<3, 1>(1, 0) = p.vec();
+    ans.block<3, 3>(1, 1) = p.w() * Eigen::Matrix3d::Identity() - skewSymmetric(p.vec());
+    return ans;
+}
+```
+
+## 七、捷联惯导更新：insPropagation()
 
 ![image-20230922181230280](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230922181230280.png)
 
@@ -977,7 +1221,7 @@ imuCompensate(imucur);
 INSMech::insMech(pvapre_, pvacur_, imupre, imucur);
 ```
 
-之后一大段是噪声传播，后面详细介绍。
+之后一大段是误差传播，后面详细介绍。
 
 ### 2、imuCompensate()：IMU数据误差补偿
 
@@ -1020,11 +1264,9 @@ void INSMech::insMech(const PVA &pvapre, PVA &pvacur, const IMU &imupre, const I
 }
 ```
 
-值得一提的是：
-
-* PVA 更新都是先计算中间时刻，再由此计算当前时刻。
-* 位置更新中：先计算 n 系到 e 系旋转四元数，再调用 `blh()`计算经纬度。
-* 我觉得因为 PVA 写成三个函数，部分计算过程有重复，写在同一个函数实现能更简洁一些。
+> * PVA 更新都是先计算中间时刻的速度位置，进而计算中间时刻地球相关参数，再由此计算当前时刻 PVA；我觉得相比直接用上一时刻地球相关参数计算当前 PVA，精度提升不大。
+> * 位置更新中：先计算 n 系到 e 系旋转四元数，再调用 `blh()`计算经纬度。
+> * 我觉得因为 PVA 写成三个函数，部分计算过程有重复，写在同一个函数实现能更简洁一些。
 
 ### 4、velUpdate()：速度更新
 
@@ -1402,7 +1644,23 @@ pvacur.att.cbn   = Rotation::quaternion2matrix(pvacur.att.qbn);
 pvacur.att.euler = Rotation::matrix2euler(pvacur.att.cbn);
 ```
 
-### 7、噪声传播
+### 7、误差传播
+
+就是协方差的更新：
+
+* 先构造连续时间的 $F$ 矩阵，离散化得到状态转移矩阵 $\boldsymbol{\Phi}_{k / k-1}=\boldsymbol{I}+\boldsymbol{F}_{k-1} \Delta t_{k}$ ，
+
+* `gi_engine` 初始化的用角速度随机游走 arw、加速度随机游走 vrw，角速度零偏白噪声、加速度零偏白噪声、角速度比例、加速度零偏比例构造了恒定的 $18$ 维噪声阵 `Qc_`。然后每次惯导更新的时候计算一个 $21 \times 18$ 维 噪声驱动阵 `G` ，计算得到噪声阵。
+  $$
+  \boldsymbol{Q}_{k}=\left(\begin{array}{c}\boldsymbol{\Phi}_{k / k-1} \boldsymbol{G}_{k-1} \boldsymbol{q}_{k-1} \boldsymbol{G}_{k-1}^{T} \boldsymbol{\Phi}_{k / k-1}^{T} \\ +\boldsymbol{G}_{k} \boldsymbol{q}_{k} \boldsymbol{G}_{k}^{T}\end{array}\right) \Delta t_{k} / 2
+  $$
+
+* 用状态转移矩阵和噪声阵卡尔曼滤波时间更新协方差阵 `cov_` 和状态向量 `dx_`，如果误差反馈状态向量是 0，无需更新。
+  $$
+  \begin{aligned} \boldsymbol{x}_{k / k-1} & =\boldsymbol{\Phi}_{k / k-1} \boldsymbol{x}_{k-1} \\ \boldsymbol{P}_{k / k-1} & =\boldsymbol{\Phi}_{k / k-1} \boldsymbol{P}_{k-1} \boldsymbol{\Phi}_{k / k-1}^{T}+\boldsymbol{Q}_{k}\end{aligned}
+  $$
+
+下面介绍具体公式和代码：
 
 在 `insPropagation()` 函数中，IMU状态更新之后进行。
 
@@ -1624,6 +1882,8 @@ $$
 \begin{aligned} \boldsymbol{x}_{k / k-1} & =\boldsymbol{\Phi}_{k / k-1} \boldsymbol{x}_{k-1} \\ \boldsymbol{P}_{k / k-1} & =\boldsymbol{\Phi}_{k / k-1} \boldsymbol{P}_{k-1} \boldsymbol{\Phi}_{k / k-1}^{T}+\boldsymbol{Q}_{k}\end{aligned}
 $$
 
+如果误差反馈了，那 x 应该是 0 ，无须再计算。
+
 ```C++
 EKFPredict(Phi, Qd);
 ```
@@ -1641,7 +1901,7 @@ void GIEngine::EKFPredict(Eigen::MatrixXd &Phi, Eigen::MatrixXd &Qd) {
 }
 ```
 
-## 七、GNSS 量测更新、系统状态反馈
+## 八、GNSS 量测更新、系统状态反馈
 
 ### 1、gnssUpdate()：GNSS 量测更新
 
@@ -1660,7 +1920,7 @@ Dr          = Earth::DR(pvacur_.pos);
 antenna_pos = pvacur_.pos + Dr_inv * pvacur_.att.cbn * options_.antlever;
 ```
 
-计算位置观测向量：IMU 预测天线位置减去 GNSS 观测位置：
+计算位置观测向量：IMU 预测天线位置减去 GNSS 观测位置，得到经纬高的差值，乘以 $D_R$ 转为 NED 差值：
 $$
 \boldsymbol{z}_{r}=\boldsymbol{D}_{R}\left(\hat{\boldsymbol{r}}_{G}-\tilde{\boldsymbol{r}}_{G}\right)
 $$
@@ -1672,7 +1932,7 @@ Eigen::MatrixXd dz;
 dz = Dr * (antenna_pos - gnssdata.blh);
 ```
 
-构造 GNSS 位置观测矩阵：
+构造 GNSS 位置观测矩阵，姿态处是姿态乘以杆臂误差，位置处是单位阵：
 $$
 \boldsymbol{H}_{r}=\left[\begin{array}{lllllll}\boldsymbol{I}_{3} & 0_{3} & \left(\boldsymbol{C}_{b}^{n} \boldsymbol{l}^{b}\right) \times & 0_{3} & 0_{3} & 0_{3} & 0_{3}\end{array}\right]
 $$
@@ -1696,7 +1956,7 @@ Eigen::MatrixXd R_gnsspos;
 R_gnsspos = gnssdata.std.cwiseProduct(gnssdata.std).asDiagonal();
 ```
 
-得到观测向量**z**，观测矩阵**H**, 观测噪声矩阵**R**后，调用 `EKFUpdate()`，量测更新：
+得到观测向量 **z**，观测矩阵 **H**, 观测噪声矩阵 **R** 后，调用 `EKFUpdate()`，量测更新：
 
 ```cpp
 EKFUpdate(dz, H_gnsspos, R_gnsspos);
@@ -1711,6 +1971,8 @@ gnssdata.isvalid = false;
 ### 2、EKFUpdate()：EKF 更新协方差和误差状态
 
 判断矩阵维度是否合理，不合理直接退出程序：
+
+> 这几行 assert 可能是为了调试方便，能显示出哪两个矩阵维数不对。
 
 ```cpp
 assert(H.cols() == Cov_.rows());
@@ -1753,6 +2015,9 @@ Cov_ = I * Cov_ * I.transpose() + K * R * K.transpose();
 ### 3、stateFeedback()：状态反馈
 
 想清楚卡尔曼滤波到底算的是什么，考虑到底是加还是减。零偏、比例因子残差是加、速度位置残差是减，反馈之后误差状态置 0：
+
+* 位置反馈要乘以 `DRi()`，因为估计的位置增量是 ENU，要转为 LLH 增量。
+* 姿态反馈首先要把算出的等效旋转矢量增量转为四元数，然后左乘这个四元数。
 
 ```cpp
 void GIEngine::stateFeedback() {
@@ -1798,9 +2063,9 @@ void GIEngine::stateFeedback() {
 }
 ```
 
-## 八、KF-GINS常见问题
+## 九、KF-GINS常见问题
 
-> 复制自PPT
+> 复制自 PPT
 
 ### KF-GINS能够达到怎么样的定位精度？
 
@@ -1826,9 +2091,7 @@ GNSS丢失期间IMU误差项不更新，但是可以**利用之前估计的IMU�
 
 ### IMU数据，如何从速率形式转到增量形式？
 
-一般采用更高频率速率数据积分得到增量数据，参考：[新手入门系列4——MEMS IMU**原始数**](http://www.i2nav.cn/index/newListDetail_zw.do?newskind_id=13a8654e060c40c69e5f3d4c13069078&newsinfo_id=2e05f5cdac6b4725b8bfe54a689c7add)
-
-**据采集和时间同步**的那些坑(i2Nav网站)
+一般采用更高频率速率数据积分得到增量数据，参考：[新手入门系列4——MEMS IMU**原始数据采集和时间同步**的那些坑(i2Nav网站)](http://www.i2nav.cn/index/newListDetail_zw.do?newskind_id=13a8654e060c40c69e5f3d4c13069078&newsinfo_id=2e05f5cdac6b4725b8bfe54a689c7add)
 
 ### IMU零偏和比例因子建模时相关时间如何给定？
 
