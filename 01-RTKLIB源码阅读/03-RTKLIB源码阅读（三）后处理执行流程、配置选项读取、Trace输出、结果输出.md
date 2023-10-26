@@ -1660,6 +1660,8 @@ extern int rtkpos(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
 
 ## 二、Option/Configuration文件读取
 
+![image-20231024152747192](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231024152747192.png)
+
 ### 1、Option文件格式介绍
 
 * 配置文件包含了processing options、solution options、file options三大块，用于RTKNAVI、RTKPOST、RTKRCV、RNX2RTKP。
@@ -2232,23 +2234,9 @@ extern void setsysopts(const prcopt_t *prcopt, const solopt_t *solopt,
 
 ## 三、Trace 输出
 
-> 在 rtklib.h 中加入 #define TRACE，启用 trace ，不定义则将 trace 函数全赋空值，如下：
+> 在 rtklib.h 中加入 #define TRACE，启用 trace ，不定义则将 trace 函数全赋空值：
 
-```c
-extern void traceopen(const char *file) {}
-extern void traceclose(void) {}
-extern void tracelevel(int level) {}
-extern void trace   (int level, const char *format, ...) {}
-extern void tracet  (int level, const char *format, ...) {}
-extern void tracemat(int level, const double *A, int n, int m, int p, int q) {}
-extern void traceobs(int level, const obsd_t *obs, int n) {}
-extern void tracenav(int level, const nav_t *nav) {}
-extern void tracegnav(int level, const nav_t *nav) {}
-extern void tracehnav(int level, const nav_t *nav) {}
-extern void tracepeph(int level, const nav_t *nav) {}
-extern void tracepclk(int level, const nav_t *nav) {}
-extern void traceb  (int level, const uint8_t *p, int n) {}
-```
+![image-20231024152507571](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231024152507571.png)
 
 ### 1、rtkcmn.c关于trace的静态全局变量
 
@@ -2493,8 +2481,6 @@ typedef struct {        /* navigation data type */
 在 skytraq.c 和 ublox.c 中被调用。
 
   ```c
-
-
 extern void traceb(int level, const uint8_t *p, int n)
 {
     int i;
@@ -2510,13 +2496,13 @@ extern void traceb(int level, const uint8_t *p, int n)
 
 ## 四、结果输出
 
+![image-20231024152344219](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231024152344219.png)
 
-
-### 1、
+### 1、结果相关
 
 #### 1. solopt_t 结构体：存结果输出选项
 
-![image-20231018181736061](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231018181736061.png)
+![image-20231025204536781](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231025204536781.png)
 
 #### 2. sol_t、solbuf_t：存结果
 
@@ -2555,7 +2541,7 @@ typedef struct {        /* solution type */
 
 
 
-#### 3. solstat_t、solstatbuf_t 存结果的状态
+#### 3. solstat_t、solstatbuf_t 存结算的状态
 
 
 
@@ -2576,7 +2562,18 @@ typedef struct {        /* solution status type */
 } solstat_t;
 ```
 
-* 结果时间
+* time：结果时间
+* sat：连续卫星编号 satellite number
+* frq：频率号
+* az,el：高度角、方位角
+* resp：伪距残差
+* resc：载波相位残差
+* flag：
+* snr：
+* lock：
+* outc：
+* slipc：
+* rejc：
 
 
 
@@ -2657,6 +2654,12 @@ extern void outsol(FILE *fp, const sol_t *sol, const double *rb,
 ```
 
 `outsol()` 调用 `outsols()`，然后通过调用 `outpos()`、`outecef()`、`outenu()`、`outnmea_rmc()`、`outnmea_gga()` 来输出对应形式的结果
+
+
+
+
+
+### 4、
 
 
 

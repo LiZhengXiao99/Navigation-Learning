@@ -8,22 +8,43 @@
 
 
 
+基于图优化的 IMU/GNSS 松组合解算，IMU 预积分算法相比以视觉为主的 ORB-SLAM3、VINS 要精细一些，
 
+开源地址：https://github.com/i2Nav-WHU/OB_GINS
 
-### 2、相关资料
+### 2、相关论文
 
+* Hailiang Tang, Tisheng Zhang, Xiaoji Niu, Jing Fan, and Jingnan Liu, “Impact of the Earth Rotation Compensation on MEMS-IMU Preintegration of Factor Graph Optimization,” *IEEE Sensors Journal*, 2022. [下载](http://www.i2nav.com/ueditor/jsp/upload/file/20220801/1659348408510061111.pdf)
 
+  > **摘要翻译**：
+  >
+  > * 在基于滤波的 GNSS/INS 组合导航系统中，精密的 IMU 机械编排需要考虑到地球自转、牵连角速度、科氏加速度等的影响；然而大多数的图优化框架中的 IMU 预积分模型都没有考虑这些因素。
+  > * 我们提出了一种进行了地球自转补偿的滑动窗口图优化 GNSS/INS 组合导航算法，并且评估了地球自转等对MEMS-IMU预积分的影响。
+  > * 测试了 GNSS 量测缺失，采用了有效的方法对预积分结果进行评价。结果表明，此方法预积分的精度与精密机械编排的精度相当；相比之下，IMU 在不补偿地球自转的情况下，预积分的精度显著低于机械编排的精度，有显著的精度降级。
+  > * 当 GNSS 中断时间为 60 秒时，工业级 MEMS 的降级可能为 200% 模块，消费级 MEMS 芯片超过 10%。此外，如果 GNSS 中断时间更长，精度降级还会更显著。
 
-* 开源地址：https://github.com/i2Nav-WHU/OB_GINS
+* Junxiang Jiang, Xiaoji Niu, and Jingnan Liu, “Improved IMU Preintegration with Gravity Change and Earth Rotation for Optimization-Based GNSS/VINS,” *Remote Sensing*, vol. 12, no. 18, p. 3048, Sep. 2020, doi: [10.3390/rs12183048](https://doi.org/10.3390/rs12183048). [下载](https://sci-hub.se/10.3390/rs12183048)
 
-* 相关论文：
+  > **摘要翻译**：
+  >
+  > * IMU 预积分技术广泛用于图优化框架的多源融合定位解算中，它可以避免高频率的 IMU 量测数据在迭代计算中重复积分，并且在偏差估计发生变化时保持偏差校正的能力。
+  > * 自从 IMU 预积分被提出后，陆续有一些改变姿态参数和数值积分方法增强版本的算法被设计出来，然而这些版本都没有考虑到重力和地球自转。
+  > * 在本文提出的算法中，我们利用了基于大地经纬高算出的重力向量，且预积分 IMU 测量的不确定性没有使用协方差矩阵，而是以平方根信息矩阵（SRIM）的形式传播，以获得更好的数值稳定性，并且易于在基于优化的框架中使用。
+  > * 为了评估算法的精度，我们使用了两种级别的 IMU 数据进行测试，测试结果表明，改进的IMU预集成算法能够很好地应对重力变化和地球自转。当处理能有效感知地球自转的高级 IMU 的数据时，必须考虑地球自转。
+  > * 如果忽略重力的变化，水平姿态的均方根误差（RMSE）大约是 1.38  倍的大地位移；此外，定位 RMSE 也不在有限的范围内；这意味着几十公里和几百米的实验中分别使用的低级别和高级 IMU。
 
-  * Hailiang Tang, Tisheng Zhang, Xiaoji Niu, Jing Fan, and Jingnan Liu, “Impact of the Earth Rotation Compensation on MEMS-IMU Preintegration of Factor Graph Optimization,” *IEEE Sensors Journal*, 2022. [下载](http://www.i2nav.com/ueditor/jsp/upload/file/20220801/1659348408510061111.pdf)
+* Le Chang, Xiaoji Niu, and Tianyi Liu, “GNSS/IMU/ODO/LiDAR-SLAM Integrated Navigation System Using IMU/ODO Pre-Integration,” *Sensors*, vol. 20, no. 17, p. 4702, Aug. 2020, doi: [10.3390/s20174702](https://doi.org/10.3390/s20174702). [下载](https://www.mdpi.com/1424-8220/20/17/4702/pdf)
 
-  * Le Chang, Xiaoji Niu, and Tianyi Liu, “GNSS/IMU/ODO/LiDAR-SLAM Integrated Navigation System Using IMU/ODO Pre-Integration,” *Sensors*, vol. 20, no. 17, p. 4702, Aug. 2020, doi: [10.3390/s20174702](https://doi.org/10.3390/s20174702). [下载](https://www.mdpi.com/1424-8220/20/17/4702/pdf)
-
-  * Junxiang Jiang, Xiaoji Niu, and Jingnan Liu, “Improved IMU Preintegration with Gravity Change and Earth Rotation for Optimization-Based GNSS/VINS,” *Remote Sensing*, vol. 12, no. 18, p. 3048, Sep. 2020, doi: [10.3390/rs12183048](https://doi.org/10.3390/rs12183048). [https://sci-hub.se/10.3390/rs12183048](https://sci-hub.se/10.3390/rs12183048)
-
+  > **摘要翻译**：
+  >
+  > * 在本文，我们提出一套 GNSS/IMU/ODO/Lidar-SLAM 融合导航定位算法。
+  > * **前端**进行航位推算，进行 IMU/ODO 预积分。**后端**通过图优化对 GNSS 坐标、IMU/ODO 预积分结果、LiDAR-SLAM 得出的相对位置和姿态进行融合。
+  > * **里程计**信息用于降低 IMU 预积分算法中的**漂移率**。**滑动窗口**算法可以通过减少图优化的参数，来**降低**图优化的**计算量**。
+  > * 分别在露天区域和隧道情况下进行车辆数据测试；测试结果表明，所提出的导航系统可以有效地提高导航的精确度和鲁棒性。
+  > * 在模拟两分钟 GNSS 中断期间，相比传统的 GNSS/INS（惯性导航系统）/ODO组合算法， 北东地的 RMS 分别下降62.8%、72.3%、52.1%。此外，与GNSS/IMU/激光雷达SLAM集成相比，误差降低了62.1%导航系统，里程表和非完整约束的辅助下减少垂直误差为 72.3%。
+  > * 在实际隧道案例中的测试表明，在弱环境特征区域激光雷达 SLAM 几乎不能工作，里程计在预集成中的辅助作用至关重要，并且可以有效地减少沿正向方向的定位漂移并保持 SLAM 短期内有效。
+  > * 因此，提出的 GNSS/IMU/ODO/Lidar-SLAM 组合导航系统可以有效地融合来自多个来源的信息，以维护 SLAM 过程显著降低导航误差，尤其是在 GNSS 信号严重的恶劣地区退化和环境特征不足以用于激光雷达 SLAM。
+  >
 
 
 
@@ -40,6 +61,10 @@
 
 
 ### 4、第三方库
+
+
+
+### 5、重点函数
 
 
 
@@ -61,515 +86,251 @@
 
 
 
+
+
 ### 2、main 函数
 
-OB-GINS 主函数很长，将近 500 行。
+OB-GINS 主函数很长，将近 500 行，可以分为三部分：
+
+* while 循环解算前：读取配置文件、创建解算对象，赋值初始的状态量，进行一次初始预积分。
+* while 循环解算：
+* while 循环解算后：释放创建的对象，输出解算时间。
 
 
 
-
-
-
-
-
-
-## 五、Earth 类：地球参数和坐标转换
-
-![image-20230925182052936](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925182052936.png)
-
-`Earth` 类里都是静态函数，使用的时候直接`类名::成员函数()`，文件的开头定义了一些椭球参数：
+判断参数数量，如果不为 2，说明没传入配置文件，提醒用户传配置文件路径，然后退出程序。输出程序信息，记录开始时间。
 
 ```cpp
-/* WGS84椭球模型参数
-   NOTE:如果使用其他椭球模型需要修改椭球参数 */
-const double WGS84_WIE = 7.2921151467E-5;       /* 地球自转角速度*/
-const double WGS84_F   = 0.0033528106647474805; /* 扁率 */
-const double WGS84_RA  = 6378137.0000000000;    /* 长半轴a */
-const double WGS84_RB  = 6356752.3142451793;    /* 短半轴b */
-const double WGS84_GM0 = 398600441800000.00;    /* 地球引力常数 */
-const double WGS84_E1  = 0.0066943799901413156; /* 第一偏心率平方 */
-const double WGS84_E2  = 0.0067394967422764341; /* 第二偏心率平方 */
+if (argc != 2) {
+    std::cout << "usage: ob_gins ob_gins.yaml" << std::endl;
+    return -1;
+}
+
+std::cout << "\nOB_GINS: An Optimization-Based GNSS/INS Integrated Navigation System\n\n";
+
+auto ts = absl::Now();
 ```
 
-### 1、gravity()：正常重力计算
-
-重力是万有引力与离心力共同作用的结果，随纬度升高离心力增大但引力减小、随高程升高引力减小，共同作用下重力的计算公式如下：
-
-$$
-g_{L}=9.7803267715 \times\left(1+0.0052790414 \times \sin ^{2} L-0.0000232718 \times \sin ^{2} 2 L\right) \\
-+h\times(0.0000000043977311\times\sin ^{2} L-0.0000030876910891)+0.0000000000007211\times\sin ^{4} 2 L
-$$
+导入配置选项
 
 ```cpp
-static double gravity(const Vector3d &blh) {
-    double sin2 = sin(blh[0]);
-    sin2 *= sin2;
-    return 9.7803267715 * (1 + 0.0052790414 * sin2 + 0.0000232718 * sin2 * sin2) +
-         blh[2] * (0.0000000043977311 * sin2 - 0.0000030876910891) + 0.0000000000007211 * blh[2] * blh[2];
+// 读取配置
+// load configuration
+YAML::Node config;
+std::vector<double> vec;
+try {
+    config = YAML::LoadFile(argv[1]);
+} catch (YAML::Exception &exception) {
+    std::cout << "Failed to read configuration file" << std::endl;
+    return -1;
+}
+
+// 时间信息
+// processing time
+int windows   = config["windows"].as<int>();
+int starttime = config["starttime"].as<int>();
+int endtime   = config["endtime"].as<int>();
+
+// 迭代次数
+// number of iterations
+int num_iterations = config["num_iterations"].as<int>();
+
+// 进行GNSS粗差检测
+// Do GNSS outlier culling
+bool is_outlier_culling = config["is_outlier_culling"].as<bool>();
+
+// 初始化信息
+// initialization
+vec = config["initvel"].as<std::vector<double>>();
+Vector3d initvel(vec.data());
+vec = config["initatt"].as<std::vector<double>>();
+Vector3d initatt(vec.data());
+initatt *= D2R;
+
+vec = config["initgb"].as<std::vector<double>>();
+Vector3d initbg(vec.data());
+initbg *= D2R / 3600.0;
+vec = config["initab"].as<std::vector<double>>();
+Vector3d initba(vec.data());
+initba *= 1.0e-5;
+
+// 数据文件
+// data file
+std::string gnsspath   = config["gnssfile"].as<std::string>();
+std::string imupath    = config["imufile"].as<std::string>();
+std::string outputpath = config["outputpath"].as<std::string>();
+int imudatalen         = config["imudatalen"].as<int>();
+int imudatarate        = config["imudatarate"].as<int>();
+
+// 是否考虑地球自转
+// consider the Earth's rotation
+bool isearth = config["isearth"].as<bool>();
+
+// 安装参数
+// installation parameters
+vec = config["antlever"].as<std::vector<double>>();
+Vector3d antlever(vec.data());
+vec = config["odolever"].as<std::vector<double>>();
+Vector3d odolever(vec.data());
+vec = config["bodyangle"].as<std::vector<double>>();
+Vector3d bodyangle(vec.data());
+bodyangle *= D2R;
+
+// IMU噪声参数
+// IMU noise parameters
+auto parameters          = std::make_shared<IntegrationParameters>();
+parameters->gyr_arw      = config["imumodel"]["arw"].as<double>() * D2R / 60.0;
+parameters->gyr_bias_std = config["imumodel"]["gbstd"].as<double>() * D2R / 3600.0;
+parameters->acc_vrw      = config["imumodel"]["vrw"].as<double>() / 60.0;
+parameters->acc_bias_std = config["imumodel"]["abstd"].as<double>() * 1.0e-5;
+parameters->corr_time    = config["imumodel"]["corrtime"].as<double>() * 3600;
+
+bool isuseodo       = config["odometer"]["isuseodo"].as<bool>();
+vec                 = config["odometer"]["std"].as<std::vector<double>>();
+parameters->odo_std = Vector3d(vec.data());
+parameters->odo_srw = config["odometer"]["srw"].as<double>() * 1e-6;
+parameters->lodo    = odolever;
+parameters->abv     = bodyangle;
+
+// GNSS仿真中断配置
+// GNSS outage parameters
+bool isuseoutage = config["isuseoutage"].as<bool>();
+int outagetime   = config["outagetime"].as<int>();
+int outagelen    = config["outagelen"].as<int>();
+int outageperiod = config["outageperiod"].as<int>();
+auto gnssthreshold = config["gnssthreshold"].as<double>();
+```
+
+根据读进来的配置，构造解算用到的几个文件对象：
+
+* 文件读取对象：`gnssfile`、`imufile`
+* 构造输出文件对象：`navfile`、`errfile`
+
+```cpp
+GnssFileLoader gnssfile(gnsspath);
+ImuFileLoader imufile(imupath, imudatalen, imudatarate);
+FileSaver navfile(outputpath + "/OB_GINS_TXT.nav", 11, FileSaver::TEXT);
+FileSaver errfile(outputpath + "/OB_GINS_IMU_ERR.bin", 7, FileSaver::BINARY);
+if (!imufile.isOpen() || !navfile.isOpen() || !navfile.isOpen() || !errfile.isOpen()) {
+    std::cout << "Failed to open data file" << std::endl;
+    return -1;
 }
 ```
 
-### 2、meridianPrimeVerticalRadius()：计算子午圈半径 RM、卯酉圈半径 RN
-
-返回值是 `Vector2d`，第一个是子午圈主曲率半径 RM、第二个是卯酉圈主半径 RN：
-$$
-R_{M}=\frac{R_{e}\left(1-e^{2}\right)}{\left(1-e^{2} \sin ^{2} L\right)^{3 / 2}}、R_{N}=\frac{R_{e}}{\sqrt{1-e^{2} \sin ^{2} L}}
-$$
+循环调用 `imufile.next()`、`gnssfile.next()` 读取 IMU、GNSS 数据，直到时间戳在解算时间范围内。循环结束后 `imu_cur`、`gnss` 分别存解算时间内第一个 IMU、GNSS 量测，且文件指针指向的位置也到达解算时间内数据的开头：
 
 ```cpp
-static Eigen::Vector2d meridianPrimeVerticalRadius(double lat) {
-    double tmp, sqrttmp;
+// 数据文件调整
+// data alignment
+IMU imu_cur, imu_pre;
+do {
+    imu_pre = imu_cur;
+    imu_cur = imufile.next();
+} while (imu_cur.time < starttime);
 
-    tmp = sin(lat);	
-    tmp *= tmp;
-    tmp     = 1 - WGS84_E1 * tmp;
-    sqrttmp = sqrt(tmp);
-
-    return {WGS84_RA * (1 - WGS84_E1) / (sqrttmp * tmp), WGS84_RA / sqrttmp};
-}
+GNSS gnss;
+do {
+    gnss = gnssfile.next();
+} while (gnss.time < starttime);
 ```
 
-### 3、RN()：计算卯酉圈主半径 RN
+设置初始状态：
 
-$$
-R_{N}=\frac{R_{e}}{\sqrt{1-e^{2} \sin ^{2} L}}
-$$
+* station_origin：
+* 
 
 ```cpp
-static double RN(double lat) {
-   double sinlat = sin(lat);
-   return WGS84_RA / sqrt(1.0 - WGS84_E1 * sinlat * sinlat);
-}
+// 初始位置, 求相对
+Vector3d station_origin = gnss.blh;
+parameters->gravity     = Earth::gravity(gnss.blh);
+gnss.blh                = Earth::global2local(station_origin, gnss.blh);
+
+// 站心坐标系原点
+parameters->station = station_origin;
+
+std::vector<IntegrationState> statelist(windows + 1);
+std::vector<IntegrationStateData> statedatalist(windows + 1);
+std::deque<std::shared_ptr<PreintegrationBase>> preintegrationlist;
+std::deque<GNSS> gnsslist;      // GNSS 数据双端对列
+std::deque<double> timelist;    // 时间戳双端对列
+
+Preintegration::PreintegrationOptions preintegration_options = Preintegration::getOptions(isuseodo, isearth);
+
+// 赋值初始状态到 state_curr
+// initialization
+IntegrationState state_curr = {
+    .time = round(gnss.time),
+    .p    = gnss.blh - Rotation::euler2quaternion(initatt) * antlever,
+    .q    = Rotation::euler2quaternion(initatt),
+    .v    = initvel,
+    .bg   = initbg,
+    .ba   = initba,
+    .sodo = 0.0,
+    .abv  = {bodyangle[1], bodyangle[2]},
+};
+std::cout << "Initilization at " << gnss.time << " s " << std::endl;
+
+statelist[0]     = state_curr;
+statedatalist[0] = Preintegration::stateToData(state_curr, preintegration_options);
+gnsslist.push_back(gnss);
+
+double sow = round(gnss.time);
+timelist.push_back(sow);
 ```
 
-### 4、cne()：n系(导航坐标系)到e系(地心地固坐标系)转换矩阵
-
-$$
-C_{e}^{n}=\left[\begin{array}{ccc}-\sin \varphi & 0 & \cos \varphi \\ 0 & 1 & 0 \\ -\cos \varphi & 0 & -\sin \varphi\end{array}\right]\left[\begin{array}{ccc}\cos \lambda & \sin \lambda & 0 \\ -\sin \lambda & \cos \lambda & 0 \\ 0 & 0 & 1\end{array}\right]=\\ \left[\begin{array}{ccc}-\sin \varphi \cos \lambda & -\sin \varphi \sin \lambda & \cos \varphi \\ -\sin \lambda & \cos \lambda & 0 \\ -\cos \varphi \cos \lambda & -\cos \varphi \sin \lambda & -\sin \varphi\end{array}\right]
-$$
+初始预积分，根据设置预积分模式，调用 createPreintegration() 创建对应的预积分器，放入 preintegrationlist：
 
 ```cpp
-static Matrix3d cne(const Vector3d &blh) {
-    double coslon, sinlon, coslat, sinlat;
-
-    sinlat = sin(blh[0]);
-    sinlon = sin(blh[1]);
-    coslat = cos(blh[0]);
-    coslon = cos(blh[1]);
-
-    Matrix3d dcm;
-    dcm(0, 0) = -sinlat * coslon;
-    dcm(0, 1) = -sinlon;
-    dcm(0, 2) = -coslat * coslon;
-
-    dcm(1, 0) = -sinlat * sinlon;
-    dcm(1, 1) = coslon;
-    dcm(1, 2) = -coslat * sinlon;
-
-    dcm(2, 0) = coslat;
-    dcm(2, 1) = 0;
-    dcm(2, 2) = -sinlat;
-
-    return dcm;
-}
-```
-
-### 5、qne()：计算n系(北东地)到e系(ECEF)转换四元数
-
-位置更新的时候，调用此函数根据上一时刻经纬度，得到上一时刻的 qne，然后 `qee * qne * qnn` 得到当前时刻的 qne，再调用下面的 blh() 得到经纬度。
-$$
-\boldsymbol{q}_{n}^{e}=\left[\begin{array}{c}\cos (-\pi / 4-\varphi / 2) \cos (\lambda / 2) \\ -\sin (-\pi / 4-\varphi / 2) \sin (\lambda / 2) \\ \sin (-\pi / 4-\varphi / 2) \cos (\lambda / 2) \\ \cos (-\pi / 4-\sin / 2) \sin (\lambda / 2)]\end{array}\right]
-$$
-
-```cpp
-/* n系(导航坐标系)到e系(地心地固坐标系)转换四元数 */
-static Quaterniond qne(const Vector3d &blh) {
-    Quaterniond quat;
-
-    double coslon, sinlon, coslat, sinlat;
-
-    coslon = cos(blh[1] * 0.5);
-    sinlon = sin(blh[1] * 0.5);
-    coslat = cos(-M_PI * 0.25 - blh[0] * 0.5);
-    sinlat = sin(-M_PI * 0.25 - blh[0] * 0.5);
-
-    quat.w() = coslat * coslon;
-    quat.x() = -sinlat * sinlon;
-    quat.y() = sinlat * coslon;
-    quat.z() = coslat * sinlon;
-
-    return quat;
-}
-```
-
-### 6、blh()：从n系到e系转换四元数得到纬度和经度
-
-位置更新的时候，通过算当前时刻 n 系到 e 系转换四元数 qne，然后调用此函数得到经纬度。
-
-```cpp
-/* 从n系到e系转换四元数得到纬度和经度 */
-static Vector3d blh(const Quaterniond &qne, double height) {
-    return {-2 * atan(qne.y() / qne.w()) - M_PI * 0.5, 2 * atan2(qne.z(), qne.w()), height};
-}
-```
-
-### 7、blh2ecef()：大地坐标(纬度、经度和高程)转地心地固坐标
-
-$$
-\begin{array}{l}x=\left(R_{N}+h\right) \cos L \cos \lambda \\ y=\left(R_{N}+h\right) \cos L \sin \lambda \\ z=\left[R_{N}\left(1-e^{2}\right)+h\right] \sin L\end{array}
-$$
-
-```cpp
-/* 大地坐标(纬度、经度和高程)转地心地固坐标 */
-static Vector3d blh2ecef(const Vector3d &blh) {
-    double coslat, sinlat, coslon, sinlon;
-    double rnh, rn;
-
-    coslat = cos(blh[0]);
-    sinlat = sin(blh[0]);
-    coslon = cos(blh[1]);
-    sinlon = sin(blh[1]);
-
-    rn  = RN(blh[0]);
-    rnh = rn + blh[2];
-
-    return {rnh * coslat * coslon, rnh * coslat * sinlon, (rnh - rn * WGS84_E1) * sinlat};
-}
-```
-
-### 7、ecef2blh()：地心地固坐标转大地坐标
-
-$$
-\begin{array}{c}B_{0}=\arctan \left(\frac{Z}{\left(1-e^{2}\right) p}\right) \\ N_{k}=\frac{a}{\sqrt{1-e^{2} \sin ^{2} B_{k-1}}} \\ H_{k}=\frac{p}{\cos B_{k-1}}-N_{k} \\ B_{k}=\arctan \left(\frac{z}{\left(1-\frac{e^{2} N_{k}}{N_{k}}\right)\ p }\right)\end{array}
-$$
-
-```cpp
-static Vector3d ecef2blh(const Vector3d &ecef) {
-    double p = sqrt(ecef[0] * ecef[0] + ecef[1] * ecef[1]);
-    double rn;
-    double lat, lon;
-    double h = 0, h2;
-
-    // 初始状态
-    lat = atan(ecef[2] / (p * (1.0 - WGS84_E1)));
-    lon = 2.0 * atan2(ecef[1], ecef[0] + p);
-
-    do {
-        h2  = h;
-        rn  = RN(lat);
-        h   = p / cos(lat) - rn;
-        lat = atan(ecef[2] / (p * (1.0 - WGS84_E1 * rn / (rn + h))));
-    } while (fabs(h - h2) > 1.0e-4);
-
-    return {lat, lon, h};
-}
-```
-
-### 8、DRi()：n系相对位置转大地坐标相对位置
-
-$$
-\left[\begin{array}{l}\delta \varphi \\ \delta L \\ \delta H\end{array}\right]=\left[\begin{array}{ccc}\left(R_{M}+H\right)^{-1} & 0 & 0 \\ 0 & \left(R_{N}+H\right)^{-1} & 0 \\ 0 & 0 & -1 \end{array}\right]\left[\begin{array}{l}\delta \boldsymbol{p}_{N} \\ \delta \boldsymbol{p}_{E} \\ \delta \boldsymbol{p}_{B}\end{array}\right]
-$$
-
-```cpp
-/* n系相对位置转大地坐标相对位置 */
-static Matrix3d DRi(const Vector3d &blh) {
-    Matrix3d dri = Matrix3d::Zero();
-
-    Eigen::Vector2d rmn = meridianPrimeVerticalRadius(blh[0]);
-
-    dri(0, 0) = 1.0 / (rmn[0] + blh[2]);
-    dri(1, 1) = 1.0 / ((rmn[1] + blh[2]) * cos(blh[0]));
-    dri(2, 2) = -1;
-    return dri;
-}
-```
-
-### 9、DR()：大地坐标相对位置转n系相对位置
-
-$$
-\left[\begin{array}{l}\delta \varphi \\ \delta L \\ \delta H\end{array}\right]=\left[\begin{array}{ccc}\left(R_{M}+H\right)^{-1} & 0 & 0 \\ 0 & \left(R_{N}+H\right)^{-1} & 0 \\ 0 & 0 & -1 \end{array}\right]\left[\begin{array}{l}\delta \boldsymbol{p}_{N} \\ \delta \boldsymbol{p}_{E} \\ \delta \boldsymbol{p}_{B}\end{array}\right]
-$$
-
-```cpp
-/* 大地坐标相对位置转n系相对位置 */
-static Matrix3d DR(const Vector3d &blh) {
-    Matrix3d dr = Matrix3d::Zero();
-
-    Eigen::Vector2d rmn = meridianPrimeVerticalRadius(blh[0]);
-
-    dr(0, 0) = rmn[0] + blh[2];
-    dr(1, 1) = (rmn[1] + blh[2]) * cos(blh[0]);
-    dr(2, 2) = -1;
-    return dr;
-}
-```
-
-### 10、local2global()：局部坐标(在origin处展开)转大地坐标
-
-在 `enwn()` 中被调用，为了方便能直接传入北东地（n 系）坐标计算 n 系相对于 e 系转动角速度在 n 系的投影。
-
-```cpp
-static Vector3d local2global(const Vector3d &origin, const Vector3d &local) {
-
-    Vector3d ecef0 = blh2ecef(origin);
-    Matrix3d cn0e  = cne(origin);
-
-    Vector3d ecef1 = ecef0 + cn0e * local;
-    Vector3d blh1  = ecef2blh(ecef1);
-
-    return blh1;
-}
-```
-
-### 11、global2local()：大地坐标转局部坐标(在origin处展开)
-
-好像整个程序中都没用到这个函数。
-
-```cpp
-static Vector3d global2local(const Vector3d &origin, const Vector3d &global) {
-    Vector3d ecef0 = blh2ecef(origin);
-    Matrix3d cn0e  = cne(origin);
-
-    Vector3d ecef1 = blh2ecef(global);
-
-    return cn0e.transpose() * (ecef1 - ecef0);
-}
-```
-
-```cpp
-static Pose global2local(const Vector3d &origin, const Pose &global) {
-    Pose local;
-
-    Vector3d ecef0 = blh2ecef(origin);
-    Matrix3d cn0e  = cne(origin);
-
-    Vector3d ecef1 = blh2ecef(global.t);
-    Matrix3d cn1e  = cne(global.t);
-
-    local.t = cn0e.transpose() * (ecef1 - ecef0);
-    local.R = cn0e.transpose() * cn1e * global.R;
-
-    return local;
-}
-```
-
-### 12、iewe()：地球自转角速度投影到e系
-
-$$
-\boldsymbol{\omega}_{i e}^{e}=\left[\begin{array}{lll}0 & 0 & \omega_{e}\end{array}\right]^{T}
-$$
-
-```cpp
-static Vector3d iewe() {
-    return {0, 0, WGS84_WIE};
-}
-```
-
-### 13、iewn()：地球自转角速度投影到n系
-
-$$
-\boldsymbol{\omega}_{i e}^{n}=\left[\begin{array}{lll}\omega_{e} \cos \varphi & 0 & -\omega_{e} \sin \varphi\end{array}\right]^{T}
-$$
-
-```cpp
-static Vector3d iewn(double lat) {
-    return {WGS84_WIE * cos(lat), 0, -WGS84_WIE * sin(lat)};
-}
-```
-
-也可以直接传入北东地（n 系）坐标计算：
-
-```cpp
-static Vector3d iewn(const Vector3d &origin, const Vector3d &local) {
-    Vector3d global = local2global(origin, local);
-    return iewn(global[0]);
-}
-```
-
-### 14、enwn()：n系相对于e系转动角速度投影到n系
-
-由载体运动线速度和地球曲率引起，与东向、北向速度有关，与天向速度无关
-$$
-\boldsymbol{\omega}_{e n}^{n}=\left[\begin{array}{lll}\frac{v_{E}}{R_{N}+h} & \frac{-v_{N}}{R_{M}+h} & -\frac{v_{E} \tan \varphi}{R_{N}+h}\end{array}\right]^{T}
-$$
-
-```cpp
-static Vector3d enwn(const Eigen::Vector2d &rmn, const Vector3d &blh, const Vector3d &vel) {
-    return {vel[1] / (rmn[1] + blh[2]), -vel[0] / (rmn[0] + blh[2]), -vel[1] * tan(blh[0]) / (rmn[1] + blh[2])};
-}
-```
-
-同样也可以直接传入北东地（n 系）坐标计算：
-
-```cpp
-static Vector3d enwn(const Vector3d &origin, const Vector3d &local, const Vector3d &vel) {
-    Vector3d global     = local2global(origin, local);
-    Eigen::Vector2d rmn = meridianPrimeVerticalRadius(global[0]);
-
-    return enwn(rmn, global, vel);
-}
-```
-
-## 六、Rotation 类：姿态转换
-
-### 1、matrix2quaternion()：旋转矩阵转四元数
-
-Eigen 中的四元数可以直接传入旋转矩阵（三维矩阵）构造：
-
-```cpp
-static Quaterniond matrix2quaternion(const Matrix3d &matrix) {
-    return Quaterniond(matrix);
-}
-```
-
-### 2、quaternion2matrix()：四元数转旋转矩阵
-
-四元数调用 `toRotationMatrix()` 函数，转为旋转矩阵：
-
-```cpp
-static Matrix3d quaternion2matrix(const Quaterniond &quaternion) {
-    return quaternion.toRotationMatrix();
-}
-```
-
-### 3、matrix2euler()：旋转矩阵转欧拉角
-
-ZYX 旋转顺序，前右下的 IMU，输出 RPY：
-
-```cpp
-static Vector3d matrix2euler(const Eigen::Matrix3d &dcm) {
-    Vector3d euler;
-
-    euler[1] = atan(-dcm(2, 0) / sqrt(dcm(2, 1) * dcm(2, 1) + dcm(2, 2) * dcm(2, 2)));
-
-    if (dcm(2, 0) <= -0.999) {
-        euler[0] = atan2(dcm(2, 1), dcm(2, 2));
-        euler[2] = atan2((dcm(1, 2) - dcm(0, 1)), (dcm(0, 2) + dcm(1, 1)));
-    } else if (dcm(2, 0) >= 0.999) {
-        euler[0] = atan2(dcm(2, 1), dcm(2, 2));
-        euler[2] = M_PI + atan2((dcm(1, 2) + dcm(0, 1)), (dcm(0, 2) - dcm(1, 1)));
-    } else {
-        euler[0] = atan2(dcm(2, 1), dcm(2, 2));
-        euler[2] = atan2(dcm(1, 0), dcm(0, 0));
-    }
-
-    // heading 0~2PI
-    if (euler[2] < 0) {
-        euler[2] = M_PI * 2 + euler[2];
-    }
-
-    return euler;
-}
-```
-
-### 4、quaternion2euler()：四元数转欧拉角
-
-先调用 `toRotationMatrix()` 转为旋转矩阵，再调用 `matrix2euler()` 转欧拉角：
-
-```cpp
-static Vector3d quaternion2euler(const Quaterniond &quaternion) {
-    return matrix2euler(quaternion.toRotationMatrix());
-}
-```
-
-### 5、rotvec2quaternion()：等效旋转矢量转四元数
-
-根据传入的旋转矢量，计算向量的长度作为旋转的角度，计算向量的归一化版本作为旋转的轴，然后调用 `AngleAxisd()`，将角度和轴转换为四元数。
-
-```cpp
-static Quaterniond rotvec2quaternion(const Vector3d &rotvec) {
-    double angle = rotvec.norm();       // 计算向量的长度作为旋转的角度
-    Vector3d vec = rotvec.normalized(); // 计算向量的归一化版本作为旋转的轴
-    return Quaterniond(Eigen::AngleAxisd(angle, vec));  // 调用 AngleAxisd()，将角度和轴转换为四元数
-}
-```
-
-## 6、quaternion2vector()：四元数转旋转矢量
-
-传入的四元数通过 Eigen::AngleAxisd 类的构造函数转换为角度轴（angle-axis）表示。角度轴是一个描述旋转的方法，其中旋转角度和旋转轴是两个独立的部分。然后，该函数返回这个角度轴表示的旋转的角度乘以旋转的轴，得到一个三维向量。这个向量的 x、y 和 z 分量分别对应于旋转轴在x、y 和 z 轴上的分量，而其长度（或者说范数）等于旋转角度。
-
-```cpp
-static Vector3d quaternion2vector(const Quaterniond &quaternion) {
-    Eigen::AngleAxisd axisd(quaternion);
-    return axisd.angle() * axisd.axis();
-}
-```
-
-### 7、euler2matrix()：欧拉角转旋转矩阵
-
-三个欧拉角分别转为 ZYX 角轴，相乘之后构造旋转矩阵
-
-```cpp
-static Matrix3d euler2matrix(const Vector3d &euler) {
-    return Matrix3d(Eigen::AngleAxisd(euler[2], Vector3d::UnitZ()) *
-                    Eigen::AngleAxisd(euler[1], Vector3d::UnitY()) *
-                    Eigen::AngleAxisd(euler[0], Vector3d::UnitX()));
-}
-```
-
-### 8、euler2quaternion()：欧拉角转四元数
-
-三个欧拉角分别转为 ZYX 角轴，相乘之后构造四元数
-
-```cpp
-static Quaterniond euler2quaternion(const Vector3d &euler) {
-    return Quaterniond(Eigen::AngleAxisd(euler[2], Vector3d::UnitZ()) *
-                       Eigen::AngleAxisd(euler[1], Vector3d::UnitY()) *
-                       Eigen::AngleAxisd(euler[0], Vector3d::UnitX()));
-}
-```
-
-### 9、skewSymmetric()：计算三维向量反对称阵
-
-```cpp
-static Matrix3d skewSymmetric(const Vector3d &vector) {
-    Matrix3d mat;
-    mat << 0, -vector(2), vector(1), vector(2), 0, -vector(0), -vector(1), vector(0), 0;
-    return mat;
-}
-```
-
-### 10、quaternionleft()、quaternionright()：四元数矩阵
-
-
-$$
-\boldsymbol{P} \circ \boldsymbol{Q}=\left[\begin{array}{cccc}p_{0} & -p_{1} & -p_{2} & -p_{3} \\ p_{1} & p_{0} & -p_{3} & p_{2} \\ p_{2} & p_{3} & p_{0} & -p_{1} \\ p_{3} & -p_{2} & p_{1} & p_{0}\end{array}\right]\left[\begin{array}{l}q_{0} \\ q_{1} \\ q_{2} \\ q_{3}\end{array}\right]=\boldsymbol{M}_{P} \boldsymbol{Q}=\left[\begin{array}{cccc}q_{0} & -q_{1} & -q_{2} & -q_{3} \\ q_{1} & q_{0} & q_{3} & -q_{2} \\ q_{2} & -q_{3} & q_{0} & q_{1} \\ q_{3} & q_{2} & -q_{1} & q_{0}\end{array}\right]\left[\begin{array}{l}p_{0} \\ p_{1} \\ p_{2} \\ p_{3}\end{array}\right]=\boldsymbol{M}_{Q}^{\prime} \boldsymbol{P}
-$$
-
-$$
-\boldsymbol{M}_{P}=\left[\begin{array}{cccc}p_{0} & -p_{1} & -p_{2} & -p_{3} \\ p_{1} & p_{0} & -p_{3} & p_{2} \\ p_{2} & p_{3} & p_{0} & -p_{1} \\ p_{3} & -p_{2} & p_{1} & p_{0}\end{array}\right]=\left[\begin{array}{cc}p_{0} & -\boldsymbol{p}_{v}^{\mathrm{T}} \\ \boldsymbol{p}_{v} & p_{0} \boldsymbol{I}+\left(\boldsymbol{p}_{v} \times\right)\end{array}\right]
-$$
-
-```cpp
-static Eigen::Matrix4d quaternionleft(const Quaterniond &q) {
-    Eigen::Matrix4d ans;
-    ans(0, 0)             = q.w();
-    ans.block<1, 3>(0, 1) = -q.vec().transpose();
-    ans.block<3, 1>(1, 0) = q.vec();
-    ans.block<3, 3>(1, 1) = q.w() * Eigen::Matrix3d::Identity() + skewSymmetric(q.vec());
-    return ans;
-}
-```
-
-$$
-\boldsymbol{M}_{Q}^{\prime}=\left[\begin{array}{cccc}q_{0} & -q_{1} & -q_{2} & -q_{3} \\ q_{1} & q_{0} & q_{3} & -q_{2} \\ q_{2} & -q_{3} & q_{0} & q_{1} \\ q_{3} & q_{2} & -q_{1} & q_{0}\end{array}\right]=\left[\begin{array}{cc}q_{0} & -\boldsymbol{q}_{v}^{\mathrm{T}} \\ \boldsymbol{q}_{v} & q_{0} \boldsymbol{I}-\left(\boldsymbol{q}_{v} \times\right)\end{array}\right]
-$$
-
-```cpp
-static Eigen::Matrix4d quaternionright(const Quaterniond &p) {
-    Eigen::Matrix4d ans;
-    ans(0, 0)             = p.w();
-    ans.block<1, 3>(0, 1) = -p.vec().transpose();
-    ans.block<3, 1>(1, 0) = p.vec();
-    ans.block<3, 3>(1, 1) = p.w() * Eigen::Matrix3d::Identity() - skewSymmetric(p.vec());
-    return ans;
-}
+preintegrationlist.emplace_back(
+    Preintegration::createPreintegration(parameters, imu_pre, state_curr, preintegration_options));
 ```
 
 
 
-## 七、IMU 预积分
+
+
+
+
+
+
+
+
+下面进入 while 循环解算，如果在解算时间内，且文件还有数据，调用 addNewImu() 加入IMU数据，其中会执行 integrationProcess() 预积分，然后再读取下一个 IMU 数据：
+
+```cpp
+// 如果当前 IMU 时间戳超过结束时间，或文件读完，退出循环解算完成
+if ((imu_cur.time > endtime) || imufile.isEof()) {
+    break;
+}
+
+// 加入IMU数据，其中会执行 integrationProcess() 预积分
+// Add new imu data to preintegration
+preintegrationlist.back()->addNewImu(imu_cur);
+
+imu_pre = imu_cur;
+imu_cur = imufile.next(); 
+```
+
+判断读进来 IMU 时间是否等于设置的 GNSS 时间，不等于就直接调用 writeNavResult() 输出解算信息：
+
+```cpp
+auto integration = *preintegrationlist.rbegin();
+writeNavResult(integration->endTime(), station_origin, integration->currentState(), navfile, errfile);
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 五、IMU 预积分
 
 
 

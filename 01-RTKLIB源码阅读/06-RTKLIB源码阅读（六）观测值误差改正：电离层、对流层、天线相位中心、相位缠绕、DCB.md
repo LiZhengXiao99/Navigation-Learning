@@ -81,27 +81,35 @@
 > ```
 
 ```c
-extern int tropcorr(gtime_t time, const nav_t *nav, const double *pos,
-                    const double *azel, int tropopt, double *trp, double *var)
+extern int ionocorr(gtime_t time, const nav_t *nav, int sat, const double *pos,
+                    const double *azel, int ionoopt, double *ion, double *var)
 {
-    trace(4,"tropcorr: time=%s opt=%d pos=%.3f %.3f azel=%.3f %.3f\n",
-          time_str(time,3),tropopt,pos[0]*R2D,pos[1]*R2D,azel[0]*R2D,
+    trace(4,"ionocorr: time=%s opt=%d sat=%2d pos=%.3f %.3f azel=%.3f %.3f\n",
+          time_str(time,3),ionoopt,sat,pos[0]*R2D,pos[1]*R2D,azel[0]*R2D,
           azel[1]*R2D);
     
-    /* Saastamoinen model */
-    if (tropopt==TROPOPT_SAAS||tropopt==TROPOPT_EST||tropopt==TROPOPT_ESTG) {
-        *trp=tropmodel(time,pos,azel,REL_HUMI);
-        *var=SQR(ERR_SAAS/(sin(azel[1])+0.1));
+    /* GPS broadcast ionosphere model */
+    if (ionoopt==IONOOPT_BRDC) {    //广播星历模型
+        *ion=ionmodel(time,nav->ion_gps,pos,azel);
+        *var=SQR(*ion*ERR_BRDCI);
         return 1;
     }
-    /* SBAS (MOPS) troposphere model */
-    if (tropopt==TROPOPT_SBAS) {
-        *trp=sbstropcorr(time,pos,azel,var);
+    /* SBAS ionosphere model */
+    if (ionoopt==IONOOPT_SBAS) {    //SBAS校正
+        return sbsioncorr(time,nav,pos,azel,ion,var);
+    }
+    /* IONEX TEC model */
+    if (ionoopt==IONOOPT_TEC) {     //电子总量格网模型
+        return iontec(time,nav,pos,azel,1,ion,var);
+    }
+    /* QZSS broadcast ionosphere model */   //QZSS广播星历模型
+    if (ionoopt==IONOOPT_QZS&&norm(nav->ion_qzs,8)>0.0) {
+        *ion=ionmodel(time,nav->ion_qzs,pos,azel);
+        *var=SQR(*ion*ERR_BRDCI);
         return 1;
     }
-    /* no correction */
-    *trp=0.0;
-    *var=tropopt==TROPOPT_OFF?SQR(ERR_TROP):0.0;
+    *ion=0.0;
+    *var=ionoopt==IONOOPT_OFF?SQR(ERR_ION):0.0;     //有电离层改正，方差为0，无电离层改正，方差5*5
     return 1;
 }
 ```

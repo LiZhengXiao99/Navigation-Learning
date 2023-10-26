@@ -296,7 +296,7 @@ NtripClient一般就是GPS流动站。登录NtripCaster后，发送自身的坐�
 
 
 
-## 四、streamsvr.c
+## 四、stream.c
 
 ### 1、通用数据流 API
 
@@ -314,7 +314,7 @@ NtripClient一般就是GPS流动站。登录NtripCaster后，发送自身的坐�
 * `strsetdir()`：设置 ftp/http 下载到的本地目录路径。
 * `strsetproxy()`：设置 http/ntrip 代理地址。
 * `strgettime()`：获取数据流播放文件的当前时间或重放时间。
-* `strsendnmea()`：调用 `outnmea_gga()`、`strwrite()`，向数据流发送 NMEA GPGGA 信息。
+* `strsendnmea()`：调用 `outnmea_gga()`、`strwrite()`，向数据流发送 GGA 信息。
 * `gen_hex()`：生成普通十六进制信息。
 * `set_brate()`：生成十六进制信息。
 * `set_brate()`：设置比特率。
@@ -324,6 +324,11 @@ NtripClient一般就是GPS流动站。登录NtripCaster后，发送自身的坐�
 
 
 
-## 五、str2str.c
+## 五、streamsvr.c
 
+
+
+
+
+## 六、str2str.c
 
