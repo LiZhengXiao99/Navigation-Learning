@@ -1674,7 +1674,7 @@ extern int rtkpos(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
 
 ### 2、存Option的类型
 
-#### 1.prcopt_t结构体：存算法处理选项
+#### 1. prcopt_t 结构体：存算法处理选项
 
   ```c
 typedef struct {        /* processing options type */
@@ -1741,7 +1741,7 @@ typedef struct {        /* processing options type */
 
   
 
-#### 2.solopt_t 结构体：存输出结果设置
+#### 2. solopt_t 结构体：存输出结果设置
 
   ```c
 typedef struct {        /* solution options type */
@@ -1769,7 +1769,7 @@ typedef struct {        /* solution options type */
 
   
 
-#### 3.filopt_t 结构体：存文件设置
+#### 3. filopt_t 结构体：存文件设置
 
   ```c
 typedef struct {        /* file options type */
@@ -2249,9 +2249,9 @@ static gtime_t time_trace={0};  //打开trace的时间，获取的系统时间�
 static lock_t lock_trace;       //trace的进程锁
   ```
 
-### 2、Trace相关函数
+### 2、Trace 相关函数
 
-#### 1.trace()：将传入的trace格式化字符串写入trace文件
+#### 1.trace()：将传入的 trace 格式化字符串写入 trace 文件
 
   ```c
 extern void trace(int level, const char *format, ...)
@@ -2273,7 +2273,7 @@ extern void trace(int level, const char *format, ...)
 }
   ```
 
-#### 2.tracet()：写入带秒数的trace格式字符串
+#### 2. tracet()：写入带秒数的 trace 格式字符串
 
 相比于trace多写入了trace开始后的秒数（ms级精度）
 
@@ -2290,7 +2290,7 @@ extern void tracet(int level, const char *format, ...)
 }
   ```
 
-#### 3.traceclose()：关闭trace文件描述符，将文件指针置空
+#### 3. traceclose()：关闭trace文件描述符，将文件指针置空
 
   ```c
 extern void traceclose(void)
@@ -2301,7 +2301,7 @@ extern void traceclose(void)
 }
   ```
 
-#### 4.traceopen()：创建或打开trace文件
+#### 4. traceopen()：创建或打开trace文件
 
 1. 调用`utc2gpst(timeget()) `获取系统时间time，赋值给time_trace。
 
@@ -2329,7 +2329,7 @@ extern void traceclose(void)
    }
    ```
 
-#### 5.tracelevel()：将传入的trace等级赋值给level_trace
+#### 5. tracelevel()：将传入的trace等级赋值给level_trace
 
   ```c
 extern void tracelevel(int level)
@@ -2338,7 +2338,7 @@ extern void tracelevel(int level)
 }
   ```
 
-#### 6.traceswap()：根据时间分trace文件
+#### 6. traceswap()：根据时间分trace文件
 
   ```c
 static void traceswap(void)
@@ -2371,7 +2371,7 @@ static void traceswap(void)
 
   
 
-#### 7.tracemat()：写入矩阵
+#### 7. tracemat()：写入矩阵
 
 调用`matfprint()`，将矩阵写入文件，列优先顺序
 
@@ -2388,7 +2388,7 @@ extern void matfprint(const double A[], int n, int m, int p, int q, FILE *fp)
 }
   ```
 
-#### 8.traceobs()：写入obsd_t
+#### 8. traceobs()：写入obsd_t
 
 遍历`obsd_t`数组`obs`，输出信息
 
@@ -2424,7 +2424,7 @@ extern void traceobs(int level, const obsd_t *obs, int n)
 }
   ```
 
-#### 9.tracenav()：写入导航电文
+#### 9. tracenav()：写入导航电文
 
 写入`nav->eph`、`nav->ion_gps`/`ion_gal`/`ion_bds`电离层信息、星历数据的的信息。
 
@@ -2476,7 +2476,7 @@ typedef struct {        /* navigation data type */
 } nav_t;
 ```
 
-#### 10.traceb()：写入buff缓冲区数据
+#### 10. traceb()：写入buff缓冲区数据
 
 在 skytraq.c 和 ublox.c 中被调用。
 
