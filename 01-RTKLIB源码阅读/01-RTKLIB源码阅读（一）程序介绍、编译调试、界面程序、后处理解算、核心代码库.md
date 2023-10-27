@@ -26,7 +26,7 @@ RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本�
 
 #### 2. 主要功能
 
-* **支持多个 GNSS 系统的标准和精密定位算法**，包括 GPS，GLONASS，Beidou，Galileo，QZSS 和 SBAS
+* **支持多个 GNSS 系统的标准和精密定位算法**，包括 GPS，GLONASS，Beidou，Galileo，QZSS 和 SBAS。
 
 * **支持 9 种GNSS实时和后处理定位模式**：
   * **single**：伪距单点定位
@@ -67,20 +67,20 @@ RTKLIB 可以初步实现以下功能，相对于商业软件，可靠性没那�
 
 各种各样的都有，有对定位解算算法做增强的、有做组合导航的、有做服务端程序的、有做软件接收机的、做应用的。下面介绍几个我了解的：
 
-* **RTKLIB-demo5**：
+* **RTKLIB-demo5**：针对低成本接收机做了算法增强，下面的部分程序是基于 demo5 开发的。
 * **rtklib-py**：
 * **GPSTK**：
-* **GAMP**：山科大周峰写的非差非组合PPP，在 RTKLIB 基础上做精简和算法的增强，比原版 RTKLIB 简单，适合作为学 PPP 的入门。
-* **Ginan**：澳大利亚网址
-* **GraphGNSSLib**：港理工，
-* **PPPLIB**：安理工陈超写的，我看的第一个 C++ 程序，
-* **TGINS**：安理工陈超写的紧组合，文档和注释很少，
+* **GAMP**：山科大周峰写的非差非组合PPP，在 RTKLIB 基础上做精简和算法的增强，比原版 RTKLIB 简单，适合作为学 PPP 的入门。曾经老师给我一套他师弟在GAMP基础上改的三频PPP 让我看。
+* **Ginan**：澳大利亚，包括精密定位程序 PEA、定轨程序 POD，文档很详细，老师让我看，但我没看下去，受不了它的代码风格。
+* **GraphGNSSLib**：港理工，支持图优化 SPP、RTK。作者在知乎很活跃，时常发一些科普文章。
+* **PPPLIB**：我老师在矿大读研的时候写的，我看的第一个 C++ 程序，
+* **TGINS**：我老师去年刚来安理的时候写的，文档和注释很少，紧组合看着比较费劲
 * **GICI-LIB**：上海交大，
 * **PPP-AR**：武大GNSS中心，使用了 rnx2rtkp 可执行程序计算测站初值坐标，网址
 * **IGNAV**：武大GNSS中心，
 * **pppwizard**：
 * **GNSS-SDR**：GNSS 软件接收机，与上面列举的数据处理软件不同，GNSS-SDR 实现基带算法直接对接收机输出的数字中频信号处理，PVT 部分用了 RTKLIB。
-* **APOLLO**：百度的开源无人驾驶系统，
+* **APOLLO**：百度的开源无人驾驶系统，暑假的时候心血来潮准备看看的，被代码量吓到了，没那么多时间看，遂放弃。
 
 #### 5. 我用 RTKLIB 做的事
 
@@ -164,8 +164,9 @@ RTKLIB 自带的程序除了 rtkplot 之外我都没咋用过，我主要是用 
 
 * 现在人工智能越来越强，把 RTKLIB 的代码段扔给 AI，基本都能给你解释解释。
 * 网上 RTKLIB 的资料很丰富，基本上能把每一行代码的意思都给你讲明白了；可以先照着博客，把代码快速的过一遍，把博客上的注释、讲解复制到你手头的代码里，自己再看能顺很多。当然，博客大多写的很随意，不严谨，但有个参考总比没有好。
-* 算法入门建议看硕博论文，比如可以看我的老师陈健和杨旭的硕士论文，写的简单而且系统，算法很多和 RTKLIB 一模一样。
-* GNSS 算法除了模糊度固定，理解起来都没啥难度，
+* 学 RTK 可以看我的老师**杨旭、陈健**的硕士论文，算法和 RTKLIB 几乎一模一样。知网搜一搜，或者去我的仓库下载。
+* 学 PPP 可以先结合着**周峰**老师的博士论文看 GAMP，然后再看 RTKLIB。
+* RTKLIB 算法除了模糊度固定，理解起来都没啥难度，不懂的算法找论文看看就会了。
 * 代码量很大，直接看可能会一头雾水，很难一下记住那么复杂的代码逻辑；可以通过流程图、函数调用关系图、思维导图，来辅助理解；通过画图来理清思路，画出的图也可以用来复习。
 
 #### 3. 看 manual
@@ -445,9 +446,7 @@ RTKLIB APP 目录下有 5 个命令行程序
 
 ### 5、编译调试自己写的程序、链接 RTKLIB
 
-
-
-比如我用 C++ 语法，通过调用 RTKLIB 的函数，实现获取当前系统时间，输出年月日时分秒、GPS周 + 周内秒：
+比如我用 C++ 语法，通过调用 RTKLIB 的函数，实现获取当前系统时间，输出年月日时分秒、GPS周 + 周内秒，主函数文件如下：
 
 ```C++
 ```
@@ -478,7 +477,7 @@ RTKLIB APP 目录下有 5 个命令行程序
 
 
 
-## 四、Qt + Windows 编译调试
+## 四、Qt 编译调试
 
 
 
@@ -596,9 +595,9 @@ rnx2rtkp 的命令行参数很复杂，一不下心就会出错，这时候可�
 * 读取配置文件过程：
   * 循环判断参数是否有 `-k`，如果有就代表传入了配置文件，需要读取进来
   * 创建 `porcopt_t`、`solopt_t`、`filopt_t` 变量用于接受读取到的配置
-  * 调用 `resetsysopts()` ，重置配置为默认
-  * 调用 `loadopts()`，从文件中读取配置，存到 `opt_t` 类型的 `sysopt` 中
-  * 调用 `getsysopts()`，把 `opt_t` 类型的 `sysopt` 转到 `porcopt_t`、`solopt_t`、`filopt_t` 变量中，会调用 `buff2sysopts()`
+  * 调用 `resetsysopts()` ，重置配置为默认值。
+  * 调用 `loadopts()`，从文件中读取配置，存到 `opt_t` 类型的 `sysopt` 中。
+  * 调用 `getsysopts()`，把 `opt_t` 类型的 `sysopt` 转到 `porcopt_t`、`solopt_t`、`filopt_t` 变量中，会调用 `buff2sysopts()`。
 * 读其它参数：
   * 循环内，`if-else if`，判断参数，根据参数赋值
   * 若都不是参数，最后一个到 `else if`，认为是文件路径，用 `infile` 数组接收
@@ -737,7 +736,7 @@ int main(int argc, char **argv)
 
 rnx2rtkp 程序比较复杂，要传入很多命令行参数，可以自己写主函数。再比如说我松组合程序，可以先调用 `postpos()` 通过GNSS原始原始数据算出定位解，然后与 INS 组合。
 
-rtklib 后处理主函数需要做的主要就是：读取配置文件（可省）、设置处理选项、传入文件路径、调用 postpos()；下面我将分别对这几部分的写法做介绍，然后通过 SPP、PPK、PPP 的参考写法，你们可以在我的基础上改。
+rtklib 后处理主函数需要做的主要就是：读取配置文件（可省）、设置处理选项、传入文件路径、调用 postpos()；下面我将分别对这几部分的写法做介绍：
 
 #### 1. 实现用户自定义函数 showmsg、settspan、settime
 
@@ -779,187 +778,7 @@ char   *base     I   基准站ID列表，空格隔开
   * `solopt_t`：
   * `prcopt_t`：处理选项配置，是配置的重头戏，可以先看 [postpos 的用法](https://www.bilibili.com/video/BV1m5411Y7xV) 学习界面程序的配置方式。写代码配置和界面程序需要配置的东西是一样的，只是从在界面上点，换成在了代码里给对应字段赋值。
 
-![image-20231025083632576](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231025083632576.png)
-
-#### 4. 伪距单点定位
-
-
-
-
-
-#### 5. 精密单点定位
-
-```c
-int main() {
-	int i, n, ret;
-	double tint = 0.0;       /* 求解时间间隔(0:默认) */
-	gtime_t ts = { 0 }, te = { 0 }; /* 历元时段始末控制变量 */
-	char *infile[MAXFILE], outfile[MAXSTRPATH] = { '\0' };
-	char resultpath[MAXSTRPATH] = "H:\\20211108\\result"; /* 结果输出路径 */
-	char sep = (char)FILEPATHSEP;
-	prcopt_t prcopt = prcopt_default; /* 默认处理选项设置 */
-	solopt_t solopt = solopt_default; /* 默认求解格式设置 */
-	filopt_t filopt = { /* 参数文件路径设置 */
-		"", /* 卫星天线参数文件 */
-		"", /* 接收机天线参数文件 */
-		"", /* 测站位置文件 */
-		"", /* 扩展大地水准面数据文件 */
-		"", /* 电离层数据文件 */
-		"", /* DCB数据文件 */
-		"", /* 地球自转参数文件 */
-		"", /* 海洋潮汐负荷文件 */
-	};
-	char infile_[MAXFILE][MAXSTRPATH] = {
-		"H:\\20211108\\chan2690.20o",
-		"H:\\20211108\\brdc2690.20n",
-		"H:\\20211108\\igs21245.sp3",
-		"",
-		"",
-		"",
-		"",
-		""
-	};
-	long t1, t2;
-	double eps[]={2020,9,25,0,0,0},epe[]={2020,9,25,23,0,0}; /* 设置计算的历元时段 */
-	ts=epoch2time(eps);te=epoch2time(epe);
-
-	for (i = 0, n = 0; i < MAXFILE; i++)
-		if (strcmp(infile_[i], "")) infile[n++] = &infile_[i][0];
-
-	sprintf(outfile, "%s%c", resultpath, sep);//设置输出路径
-
-	/* 自定义求解格式 --------------------------------------------------------*/
-	solopt.posf = SOLF_XYZ;   /* 选择输出的坐标格式，经纬度或是XYZ坐标等 */
-	solopt.times  =TIMES_UTC; /* 控制输出解的时间系统类型 */
-	solopt.degf   =0;         /* 输出经纬度格式(0:°, 1:°′″) */
-	solopt.outhead=1;         /* 是否输出头文件(0:否,1:是) */
-	solopt.outopt =1;         /* 是否输出prcopt变量(0:否,1:是) */
-	solopt.height =1;         /* 高程(0:椭球高,1:大地高) */
-
-	/* 自定义处理选项设置 ----------------------------------------------------*/
-	prcopt.mode = PMODE_PPP_KINEMA; /* PPP动态处理 */
-	prcopt.modear = 4;     /* 求解模糊度类型 */
-	prcopt.sateph = EPHOPT_PREC;      /* 使用精密星历 */
-	prcopt.ionoopt = IONOOPT_IFLC;     /* 使用双频消电离层组合模型 */
-	prcopt.tropopt = TROPOPT_EST;      /* 使用对流层天顶延迟估计模型 */
-	prcopt.tidecorr = 0; /* 地球潮汐改正选项(0:关闭,1:固体潮,2:固体潮+?+极移) */
-	prcopt.posopt[0] = 0; /* 卫星天线模型 */
-	prcopt.posopt[1] = 0; /* 接收机天线模型 */
-	prcopt.posopt[2] = 0; /* 相位缠绕改正 */
-	prcopt.posopt[3] = 0; /* 排除掩星 */
-	prcopt.posopt[4] = 0; /* 求解接收机坐标出错后的检查选项 */
-	prcopt.navsys = SYS_GPS; /* 处理的导航系统 */
-	sprintf(outfile, "%s%cChan200925.pos", resultpath, sep); /* 输出结果名称 */
-	prcopt.nf       =2;       /* 参与计算的载波频率个数 */
-	prcopt.elmin    =10.0*D2R;/* 卫星截止高度角 */
-	prcopt.soltype  =0;       /* 求解类型(0:向前滤波,1:向后滤波,2:混合滤波) */
-
-	t1 = clock();
-	ret = postpos(ts, te, tint, 0.0, &prcopt, &solopt, &filopt, infile, n, outfile, "", "");
-	t2 = clock();
-
-	if (!ret) fprintf(stderr, "%40s\r", "");
-
-	printf("\n * The total time for running the program: %6.3f seconds\n%c", (double)(t2 - t1) / CLOCKS_PER_SEC, '\0');
-	printf("Press any key to exit!\n");
-	getchar();
-	return ret;
-}
-```
-
-
-
-#### 6. 差分定位
-
-在差分定位中，需要至少两个站的观测值，在 RTKLIB 中只有第一个观测值文件会被当做移动站处理
-
-```c
-int main() {
-	int i, n, ret;
-	double tint = 0.0;       /* 求解时间间隔(0:默认) */
-	gtime_t ts = { 0 }, te = { 0 }; /* 历元时段始末控制变量 */
-	char *infile[MAXFILE], outfile[MAXSTRPATH] = { '\0' };
-	char resultpath[MAXSTRPATH] = "H:\\20211108\\result"; /* 结果输出路径 */
-	char sep = (char)FILEPATHSEP;
-	prcopt_t prcopt = prcopt_default; /* 默认处理选项设置 */
-	solopt_t solopt = solopt_default; /* 默认求解格式设置 */
-	filopt_t filopt = { /* 参数文件路径设置 */
-		"", /* 卫星天线参数文件 */
-		"", /* 接收机天线参数文件 */
-		"", /* 测站位置文件 */
-		"", /* 扩展大地水准面数据文件 */
-		"", /* 电离层数据文件 */
-		"", /* DCB数据文件 */
-		"", /* 地球自转参数文件 */
-		"", /* 海洋潮汐负荷文件 */
-	};
-	char infile_[MAXFILE][MAXSTRPATH] = { /* 前面观测值为移动站,后面观测值为基准站 */
-		"H:\\20211108\\chan2690.20o",
-		"H:\\20211108\\brdc2690.20n",
-		"H:\\20211108\\igs21245.sp3",
-		"H:\\20211108\\bjfs2690.20o",
-		"",
-		"",
-		"",
-		""
-	};
-	long t1, t2;
-	double eps[]={2020,9,25,0,0,0},epe[]={2020,9,25,23,0,0}; /* 设置计算的历元时段 */
-	ts=epoch2time(eps);te=epoch2time(epe);
-
-	for (i = 0, n = 0; i < MAXFILE; i++)
-		if (strcmp(infile_[i], "")) infile[n++] = &infile_[i][0];
-
-	sprintf(outfile, "%s%c", resultpath, sep);
-
-	/* 自定义求解格式 --------------------------------------------------------*/
-	solopt.timef = 1;       /* 时间格式(0:sssss.s, 1:yyyy/mm/dd hh:mm:ss.s) */
-	solopt.outhead = 1;       /* 是否输出头文件(0:否,1:是) */
-	solopt.posf = SOLF_XYZ;  /* 输出的坐标格式 */
-	//solopt.sstat =1;         /* 输出状态文件 */
-	solopt.times =TIMES_UTC; /* 控制输出解的时间系统类型 */
-	//solopt.degf  =0;         /* 输出经纬度格式(0:°, 1:°′″) */
-	solopt.outopt=1;         /* 是否输出prcopt变量(0:否,1:是) */
-	solopt.height=1;         /* 高程(0:椭球高,1:大地高) */
-	//solopt.sstat =1;         /* 输出求解状态 */
-
-	/* 自定义处理选项设置 ----------------------------------------------------*/
-	prcopt.mode = PMODE_DGPS; /* 差分GPS处理 */
-	prcopt.modear = ARMODE_FIXHOLD;  /* 求解模糊度类型 */
-	prcopt.sateph = EPHOPT_BRDC; /* 使用广播星历 */
-	prcopt.ionoopt = IONOOPT_BRDC;  /* 使用广播电离层模型 */
-	prcopt.tropopt = TROPOPT_SAAS;  /* 使用萨斯坦莫宁模型 */
-	prcopt.refpos =3;       /* 相对模式中基站位置获得方式 */
-							/* (0:pos in prcopt,  1:average of single pos, */
-							/*  2:read from file, 3:rinex header, 4:rtcm pos) */
-	//freqindex     =0;       /* 单频计算时设置所用计算的波段 */
-	prcopt.nf     =2;       /* 参与计算的载波频率个数 L1+L2*/
-	//prcopt.glomodear =2;
-	//prcopt.thresar[0]=2;
-	//prcopt.posopt[4]=1;     /* 求解接收机坐标出错后的检查选项 */
-	//prcopt.intpref=1;
-	prcopt.elmin  =10.0*D2R;/* 卫星截止高度角 */
-	prcopt.soltype=0;       /* 求解类型(0:向前滤波,1:向后滤波,2:混合滤波) */
-
-
-	prcopt.navsys = SYS_GPS; /* 处理的导航系统 */
-	sprintf(outfile, "%s%cchan200925DGPS.pos", resultpath, sep); /* 输出结果名称 */
-
-	//prcopt.navsys =SYS_GPS|SYS_CMP; /* 处理的导航系统 */
-	//sprintf(outfile,"%s%cresult_MIX.txt",resultpath,sep);
-
-	t1 = clock();
-	ret = postpos(ts, te, tint, 0.0, &prcopt, &solopt, &filopt, infile, n, outfile, "", "");
-	t2 = clock();
-
-	if (!ret) fprintf(stderr, "%40s\r", "");
-
-	printf("\n * The total time for running the program: %6.3f seconds\n%c", (double)(t2 - t1) / CLOCKS_PER_SEC, '\0');
-	printf("Press any key to exit!\n");
-	getchar();
-	return ret;
-}
-```
+![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/RTKLIB%25E9%2585%258D%25E7%25BD%25AE%25E9%2580%2589%25E9%25A1%25B9.png)
 
 
 
@@ -999,7 +818,7 @@ int main() {
 
    ![image-20231025204151284](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231025204151284.png)
 
-3. 数据命名格式：测站名（4位）+机构信息+年+年积日+采样间隔，crx 是压缩格式，gz 也是压缩格式，还有一种是 o.z 结尾只进行一次压缩
+3. 数据命名格式：**测站名（4位）+机构信息+年+年积日+采样间隔**，crx 是压缩格式，gz 也是压缩格式，还有一种是 o.z 结尾只进行一次压缩
 
 4. 广播星历文件和精密星历文件：也可用 rtkget 和 ftp下载
 
@@ -1059,15 +878,16 @@ int main() {
   * **剔除卫星**：写卫星号，空格隔开，如：C01 C02
   * **RAIM FDE完好性检验**：算法不是很稳健，不选
   * **模糊度固定模式 ARMODE**
-    * OFF：浮点解，不固定
-    * Continues：认为模糊度是连续解，通过前面历元的解算结果滤波提高后续历元模糊度固定精度。
-    * Instantaneous：瞬时模糊度固定，单历元模糊度固定，每个历元都初始化一个参数，这个历元和上个历元模糊度不相关。
-    * Fix and Hold：先 Continues，在不发生周跳情况下都采用之前模糊度固定的结果作为约束，也有问题：固定错了，时间序列会一直飘，到一定程度变成浮点解，会重置模糊度重新算。
-      * 做工程可做两套，Instantaneous 和 Fix and Hold，发现 Fix and Hold 错了，就用 Instantaneous 的解把它替换掉，相当于把模糊度和方差初始化了一次，避免漂移和模糊度重新收敛的过程。
-    * PPP-AR：PPP 时固定模糊度，不支持，需要额外产品。
-
+    * **OFF**：浮点解，不固定
+    * **Continues**：认为模糊度是连续解，通过前面历元的解算结果滤波提高后续历元模糊度固定精度。
+    * **Instantaneous**：瞬时模糊度固定，单历元模糊度固定，每个历元都初始化一个参数，这个历元和上个历元模糊度不相关。
+    * **Fix and Hold**：先 Continues，在不发生周跳情况下都采用之前模糊度固定的结果作为约束，也有问题：固定错了，时间序列会一直飘，到一定程度变成浮点解，会重置模糊度重新算。
+      
+      > 做工程可做两套，Instantaneous 和 Fix and Hold，发现 Fix and Hold 错了，就用 Instantaneous 的解把它替换掉，相当于把模糊度和方差初始化了一次，避免漂移和模糊度重新收敛的过程。
+    * **PPP-AR**：PPP 时固定模糊度，不支持，需要额外产品。
+    
   * **Ratio值**：用于检验模糊度是否固定成功，设为 3 即可。
-
+  
   * **最小LOCK**：连续锁定这颗卫星几次，才用于计算模糊度固定。
   * **用于模糊度固定的最低高度角设置**：可设 15°
   * **最小Fix**：这个历元最少固定多少个模糊度才认为模糊度是固定的，可设 10，现在卫星系统多了，而且组合模式，双频一颗卫星就 2 个模糊度，5 颗卫星固定就能凑 10 个。
@@ -1146,15 +966,23 @@ RTKLIB 提供许多代码库和 API，包括：卫星和导航系统函数、矩
 
 
 
+
+
 ### 2、结构体定义
+
+![rtklib.h结构体](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/rtklib.h%E7%BB%93%E6%9E%84%E4%BD%93.png)
 
 
 
 ### 3、全局变量
 
-
-
-
+* `extern const double chisqr[];`：**卡方检验表**
+* `extern const prcopt_t prcopt_default;`：**默认处理选项**
+* `extern const solopt_t solopt_default;`：**默认结果选项**
+* `extern const sbsigpband_t igpband1[9][8];`：**SBAS IGP 波段 0-8**
+* `extern const sbsigpband_t igpband2[2][5];`：**SBAS IGP 波段 9-10**
+* `extern const char *formatstrs[];`：**数据流格式字符串**
+* `extern opt_t sysopts[];`：**系统选项表**
 
 ### 4、基础函数定义
 
@@ -1356,9 +1184,9 @@ RTKLIB 提供许多代码库和 API，包括：卫星和导航系统函数、矩
 
 
 
+### 10、代码库的使用
 
-
-总结一些规律：
+总结一些命名和函数定义习惯：
 
 * 矩阵做参数时一点要带上维度，矩阵 m 为行、n 为列，
 * 
