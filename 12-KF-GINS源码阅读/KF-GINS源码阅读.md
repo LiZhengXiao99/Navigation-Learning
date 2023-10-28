@@ -1,5 +1,7 @@
 > 原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
 
+![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/acc16bfa1a6743d4c09a10cb51daea57.png)
+
 [TOC]
 
 ## 一、KF-GINS 简介

@@ -11,7 +11,6 @@
 
 ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/0246fb12d67e41cfb139dcc61183d784.png)
 
-
 ### 1、pntpos()：单点定位主入口函数
 
 1. **传入参数**：
@@ -29,7 +28,7 @@
 
 2. **执行流程**:
 
-   - 检验观测值数是否大于0 
+   - 检验观测值数是否大于 0 
    - `sol->time`赋值第一个观测值的时间 
    - 如果处理选项不是SPP ，电离层矫正选Klobuchar模型 ，对流层矫正采用Saastmoinen模型 
    - 调用`satposs()`计算计算卫星位置、速度和钟差 
@@ -38,8 +37,8 @@
      - `dts[(0:1)+i*2]`：obs[i] sat clock {bias,drift} (s|s/s) 
      - `var[i] `：卫星位置和钟差的协方差 (m^2) 
      - `svh[i]` :卫星健康标志 (-1:correction not available) 
-   - 调用`estpos() `用伪距位置估计，加权最小二乘，其中会调用valsol进行卡方检验和GDOP检验 
-   - `estpos()`中`valsol`检验失败，即位置估计失败，会调用`raim_fde`接收机自主完好性监测重新估计， 前提是卫星数>6、对应参数解算设置`opt->posopt[4]=1 `
+   - 调用`estpos() `用伪距位置估计，加权最小二乘，其中会调用 valsol 进行卡方检验和GDOP 检验 
+   - `estpos()`中`valsol`检验失败，即位置估计失败，会调用`raim_fde`接收机自主完好性监测重新估计， 前提是卫星数 > 6、对应参数解算设置`opt->posopt[4]=1 `
    - 调用`estvel()`用多普勒估计速度。
    - 存入方位角和俯仰角 ，赋值卫星状态结构体ssat
 
@@ -323,13 +322,13 @@
        for (i=0;i<3;i++) rr[i]=x[i];
        dtr=x[3];               
        
-       ecef2pos(rr,pos);   //rr{x,y,z}->pos{lat,lon,h}     
+       ecef2pos(rr,pos);   // rr{x,y,z}->pos{lat,lon,h}     
        
        //遍历当前历元所有OBS[]         
        for (i=*ns=0;i<n&&i<MAXOBS;i++) {
-           vsat[i]=0; azel[i*2]=azel[1+i*2]=resp[i]=0.0;   //将vsat、azel和resp数组置 0，因为在前后两次定位结果中，每颗卫星的上述信息都会发生变化。
-           time=obs[i].time;       //time赋值OBS的时间
-           sat=obs[i].sat;         //sat赋值OBS的卫星
+           vsat[i]=0; azel[i*2]=azel[1+i*2]=resp[i]=0.0;   // 将vsat、azel和resp数组置 0，因为在前后两次定位结果中，每颗卫星的上述信息都会发生变化。
+           time=obs[i].time;       // time赋值OBS的时间
+           sat=obs[i].sat;         // sat赋值OBS的卫星
            if (!(sys=satsys(sat,NULL))) continue;  //调用satsys()函数，验证卫星编号是否合理及其所属的导航系统
            
            //检测当前观测卫星是否和下一个相邻数据重复；重复则不处理这一条，去处理下一条
@@ -347,16 +346,16 @@
            if ((r=geodist(rs+i*6,rr,e))<=0.0) continue;
            
            if (iter>0) {
-               //调用 satazel 函数，计算在接收机位置处的站心坐标系中卫星的方位角和仰角；若仰角低于截断值，不处理此数据。
+               // 调用 satazel 函数，计算在接收机位置处的站心坐标系中卫星的方位角和仰角；若仰角低于截断值，不处理此数据。
                /* test elevation mask */
                if (satazel(pos,e,azel+i*2)<opt->elmin) continue;
                
-               //调用snrmask()->testsnr()，根据接收机高度角和信号频率来检测该信号是否可用
+               // 调用snrmask()->testsnr()，根据接收机高度角和信号频率来检测该信号是否可用
                /* test SNR mask */
                if (!snrmask(obs+i,azel+i*2,opt)) continue;
    
-               //调用 ionocorr 函数，计算电离层延时I,所得的电离层延时是建立在 L1 信号上的，
-               //当使用其它频率信号时，依据所用信号频组中第一个频率的波长与 L1 波长的关系，对上一步得到的电离层延时进行修正。
+               // 调用 ionocorr 函数，计算电离层延时I,所得的电离层延时是建立在 L1 信号上的，
+               // 当使用其它频率信号时，依据所用信号频组中第一个频率的波长与 L1 波长的关系，对上一步得到的电离层延时进行修正。
                /* ionospheric correction */
                if (!ionocorr(time,nav,sat,pos,azel+i*2,opt->ionoopt,&dion,&vion)) {
                    continue;
@@ -379,13 +378,13 @@
            /* pseudorange residual */
            v[nv]=P-(r+dtr-CLIGHT*dts[i*2]+dion+dtrp);  
            
-           //组装设计矩阵H单位向量的反，前 3 行为中计算得到的视线向，第 4 行为 1，其它行为 0
+           // 组装设计矩阵H单位向量的反，前 3 行为中计算得到的视线向，第 4 行为 1，其它行为 0
            /* design matrix */
            for (j=0;j<NX;j++) {
                H[j+nv*NX]=j<3?-e[j]:(j==3?1.0:0.0);
            }
            
-           //处理不同系统（GPS、GLO、GAL、CMP）之间的时间偏差，修改矩阵H
+           // 处理不同系统（GPS、GLO、GAL、CMP）之间的时间偏差，修改矩阵 H
            /* time system offset and receiver bias correction */
            if      (sys==SYS_GLO) {v[nv]-=x[4]; H[4+nv*NX]=1.0; mask[1]=1;}
            else if (sys==SYS_GAL) {v[nv]-=x[5]; H[5+nv*NX]=1.0; mask[2]=1;}
@@ -397,7 +396,7 @@
            else mask[0]=1;
            
            vsat[i]=1; resp[i]=v[nv]; (*ns)++;
-           //调用 varerr 函数，计算此时的导航系统误差，然后累加计算用户测距误差(URE)。
+           // 调用 varerr 函数，计算此时的导航系统误差，然后累加计算用户测距误差(URE)。
            /* variance of pseudorange error */
            var[nv++]=varerr(opt,azel[1+i*2],sys)+vare[i]+vmeas+vion+vtrp;
            
@@ -427,122 +426,131 @@
 #### 2.satexclude()：检测某颗卫星在定位时是否需要将其排除
 根据svh、导航系统设置，导航卫星设置。排除返回1。
 
-     ```c
-     extern int satexclude(int sat, double var, int svh, const prcopt_t *opt)
-     {
-         int sys=satsys(sat,NULL);
-         
-         if (svh<0) return 1; /* ephemeris unavailable */    //通过svh判断卫星是否健康可用
-         
-         if (opt) {
-             if (opt->exsats[sat-1]==1) return 1; /* excluded satellite */
-             if (opt->exsats[sat-1]==2) return 0; /* included satellite */
-             if (!(sys&opt->navsys)) return 1; /* unselected sat sys */  //比较该卫星与预先规定的导航系统是否一致
-         }
-         if (sys==SYS_QZS) svh&=0xFE; /* mask QZSS LEX health */
-         if (svh) {
-             trace(3,"unhealthy satellite: sat=%3d svh=%02X\n",sat,svh);
-             return 1;
-         }
-         if (var>MAX_VAR_EPH) {
-             trace(3,"invalid ura satellite: sat=%3d ura=%.2f\n",sat,sqrt(var));
-             return 1;
-         }
-         return 0;
+ ```c
+ extern int satexclude(int sat, double var, int svh, const prcopt_t *opt)
+ {
+     int sys=satsys(sat,NULL);
+     
+     if (svh<0) return 1; /* ephemeris unavailable */    //通过svh判断卫星是否健康可用
+     
+     if (opt) {
+         if (opt->exsats[sat-1]==1) return 1; /* excluded satellite */
+         if (opt->exsats[sat-1]==2) return 0; /* included satellite */
+         if (!(sys&opt->navsys)) return 1; /* unselected sat sys */  //比较该卫星与预先规定的导航系统是否一致
      }
-     ```
+     if (sys==SYS_QZS) svh&=0xFE; /* mask QZSS LEX health */
+     if (svh) {
+         trace(3,"unhealthy satellite: sat=%3d svh=%02X\n",sat,svh);
+         return 1;
+     }
+     if (var>MAX_VAR_EPH) {
+         trace(3,"invalid ura satellite: sat=%3d ura=%.2f\n",sat,sqrt(var));
+         return 1;
+     }
+     return 0;
+ }
+ ```
 
+#### 3. geodist()：计算站心几何距离
 
-​     
+地球自转引起的误差是信号传输过程中 GNSS 卫星信号发射时刻和接收机接收到信号的时刻之间地球自转对 GNSS 观测值产生的影响。相当于地球自转使得卫星空间位置在信号播发、收到的过程中接收机在地固系坐标轴上相对于 $\mathrm{Z}$ 轴发生了一定角度的旋转，使得 GNSS 卫星的在信号发射时刻的位置发生了变化，也称为 Sagnac 效应。
 
-#### 3.geodist()：计算站心几何距离
-计算卫星和当前接收机位置之间的萨格纳克效应改正的几何距离r和接收机到卫星方向的观测矢量。
+![image-20231028162356346](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231028162356346.png)
 
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/20d04d6662c44f3498de3bd94421c705.png)
+地球自转引起的距离改正公式如下：
+$$
+\begin{array}{c}{\left[\begin{array}{l}x^{s^{\prime}} \\ y^{s^{s^{\prime}}} \\ z^{s^{\prime}}\end{array}\right]=\left[\begin{array}{ccc}\cos \omega \tau & \sin \omega \tau & 0 \\ -\sin \omega \tau & \cos \omega \tau & 0 \\ 0 & 0 & 1\end{array}\right]\left[\begin{array}{l}x^{s} \\ y^{s} \\ z^{s}\end{array}\right]} \\ \delta_{\text {sagnac, } r, j}=\frac{\omega_{e}}{c}\left(x^{s} y_{r}-y^{s} x_{r}\right)\end{array}
+$$
+上式中 $\left(x^{s^\prime}, y^{s^{\prime}}, z^{s^{\prime}}\right)$ 为地球自旋转后卫星的坐标值, $\left(x^{s}, y^{s}, z^{s}\right)$ 为地球自旋转前卫星的坐标值, $\omega_{e}$ 代表地球自传角速度值, $\tau$ 为卫星发射信号时刻到接收机接收卫星时刻的历元数。
 
- ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/05a3f827642b46b983533b78e9661b34.png)
-
+改正地球自转后的近似几何距离近似几何距离如下：
+$$
+\begin{array}{l} \rho_{r}^{s} \approx\left\|\boldsymbol{r}_{r}\left(t_{r}\right)-\boldsymbol{r}^{s}\left(t^{s}\right)\right\|+\frac{\omega_{e}}{c}\left(x^{s} y_{r}-y^{s} x_{r}\right) \end{array}
+$$
+接收机到卫星方向的观测矢量计算公式如下：
+$$
+\boldsymbol{e}_{r}^{s}=\frac{\boldsymbol{r}^{s}\left(t^{s}\right)-\boldsymbol{r}_{r}\left(t_{r}\right)}{\left\|\boldsymbol{r}^{s}\left(t^{s}\right)-\boldsymbol{r}_{r}\left(t_{r}\right)\right\|}
+$$
 
 ```c
-
  extern double geodist(const double *rs, const double *rr, double *e)
  {
      double r;
      int i;
      
-     if (norm(rs,3)<RE_WGS84) return -1.0;   //检查卫星到 WGS84坐标系原点的距离是否大于基准椭球体的长半径。
-     for (i=0;i<3;i++) e[i]=rs[i]-rr[i];     //求卫星和接收机坐标差e[]
-     r=norm(e,3);                            //求未经萨格纳克效应改正的距离
-     for (i=0;i<3;i++) e[i]/=r;  //接收机到卫星的单位向量e[]	(E.3.9)
+     if (norm(rs,3)<RE_WGS84) return -1.0;   // 检查卫星到 WGS84坐标系原点的距离是否大于基准椭球体的长半径。
+     for (i=0;i<3;i++) e[i]=rs[i]-rr[i];     // 求卫星和接收机坐标差e[]
+     r=norm(e,3);                            // 求未经萨格纳克效应改正的距离
+     for (i=0;i<3;i++) e[i]/=r;  // 接收机到卫星的单位向量e[]	(E.3.9)
      return r+OMGE*(rs[0]*rr[1]-rs[1]*rr[0])/CLIGHT; 	//(E.3.8b)
  }
 ```
 
 
-​     
-
- #### 4.satazel()：计算方位角、高度角
- 计算卫星方位角`azel[0]`，高度角`azel[1]`，(0.0<=`azel[0]`<2*pi,-pi/2<=`azel[1]`<=pi/2) 
-
- ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/b2e252ae8766496a92c99f38490d5bf2.png)
 
 
-    //double *pos      I   geodetic position {lat,lon,h} (rad,m)
-     //double *e        I   receiver-to-satellilte unit vevtor (ecef)
-     //double *azel     IO  azimuth/elevation {az,el} (rad) (NULL: no output)
-     //                     (0.0<=azel[0]<2*pi,-pi/2<=azel[1]<=pi/2)
-     //return : elevation angle (rad)
-     extern double satazel(const double *pos, const double *e, double *azel)
-     {
-         double az=0.0,el=PI/2.0,enu[3];
-         
-         if (pos[2]>-RE_WGS84) {
-             ecef2enu(pos,e,enu);
-             az=dot(enu,enu,2)<1E-12?0.0:atan2(enu[0],enu[1]);	//(E.3.11)
-             if (az<0.0) az+=2*PI;
-             el=asin(enu[2]);		//(E.3.12)
-         }
-         if (azel) {azel[0]=az; azel[1]=el;}
-         return el;
-     }
 
+#### 4. satazel()：计算方位角、高度角
 
-​     
+![image-20231028163827373](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231028163827373.png)
 
-#### 5.snrmask()：检测信号是否可用
+方位角范围在 $[0,2 \pi]$，高度角范围在 $[-\frac{\pi}{2},\frac{\pi}{2}]$；以接收机为原点，建立站心坐标系 ENU，根据卫星 ENU 下方向矢量可以得到高度角、方位角，公式如下：
+$$
+\begin{array}{l}\boldsymbol{e}_{r, \text { enu }}^{s}=\boldsymbol{E}_{r} \boldsymbol{e}_{r}^{s}=\left(e_{e}, e_{n}, e_{u}\right)^{T} \\ A z_{r}^{s}=\operatorname{ATAN} 2\left(e_{e}, e_{n}\right) \\ E l_{r}^{s}=\arcsin \left(e_{u}\right)\end{array}
+$$
+对应的代码如下，传入接收机 LLH 坐标 `pos`、接收机到卫星方向的观测矢量 `e`，计算之后返回弧度制的高度角，如果传了参三 `azel`，那么 `azel[0]` 是方位角、`azel[1]` 是高度角。
+
+```c
+extern double satazel(const double *pos, const double *e, double *azel)
+{
+    double az=0.0,el=PI/2.0,enu[3];
+    
+    if (pos[2]>-RE_WGS84) {
+        ecef2enu(pos,e,enu);
+        az=dot(enu,enu,2)<1E-12?0.0:atan2(enu[0],enu[1]);
+        if (az<0.0) az+=2*PI;
+        el=asin(enu[2]);
+    }
+    if (azel) {azel[0]=az; azel[1]=el;}
+    return el;
+}
+```
+
+#### 5. snrmask()：检测信号是否可用
+
 调用`testsnr()`，根据接收机高度角和信号频率来检测该信号是否可用
 
-     ```c
-     static int snrmask(const obsd_t *obs, const double *azel, const prcopt_t *opt)
-     {
-         if (testsnr(0,0,azel[1],obs->SNR[0]*SNR_UNIT,&opt->snrmask)) {
-             return 0;
-         }
-         if (opt->ionoopt==IONOOPT_IFLC) {   //消电离层组合
-             if (testsnr(0,1,azel[1],obs->SNR[1]*SNR_UNIT,&opt->snrmask)) return 0;
-         }
-         return 1;
+ ```c
+ static int snrmask(const obsd_t *obs, const double *azel, const prcopt_t *opt)
+ {
+     if (testsnr(0,0,azel[1],obs->SNR[0]*SNR_UNIT,&opt->snrmask)) {
+         return 0;
      }
-     ```
-    
-     ```c
-     extern int testsnr(int base, int idx, double el, double snr,
-                        const snrmask_t *mask)
-     {
-         double minsnr,a;
-         int i;
-         
-         if (!mask->ena[base]||idx<0||idx>=NFREQ) return 0;
-         
-         a=(el*R2D+5.0)/10.0;
-         i=(int)floor(a); a-=i;
-         if      (i<1) minsnr=mask->mask[idx][0];
-         else if (i>8) minsnr=mask->mask[idx][8];
-         else minsnr=(1.0-a)*mask->mask[idx][i-1]+a*mask->mask[idx][i];  // 1<=i<=8的情况，则使用线性插值计算出 minsnr的值
-         
-         return snr<minsnr;  //snr小于minsnr时，返回1
+     if (opt->ionoopt==IONOOPT_IFLC) {   //消电离层组合
+         if (testsnr(0,1,azel[1],obs->SNR[1]*SNR_UNIT,&opt->snrmask)) return 0;
      }
-     ```
+     return 1;
+ }
+ ```
+
+ ```c
+ extern int testsnr(int base, int idx, double el, double snr,
+                    const snrmask_t *mask)
+ {
+     double minsnr,a;
+     int i;
+     
+     if (!mask->ena[base]||idx<0||idx>=NFREQ) return 0;
+     
+     a=(el*R2D+5.0)/10.0;
+     i=(int)floor(a); a-=i;
+     if      (i<1) minsnr=mask->mask[idx][0];
+     else if (i>8) minsnr=mask->mask[idx][8];
+     else minsnr=(1.0-a)*mask->mask[idx][i-1]+a*mask->mask[idx][i];  // 1<=i<=8的情况，则使用线性插值计算出 minsnr的值
+     
+     return snr<minsnr;  //snr小于minsnr时，返回1
+ }
+ ```
 
 
 ​     
@@ -556,27 +564,26 @@ DCB差分码偏差，针对伪距，是由不同类型的GNSS信号在卫星和�
    
 
 #### 9.varerr()：计算导航系统伪距测量值的误差
-E6.24的第一项
+E6.24 的第一项
 
-     > 疑似bugs：定权公式sin(el)没有开方
-     >
-     > `varr=SQR(opt->err[0])*(SQR(opt->err[1])+SQR(opt->err[2])/sin(el)); `
-    
-     ![](https://img-blog.csdnimg.cn/248db84257404da2a8b5ffce367b9bd0.png)
+ > 疑似 bugs：定权公式sin(el)没有开方
+ >
+ > `varr=SQR(opt->err[0])*(SQR(opt->err[1])+SQR(opt->err[2])/sin(el)); `
 
+ ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/248db84257404da2a8b5ffce367b9bd0.png)
 
-     ```c
-     static double varerr(const prcopt_t *opt, double el, int sys)
-     {
-         double fact,varr;
-         fact=sys==SYS_GLO?EFACT_GLO:(sys==SYS_SBS?EFACT_SBS:EFACT_GPS);
-         //两个三目运算符，如果是GLONASS fact值为1.5，如果是SBAS fact值为3，其它fact值为1
-         if (el<MIN_EL) el=MIN_EL;   //高度角过小，设为5°
-         varr=SQR(opt->err[0])*(SQR(opt->err[1])+SQR(opt->err[2])/sin(el));      //sin(el)没开方，疑似bug
-         if (opt->ionoopt==IONOOPT_IFLC) varr*=SQR(3.0); /* iono-free */ //消电离层组合，方差*3*3
-         return SQR(fact)*varr;
-     }
-     ```
+ ```c
+ static double varerr(const prcopt_t *opt, double el, int sys)
+ {
+     double fact,varr;
+     fact=sys==SYS_GLO?EFACT_GLO:(sys==SYS_SBS?EFACT_SBS:EFACT_GPS);
+     //两个三目运算符，如果是GLONASS fact值为1.5，如果是SBAS fact值为3，其它fact值为1
+     if (el<MIN_EL) el=MIN_EL;   //高度角过小，设为5°
+     varr=SQR(opt->err[0])*(SQR(opt->err[1])+SQR(opt->err[2])/sin(el));      //sin(el)没开方，疑似bug
+     if (opt->ionoopt==IONOOPT_IFLC) varr*=SQR(3.0); /* iono-free */ //消电离层组合，方差*3*3
+     return SQR(fact)*varr;
+ }
+ ```
 
 
 ​     
@@ -954,9 +961,9 @@ E6.24的第一项
    
 
 ### 2、ionocorr()：根据选项调用L1电离层延迟I
-在rescode()中被调用，根据选项，调用ionmodel()、sbsioncorr()、iontec()、ionmodel()计算L1电离层延迟I
+在 rescode() 中被调用，根据选项，调用ionmodel()、sbsioncorr()、iontec()、ionmodel()计算L1电离层延迟I
 
-> 计算的是L1信号的电离层延时I，当使用其它频率信号时，依据所用信号频组中第一个频率的波长与 L1 波长的比例关系，对上一步得到的电离层延时进行修正。
+> 计算的是 L1 信号的电离层延时 I ，当使用其它频率信号时，依据所用信号频组中第一个频率的波长与 L1 波长的比例关系，对上一步得到的电离层延时进行修正。
 >
 > rescode()函数中的使用：
 >
@@ -1438,7 +1445,7 @@ extern void readtec(const char *file, nav_t *nav, int opt)
 
 
 ### 2、tropcorr()：根据选项调用对应函数计算对流层延迟T 
-在rescode()中被调用，调用tropmodel()、sbstropcorr()根据选项，计算对流层延迟T 
+在rescode()中被调用，调用tropmodel()、sbstropcorr() 根据选项，计算对流层延迟T 
 
 ```c
 extern int tropcorr(gtime_t time, const nav_t *nav, const double *pos,
@@ -1485,15 +1492,15 @@ extern double tropmodel(gtime_t time, const double *pos, const double *azel,
     /* standard atmosphere */
     hgt=pos[2]<0.0?0.0:pos[2];
     
-    pres=1013.25*pow(1.0-2.2557E-5*hgt,5.2568);         //求大气压P (E.5.1)
-    temp=temp0-6.5E-3*hgt+273.16;                       //求温度temp (E.5.2)
-    e=6.108*humi*exp((17.15*temp-4684.0)/(temp-38.45)); //求大气水汽压力e (E.5.3)
+    pres=1013.25*pow(1.0-2.2557E-5*hgt,5.2568);         // 求大气压P (E.5.1)
+    temp=temp0-6.5E-3*hgt+273.16;                       // 求温度temp (E.5.2)
+    e=6.108*humi*exp((17.15*temp-4684.0)/(temp-38.45)); // 求大气水汽压力e (E.5.3)
     
-    /* saastamoninen model */
-    z=PI/2.0-azel[1];       //求天顶角z 卫星高度角azel[1]的余角
+    /* saastamoninen model */ 
+    z=PI/2.0-azel[1];       // 求天顶角z 卫星高度角azel[1]的余角
     trph=0.0022768*pres/(1.0-0.00266*cos(2.0*pos[0])-0.00028*hgt/1E3)/cos(z);   //求静力学延迟Th
     trpw=0.002277*(1255.0/temp+0.05)*e/cos(z);              //求湿延迟Tw (E.5.4)
-    return trph+trpw;       //Saastamoinen中对流层延迟为静力学延迟Th湿延迟Tw的和
+    return trph+trpw;       // Saastamoinen中对流层延迟为静力学延迟Th湿延迟Tw的和
 }
 ```
 
