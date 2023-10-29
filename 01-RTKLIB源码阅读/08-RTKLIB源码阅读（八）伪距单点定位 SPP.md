@@ -961,7 +961,7 @@ E6.24 的第一项
    
 
 ### 2、ionocorr()：根据选项调用L1电离层延迟I
-在 rescode() 中被调用，根据选项，调用ionmodel()、sbsioncorr()、iontec()、ionmodel()计算L1电离层延迟I
+在 rescode() 中被调用，根据选项，调用 ionmodel()、sbsioncorr()、iontec()、ionmodel()计算L1电离层延迟I
 
 > 计算的是 L1 信号的电离层延时 I ，当使用其它频率信号时，依据所用信号频组中第一个频率的波长与 L1 波长的比例关系，对上一步得到的电离层延时进行修正。
 >
@@ -1003,11 +1003,70 @@ extern int tropcorr(gtime_t time, const nav_t *nav, const double *pos,
 
 
 ### 3、ionmodel()：广播星历电离层改正
-即(klobuchar model)克罗布歇模型，用8个电离层参数模型校正
+SPP 中使用克罗布歇模型计算 L1 的电离层改正量，将晚间的电离层时延视为常数，取值为 5ns，把白天的时延看成是余弦函数中正的部分。于是天顶方向调制在 L1 载波上的测距码的电离层时延可表示为：
+$$
+T_{g}=5 \times 10^{-9}+A \cos \frac{2 \pi}{P}\left(t-14^{h}\right)
+$$
+振幅 $A$ 和周期 $P$ 分别为：
+$$
+\begin{array}{l}
+A=\sum_{i=0}^{3} \alpha_{i}\left(\varphi_{m}\right)^{i} \\
+P=\sum_{i=0}^{3} \beta_{i}\left(\varphi_{m}\right)^{i}
+\end{array}
+$$
+全球定位系统向单频接收机用户提供的电离层延迟改正时就采用上述模型。其中 $\alpha_i$ 和 $\beta_i$ 是地面控制系统根据该天为一年中的第几天（将一年分为 37 个区间）以及前 5 天太阳的平均辐射流量（共分10档）从 370 组常数中选取的，然后编入星导航电文播发给用户。卫星在其播发的导航电文中提供了这 8 个电离层延迟参数：
+$$
+p_{\text {ion }}=\left(\alpha_{0}, \alpha_{1}, \alpha_{2}, \alpha_{3}, \beta_{0}, \beta_{1}, \beta_{2}, \beta_{3}\right)^{T}
+$$
+根据根据参数 $\alpha_0，\alpha_1，\alpha_2，\alpha_3$ 确定振幅 $A$，根据根据参数 $\beta_0，\beta_1，\beta_2，\beta_3$ 确定周期 $T$，再给定一个以秒为单位的当地时间 $t$，就能算出**天顶电离层延迟**。再由天顶对流层延迟根据倾斜率转为卫星方向对流层延迟。
 
-> 卫星在其播发的导航电文中提供电离层延迟参数，接收机根据参数$\alpha_0，\alpha_1，\alpha_2，\alpha_3$确定振幅$A$，根据参数$\beta_0，\beta_1，\beta_2，\beta_3$确定周期$T$，再给定一个以秒为单位的当地时间$T$，就能算出**天顶电离层延迟**。再由天顶对流层延迟根据倾斜率转为卫星方向对流层延迟。
+电离层分布在离地面 60-1000km 的区域内。当卫星不在测站的天顶时，信号传播路径上每点的地方时和纬度均不相同，为了简化计算，我们将整个电离层压缩为一个单层，将整个电离层中的自由电子都集中在该单层上，用它来代替整个电离层。这个电离层就称为中心电离层。中心电离层离地面的高度通常取 350km。式中的参数 $t$ 和式中的参数 $\varphi_{m}$ 分别为卫星言号传播路径与中心电离层的交点 $P^{\prime}$ 的时角和地磁纬度，因为只有 $P^{\prime}$ 才能反映卫星信号所受到的电离层延迟的总的情况。
 
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/f95408c0553e4e049ec3b89ab71e5587.png)
+综上，已知大地经度、 大地纬度、卫星的高度角和卫星测站的方位角，电离层延迟计算方法如下：
+
+计算测站 $P$ 和 $P^{\prime}$ 在地心的夹角：
+$$
+\psi=0.0137 /(E l+0.11)-0.022
+$$
+计算交点 $P^{\prime}$ 的地心纬度：
+$$
+\varphi_{i}=\varphi+\psi \cos A z
+$$
+
+$$
+\left\{\begin{array}{ll}\varphi_{l}>+0.416 & \varphi_{l}=+0.416 \\ \varphi{l}>-0.416 & \varphi_{l}=-0.416\end{array}\right.
+$$
+
+计算交点 $P^{\prime}$ 的地心经度：
+$$
+\lambda_{i}=\lambda+\psi \sin A z / \cos \varphi_{i}
+$$
+计算地磁纬度：
+$$
+\varphi_{m}=\varphi_{i}+0.064 \cos \left(\lambda_{i}-1.617\right)
+$$
+计算观测瞬间交点 $P^{\prime}$ 处的地方时：
+$$
+  t=4.32 \times 10^{4} \lambda_{i}+t 
+$$
+
+$$
+\left\{\begin{array}{ll}t>86400 & t=t-86400 \\ t<0 & t=t+86400\end{array}\right.
+$$
+
+计算倾斜因子：
+$$
+ F=1.0+16.0 \times(0.53-E l)^{3}
+$$
+计算电离层时间延迟：
+$$
+\begin{array}{l}x=2 \pi(t-50400) / \sum_{n=0}^{3} \beta_{n} \varphi_{m}{ }^{n} \\ I_{r}^{s}=\left\{\begin{array}{cc}F \times 5 \times 10^{-9} \\ F \times\left(5 \times 10^{-9}+\sum_{n=1}^{4} \alpha_{n} \varphi_{m}{ }^{n} \times\left(1-\frac{x^{2}}{2}+\frac{x^{4}}{24}\right)\right) & (|x|>1.57)\end{array}\right.\end{array}
+$$
+
+计算的是 L1 信号的电离层延时 I ，当使用其它频率信号时，依据所用信号频组中第一个频率的波长与 L1 波长的比例关系，对上一步得到的电离层延时进行修正，不考虑模糊度情况下改正公式为：
+$$
+I=\frac{\Phi_{2}-\Phi_{1}}{1-\left(f_{1} / f_{2}\right)^{2}}
+$$
 
 
 ```c
@@ -1026,7 +1085,7 @@ extern double ionmodel(gtime_t t, const double *ion, const double *pos,
 
 
     /* earth centered angle (semi-circle) */    //地球中心角
-    psi=0.0137/(azel[1]/PI+0.11)-0.022;             //计算地心角(E.5.6)
+    psi=0.0137/(azel[1]/PI+0.11)-0.022;         //计算地心角(E.5.6)
     
     /* subionospheric latitude/longitude (semi-circle) */   
     phi=pos[0]/PI+psi*cos(azel[0]);                 //计算穿刺点地理纬度(E.5.7)
@@ -1176,13 +1235,13 @@ extern void readtec(const char *file, nav_t *nav, int opt)
 
 
 
-#### 4、电离层TEC格网改正
+#### 4、电离层 TEC 格网改正
 
 ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/4b6779544615489cbcadaabd59c74d6d.png)
 
 
 ##### 1.原理
-格网改正模型电离层格网模型文件IONEX，通过内插获得穿刺点位置，并结合当天电离层格网数据求出穿刺点的垂直电子含量，获得电离层延迟误差 。
+格网改正模型电离层格网模型文件 IONEX，通过内插获得穿刺点位置，并结合当天电离层格网数据求出穿刺点的垂直电子含量，获得电离层延迟误差 。
 
 ##### 2.iontec()：TEC格网改正主入口函数
 由所属时间段两端端点的TEC网格数据**时间插值**计算出电离层延时 (L1) (m) 
@@ -1191,7 +1250,7 @@ extern void readtec(const char *file, nav_t *nav, int opt)
    * 检测高度角和接收机高度是否大于阈值 
    * 从 `nav_t.tec`中找出第一个`tec[i].time`>`time`信号接收时间 
    * 确保 time是在所给出的`nav_t.tec`包含的时间段之中 ，通过确认所找到的时间段的右端点减去左端点，来确保时间间隔不为0 
-   * 调用`iondelay()`来计算所属时间段两端端点的电离层延时 
+   * 调用`iondelay()`来计算所属时间段两端端点的电离层延时
    * 由两端的延时，插值计算出观测时间点处的值 
 
    ```c

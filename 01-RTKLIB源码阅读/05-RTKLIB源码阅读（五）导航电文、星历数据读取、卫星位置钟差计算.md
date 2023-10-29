@@ -598,7 +598,7 @@ dts[(0:1)+i*2]= obs[i] sat clock {bias,drift} (s|s/s)	卫星钟差钟漂
   
 
 #### 4.seleph()、selgeph()：选择用于解算星历数据
-传入sattle number，时间或IDOE，如果传入IDOE>=0,按IDOE找星历数据，否则取最接近时间的星历 
+传入sattle number，时间或 IDOE，如果传入 IDOE>=0 ,按 IDOE 找星历数据，否则取最接近时间的星历 
 
 
   ```c
@@ -720,7 +720,7 @@ dts[(0:1)+i*2]= obs[i] sat clock {bias,drift} (s|s/s)	卫星钟差钟漂
 
 ### 2、eph2clk()：由广播星历计算卫星钟差
 
-根据信号发射时间和广播星历，计算卫星钟差,不考虑相对论效应和TGD ，二项式校正公式用了三遍。
+根据信号发射时间和广播星历，计算卫星钟差,不考虑相对论效应和 TGD ，二项式校正公式用了三遍。
 
 ### 3、geph2clk()：由广播星历计算GLONASS卫星钟差钟差
 与eph2clk() 类似
@@ -733,7 +733,7 @@ dts[(0:1)+i*2]= obs[i] sat clock {bias,drift} (s|s/s)	卫星钟差钟漂
       
       trace(4,"eph2clk : time=%s sat=%2d\n",time_str(time,3),eph->sat);
       
-      t=ts=timediff(time,eph->toc);   //计算与星历参考时间的偏差 dt = t-toc
+      t=ts=timediff(time,eph->toc);   // 计算与星历参考时间的偏差 dt = t-toc
       //利用二项式校正计算出卫星钟差，从 dt中减去这部分，然后再进行一次上述操作，得到最终的 dt
       for (i=0;i<2;i++) {
           t=ts-(eph->f0+eph->f1*t+eph->f2*t*t);       //(E.4.16)
@@ -848,6 +848,7 @@ dts[(0:1)+i*2]= obs[i] sat clock {bias,drift} (s|s/s)	卫星钟差钟漂
   
 
 ### 5、var_uraeph()：用URA用户测距精度标定卫星位置方差。
+
 ![在这里插入图片描述](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/15d6fc165600428784189bbf00456c13.png)
 
   ```c
@@ -884,76 +885,77 @@ dts[(0:1)+i*2]= obs[i] sat clock {bias,drift} (s|s/s)	卫星钟差钟漂
 
 
 ### 6、GLONASS卫星位置计算： geph2pos() -> glorbit() -> deq()
-由GLONASS星历计算卫星坐标。GLONASS卫星播发的是PZ-90坐标系下参考时刻的卫星状态向量，每半个小时广播一次。如果需要得到某个时间的卫星位置必须通过运动模型积分得到。
+
+由 GLONASS 星历计算卫星坐标。GLONASS 卫星播发的是 PZ-90 坐标系下参考时刻的卫星状态向量，每半个小时广播一次。如果需要得到某个时间的卫星位置必须通过运动模型积分得到。
 
 #### 1.glorbit()：龙格库塔迭代
+
 ![在这里插入图片描述](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/0904f7d7214b46ccb92ee3fb8b9c4578.png)
 
 
 
 #### 2.deq()：微分方程计算
 
-    ![](https://img-blog.csdnimg.cn/d5b839cb6f4c4470b41cb26132fe8a3a.png)
+![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/d5b839cb6f4c4470b41cb26132fe8a3a.png)
 
-
-    ```c
-    extern void geph2pos(gtime_t time, const geph_t *geph, double *rs, double *dts,
-                         double *var)
-    {
-        double t,tt,x[6];
-        int i;
-        
-        trace(4,"geph2pos: time=%s sat=%2d\n",time_str(time,3),geph->sat);
-        
-        t=timediff(time,geph->toe);
-        
-        *dts=-geph->taun+geph->gamn*t;  //计算钟差dts(E.4.26)
-        
-        for (i=0;i<3;i++) {
-            x[i  ]=geph->pos[i];
-            x[i+3]=geph->vel[i];
-        }
+```c
+extern void geph2pos(gtime_t time, const geph_t *geph, double *rs, double *dts,
+                     double *var)
+{
+    double t,tt,x[6];
+    int i;
     
-        //步长TSTEP:60s
-        for (tt=t<0.0?-TSTEP:TSTEP;fabs(t)>1E-9;t-=tt) {
-            if (fabs(t)<TSTEP) tt=t;
-            glorbit(tt,x,geph->acc);
-        }
-        for (i=0;i<3;i++) rs[i]=x[i];
-        
-        *var=SQR(ERREPH_GLO);   //glonass卫星的方差直接定为 5*5
+    trace(4,"geph2pos: time=%s sat=%2d\n",time_str(time,3),geph->sat);
+    
+    t=timediff(time,geph->toe);
+    
+    *dts=-geph->taun+geph->gamn*t;  //计算钟差dts(E.4.26)
+    
+    for (i=0;i<3;i++) {
+        x[i  ]=geph->pos[i];
+        x[i+3]=geph->vel[i];
     }
-    static void glorbit(double t, double *x, const double *acc)
-    {
-        double k1[6],k2[6],k3[6],k4[6],w[6];
-        int i;
-        
-        deq(x,k1,acc); for (i=0;i<6;i++) w[i]=x[i]+k1[i]*t/2.0;
-        deq(w,k2,acc); for (i=0;i<6;i++) w[i]=x[i]+k2[i]*t/2.0;
-        deq(w,k3,acc); for (i=0;i<6;i++) w[i]=x[i]+k3[i]*t;
-        deq(w,k4,acc); for (i=0;i<6;i++) x[i]+=(k1[i]+2.0*k2[i]+2.0*k3[i]+k4[i])*t/6.0;
+
+    //步长TSTEP:60s
+    for (tt=t<0.0?-TSTEP:TSTEP;fabs(t)>1E-9;t-=tt) {
+        if (fabs(t)<TSTEP) tt=t;
+        glorbit(tt,x,geph->acc);
     }
-    static void deq(const double *x, double *xdot, const double *acc)
-    {
-        double a,b,c,
-        r2=dot(x,x,3),  //r平方
-        r3=r2*sqrt(r2), //r三次方
-        omg2=SQR(OMGE_GLO); //omg平方
-        
-        if (r2<=0.0) {  //计算出错
-            xdot[0]=xdot[1]=xdot[2]=xdot[3]=xdot[4]=xdot[5]=0.0;
-            return;
-        }
-        /* ref [2] A.3.1.2 with bug fix for xdot[4],xdot[5] */
-        a=1.5*J2_GLO*MU_GLO*SQR(RE_GLO)/r2/r3; /* 3/2*J2*mu*Ae^2/r^5 */
-        b=5.0*x[2]*x[2]/r2;                    /* 5*z^2/r^2 */
-        c=-MU_GLO/r3-a*(1.0-b);                /* -mu/r^3-a(1-b) */
-        xdot[0]=x[3]; xdot[1]=x[4]; xdot[2]=x[5];       //(E.4.22)
-        xdot[3]=(c+omg2)*x[0]+2.0*OMGE_GLO*x[4]+acc[0]; //(E.4.23)
-        xdot[4]=(c+omg2)*x[1]-2.0*OMGE_GLO*x[3]+acc[1]; //(E.4.24)
-        xdot[5]=(c-2.0*a)*x[2]+acc[2];                  //(E.4.25)
+    for (i=0;i<3;i++) rs[i]=x[i];
+    
+    *var=SQR(ERREPH_GLO);   //glonass卫星的方差直接定为 5*5
+}
+static void glorbit(double t, double *x, const double *acc)
+{
+    double k1[6],k2[6],k3[6],k4[6],w[6];
+    int i;
+    
+    deq(x,k1,acc); for (i=0;i<6;i++) w[i]=x[i]+k1[i]*t/2.0;
+    deq(w,k2,acc); for (i=0;i<6;i++) w[i]=x[i]+k2[i]*t/2.0;
+    deq(w,k3,acc); for (i=0;i<6;i++) w[i]=x[i]+k3[i]*t;
+    deq(w,k4,acc); for (i=0;i<6;i++) x[i]+=(k1[i]+2.0*k2[i]+2.0*k3[i]+k4[i])*t/6.0;
+}
+static void deq(const double *x, double *xdot, const double *acc)
+{
+    double a,b,c,
+    r2=dot(x,x,3),  //r平方
+    r3=r2*sqrt(r2), //r三次方
+    omg2=SQR(OMGE_GLO); //omg平方
+    
+    if (r2<=0.0) {  //计算出错
+        xdot[0]=xdot[1]=xdot[2]=xdot[3]=xdot[4]=xdot[5]=0.0;
+        return;
     }
-    ```
+    /* ref [2] A.3.1.2 with bug fix for xdot[4],xdot[5] */
+    a=1.5*J2_GLO*MU_GLO*SQR(RE_GLO)/r2/r3; /* 3/2*J2*mu*Ae^2/r^5 */
+    b=5.0*x[2]*x[2]/r2;                    /* 5*z^2/r^2 */
+    c=-MU_GLO/r3-a*(1.0-b);                /* -mu/r^3-a(1-b) */
+    xdot[0]=x[3]; xdot[1]=x[4]; xdot[2]=x[5];       //(E.4.22)
+    xdot[3]=(c+omg2)*x[0]+2.0*OMGE_GLO*x[4]+acc[0]; //(E.4.23)
+    xdot[4]=(c+omg2)*x[1]-2.0*OMGE_GLO*x[3]+acc[1]; //(E.4.24)
+    xdot[5]=(c-2.0*a)*x[2]+acc[2];                  //(E.4.25)
+}
+```
 
 
 
@@ -1046,7 +1048,7 @@ dts[(0:1)+i*2]= obs[i] sat clock {bias,drift} (s|s/s)	卫星钟差钟漂
           trace(3,"no prec ephem %s sat=%2d\n",time_str(time,0),sat);
           return 0;
       }
-      /* binary search */     //二分查找nav->peph[]中时间差最接近的精密星历的下标index
+      /* binary search */     // 二分查找nav->peph[]中时间差最接近的精密星历的下标index
       for (i=0,j=nav->ne-1;i<j;) {
           k=(i+j)/2;
           if (timediff(nav->peph[k].time,time)<0.0) i=k+1; else j=k;
@@ -1117,7 +1119,8 @@ dts[(0:1)+i*2]= obs[i] sat clock {bias,drift} (s|s/s)	卫星钟差钟漂
 
 
 
-### 3、interppol()：Neville插值
+### 3、interppol()：Neville 插值
+
 由两个n-1次插值多项式构造一个n次多项式的线性逐次插值方法 
 
 ![在这里插入图片描述](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/3ff9e1ba7fca4004a534aaf8f7e835b9.png)
@@ -1139,7 +1142,7 @@ dts[(0:1)+i*2]= obs[i] sat clock {bias,drift} (s|s/s)	卫星钟差钟漂
 
   
 
-### 4、pephclk()：精密钟差计算卫星钟差
+### 5、pephclk()：精密钟差计算卫星钟差
 
   ```c
   static int pephclk(gtime_t time, int sat, const nav_t *nav, double *dts,
