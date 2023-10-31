@@ -235,13 +235,13 @@ static void udpos_ppp(rtk_t *rtk)
         }
         return;
     }
-    //动力学模式动态PPP，构建状态转移矩阵F
+    //动力学模式动态 PPP，构建状态转移矩阵 F
     /* generate valid state index */        
     ix=imat(rtk->nx,1);
     for (i=nx=0;i<rtk->nx;i++) {
         if (rtk->x[i]!=0.0&&rtk->P[i+i*rtk->nx]>0.0) ix[nx++]=i;
     }
-    if (nx<9) {     //参数需要大于9个
+    if (nx<9) {     //参数需要大于 9 个
         free(ix);
         return;
     }
@@ -274,7 +274,7 @@ static void udpos_ppp(rtk_t *rtk)
         }
     }
 
-    //为Q矩阵加速度部分加过程噪声
+    //为 Q 矩阵加速度部分加过程噪声
     /* process noise added to only acceleration */  
     Q[0]=Q[4]=SQR(rtk->opt.prn[3])*fabs(rtk->tt);
     Q[8]=SQR(rtk->opt.prn[4])*fabs(rtk->tt);
@@ -291,7 +291,7 @@ static void udpos_ppp(rtk_t *rtk)
 
 **执行流程：**
 
-* 检测是否为精密星历`EPHOPT_PREC`，认为精密钟差是白噪声,每个历元初始化，精密星历的时间是基于gps时间，忽略系统间的偏差
+* 检测是否为精密星历`EPHOPT_PREC`，认为精密钟差是白噪声，每个历元初始化，精密星历的时间是基于 GPS 时间，忽略系统间的偏差
 * 不是精密星历则利用前一秒的结果，并考虑系统间时差信息
 
 ```c

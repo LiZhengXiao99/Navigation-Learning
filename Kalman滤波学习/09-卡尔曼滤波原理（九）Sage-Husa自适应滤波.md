@@ -37,7 +37,7 @@ $$
 
 > 以估计房间的温度的例子来说：预测下一时刻的量测温度，再用温度计量测一下，只利用两个的值来确定量测噪声，仅仅只是一个样本；要得到方差，需要很多个房间，很多次测量算出来的才是 $R_k$，才得出统计结果。
 
-实际做Kalman滤波研究的往往只有一个样本，用时间平均来算，多个时刻的数据得出 $R_k$ 。并且写成递推的形式如下：
+实际做 Kalman 滤波研究的往往只有一个样本，用时间平均来算，多个时刻的数据得出 $R_k$ 。并且写成递推的形式如下：
 $$
 \begin{aligned} \hat{\boldsymbol{R}}_{k} & =\frac{1}{k} \sum_{i=1}^{k}\left(\tilde{\boldsymbol{Z}}_{i / i-1} \tilde{\boldsymbol{Z}}_{i / i-1}^{\mathrm{T}}-\boldsymbol{H}_{i} \boldsymbol{P}_{i / i-1} \boldsymbol{H}_{i}^{\mathrm{T}}\right) \\ & =\frac{1}{k}\left[\sum_{i=1}^{k-1}\left(\tilde{\boldsymbol{Z}}_{i / i-1} \tilde{\boldsymbol{Z}}_{i / i-1}^{\mathrm{T}}-\boldsymbol{H}_{i} \boldsymbol{P}_{i / i-1} \boldsymbol{H}_{i}^{\mathrm{T}}\right)+\left(\tilde{\boldsymbol{Z}}_{k / k-1} \tilde{\boldsymbol{Z}}_{k / k-1}^{\mathrm{T}}-\boldsymbol{H}_{k} \boldsymbol{P}_{k / k-1} \boldsymbol{H}_{k}^{\mathrm{T}}\right)\right] \\ & =\left(1-\frac{1}{k}\right) \hat{\boldsymbol{R}}_{k-1}+\frac{1}{k}\left(\tilde{\boldsymbol{Z}}_{k / k-1} \tilde{\boldsymbol{Z}}_{k / k-1}^{\mathrm{T}}-\boldsymbol{H}_{k} \boldsymbol{P}_{k / k-1} \boldsymbol{H}_{k}^{\mathrm{T}}\right)\end{aligned}
 $$

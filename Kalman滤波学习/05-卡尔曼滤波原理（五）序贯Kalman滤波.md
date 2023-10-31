@@ -39,7 +39,7 @@ $$
 $$
 序贯滤波执行框图：
 
-![\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-2muFB9hy-1685974534667)(卡尔曼滤波与组合导航原理（五）序贯滤波.assets/1685973791594.png)\]](https://img-blog.csdnimg.cn/8bfcc790b07647528cbbe1fc60312a9f.png)
+![img](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/8bfcc790b07647528cbbe1fc60312a9f.png)
 
 
 如果历元间量测噪声相关，量测噪声不是对角阵，它总可以作平方根分解（Cholesky分解）

@@ -4,7 +4,7 @@
 
 [TOC]
 
-## 五、Earth 类：地球参数和坐标转换
+## 一、Earth 类：地球参数和坐标转换
 
 ![image-20230925182052936](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925182052936.png)
 
@@ -349,7 +349,7 @@ static Vector3d enwn(const Vector3d &origin, const Vector3d &local, const Vector
 }
 ```
 
-## 六、Rotation 类：姿态转换
+## 二、Rotation 类：姿态转换
 
 ![image-20231020105459334](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231020105459334.png)
 
