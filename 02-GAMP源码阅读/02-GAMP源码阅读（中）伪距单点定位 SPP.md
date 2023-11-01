@@ -10,6 +10,17 @@
 
 ![image-20230929100318941](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230929100318941.png)
 
+```c
+obsd_t *obs      I   observation data            OBS观测数据
+int    n         I   number of observation data  OBS数
+nav_t  *nav      I   navigation data             NAV导航电文数据
+prcopt_t *opt    I   processing options          处理过程选项
+sol_t  *sol      IO  solution                    结果
+double *azel     IO  azimuth/elevation angle (rad) (NULL: no output)     方位角和俯仰角
+ssat_t *ssat     IO  satellite status              (NULL: no output)     卫星状态
+char   *msg      O   error message for error exit
+```
+
 默认使用广播星历计算卫星位置、钟差，使用克罗布歇模型通过广播星历中的参数计算电离层延迟，使用 Saastamoinen 模型计算对流层延迟。
 
 * 调用 `satposs_rtklib()` 计算卫星位置、卫星钟差：
@@ -22,23 +33,216 @@
 * 调用 `estpos()` 计算接收机位置：加权最小二乘，其中会调用 valsol 进行卡方检验和GDOP检验。
 * 存入方位角和俯仰角 ，赋值解算状态结构体 ssat。
 
+```c
+extern int spp(const obsd_t *obs, int n, const nav_t *nav,const prcopt_t *opt, 
+	sol_t *sol, double *azel, ssat_t *ssat, char *msg)
+{
+    prcopt_t opt_=*opt;
+    double *rs,*dts,*var,*azel_,*resp;
+    int i,sat,stat,vsat[MAXOBS]={0},svh[MAXOBS];
+    
+    sol->stat=SOLQ_NONE;
+    
+    if (n<=0) {strcpy(msg,"no observation data"); return 0;}
+    
+    rs=mat(6,n); dts=mat(2,n); var=mat(1,n); azel_=zeros(2,n); resp=mat(1,n);
 
+    // 处理选项赋值
+    // 默认使用广播星历计算卫星位置、钟差
+    // 使用克罗布歇模型通过广播星历中的参数计算电离层延迟
+    // 使用 Saastamoinen 模型计算对流层延迟
+    opt_.sateph =EPHOPT_BRDC;
+    opt_.ionoopt=IONOOPT_BRDC;
+    opt_.tropopt=TROPOPT_SAAS;
 
+    // 调用 satposs_rtklib() 计算卫星位置、卫星钟差
+    /* satellite positons, velocities and clocks */
+    satposs_rtklib(obs[0].time,obs,n,nav,opt_.sateph,rs,dts,var,svh);
+    
+    // 调用 estpos() 计算接收机位置
+    /* estimate receiver position with pseudorange */
+    stat=estpos(obs,n,rs,dts,var,svh,nav,&opt_,sol,azel_,vsat,resp,msg);
+    
+    opt_.sateph =EPHOPT_BRDC;       // 使用广播星历计算卫星位置、钟差
+    opt_.ionoopt=IONOOPT_BRDC;      // 使用克罗布歇模型通过广播星历中的参数计算电离层延迟
+    opt_.tropopt=TROPOPT_SAAS;      // 使用 Saastamoinen 模型计算对流层延迟
 
+    if (azel) {
+        for (i=0;i<n*2;i++) azel[i]=azel_[i];
+    }
+    if (ssat) {
+        for (i=0;i<MAXSAT;i++) {
+            ssat[i].vs=0;
+            ssat[i].azel[0]=ssat[i].azel[1]=0.0;
+            ssat[i].resp_pos[0]=ssat[i].resc_pos[0]=0.0;
+            ssat[i].snr[0]=0;
+        }
+
+        for (i=0;i<NSYS;i++) sol->ns[i]=0;
+
+        for (i=0;i<n;i++) {
+            if (!vsat[i]) continue;
+            sat=obs[i].sat;
+            ssat[sat-1].vs=1;
+            ssat[sat-1].azel[0]=azel_[  i*2];
+            ssat[sat-1].azel[1]=azel_[1+i*2];
+            ssat[sat-1].resp_pos[0]=resp[i];
+            ssat[sat-1].snr[0]=obs[i].SNR[0];
+
+            if (PPP_Glo.sFlag[sat-1].sys==SYS_GPS) sol->ns[0]++;
+            else if (PPP_Glo.sFlag[sat-1].sys==SYS_GLO) sol->ns[1]++;
+            else if (PPP_Glo.sFlag[sat-1].sys==SYS_CMP) sol->ns[2]++;
+            else if (PPP_Glo.sFlag[sat-1].sys==SYS_GAL) sol->ns[3]++;
+			else if (PPP_Glo.sFlag[sat-1].sys==SYS_QZS) sol->ns[4]++;
+            else { 
+                sprintf(PPP_Glo.chMsg,"*** WARNING: unsupported satellite system %d %d!\n", PPP_Glo.sFlag[sat-1].sys,sat); 
+                outDebug(OUTWIN,OUTFIL,OUTTIM);
+            }
+        }
+    }
+
+    free(rs); free(dts); free(var); free(azel_); free(resp);
+    return stat;
+}
+```
 
 ### 2、estpos()
 
 ![image-20231028085159260](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231028085159260.png)
 
+```c
+obsd_t   *obs      I   观测量数据
+int      n         I   观测量数据的数量
+double   *rs       I   卫星位置和速度，长度为6*n，{x,y,z,vx,vy,vz}(ecef)(m,m/s)
+double   *vare     I   卫星位置和钟差的协方差 (m^2)
+int      *svh      I   卫星健康标志 (-1:correction not available)
+nav_t    *nav      I   导航数据
+prcopt_t *opt      I   处理过程选项
+prcopt_t *opt      I   处理过程选项
+sol_t    *sol      IO  solution
+double   *azel     IO  方位角和俯仰角 (rad)
+int      *vsat     IO  卫星在定位时是否有效
+double   *resp     IO  定位后伪距残差 (P-(r+c*dtr-c*dts+I+T))
+char     *msg      O   错误消息
+```
 
+这个函数是 GAMP 新加的，原本 `RTKLIB estpos()` 的内容都移到  `estpose_()` 中了；这个函数看着着实费劲，有段看半天没看明白，后来把代码复制给 AI，才知道那啥计算阶乘、组合数。
 
+先初始化待估参数 `x`、`x`_：
 
+* 把待估参数 `x`、`x_` 都赋值为 1。
+* 如果给出了静态 PPP 模式的真实坐标 `PPP_Glo.crdTrue`，`x` 前三位直接赋值。
+* 如果没有给出静态 PPP 精确坐标，计算当前时间（`PPP_Glo.tNow`）和解决方案时间（`sol->time`）之间的差值，取绝对值，并赋值给 dt；将 dt 除以采样间隔 PPP_Glo.sample 并四舍五入，将结果赋值给 `PPP_Glo.delEp`；用于判断 GNSS 观测值确时时间。
+* 如果 `dt` 大于 1800，且 `delEp` 大于 100，或者 `x` 的模长小于 10，将 `x` 的前三位赋值 100；否则 `x` 的前三位赋值上一时刻的结果。
+
+```c
+int bDeleted[MAXSAT];
+int i,j,stat=0,n,nb=0,*it,nMin=4;
+double x[NX_SPP]={0},x_[NX_SPP],dt=0.0;
+
+// 把待估参数都赋值为 0 
+for (i=0;i<NX_SPP;i++) x[i]=x_[i]=1.0;
+//for (i=0;i<MAXSAT;i++) bDeleted[i]=true;
+
+// 如果没有给出静态 PPP 精确坐标
+if (PPP_Glo.crdTrue[0]==0.0) {
+    // 计算当前时间（PPP_Glo.tNow）和解决方案时间（sol->time）之间的差值，取绝对值，并赋值给 dt，
+    dt=fabs(timediff(PPP_Glo.tNow,sol->time));  
+    // 这行代码将 dt 除以 PPP_Glo.sample（可能是采样间隔）并四舍五入，然后将结果赋值给 PPP_Glo.delEp
+    PPP_Glo.delEp=myRound(dt/PPP_Glo.sample);   
+
+    // 如果 dt 大于 1800，且 delEp 大于 100，或者 x 的模长小于 10，将 x 的 XYZ 赋值 100；
+    // 否则 x 的 XYZ 赋值上一时刻的结果
+    if (dt>1800&&PPP_Glo.delEp>100) {
+        for (i=0;i<3;i++) x[i]=100.0;
+    }
+    else {
+		for (i=0;i<3;i++) x[i]=sol->rr[i];  
+		if (norm(x,3)<=10) 
+			for (i=0;i<3;i++) x[i]=100.0;
+    }
+}
+else {
+    for (i=0;i<3;i++) x[i]=PPP_Glo.crdTrue[i];
+}
+
+sol->time=obs[0].time;
+
+for (i=0;i<NX_SPP;i++) x_[i]=x[i];
+```
+
+接下来一个 `for` 循环，是为了解算失败的时候排除卫星重新解算，类似 RAIM。其中 `nb` 表示随机排除的卫星数，`select_combination()` 生成排除卫星的组合，需要排除卫星的 `bDeleted[]` 对应项置 0，`rescode()` 中计算 `H`、`V` 的时候就不考虑了：
+
+* 先不排除卫星计算，如果 `valsol()` 判断解有效(即stat=1)，直接结束循环。
+* 然后 nb = 1，就是排除一颗卫星，解算成功，结束循环。
+* 排除一颗卫星也不能解算成功，那就排除两颗、三颗，解算成功，结束循环。
+* 排除三颗也解算不成功，那这个历元就是解算失败了。
+
+不理解为啥写成这样随机排除卫星的，RTKLIB 的 RAIM-FDE 是排除残差最大的卫星重新计算。
+
+```c
+// 先不排除卫星计算，如果 valsol 判断解有效(即stat=1)，直接结束循环
+// nb 表示随机排除的卫星数，select_combination() 生成排除卫星的组合，需要排除卫星的 bDeleted[] 对应项置 0，rescode() 中计算 H、V 的时候就不考虑了
+for (nb=0;nb<=3;nb++) {
+    
+    // 卫星数少于 nmin(默认 4 颗) 无法计算，直接退出
+    if (nobs-nb<nMin) {
+        sprintf(msg,"lack of valid sats ns=%d/%d",nobs,nb);
+        break;
+    }
+
+    // 计算从 nobs 中取 nb 的组合数：C(nobs, nb) = n! / [(n-nb)! * nb!]
+    for (i=0,n=1;i<nb;i++)
+        n=n*(nobs-i)/(i+1);     // 计算 n 的阶乘
+
+	if (nb<=0) it=imat(n,1);
+	else       it=imat(n*nb,1);
+
+    comb_j=0;
+
+    // 调用 select_combination() 
+    select_combination(0,0,nobs,nb,it);
+    //////////////////////////////////////////////////////////////////////////
+
+    for (i=stat=0;i<n;i++) {
+        for (j=0;j<nobs;j++) bDeleted[obs[j].sat-1]=1;
+        for (j=i*nb;j<i*nb+nb;j++) bDeleted[obs[it[j]-1].sat-1]=0;
+        for (j=0;j<NX_SPP;j++) x_[j]=x[j];
+
+        // SPP 解算
+        stat=estpos_(bDeleted,x_,obs,nobs,rs,dts,vare,svh,nav,opt,sol,azel,vsat,resp,msg);
+
+        if (stat==1) break;
+    }
+
+    free(it);
+
+    if (stat==1) break;
+}
+```
 
 ### 3、estpose_()
 
 ![image-20231028085015054](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231028085015054.png)
 
-先给矩阵开辟内存空间，待估参数 dx 赋值为 0，然后进入最小二乘迭代求解：
+```c
+int *bDeleted      I   需要排除卫星的 bDeleted[] 对应项置 0，rescode() 中计算 H、V 的时候就不考虑了
+obsd_t   *obs      I   观测量数据
+int      n         I   观测量数据的数量
+double   *rs       I   卫星位置和速度，长度为6*n，{x,y,z,vx,vy,vz}(ecef)(m,m/s)
+double   *vare     I   卫星位置和钟差的协方差 (m^2)
+int      *svh      I   卫星健康标志 (-1:correction not available)
+nav_t    *nav      I   导航数据
+prcopt_t *opt      I   处理过程选项
+prcopt_t *opt      I   处理过程选项
+sol_t    *sol      IO  solution
+double   *azel     IO  方位角和俯仰角 (rad)
+int      *vsat     IO  卫星在定位时是否有效
+double   *resp     IO  定位后伪距残差 (P-(r+c*dtr-c*dts+I+T))
+char     *msg      O   错误消息
+```
+
+先给矩阵开辟内存空间，待估参数 `dx` 赋值为 0，然后进入最小二乘迭代求解：
 
 * 先调用 `rescode()` 计算当前迭代的伪距残差 v、设计矩阵 H、伪距残差的方差 var、所有观测卫星的方位角和仰角 azel，定位时有效性 vsat、定位后伪距残差 resp、参与定位的卫星个数` ns`和方程个数` nv`。
 
@@ -143,14 +347,6 @@ static int estpos_(int *bDeleted, double *x,const obsd_t *obs, int n, const doub
 }
 ```
 
-
-
-
-
-
-
-
-
 ### 4、valsol()：GDOP和卡方检验结果有效性
 
 > 低成本接收机可能通不过检验，可禁用此函数
@@ -171,582 +367,40 @@ $$
 \begin{array}{l}v_{s}=\frac{\left(P_{r}^{s}-\left(\hat{\rho}_{r}^{s}+c \hat{d} t_{r}-c d T^{s}+I_{r}^{s}+T_{r}^{s}\right)\right)}{\sigma_{s}} \\ \boldsymbol{v}=\left(v_{1}, v_{2}, v_{3}, \ldots, v_{m}\right)^{T} \\ \frac{\boldsymbol{v}^{T} \boldsymbol{v}}{m-n-1}<\chi_{\alpha}^{2}(m-n-1) \\ G D O P<G D O P_{\text {thres }}\end{array}
 $$
 
-## 二、卫星位置钟差计算
-
-### 1、satposs_rtklib()
-
 ```c
-gtime_t teph     I     (gpst) 用于选择星历的时刻 (gpst)
-obsd_t *obs      I      OBS观测数据
-int    n         I      OBS数
-nav_t  *nav      I      NAV导航电文
-int    ephopt    I      星历选项 (EPHOPT_???)
-double *rs       O      卫星位置和速度，长度为6*n，{x,y,z,vx,vy,vz}(ecef)(m,m/s)
-double *dts      O      卫星钟差，长度为2*n， {bias,drift} (s|s/s)
-double *var      O      卫星位置和钟差的协方差 (m^2)
-int    *svh      O      卫星健康标志 (-1:correction not available)
-```
-
-![image-20230929100826545](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230929100826545.png)
-
-* 遍历观测数据，找伪距观测值，除以光速得到信号传播时间，用数据接收时刻减去伪距信号传播时间得到信号发射时刻。
-
-* 调用 `ephclk()` 函数，由广播星历计算出当前观测卫星与 GPS 时间的钟差 `dt` ,此时的钟差是没有考虑相对论效应和 TGD 的 ，`dt` 仅作为`satpos()`的参数，不作为最终计算的钟差。信号发射时刻减去钟差 `dt`，得到 GPS 时间下的卫星信号发射时刻。
-
-* **调用 `satpos()` 对此观测值进行下一步卫星位置钟差的计算**；`satpos()` 函数对星历计算选项进行判断，**广播星历模式调用 `ephpos()`**，**精密星历模式调用 `peph2pos()`**。最后检测钟差值，如果没有精密星历，则调用 `ephclk()` 用广播星历计算钟差。
-
-```c
-extern void satposs_rtklib(gtime_t teph, const obsd_t *obs, int n, const nav_t *nav,
-                    int ephopt, double *rs, double *dts, double *var, int *svh)
+static int valsol(const double *azel, const int *vsat, int n,
+                  const prcopt_t *opt, const double *v, int nv, int nx,
+                  char *msg)
 {
-    gtime_t time[MAXOBS]={{0}};
-    double dt,pr;
-    int i,j;
+    double azels[MAXOBS*2],dop[4],vv;
+    int i,ns;
     
-    for (i=0;i<n&&i<2*MAXOBS;i++) {
-        for (j=0;j<6;j++) rs [j+i*6]=0.0;
-        for (j=0;j<2;j++) dts[j+i*2]=0.0;
-        var[i]=0.0; svh[i]=0;
-        
-        /* search any psuedorange */
-        for (j=0,pr=0.0;j<NFREQ;j++) if ((pr=obs[i].P[j])!=0.0) break;
-        
-        if (j>=NFREQ) {
-            sprintf(PPP_Glo.chMsg,"*** WARNING: no pseudorange %s sat=%2d\n",
-				time_str(obs[i].time,3),obs[i].sat);
-			outDebug(OUTWIN,OUTFIL,0);
-            continue;
-        }
-        /* transmission time by satellite clock */
-        time[i]=timeadd(obs[i].time,-pr/CLIGHT);
-        
-        /* satellite clock bias by broadcast ephemeris */
-        if (!ephclk(time[i],teph,obs[i].sat,nav,&dt)) {
-            sprintf(PPP_Glo.chMsg,"*** WARNING: no broadcast clock %s sat=%2d\n",
-				time_str(time[i],3),obs[i].sat);
-			outDebug(0,OUTFIL,0);
-            continue;
-        }
-        time[i]=timeadd(time[i],-dt);
-        
-        /* satellite position and clock at transmission time */
-        if (!satpos(time[i],teph,obs[i].sat,ephopt,nav,rs+i*6,dts+i*2,var+i,
-                    svh+i)) {
-            sprintf(PPP_Glo.chMsg,"*** WARNING: no ephemeris %s sat=%2d\n",
-				time_str(time[i],3),obs[i].sat);
-			outDebug(0,0,0);
-            continue;
-        }
-        /* if no precise clock available, use broadcast clock instead */
-        if (dts[i*2]==0.0) {
-            if (!ephclk(time[i],teph,obs[i].sat,nav,dts+i*2)) continue;
-            dts[1+i*2]=0.0;
-            *var=SQR(STD_BRDCCLK);
-        }
+    trace(3,"valsol  : n=%d nv=%d\n",n,nv);
+    
+    /* Chi-square validation of residuals */    //对残差卡方检验
+    vv=dot(v,v,nv);		//chisqr:卡方值表
+    if (nv>nx&&vv>chisqr[nv-nx-1]) {        //(E.6.33) 且观测值数大于待估计参数数  nv-nx-1:多余观测数
+        sprintf(msg,"chi-square error nv=%d vv=%.1f cs=%.1f",nv,vv,chisqr[nv-nx-1]);
+        return 0;
     }
-}
-```
 
-### 2、ephclk()
-
-![image-20230929100921394](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230929100921394.png)
-
-* 单观测值卫星钟差计算。由于 GLONASS 系统的计算和其它的区别较大，先进行判断。
-
-* 如果不是 GLONASS 则调用 `seleph()` 选择与观测值对应的星历，调用 `eph2clk()` 根据广播星历参数 $a_0$、$a_1$、$a_2$ 计算卫星钟差（迭代 3 次）；
-
-* 如果是 GLONASS 则调用 `selgeph()` 选择与观测值对应的星历，调用 `geph2clk()` 根据广播星历参数 $t_aun$、$g_aun$  计算卫星钟差（迭代 3 次）。
-
-```c
-static int ephclk(gtime_t time, gtime_t teph, int sat, const nav_t *nav,
-                  double *dts)
-{
-    eph_t  *eph;
-    geph_t *geph;
-    int sys;
-    
-    sys=satsys(sat,NULL);
-    
-    if (sys==SYS_GPS||sys==SYS_GAL||sys==SYS_QZS||sys==SYS_CMP) {
-        if (!(eph=seleph(teph,sat,-1,nav))) return 0;
-        *dts=eph2clk(time,eph);
+    /* large GDOP check */  //GDOP检验
+    for (i=ns=0;i<n;i++) {
+        if (!vsat[i]) continue;
+        azels[  ns*2]=azel[  i*2];
+        azels[1+ns*2]=azel[1+i*2];
+        ns++;
     }
-    else if (sys==SYS_GLO) {
-        if (!(geph=selgeph(teph,sat,-1,nav))) return 0;
-        *dts=geph2clk(time,geph);
+    dops(ns,azels,opt->elmin,dop);              
+    if (dop[0]<=0.0||dop[0]>opt->maxgdop) {     //(E.6.34)
+        sprintf(msg,"gdop error nv=%d gdop=%.1f",nv,dop[0]);
+        return 0;
     }
-    else return 0;
-    
     return 1;
 }
 ```
 
-#### 1. eph2clk()：时钟校正参数（$a_{f0}、a_{f1}、a_{f2}$）计算卫星钟差
-
-相对于 GPS 时间，卫星上作为时间和频率信号来源的原子钟也存在时间偏差和频率漂移。为确保各颗卫星的时钟与GPS时间同步，GPS地面监控部分通过对卫星信号进行检测，将卫星时钟在GPS时间t的卫星钟差 $\Delta t^{(s)}$ 描述为如下二项式：
-$$
-\Delta t^{(s)}=a_{f0}+a_{f1}(t-t_{oc})+a_{f2}(t-t_{oc})^2
-$$
-
-```c
-extern double eph2clk(gtime_t time, const eph_t *eph)
-{
-    double t;
-    int i;
-    
-    t=timediff(time,eph->toc);  // 计算与星历参考时间的偏差 dt = t-toc
-    // 利用二项式校正计算出卫星钟差，从 dt中减去这部分，然后再进行一次上述操作，得到最终的 dt
-    for (i=0;i<2;i++) {
-        t-=eph->f0+eph->f1*t+eph->f2*t*t;
-    }
-    // 使用二项式校正得到最终的钟差
-    return eph->f0+eph->f1*t+eph->f2*t*t;
-}
-```
-
-除此以外，卫星钟差一般还需考虑相对论效应校正、群波延迟校正、钟漂校正：
-
-##### 相对论效应校正 $\Delta t_r$
-
-综合狭义相对论和广义相对论，在高空中高速运行的卫星原子钟比地面上一模一样的原子钟每天要快 38000ns ，每秒快 0.44ns 。如果不考虑相对论效应，GPS 发上天两分钟内，卫星原子钟就会失去定位作用。在地面上设计原子钟时可以减小一点点它的频率，上天以后其时钟频率在地面上看来正好等于设计值。同时因为GPS运行轨道是椭圆而不是圆，地面上计算机还有根据卫星当前位置做相对论效应的校如下：
-$$
-\Delta t_r=Fe_s\sqrt{a_s} \sin E_k
-$$
-
-##### 群波延迟校正 $T_{GD}$
-
-由第一数据块给出，只适用于单频。这样对于 L1 单频接收机，卫星时钟总钟差值如下：
-$$
-\delta t^{(s)}=\Delta t^{(s)}+\Delta t_{r}-T_{G D}
-$$
-
-##### 钟漂校正
-
-对上面卫星时钟总钟差值求导得：
-$$
-\delta f^{(s)}=a_{f 1}+2 a_{f 2}\left(t-t_{o c}\right)+\Delta \dot{t}_r
-$$
-群波延迟校正 $T_{GD}$ 的导数为 0，相对论效应校正 $\Delta t_r$ 如下：
-$$
-\Delta \dot{t}_r=F e_s \sqrt{a_s} \dot{E}_k \cos E_k
-$$
-
-#### 2. geph2clk()：时钟校正参数（$\tau_{n}、\gamma_{n}$）计算 GLONASS 卫星钟差
-
-$$
-d T^{s}(t)=-\tau_{n}+\gamma_{n}\left(t-t_{b}\right)
-$$
-
-```c
-extern double geph2clk(gtime_t time, const geph_t *geph)
-{
-    double t;
-    int i;
-    
-    t=timediff(time,geph->toe);
-    
-    for (i=0;i<2;i++) {
-        t-=-geph->taun+geph->gamn*t;
-    }
-    return -geph->taun+geph->gamn*t;
-}
-```
-
-用（$\tau_{n}、\gamma_{n}$）计算 GLONASS 卫星钟差的时候已经考虑了相对论效应了，无需再改正。
-
-### 3、ephpos()
-
-![image-20230929101151404](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230929101151404.png)
-
-* 与 `ephclk()` 同理，由于 GLONASS 系统的计算和其它的区别较大，先进行判断。
-
-* 如果不是 GLONASS 则调用 `seleph()` 选择与观测值对应的星历，调用 `eph2pos()` 根据广播星历中的开普勒轨道参数和摄动改正计算卫星位置（对北斗 MEO、IGSO 卫星会进行特殊处理）、校正卫星钟差的相对论效应、调用 `var_uraeph()` 用 URA 值来标定方差。
-
-* 如果是 GLONASS 则调用 `selgeph()` 选择与观测值对应的星历，调用 `geph2pos()` 根据广播星历中 PZ-90 坐标系下卫星状态向量四阶龙格库塔迭代计算卫星位置。
-
-* 计算完一次位置之后，加上一个极小的时间，再计算一次位置，两次计算出的时间作差求得卫星速度钟漂。
-
-```c
-static int ephpos(gtime_t time, gtime_t teph, int sat, const nav_t *nav,
-                  int iode, double *rs, double *dts, double *var, int *svh)
-{
-    eph_t  *eph;
-    geph_t *geph;
-    seph_t *seph;
-    double rst[3],dtst[1],tt=1E-3;
-    int i,sys;
-    
-    trace(4,"ephpos  : time=%s sat=%2d iode=%d\n",time_str(time,3),sat,iode);
-    
-    sys=satsys(sat,NULL);   //调用 satsys 函数，确定该卫星所属的导航系统。
-    
-    *svh=-1;
-    
-    if (sys==SYS_GPS||sys==SYS_GAL||sys==SYS_QZS||sys==SYS_CMP||sys==SYS_IRN) {
-        if (!(eph=seleph(teph,sat,iode,nav))) return 0; //调用 seleph 函数来选择广播星历。
-        eph2pos(time,eph,rs,dts,var);   //根据选中的广播星历，调用 eph2pos 函数来计算信号发射时刻卫星的 位置、钟差和相应结果的误差。
-        time=timeadd(time,tt);
-        eph2pos(time,eph,rst,dtst,var);
-        *svh=eph->svh;
-    }
-    else if (sys==SYS_GLO) {
-        if (!(geph=selgeph(teph,sat,iode,nav))) return 0;
-        geph2pos(time,geph,rs,dts,var);
-        time=timeadd(time,tt);
-        geph2pos(time,geph,rst,dtst,var);
-        *svh=geph->svh;
-    }
-    else if (sys==SYS_SBS) {
-        if (!(seph=selseph(teph,sat,nav))) return 0;
-        seph2pos(time,seph,rs,dts,var);
-        time=timeadd(time,tt);
-        seph2pos(time,seph,rst,dtst,var);
-        *svh=seph->svh;
-    }
-    else return 0;
-    // 在信号发射时刻的基础上给定一个微小的时间间隔，再次计算新时刻的 P、V、C。与3结合，通过扰动法计算出卫星的速度和频漂。
-    // 并没有使用那些位置和钟差公式对时间求导的结果
-    /* satellite velocity and clock drift by differential approx */
-    for (i=0;i<3;i++) rs[i+3]=(rst[i]-rs[i])/tt;    // 卫星速度rs[i+3]
-    dts[1]=(dtst[0]-dts[0])/tt;                     // 钟漂dts[1]
-
-    return 1;
-}
-```
-
-#### 1. eph2pos()：
-
-
-
-
-
-
-
-
-
-
-
-```c
-extern void eph2pos(gtime_t time, const eph_t *eph, double *rs, double *dts,
-                    double *var)
-{
-    double tk,M,E,Ek,sinE,cosE,u,r,i,O,sin2u,cos2u,x,y,sinO,cosO,cosi,mu,omge;
-    double xg,yg,zg,sino,coso;
-    int n,sys,prn;
-    
-    trace(4,"eph2pos : time=%s sat=%2d\n",time_str(time,3),eph->sat);
-    
-    if (eph->A<=0.0) {  //通过卫星轨道半长轴 A 判断星历是否有效，无效则返回
-        rs[0]=rs[1]=rs[2]=*dts=*var=0.0;
-        return;
-    }
-    tk=timediff(time,eph->toe); //计算规化时间 tk (E.4.2)
-    
-    switch ((sys=satsys(eph->sat,&prn))) {  //根据不同卫星系统设置相应的地球引力常数 mu 和 地球自转角速度 omge
-        case SYS_GAL: mu=MU_GAL; omge=OMGE_GAL; break;
-        case SYS_CMP: mu=MU_CMP; omge=OMGE_CMP; break;
-        default:      mu=MU_GPS; omge=OMGE;     break;
-    }
-    M=eph->M0+(sqrt(mu/(eph->A*eph->A*eph->A))+eph->deln)*tk;   //计算平近点角 M (E.4.3)
-    
-    //用牛顿迭代法来计算偏近点角 E。参考 RTKLIB manual P145 (E.4.19) (E.4.4)
-    for (n=0,E=M,Ek=0.0;fabs(E-Ek)>RTOL_KEPLER&&n<MAX_ITER_KEPLER;n++) {
-        Ek=E; E-=(E-eph->e*sin(E)-M)/(1.0-eph->e*cos(E));
-    }
-    if (n>=MAX_ITER_KEPLER) {
-        trace(2,"eph2pos: kepler iteration overflow sat=%2d\n",eph->sat);
-        return;
-    }
-    sinE=sin(E); cosE=cos(E);
-    
-    trace(4,"kepler: sat=%2d e=%8.5f n=%2d del=%10.3e\n",eph->sat,eph->e,n,E-Ek);
-    
-    //计算摄动改正后的 升交点角距u 卫星矢径长度r 轨道倾角i
-    u=atan2(sqrt(1.0-eph->e*eph->e)*sinE,cosE-eph->e)+eph->omg;     //(E.4.5) (E.4.6) (E.4.10)
-    r=eph->A*(1.0-eph->e*cosE);         //(E.4.11)
-    i=eph->i0+eph->idot*tk;             //(E.4.12)
-    sin2u=sin(2.0*u); cos2u=cos(2.0*u); 
-    u+=eph->cus*sin2u+eph->cuc*cos2u;   //(E.4.7)
-    r+=eph->crs*sin2u+eph->crc*cos2u;   //(E.4.8)
-    i+=eph->cis*sin2u+eph->cic*cos2u;   //(E.4.9)
-    
-    x=r*cos(u); y=r*sin(u);     
-    cosi=cos(i);
-    
-    // 北斗的MEO、IGSO卫星计算方法与GPS, Galileo and QZSS相同，只是一些参数不同
-    // GEO卫星的 O 和最后位置的计算稍有不同 
-    /* beidou geo satellite */
-    if (sys==SYS_CMP&&(prn<=5||prn>=59)) { /* ref [9] table 4-1 */
-        O=eph->OMG0+eph->OMGd*tk-omge*eph->toes;        //(E.4.29)
-        sinO=sin(O); cosO=cos(O);
-        xg=x*cosO-y*cosi*sinO;
-        yg=x*sinO+y*cosi*cosO;
-        zg=y*sin(i);
-        sino=sin(omge*tk); coso=cos(omge*tk);
-        rs[0]= xg*coso + yg*sino*COS_5 + zg*sino*SIN_5;     //ECEF位置(E.4.30)
-        rs[1]=-xg*sino + yg*coso*COS_5 + zg*coso*SIN_5;
-        rs[2]=-yg*SIN_5 + zg*COS_5;
-    }
-    else {
-        O=eph->OMG0+(eph->OMGd-omge)*tk-omge*eph->toes; //计算升交点赤经O (E.4.13)
-        sinO=sin(O); cosO=cos(O);
-        rs[0]=x*cosO-y*cosi*sinO;   //计算卫星ECEF位置存入 rs 中 (E.4.14)
-        rs[1]=x*sinO+y*cosi*cosO;
-        rs[2]=y*sin(i);
-    }
-    tk=timediff(time,eph->toc);     //(E.4.15)
-    
-    *dts=eph->f0+eph->f1*tk+eph->f2*tk*tk;  //利用三个二项式模型系数 af0、af1、af2计算卫星钟差
-    
-    /* relativity correction */ 
-    *dts-=2.0*sqrt(mu*eph->A)*eph->e*sinE/SQR(CLIGHT);  //相对论效应改正卫星钟差
-    
-    /* position and clock error variance */
-    *var=var_uraeph(sys,eph->sva);  //用 URA 值来标定方差
-}
-```
-
-#### 2. var_uraeph()：用URA用户测距精度标定卫星位置方差
-
-![image-20231029192908369](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231029192908369.png)
-
-> GLONASS 不计算，直接定位 5*5
-
-```c
-static double var_uraeph(int sys, int ura)
-{
-    const double ura_value[]={   
-        2.4,3.4,4.85,6.85,9.65,13.65,24.0,48.0,96.0,192.0,384.0,768.0,1536.0,
-        3072.0,6144.0
-    };
-    if (sys==SYS_GAL) { /* galileo sisa (ref [7] 5.1.11) */
-        if (ura<= 49) return SQR(ura*0.01);
-        if (ura<= 74) return SQR(0.5+(ura- 50)*0.02);
-        if (ura<= 99) return SQR(1.0+(ura- 75)*0.04);
-        if (ura<=125) return SQR(2.0+(ura-100)*0.16);
-        return SQR(STD_GAL_NAPA);
-    }
-    else { /* gps ura (ref [1] 20.3.3.3.1.1) */
-        return ura<0||14<ura?SQR(6144.0):SQR(ura_value[ura]);
-    }
-}
-```
-
-#### 3. geph2pos()：由 GLONASS 星历计算卫星位置钟差
-
-GLONASS 卫星播发的是 PZ-90 坐标系下参考时刻的卫星状态向量，每半个小时广播一次。如果需要得到某个时间的卫星位置必须通过运动模型积分得到。
-
-```c
-extern void geph2pos(gtime_t time, const geph_t *geph, double *rs, double *dts,
-                     double *var)
-{
-    double t,tt,x[6];
-    int i;
-    
-    trace(4,"geph2pos: time=%s sat=%2d\n",time_str(time,3),geph->sat);
-    
-    t=timediff(time,geph->toe);
-    
-    *dts=-geph->taun+geph->gamn*t;  // 计算钟差dts(E.4.26)
-    
-    for (i=0;i<3;i++) {
-        x[i  ]=geph->pos[i];
-        x[i+3]=geph->vel[i];
-    }
-
-    //步长 TSTEP:60s
-    for (tt=t<0.0?-TSTEP:TSTEP;fabs(t)>1E-9;t-=tt) {
-        if (fabs(t)<TSTEP) tt=t;
-        glorbit(tt,x,geph->acc);
-    }
-    for (i=0;i<3;i++) rs[i]=x[i];
-    
-    *var=SQR(ERREPH_GLO);   // glonass卫星的方差直接定为 5*5
-}
-```
-
-#### 4. glorbit()：龙格库塔迭代
-
-$$
-\begin{aligned} \mathrm{y}_{\mathrm{n}+1} & =\mathrm{y}_{\mathrm{n}}+\frac{\mathrm{h}}{6}\left(\mathrm{k}_{1}+2 \mathrm{k}_{2}+2 \mathrm{k}_{3}+\mathrm{k}_{4}\right) \\ \mathrm{k}_{1} & =\mathrm{f}\left(\mathrm{y}_{\mathrm{n}}\right) \\ \mathrm{k}_{2} & =\mathrm{f}\left(\mathrm{y}_{\mathrm{n}}+\mathrm{k}_{1} \frac{\mathrm{h}}{2}\right) \\ \mathrm{k}_{3} & =\mathrm{f}\left(\mathrm{y}_{\mathrm{n}}+\mathrm{k}_{2} \frac{\mathrm{h}}{2}\right) \\ \mathrm{k}_{4} & =\mathrm{f}\left(\mathrm{y}_{\mathrm{n}}+\mathrm{k}_{3} \mathrm{~h}\right)\end{aligned}
-$$
-
-#### 5. deq()：微分方程计算
-
-$$
-\begin{array}{l}\frac{d x}{d t}=v_{x}, \frac{d y}{d t}=v_{y}, \frac{d z}{d t}=v_{z} \\ \frac{d v_{x}}{d t}=-\frac{\mu}{r^{3}} x-\frac{3}{2} J_{2} \frac{\mu a_{e}^{2}}{r^{5}} x\left(1-\frac{5 z^{2}}{r^{2}}\right)+\omega_{e}^{2} x+2 \omega_{e} v_{y}+a_{x} \\ \frac{d v_{y}}{d t}=-\frac{\mu}{r^{3}} y-\frac{3}{2} J_{2} \frac{\mu a_{e}^{2}}{r^{5}} y\left(1-\frac{5 z^{2}}{r^{2}}\right)+\omega_{e}^{2} y-2 \omega_{e} v_{x}+a_{y} \\ \frac{d v_{z}}{d t}=-\frac{\mu}{r^{3}} z-\frac{3}{2} J_{2} \frac{\mu a_{e}^{2}}{r^{5}} z\left(3-\frac{5 z^{2}}{r^{2}}\right)+a_{z}\end{array}
-$$
-
-其中：
-
-* $a_{e}$ : earth semi-major axis $(6378136.0 \mathrm{~m})$
-* $\mu$ : earth gravitational constant $\left(398600.44 \times 10^{9} \mathrm{~m}^{3} / \mathrm{s}^{2}\right)$
-* $\omega_{e}$ : earth angular velocity $\left(7.292115 \times 10^{-5} \mathrm{rad} / \mathrm{s}\right)$
-* $J_{2}$ : second zonal harmonic of the geopotential $\left(1082625.7 \times 10^{-9}\right)$
-* $r=\sqrt{x^{2}+y^{2}+z^{2}}$
-
-
-
-
-
-### 4、peph2pos()：精密星历计算卫星位置、钟差、速度、钟漂
-
-![image-20230929101206005](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230929101206005.png)
-
-* 调用 `pephpos()` 根据精密星历计算卫星位置，其中先二分查找时间最接近的精密星历，然后地球自转改正，调用 `interppol()` 内维尔插值获取卫星位置、线性插值获取钟差，最后计算标准差。
-
-* 调用 `pephclk()` 根据精密星历计算卫星钟差，其中先二分查找时间最接近的精密钟差，再线性插值获取钟差、计算标准差。
-
-* 计算相对论效应改正量，调用 `satantoff()` 计算卫星天线相位偏差改正。加上改正量得到卫星位置钟差。
-
-* 加上一个极小的时间，再计算一次位置，两次计算出的时间作差求得卫星速度钟飘。
-
-* 调用 `satantoff()` 天线相位中心改正。
-
-* 钟差做相对论效应改正：
-  $$
-  d T^{s}(t)=\frac{\left(t_{i+1}-t\right) d T^{s}\left(t_{i}\right)+\left(t-t_{i}\right) d T^{s}\left(t_{i+1}\right)}{t_{i+1}-t_{i}}-2 \frac{\boldsymbol{r}^{s}(t)^{T} \boldsymbol{v}^{s}(t)}{c^{2}}
-  $$
-
-```c
-extern int peph2pos(gtime_t time, int sat, const nav_t *nav, int opt,
-                    double *rs, double *dts, double *var)
-{
-    double rss[3],rst[3],dtss[1],dtst[1],dant[3]={0},vare=0.0,varc=0.0,tt=1E-3;
-    int i;
-    
-    if (sat<=0||MAXSAT<sat) return 0;
-    
-    // 调用 pephpos() 根据精密星历计算卫星位置
-    // 调用 pephclk() 根据精密星历计算卫星钟差
-    /* satellite position and clock bias */
-    if (!pephpos(time,sat,nav,rss,dtss,&vare,&varc)||
-        !pephclk(time,sat,nav,dtss,&varc)) return 0;
-    
-    // 加上一个极小的时间，再计算一次位置，两次计算出的时间作差求得卫星速度钟飘
-    time=timeadd(time,tt);
-    if (!pephpos(time,sat,nav,rst,dtst,NULL,NULL)||
-        !pephclk(time,sat,nav,dtst,NULL)) return 0;
-
-    // 调用 satantoff() 天线相位中心改正
-    /* satellite antenna offset correction */
-    if (opt) {
-        satantoff(time,rss,sat,nav,dant);
-    }
-
-    for (i=0;i<3;i++) {
-        rs[i  ]=rss[i]+dant[i];
-        rs[i+3]=(rst[i]-rss[i])/tt;
-    }
-
-    // 钟差做相对论效应改正
-    /* relativistic effect correction */
-    if (dtss[0]!=0.0) {
-        dts[0]=dtss[0]-2.0*dot(rs,rs+3,3)/CLIGHT/CLIGHT;
-        dts[1]=(dtst[0]-dtss[0])/tt;
-    }
-    else    /* no precise clock */
-        dts[0]=dts[1]=0.0;
-    
-    *var=vare+varc;
-
-    return 1;
-}
-```
-
-#### 1.  精密星历读取流程
-
-  > `nav->peph[]` 存精密星历数据，`nav->ne` 精密钟差数量。
-  >
-  > `nav->pclk[]` 存精密钟差数据，`nav->nc` 精密钟差数量。
-
-  * **execses_b**() 中调用`readpreceph()`。
-  * **readpreceph**() 中：`readsp3()`读取精密星历，`readrnxc()` 读取精密钟差
-  * **readsp3**() 中：`readsp3h() `读文件头，`readsp3b()` 读文件体，`combpeph() `对精密星历按时间、index 排序，再将相同星历合并。
-  * **readrnxc**() 中：`readrnxfile()` 读取精密星历文件，`combpclk()  `排序合并精密钟差。
-
-#### 2. pephpos()：精密星历计算卫星位置，钟差
-
-执行流程如下：
-
-  * 
-
-
-
-#### 3. interppol()：Neville 插值
-
-Neville 算法是一种计算插值多项式方法，由给定的 n+1个节点，存在一个唯一的幂次 ≤n 的多项式存在，并且通过给定点；所以可以由两个 n-1 次插值多项式构造一个 n 次多项式的线性逐次插值。给定 $\mathrm{n}+1$ 个节点及其对应函数值 $\left(x_{i}, y_{i}\right)$ ，假设 $P_{i, j}$ 表示 $j-i$ 阶多项式，并且满足通过节点 $\left(x_{k}, y_{k}\right) \quad k=i, i+1, \cdots, j$ 。 $P_{i, j}$ 满足以下迭代关系：
-$$
-\begin{array}{l}
-p_{i, i}(x)=y_{i} \\
-P_{i, j}(x)=\frac{\left(x_{j}-x\right) p_{i, j-1}(x)+\left(x-x_{i}\right) p_{i+1, j}(x)}{x_{j}-x_{i}}, \quad 0 \leq i \leq j \leq n
-\end{array}
-$$
-以 $n=4$ 的节点举例，其迭代过程为：
-$$
-\begin{array}{l}
-p_{1,1}(x)=y_{1} \\
-p_{2,2}(x)=y_{2}, p_{1,2}(x) \\
-p_{3,3}(x)=y_{3}, p_{2,3}(x), p_{1,3}(x) \\
-p_{4,4}(x)=y_{4}, p_{3,4}(x), p_{2,4}(x), p_{1,4}(x)
-\end{array}
-$$
-
-```c
-static double interppol(const double *x, double *y, int n)
-{
-    int i,j;
-    
-    for (j=1;j<n;j++) {
-        for (i=0;i<n-j;i++) {
-            y[i]=(x[i+j]*y[i]-x[i]*y[i+1])/(x[i+j]-x[i]);
-        }
-    }
-    return y[0];
-}
-```
-
-#### 4. posWithEarhRotation()：
-
-```c
-static void posWithEarhRotation(const int k, double pos[3], double p[3][NMAX+1], double dt)
-{
-	double sinl,cosl;
-#if 0
-	p[0][k]=pos[0];
-	p[1][k]=pos[1];
-#else
-	/* correciton for earh rotation ver.2.4.0 */
-	sinl=sin(OMGE*dt);
-	cosl=cos(OMGE*dt);
-	p[0][k]=cosl*pos[0]-sinl*pos[1];
-	p[1][k]=sinl*pos[0]+cosl*pos[1];
-#endif
-	p[2][k]=pos[2];
-}
-```
-
-
-
-
-
-#### 5. pephclk()：精密钟差计算卫星钟差
-
-
-
-简单的线性插值：
-$$
-d T^{s}(t)=\frac{\left(t_{i+1}-t\right) d T^{s}\left(t_{i}\right)+\left(t-t_{i}\right) d T^{s}\left(t_{i+1}\right)}{t_{i+1}-t_{i}}
-$$
-IGS 的精密钟差计算完之后，需要考虑相对论效应的影响：
-$$
-d T^{s}(t)=\frac{\left(t_{i+1}-t\right) d T^{s}\left(t_{i}\right)+\left(t-t_{i}\right) d T^{s}\left(t_{i+1}\right)}{t_{i+1}-t_{i}}-2 \frac{\boldsymbol{r}^{s}(t)^{T} \boldsymbol{v}^{s}(t)}{c^{2}}
-$$
-
-
-
-
-## 三、rescode()：残差计算、设计矩阵构建
+## 二、rescode()：残差计算、设计矩阵构建
 
 计算当前迭代的伪距残差 v、设计矩阵 H、伪距残差的方差 var、所有观测卫星的方位角和仰角 azel，定位时有效性 vsat、定位后伪距残差 resp、参与定位的卫星个数 ns 和方程个数 nv 
 
@@ -769,10 +423,8 @@ double   *azel     O   对于当前定位值，所有观测卫星的 {方位角�
 int      *vsat     O   所有观测卫星在当前定位时是否有效 (1*n)
 double   *resp     O   所有观测卫星的伪距残差，(P-(r+c*dtr-c*dts+I+T)) (1*n)
 int      *ns       O   参与定位的卫星的个数
-int      *bDeleted O   
+int      *bDeleted IO   需要排除卫星的 bDeleted[] 对应项置 0，rescode() 中计算 H、V 的时候就不考虑了
 ```
-
-
 
 ![image-20231028084841720](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231028084841720.png)
 
@@ -784,34 +436,39 @@ int      *bDeleted O
 
   * 将`vsat[]`、`azel[]`和`resp[]`数组置 0，因为在前后两次定位结果中，每颗卫星的上述信息都会发生变化。`time`赋值OBS的时间，`sat`赋值OBS的卫星。
 
-  * 检测当前观测卫星是否和下一个相邻数据重复；重复则不处理这一条，continue去处理下一条。
+  * 如果这颗卫星 bDeleted 被排除了，或者卫星系统没使用，跳过当前观测值不处理。
 
-  * 调用`satexclude()`函数判断卫星是否需要排除，如果排除则continue去处理下一个卫星。
+  * 去除重复观测值，检测当前观测卫星是否和下一个相邻数据重复；重复则不处理这一条，continue 去处理下一条。
 
-  * 调用`geodist()`函数，计算卫星和当前接收机位置之间的几何距离`r`和接收机到卫星的方向向量`e`。 
+  * 调用 `satexclude()` 函数判断卫星是否需要排除，如果排除则 continue 去处理下一个卫星。
 
-  * 调用`satazel()`函数，计算在接收机位置处的站心坐标系中卫星的方位角和仰角；若仰角低于截断值`opt->elmin`，continue不处理此数据。
+  * 调用 `geodist()` 函数，计算卫星和当前接收机位置之间的几何距离 `r` 和接收机到卫星的方向向量 `e`。 
 
-  * 调用`snrmask()`，根据接收机高度角和信号频率来检测该信号是否可用。
+  * 调用 `satazel()` 函数，计算在接收机位置处的站心坐标系中卫星的方位角和仰角；若仰角低于截断值 `opt->elmin`，continue 不处理此数据。
 
-  * 调用` ionocorr()` 函数，计算电离层延时`I`,所得的电离层延时是建立在 L1 信号上的，当使用其它频率信号时，依据所用信号频组中第一个频率的波长与 L1 波长的比率，对上一步得到的电离层延时进行修正。 
+  * 调用 `prange()` 函数，计算经过 DCB 校正后的伪距值 `p`，如果设置了消电离层组合直接得到组合后的伪距 `P`。
 
-  * 调用`tropcorr()`函数,计算对流层延时`T`。
+  * 调用 ` ionocorr()` 函数，计算电离层延时`I`,所得的电离层延时是建立在 L1 信号上的，当使用其它频率信号时，依据所用信号频组中第一个频率的波长与 L1 波长的比率，对上一步得到的电离层延时进行修正。 
 
-  * 调用`prange()`函数，计算经过DCB校正后的伪距值`p`。
+  * 调用 `tropcorr()` 函数，计算对流层延时`T`。
 
-  * 计算伪距残差`v[nv]`，即经过钟差，对流层，电离层改正后的伪距。
+  * 计算伪距残差 `v[nv]`，即经过钟差，对流层，电离层改正后的伪距与近似距离直接的差值。
 
-  * 组装设计矩阵`H`
+  * 组装设计矩阵 `H`
     $$
     \boldsymbol{h}(\boldsymbol{x})=\left(\begin{array}{c}\rho_{r}^{1}+c d t_{r}-c d T^{1}+I_{r}^{1}+T_{r}^{1} \\ \rho_{r}^{2}+c d t_{r}-c d T^{2}+I_{r}^{2}+T_{r}^{2} \\ \rho_{r}^{3}+c d t_{r}-c d T^{3}+I_{r}^{3}+T_{r}^{s 3} \\ \vdots \\ \rho_{r}^{m}+c d t_{r}-c d T^{m}+I_{r}^{m}+T_{r}^{m}\end{array}\right) \boldsymbol{H}=\left(\begin{array}{cc}-e_{r}^{1 T} & 1 \\ -e_{r}^{2 T} & 1 \\ -e_{r}^{3 T} & 1 \\ \vdots & \vdots \\ -e_{r}^{m T} & 1\end{array}\right)
     $$
 
-  * 处理不同系统（GPS、GLO、GAL、CMP）之间的时间偏差，修改矩阵`H `。
+  * 处理不同系统（GPS、GLO、GAL、CMP）之间的时间偏差，作为参数估计，增广矩阵 `v`、`H `。
 
-  * 调用`varerr()`函数，计算此时的导航系统误差
-
-  * 为了防止不满秩的情况，把矩阵`H`补满秩了，`H[j+nv*NX]=j==i+3?1.0:0.0; `
+  * 调用`varerr()`函数，计算此时的导航系统量测噪声协方差阵：
+    $$
+    \begin{array}{l} \sigma^{2}=F^{s} R_{r}\left(a_{\sigma}{ }^{2}+b_{\sigma}{ }^{2} / \sin E l_{r}^{s}\right)+{\sigma_{\text {eph }}}^{2}+{\sigma_{\text {ion }}}^{2}+{\sigma_{\text {trop }}}^{2}+{\sigma_{\text {bias }}}^{2}\end{array}
+    $$
+  
+  * 设置 `bMulGNSS` 标志，0 为单系统、1 为多系统。
+  * 调用 `getHVR_spp()`，根据残差 v 进行错差探测，构建剔除粗差后的 H、V、R
+  * 返回定位方程数 `nv`。
 
 ```c
 static int rescode(const int iter, int bElevCVG, const obsd_t *obs, int n, const double *rs, const double *dts, 
@@ -834,13 +491,16 @@ static int rescode(const int iter, int bElevCVG, const obsd_t *obs, int n, const
     //将之前得到的定位解信息赋值给 rr 和 dtr 数组，以进行关于当前解的伪距残差的相关计算
     for (i=0;i<3;i++)            rr[i]=x[i]; dtr=x[3];
     
+    // 调用ecef2pos()将将接收机位置rr由 ECEF-XYZ 转换为大地坐标系LLHpos
     // rr{x,y,z}->pos{lat,lon,h} 
     ecef2pos(rr,pos);
     
-    // 遍历当前历元观测值
+    // 遍历当前历元观测值，即遍历每颗卫星
     for (i=0;i<n&&i<MAXOBS;i++) {
-        sat=obs[i].sat; // sat 赋值 OBS 的卫星
+        sat=obs[i].sat;         // sat 赋值 OBS 的卫星
 
+        // 将 vsat[]、azel[]和resp[] 数组置 0，因为在前后两次定位结果中，每颗卫星的上述信息都会发生变化。
+        // time 赋值 OBS 的时间，sat 赋值 OBS 的卫星
         vsat[i]=0; azel[i*2]=azel[1+i*2]=resp[i]=0.0;
 
         sys=PPP_Glo.sFlag[sat-1].sys;
@@ -850,6 +510,7 @@ static int rescode(const int iter, int bElevCVG, const obsd_t *obs, int n, const
         if (!(sys&opt->navsys)) continue;
         
         // 去除重复观测值
+        // 检测当前观测卫星是否和下一个相邻数据重复；重复则不处理这一条，continue去处理下一条。
         /* reject duplicated observation data */
         if (i<n-1&&i<MAXOBS-1&&obs[i].sat==obs[i+1].sat) {
             sprintf(PPP_Glo.chMsg,"*** WARNING: duplicated observation data %s sat=%2d\n",
@@ -944,7 +605,7 @@ static int rescode(const int iter, int bElevCVG, const obsd_t *obs, int n, const
     bMulGNSS=0;
     if (j>=2) bMulGNSS=1;
 
-    // 调用 getHVR_spp()，获取 HVR
+    // 调用 getHVR_spp()，根据残差 v 进行错差探测，构建剔除粗差后的 H、V、R
     i=nv;
     nv=getHVR_spp(bMulGNSS,iter,opt->navsys,bElevCVG,bDeleted,satsn,H,v,var,elev_t,nv,*nx);
 
@@ -967,14 +628,6 @@ static int rescode(const int iter, int bElevCVG, const obsd_t *obs, int n, const
     // resp 仅表示所有观测卫星的伪距残余，维度为 n*1，对于没有参与定位的卫星，该值为 0
 }
 ```
-
-
-
-
-
-
-
-
 
 ### 1、geodist()：计算近似几何距离、接收机到卫星方向的观测矢量，sagnac 效应改正
 
@@ -1038,14 +691,14 @@ extern double satazel(const double *pos, const double *e, double *azel)
 }
 ```
 
-### 3、prange()：差分码偏差改正
+### 3、prange()：差分码偏差改正、消电离层组合
 
 DCB 差分码偏差，针对伪距，是由不同类型的 GNSS 信号在卫星和接收机不同通道产生的时间延迟（硬件延迟／码偏差）差异 。由于卫星播发的测距码类型很多， C1、 P1、 P2 等 ，不同的测距信号虽然在同一台卫星钟的驱动下生成的，因而花费的时间也不同。我们把卫星钟脉冲驱动下开始生成测距信号至信号生成并最终离开卫星发射天线相位中心之间所花费的时间称为信号在卫星内部的时延。DCB 体现的就是不同码信号时延的差。分为：
 
 * **频内偏差**：相同频率不同码之间存在的偏差（如 P1-C1、P2-C2 等）
  * **频间偏差**：不同频率之间存在的偏差（如 P1-P2）
 
-一般来说接收机端的DCB被接收机钟差所吸收，可以跟接收机钟差一起解算。若需提高定位精度，卫星端的码偏差需进行校正。目前，码偏差产品主要分为 2 类：① 广播星历播发的时间群延迟(time group delay，TGD)产品；② IGS分析中心提供的高精度后处理差分码偏差(differential code bias，DCB)产品。因此，TGD 产品相比于 DCB 产品，精度低于 DCB 产品且适用于实时场景。DCB 与 TGD 直接计算的关系如下：
+一般来说接收机端的DCB被接收机钟差所吸收，可以跟接收机钟差一起解算。若需提高定位精度，卫星端的码偏差需进行校正。目前，码偏差产品主要分为 2 类：① 广播星历播发的时间群延迟(time group delay，TGD)产品；② IGS 分析中心提供的高精度后处理差分码偏差(differential code bias，DCB)产品。因此，TGD 产品相比于 DCB 产品，精度低于 DCB 产品且适用于实时场景。DCB 与 TGD 直接计算的关系如下：
 $$
 T G D=\frac{1}{1-\gamma} D C B_{12}
 $$
@@ -1054,21 +707,85 @@ $$
 D C B_{12}=(1-\gamma) \times T G D
 $$
 
-对于 GPS 而言，其广播星历及精密星历是采用 P1、P2 无电离层组合进行卫星钟差估计。因此，广播星历钟差及精密星历钟差均包含 P1、P2 无电离层组合的硬件延迟。当用户基于 P1、P2 无电离层组合定位解算时，无需考虑硬件延迟；反之，若用户使用 P1、P2 单频或其他组合时，均需要考虑硬件延迟的影响，否则会影响定位解算的精度。
+对于 GPS 而言，其广播星历及精密星历是采用 P1、P2 无电离层组合进行卫星钟差估计。因此，广播星历钟差及精密星历钟差均包含 P1、P2 无电离层组合的硬件延迟。当用户基于 P1、P2 无电离层组合定位解算时，无需考虑硬件延迟；反之，若用户使用 P1、P2 单频或其他组合时，均需要考虑硬件延迟的影响，否则会影响定位解算的精度。若用户使用 C/A 码，用户需借助外部文件获取 P-C 将 C/A 码归化到 P 码，然后再进行 TGD/DCB 改正。
 
+与 GPS 不同，BDS 广播星历的钟差基准参考 B3 频点，多数机构的精密钟差基准是 B1/B3 无电离层组合，需要特别处理。
 
+代码中：
 
-若用户使用 C/A 码，用户需借助外部文件获取 P-C 将 C/A 码归化到 P 码，然后再进行 TGD/DCB 改正。
+* 先取 DCB 数据 P1_P2、P1_C1、P2_C2，没有 DCB 就用广播星历中的 TGD 乘以光速为 P1_P2。
+*  如果是消电离层组合，将 C1、C2 伪距做 DCB 改正，加上 P1_C1、P2_C2 归化到 P1、P2，计算得到消电离层观测值 PC。
+* 如果单频，将 C1 伪距做 DCB 改正，归化到 P1得到 PC。
+* DCB 方差设为 ERR_CBIAS(0.3) 的平方。
+* 返回改正或者消电离层组合后的伪距观测值 PC。
 
+```c
+static double prange(const obsd_t *obs, const nav_t *nav, const double *azel,
+                     const prcopt_t *opt, double *var)
+{
+    const double *lam=nav->lam[obs->sat-1];
+    double PC,P1,P2,P1_P2,P1_C1,P2_C2,gamma,tgd1=0.0,tgd2=0.0;
+    int i=0,j=1,sys;
+    
+    *var=0.0;
+    
+    if (!(sys=satsys(obs->sat,NULL))) return 0.0;
+    
+    /* L1-L2 for GPS/GLO/QZS, L1-L5 for GAL/SBS */
+    //if (NFREQ>=3&&(sys&(SYS_GAL|SYS_SBS))) j=2;
+    
+    if (NFREQ<2||lam[i]==0.0||lam[j]==0.0) return 0.0;
+    
+    gamma=SQR(lam[j])/SQR(lam[i]); /* f1^2/f2^2 */
+    P1=obs->P[i];
+    P2=obs->P[j];
 
+    // 从 nav->cbias 取 DCB 数据
+    P1_P2=nav->cbias[obs->sat-1][0];
+    P1_C1=nav->cbias[obs->sat-1][1];
+    P2_C2=nav->cbias[obs->sat-1][2];
+    
+    // 如果没有 P1_P2，调用 gettgd() 使用广播星历 TGD 乘以光速代替
+    /* if no P1-P2 DCB, use TGD instead */
+	P1_P2=0.0;
+    if (P1_P2==0.0&&(sys&(SYS_GPS|SYS_GAL|SYS_QZS|SYS_CMP))) {
+        if (sys==SYS_CMP) 
+            P1_P2=(1.0-gamma)*gettgd(obs->sat,nav,&tgd1,&tgd2);
+        else
+            P1_P2=(1.0-gamma)*gettgd(obs->sat,nav,NULL,NULL);
+    }
 
-与 GPS 不同，BDS 广播星历的钟差基准参考 B3 频点，多数机构的精密钟差基准是 B1/B3 无电离层组合。
+    // 如果是消电离层组合，将 C1、C2 伪距做 DCB 改正，加上 P1_C1、P2_C2 归化到 P1、P2，计算得到消电离层观测值 PC
+    if (opt->ionoopt==IONOOPT_IF12) { /* dual-frequency */
+        if (P1==0.0||P2==0.0) return 0.0;
 
+        // C1、C2 归化到 P1、P2
+        if (obs->code[i]==CODE_L1C) P1+=P1_C1; /* C1->P1 */
+        if (obs->code[j]==CODE_L2C) P2+=P2_C2; /* C2->P2 */
+        
+        // P1、P2 做消电离层组合得到 PC
+        /* iono-free combination */
+        PC=(gamma*P1-P2)/(gamma-1.0);
 
+        if (sys==SYS_CMP) PC=PC+(tgd2-gamma*tgd1)/(gamma-1.0);
+    }
 
-### 4、gettgd()：
+    // 如果单频，将 C1 伪距做 DCB 改正，归化到 P1 
+    else { /* single-frequency */
+        if (P1==0.0) return 0.0;
+        if (obs->code[i]==CODE_L1C) P1+=P1_C1;   /* C1->P1 */
+        PC=P1-P1_P2/(1.0-gamma);
+    }
+    
+    *var=SQR(ERR_CBIAS);
+    
+    return PC;
+}
+```
 
+### 4、gettgd()：获取群波延迟
 
+广播星历中的 TGD 参数乘以光速；北斗有两个做参数返回。
 
 ```c
 static double gettgd(int sat, const nav_t *nav, double *tgd1, double *tgd2)
@@ -1090,10 +807,6 @@ static double gettgd(int sat, const nav_t *nav, double *tgd1, double *tgd2)
     return 0.0;
 }
 ```
-
-
-
-
 
 ### 4、satexclude()：排除不可用卫星的观测值
 
@@ -1137,11 +850,15 @@ $$
 
 可以总结出电离层几个对于解算有用的特点：
 
-* **对伪距和载波影响相反**：UOFC 组合，但伪距载波之间延迟
-* **与频率有关**：消电离层组合，但放大噪声
+* **对伪距和载波影响相反**：UOFC 组合，但伪距载波之间延迟。
+* **与频率有关**：消电离层组合，但放大噪声。
 * **延迟与电子总量 TEC 成正比**：建立电离层格网模型 TEC 文件电离层改正，或者将 STEC 作为参数估计。
 
+`ionocorr()` 是电离层改正的入口函数，根据电离层选项，调用对应的函数，计算出 L1 频率的电离层改正量：
 
+* **克罗布歇模型**：调用 `ionmodel()` 计算改正量，方差设为 0.5 乘以电离层改正量再平方。 
+* **电离层格网模型**：调用 `iontec()` 计算改正量，方差也在 `iontec()` 中计算。
+* **IF 消电离层组合**：无需计算改正量，IF 组合在 `prange()` DCB 改正的时候实现了，方差设为 0.02 * 0.02。
 
 ```c
 static int ionocorr(gtime_t time, const int sys, const nav_t *nav, const double *pos,
@@ -1184,7 +901,7 @@ SPP 中使用克罗布歇模型计算 L1 的电离层改正量，将晚间的电
 $$
 T_{g}=5 \times 10^{-9}+A \cos \frac{2 \pi}{P}\left(t-14^{h}\right)
 $$
-振幅 $A$ 和周期 $P$ 分别为：
+振幅 $A$ 和周期 $P$ 是模型中需要计算的部分，分别为：
 $$
 \begin{array}{l}
 A=\sum_{i=0}^{3} \alpha_{i}\left(\varphi_{m}\right)^{i} \\
@@ -1197,7 +914,7 @@ p_{\text {ion }}=\left(\alpha_{0}, \alpha_{1}, \alpha_{2}, \alpha_{3}, \beta_{0}
 $$
 根据根据参数 $\alpha_0，\alpha_1，\alpha_2，\alpha_3$ 确定振幅 $A$，根据根据参数 $\beta_0，\beta_1，\beta_2，\beta_3$ 确定周期 $T$，再给定一个以秒为单位的当地时间 $t$，就能算出**天顶电离层延迟**。再由天顶对流层延迟根据倾斜率转为卫星方向对流层延迟。
 
-电离层分布在离地面 60-1000km 的区域内。当卫星不在测站的天顶时，信号传播路径上每点的地方时和纬度均不相同，为了简化计算，我们将整个电离层压缩为一个单层，将整个电离层中的自由电子都集中在该单层上，用它来代替整个电离层。这个电离层就称为中心电离层。中心电离层离地面的高度通常取 350km。式中的参数 $t$ 和式中的参数 $\varphi_{m}$ 分别为卫星言号传播路径与中心电离层的交点 $P^{\prime}$ 的时角和地磁纬度，因为只有 $P^{\prime}$ 才能反映卫星信号所受到的电离层延迟的总的情况。
+电离层分布在离地面 60-1000km 的区域内。当卫星不在测站的天顶时，信号传播路径上每点的地方时和纬度均不相同，为了简化计算，我们将整个电离层压缩为一个单层，将整个电离层中的自由电子都集中在该单层上，用它来代替整个电离层。这个电离层就称为中心电离层。中心电离层离地面的高度通常取 350km。需要计算卫星言号传播路径与中心电离层的交点 $P^{\prime}$ 的时角 $t$ 和地磁纬度 $\varphi_{m}$ ，因为只有 $P^{\prime}$ 才能反映卫星信号所受到的电离层延迟的总的情况。
 
 综上，已知大地经度、 大地纬度、卫星的高度角和卫星测站的方位角，电离层延迟计算方法如下：
 
@@ -1235,7 +952,7 @@ $$
 $$
  F=1.0+16.0 \times(0.53-E l)^{3}
 $$
-计算电离层时间延迟：
+最后计算电离层时间延迟：
 $$
 \begin{array}{l}x=2 \pi(t-50400) / \sum_{n=0}^{3} \beta_{n} \varphi_{m}{ }^{n} \\ I_{r}^{s}=\left\{\begin{array}{cc}F \times 5 \times 10^{-9} \\ F \times\left(5 \times 10^{-9}+\sum_{n=1}^{4} \alpha_{n} \varphi_{m}{ }^{n} \times\left(1-\frac{x^{2}}{2}+\frac{x^{4}}{24}\right)\right) & (|x|>1.57)\end{array}\right.\end{array}
 $$
@@ -1257,34 +974,34 @@ extern double ionmodel(gtime_t t, const double *ion, const double *pos,
     int week;
     
     if (pos[2]<-1E3||azel[1]<=0) return 0.0;
-    if (norm(ion,8)<=0.0) ion=ion_default;  //若没有电离层参数，用默认参数
+    if (norm(ion,8)<=0.0) ion=ion_default;  // 若没有电离层参数，用默认参数
 
 
-    /* earth centered angle (semi-circle) */    //地球中心角
-    psi=0.0137/(azel[1]/PI+0.11)-0.022;         //计算地心角(E.5.6)
+    /* earth centered angle (semi-circle) */    // 地球中心角
+    psi=0.0137/(azel[1]/PI+0.11)-0.022;         // 计算地心角(E.5.6)
     
     /* subionospheric latitude/longitude (semi-circle) */   
-    phi=pos[0]/PI+psi*cos(azel[0]);                 //计算穿刺点地理纬度(E.5.7)
-    if      (phi> 0.416) phi= 0.416;        //phi不超出(-0.416,0.416)范围
+    phi=pos[0]/PI+psi*cos(azel[0]);                 // 计算穿刺点地理纬度(E.5.7)
+    if      (phi> 0.416) phi= 0.416;        // phi不超出(-0.416,0.416)范围
     else if (phi<-0.416) phi=-0.416;
-    lam=pos[1]/PI+psi*sin(azel[0])/cos(phi*PI);     //计算穿刺点地理经度(E.5.8)
+    lam=pos[1]/PI+psi*sin(azel[0])/cos(phi*PI);     // 计算穿刺点地理经度(E.5.8)
     
     /* geomagnetic latitude (semi-circle) */
-    phi+=0.064*cos((lam-1.617)*PI);                 //计算穿刺点地磁纬度(E.5.9)
+    phi+=0.064*cos((lam-1.617)*PI);                 // 计算穿刺点地磁纬度(E.5.9)
     
     /* local time (s) */
-    tt=43200.0*lam+time2gpst(t,&week);              //计算穿刺点地方时(E.5.10)
+    tt=43200.0*lam+time2gpst(t,&week);              // 计算穿刺点地方时(E.5.10)
     tt-=floor(tt/86400.0)*86400.0; /* 0<=tt<86400 */
     
     /* slant factor */
-    f=1.0+16.0*pow(0.53-azel[1]/PI,3.0);            //计算投影系数(E.5.11)
+    f=1.0+16.0*pow(0.53-azel[1]/PI,3.0);            // 计算投影系数(E.5.11)
     
     /* ionospheric delay */
     amp=ion[0]+phi*(ion[1]+phi*(ion[2]+phi*ion[3]));
     per=ion[4]+phi*(ion[5]+phi*(ion[6]+phi*ion[7]));
     amp=amp<    0.0?    0.0:amp;
     per=per<72000.0?72000.0:per;
-    x=2.0*PI*(tt-50400.0)/per;                      //(E.5.12)
+    x=2.0*PI*(tt-50400.0)/per;                      // (E.5.12)
     
     return CLIGHT*f*(fabs(x)<1.57?5E-9+amp*(1.0+x*x*(-0.5+x*x/24.0)):5E-9);     //(E.5.13)
 }
@@ -1292,47 +1009,156 @@ extern double ionmodel(gtime_t t, const double *ion, const double *pos,
 
 ### 7、tropcorr()：对流层改正
 
+> 推荐论文：多模型融合的对流层天顶延迟估计方法—雷雨
+
 对流层一般指距离地面 50km 内的大气层，是大气层质量的主要部分。当导航信号穿过对流层时，由于传播介质密度的增加，信号传播路径和传播速度会发生改变，由此引起的 GNSS 观测值误差称为对流层延迟。对流层延迟一般可分为干延迟和湿延迟，对于载波相位和伪距完全相同，一般在米级大小，可通过模型改正和参数估计的方法来削弱其影响。修正模型如下：
 $$
 T=M_{d r y} T_{d r y}+M_{w e t} T_{w e t}
 $$
 式中，$T_{d r y}, T_{w e t}$ 分别表示接收机天顶对流层的干延迟和湿延迟；$M_{d r y}, M_{w e t}$ 分别表示干延迟和湿延迟的投影函数。对流层干延迟比较稳定，主要与测站高度、大气温度和大气压相关，可通过模型改正，常用模型有 Saastamoninen 模型、Hopfield 模型等。湿延迟不同于干延迟，变化较大，主要与水汽含量相关，一般估计天顶对流层湿延迟，通过投影函数计算各卫星的电离层湿延迟，常用的投影函数有全球投影函数（Global Mapping Function，GMF）、Niell 投影函数（NMF）和 Vienna投影函数（Vienna Mapping Function，VMF）等。
 
-可以总结出电离层几个对于解算有用的特点：
-
-* **非弥散介质**：对所有卫星的信号影响相同。
-* **分干湿延迟**：
-
-* 
+`tropcorr()` 是模型改正的入口函数，通过调用 tropmodel() 计算干延迟和湿延迟改正量。
 
 ```c
+static int tropcorr(gtime_t time, const nav_t *nav, const double *pos,
+                    const double *azel, const prcopt_t *opt, double *trp,
+                    double *var)
+{
+    double trpw=0.0;
+    *trp=0.0;
 
+    /* saastamoinen model */
+    if (opt->tropopt==TROPOPT_SAAS||opt->tropopt==TROPOPT_EST) {
+        *trp=tropmodel(time,pos,azel,REL_HUMI,&trpw,0); // 返回干延迟
+        *trp+=trpw;             // 加上湿延迟
+        *var=SQR(ERR_SAAS);
+
+        if (*trp>100.0) *trp=100.0;
+        else if (*trp<0.05) *trp=0.05;
+
+        return 1;
+    }
+
+    /* no correction */
+    *trp=0.0;
+    *var=opt->tropopt==TROPOPT_OFF?0.0:SQR(ERR_TROP);
+    
+	return 1;
+}
 ```
-
-
-
-
 
 ### 8、tropmodel()：Saastamoinen 模型计算对流层延迟
 
+#### 1. Saastamoinen 模型
 
+Saastamoinen 模型将对流层分为两层进行积分，第 1 层为从地表到 $10 \mathrm{~km}$ 高度的对流层顶，该层的温度变化率为；第 2 层为从 $10 \mathrm{~km}$ 到 $50 \mathrm{~km}$ 高度的平流层顶，该层的温度视为常数。 Saastamoinen 模型首次将被积函数按照天顶距三角函数展开逐项进行积分, 并把对流层天顶延迟分为对流层干延迟和湿延迟两个分量之和，两个分量的表达式为：
 $$
-\begin{array}{l}p=1013.25 \times\left(1-2.2557 \times 10^{-5} h\right)^{5.2568} \\ T=15.0-6.5 \times 10^{-3} h+273.15 \\ e=6.108 \times \exp \left\{\frac{17.15 T-4684.0}{T-38.45}\right\} \times \frac{h_{r e l}}{100}\end{array}
+\left\{\begin{array}{l}Z H D=\frac{0.002277 P}{f(\varphi, h)} \\ Z W D=\frac{0.002277 e}{f(\varphi, h)}\left(0.05+\frac{1255}{T}\right) \\ f(\varphi, h)=1-0.00266 \cos (2 \varphi)-0.00028 h\end{array}\right.
 $$
-
+或者：
 $$
 T_{r}^{s}=\frac{0.002277}{\cos z}\left\{p+\left(\frac{1255}{T}+0.05\right) e-\tan ^{2} z\right\}
+$$
+其中，$P, T, e, \varphi$ 和 $h$ 分别为地表气压 $(\mathrm{hPa})$ 、地表温度 $(\mathrm{K})$ 、水汽压 $(\mathrm{hPa})$ 、测站纬度 $(\mathrm{rad})$ 和高程 $(\mathrm{km})$ ，可以由标准大气模型基于经验计算，也可由 GPT 模型提供。
+
+#### 2. 标准大气模型
+
+根据经验模型计算求大气压 P、温度 T、大气水汽压力 e：
+$$
+\begin{array}{l}p=1013.25 \times\left(1-2.2557 \times 10^{-5} h\right)^{5.2568} \\ T=15.0-6.5 \times 10^{-3} h+273.15 \\ e=6.108 \times \exp \left\{\frac{17.15 T-4684.0}{T-38.45}\right\} \times \frac{h_{r e l}}{100}\end{array}
 $$
 
 
 其中 $z$ 是天顶角，与高度角互余：$z=\pi / 2-E l_{r}^{s}$
 
+#### 3. GPT 模型
 
+GPT 系列模型是 Boehm 等利用欧洲中尺度天气预报中心 (European Centre for Medium-Range Weather Forecasts, ECMWF) 长期的再分析气象资料建立的全球气象参数经验模型, 仅需知道测站地理位置信息与年积日便可以获得地表温度、大气压力和水汽压等气象参数，在全球范围内得到广泛应用。
 
+作者用的 ftp://tai.bipm.org/iers/convupdt/chapter9/GPT.F 文件对应的模型，把 IGS 中心提供的函数改成 c 语言版本的 `getGPT()` 函数，这个 GPT.F 可以通过资源管理器下载，用 notepade++、或者 VScode 查看：
 
+![5f5cec497ffb8ae62cb16a7ae2519cff](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/5f5cec497ffb8ae62cb16a7ae2519cff.png)
 
-### 7、varerr()：计算伪距量测协方差
+#### 4. tropmodel() 代码
 
+```c
+extern double tropmodel(gtime_t time, const double *pos, const double *azel,
+                        double humi, double *zwd, int atmodel)
+{
+    const double temp0=15.0;   /* temparature at sea level */
+    double hgt,pres,temp,e,z,trph,trpw;
+	int b1,b2;
+	mjd_t mjd;
+	double dmjd,undo,d1,d2;
+    
+    if (pos[2]<-100.0||pos[2]>1E6||azel[1]<=0) {
+        //���㿪ʼ�ĵ�һ����Ԫ�߳�������-100.0����������������Ϣ
+        b1=(PPP_Glo.iEpoch==1)&&(PPP_Glo.revs==0);
+        b2=(PPP_Glo.nEpoch-1==PPP_Glo.iEpoch)&&(PPP_Glo.revs==1);
+
+        //����deltaEp����
+        if (!b1&&!b2&&PPP_Glo.delEp<20) {
+            sprintf(PPP_Glo.chMsg,"*** WARNING: tropmodel: height=%7.3f elev=%4.1f\n",pos[2],azel[1]*R2D);
+            outDebug(OUTWIN,OUTFIL,OUTTIM);
+        }
+
+        return 0.0;
+    }
+    if (pos[2]>=1.0/2.2557E-5) return 0.0;
+
+    hgt=pos[2]<0.0?0.0:pos[2];
+
+    //�̹߳���ᵼ�¼��������ֵ���������ӳ���Ϊ�����
+    if (hgt>15000.0) {
+        //���㿪ʼ�ĵ�һ����Ԫ�߳�������-100.0����������������Ϣ
+        b1=(PPP_Glo.iEpoch)==1&&(PPP_Glo.revs==0)&&(PPP_Glo.prcOpt_Ex.solType==0||
+			PPP_Glo.prcOpt_Ex.solType==3||PPP_Glo.prcOpt_Ex.solType==4);
+        b2=(PPP_Glo.nEpoch-1==PPP_Glo.iEpoch)&&(PPP_Glo.revs==1)&&(PPP_Glo.prcOpt_Ex.solType==1
+			||PPP_Glo.prcOpt_Ex.solType==2);
+
+        if (!b1&&!b2&&PPP_Glo.delEp<20) {
+			sprintf(PPP_Glo.chMsg,"*** WARNING: tropmodel: height=%7.3f\n",hgt);
+            outDebug(OUTWIN,OUTFIL,OUTTIM);
+        }
+        hgt=15000.0;
+    }
+
+    // 计算大气参数，标准大气模型 or GPT 模型
+    /* standard atmosphere */
+    if (atmodel!=1) {
+        pres=1013.25*pow(1.0-2.2557E-5*hgt,5.2568);         // 求大气压P (E.5.1)
+        temp=temp0-6.5E-3*hgt+273.16;                       // 求温度temp (E.5.2)
+        e=6.108*humi*exp((17.15*temp-4684.0)/(temp-38.45)); // 求大气水汽压力e (E.5.3)
+    }
+    else {
+        time2mjd(time,&mjd);
+        dmjd=mjd.day+(mjd.ds.sn+mjd.ds.tos)/86400.0;
+        
+        undo=0.0;
+        getGPT(pos,dmjd,&pres,&temp,&undo);
+
+        d1=1013.25*pow(1.0-2.2557E-5*hgt,5.2568);
+        d2=15.0-6.5E-3*hgt;
+
+        temp+=273.16;
+        e=6.108*humi*exp((17.15*temp-4684.0)/(temp-38.45));
+    }
+    
+    // 计算对流层延迟
+    /* saastamoninen model */
+    z=PI/2.0-azel[1];                   // 求天顶角z 卫星高度角azel[1]的余角
+    trph=0.0022768*pres/(1.0-0.00266*cos(2.0*pos[0])-0.00028*hgt/1E3)/cos(z);   // 干延迟
+    trpw=0.002277*(1255.0/temp+0.05)*e/cos(z);  // 湿延迟
+
+    *zwd=trpw;
+
+    return trph;
+}
+```
+
+### 7、varerr()：计算量噪声测协方差阵
+
+不同的卫星直接的量测噪声没有相关性，所以量噪声测协方差阵是对角阵，对角线上每个元素由以下几部分组成：
 $$
 \begin{array}{l} \sigma^{2}=F^{s} R_{r}\left(a_{\sigma}{ }^{2}+b_{\sigma}{ }^{2} / \sin E l_{r}^{s}\right)+{\sigma_{\text {eph }}}^{2}+{\sigma_{\text {ion }}}^{2}+{\sigma_{\text {trop }}}^{2}+{\sigma_{\text {bias }}}^{2}\end{array}
 $$
@@ -1340,12 +1166,11 @@ $$
 其中：
 
 * $F^{s}$：卫星系统误差因子，GLONASS 1.5，SBAS fact 3，其它 1。
-* $R_{r}$：
-* $a_{\sigma}, b_{\sigma}$：
-* $\sigma_{e p h}$：
-* $\sigma_{\text {ion }}$：
-* $\sigma_{\text {trop }}$：
-* $\sigma_{\text {bias }}$：
+* $R_{r}$、$a_{\sigma}, b_{\sigma}$：测距误差因子，建模成高度角模型。
+* $\sigma_{e p h}$：卫星位置误差因子。
+* $\sigma_{\text {ion }}$：电离层延迟误差因子。
+* $\sigma_{\text {trop }}$：对流层延迟误差因子。
+* $\sigma_{\text {bias }}$：DCB 误差因子。
 
 `varerr()` 函数只计算了第一项：
 
@@ -1369,15 +1194,450 @@ static double varerr(const prcopt_t *opt, double el, int sys)
 var[nv]=varerr(opt,azel[1+i*2],sys)+vare[i]+vion+vtrp;
 ```
 
-### 8、getHVR_spp
+### 8、getHVR_spp()：剔除粗差数据，组建新的 H、V、R
 
+* 原方程个数 `nv` 小于等于 4，不进行粗差探测，直接返回 `nv`。
 
+* for 循环遍历卫星系统，各卫星系统分别进行粗差探测，传入的 `v`、`var` 是多系统在一起的，再一个 for 循环取出当前卫星系统 `i` 下的 `v`、`var`、和在  `v`、`var`中的下标序列到 `dv`、`dvar`、`ix`；调用 `getHVR_s()` 进行粗差探测。
+* 统计粗差情况，不严重直接退出程序，不进行粗差剔除。
 
+* 根据 `ibadsn` 组建剔除后粗差后的 `H`、`v`、`var`
 
+* 返回剔除粗差后的方程数 `newnv`
 
-## 四、lsqplus()：最小二乘估计
+```c
+static int getHVR_spp(int bMulGnss, const int iter, const int sys, int bElevCVG, int bDeleted[MAXSAT], 
+	                  int *sat, double *H, double *v, double *var, double *elev, int nv, int nx)
+{
+	int bbad;
+	double *dv,*dvar,std_ex[NSYS_USED],ave_ex[NSYS_USED];
+	int ibadsum[NSYS_USED],ibadsn[NSYS_USED][MAXOBS],navsys[8]={SYS_GPS,SYS_GLO,SYS_CMP,SYS_GAL,SYS_QZS,0};
+	int i,j,k,newnv=0,ibadsum_,*ix;
+	int nv_nx;
 
+    // 量测个数 nv 小于等于 4，直接返回 nv
+    if (nv<=4) return nv;
 
+    bbad=0;
+    dv=mat(nv,1);
+    dvar=mat(nv,1);
+    ix=imat(nv,1);
+
+    //////////////////////////////////////////////////////////////////////////
+    // 遍历使用的各卫星系统，i 是卫星系统，j 是卫星在自己系统内下标，k 是卫星在所有系统(v、var)的下标
+    for (i=0;i<NSYS_USED;i++) {
+
+        ibadsum[i]=0;
+        std_ex[i]=ave_ex[i]=0.0;
+
+        for (j=0;j<MAXOBS;j++) ibadsn[i][j]=-1;
+
+        if (!(sys&navsys[i])) continue;
+        
+        // 传入的 v、var 是多系统在一起的
+        // 这个 for 循环提取出当前卫星系统 i 下的 v、var、和它的下标 到 dv、dvar、ix
+        // 调用 getHVR_s() 
+        for (k=j=0;k<nv;k++) {
+            if (navsys[i]==PPP_Glo.sFlag[sat[k]-1].sys) {
+                ix[j]=k;
+                dv[j]=v[k];
+                dvar[j]=var[k];
+                j++;
+            }
+        }
+		ibadsum[i]=getHVR_s(bMulGnss,iter,sat,ix,dv,dvar,j,ibadsn[i],std_ex[i],ave_ex[i],bElevCVG);
+    }
+    //////////////////////////////////////////////////////////////////////////
+
+    free(dv); free(dvar); free(ix);
+
+    //////////////////////////////////////////////////////////////////////////
+    ibadsum_=0;
+    k=ibadsum[0];
+    for (i=0;i<NSYS_USED;i++) {
+        ibadsum_+=ibadsum[i];
+
+        if (i==0) continue;
+
+        for (j=0;j<ibadsum[i];j++)
+            ibadsn[0][k++]=ibadsn[i][j];
+    }
+    //////////////////////////////////////////////////////////////////////////
+    if (ibadsum_>0) {
+        if (ibadsum_>=3&&nv-ibadsum_>=6) bbad=1;
+        if (ibadsum_<=2) {
+            if (nv<=6) {
+                if (nv-ibadsum_>4) {
+                    bbad=1;
+                }
+            }
+            else if (nv-ibadsum_>=5) {
+                bbad=1;
+            }
+        }
+    }
+
+    if (bbad==0) return nv;
+
+    for (i=j=0;i<nv;i++) {
+        v[newnv]=v[i];
+        var[newnv]=var[i];
+
+        nv_nx=newnv*nx;
+        for (k=0;k<nx;k++) H[nv_nx+k]=H[i*nx+k];
+
+        // ibadsn 位对应为粗差，就直接 continue，不执行 newnv++
+        // 下一次 v、var、H 会将此次的数据覆盖，达到剔除粗差的效果
+        // 这个这个判断写在前面更好，代码好理解，而且少几次赋值
+        if (j<ibadsum_) {
+            if (ibadsn[0][j]==i) {
+                j++;
+
+                continue; 
+            }
+        }
+        newnv++;
+    }
+
+    // 返回剔除粗差后的方程数
+    nv=newnv;
+    return nv;  
+}
+```
+
+#### 1. getHVR_s()
+
+```c
+static int getHVR_s(int bMulGnss, const int iter, int *sat, int *ix, double *v, double *var, int nv, 
+	                int *ibadsn, double std_ex, double ave_ex, int bElevCVG)
+{
+    double dValue,factor=1.0,dt;
+    int i,j,ind,nbad=2,nBadRes,ibadsum=0,sn[MAXOBS];
+	int b,b1,b2,b3,id[100];
+	double dtmp,dFactor[100];
+
+    if (!bElevCVG) {
+        factor=3.0;
+        factor=2.25;
+    }
+
+    if (nv>=14)      nbad=5;
+    else if (nv>=11) nbad=4;
+    else if (nv>=8)  nbad=3;
+    else             nbad=2;
+
+    // 调用 findGross() 
+    nBadRes=findGross(1,bMulGnss,v,nv,nbad,&std_ex,&ave_ex,sn,5.0,1.0,2.5);
+
+    dValue=factor*std_ex;
+    if (std_ex<5000.0) {
+        for (i=ibadsum=0;i<nBadRes;i++) {
+            b=0;
+            j=sn[i];
+            ind=j;
+            dt=fabs(v[ind]-ave_ex);
+            if (fabs(dt)<1.0) continue;
+
+            if (!bElevCVG) {
+                if (fabs(dt)<10.0) continue;
+            }
+
+            if (dt>800.0)     {if (dt> 10*dValue) b=1;}
+            else if (dt>20.0) {if (dt>5.0*dValue) b=1;}
+            else if (dt>10.0) {if (dt>6.0*dValue) b=1;}
+            else if (dt>3.0)  {if (dt>7.0*dValue) b=1;}
+
+            if (b==0) continue;
+
+            ibadsn[ibadsum]=ix[ind];
+            ibadsum++;
+        }
+    }
+    else {
+        if (iter>=0) {
+            for (i=0;i<100;i++) {
+                id[i]=-1;
+                dFactor[i]=0.0;
+            }
+
+            dtmp=1.0/std_ex;
+            for (i=0;i<nBadRes;i++) {
+                j=sn[i];
+                ind=j;
+                id[i]=ix[ind];
+                dFactor[i]=(v[ind]-ave_ex)*dtmp;
+            }
+
+            for (i=0;i<nBadRes;i++) {
+                for (j=i+1;j<nBadRes;j++) {
+                    if (fabs(dFactor[i])>=fabs(dFactor[j])) continue;
+
+                    dtmp=dFactor[i];    dFactor[i]=dFactor[j];  dFactor[j]=dtmp;
+                    ind=id[i];          id[i]=id[j];            id[j]=ind;
+                }
+            }
+
+            for (j=0;j<nBadRes;j++) {
+                if (fabs(dFactor[j])<=3.0) break;
+            }
+
+            if (nBadRes>1) {
+                if (j==0) {
+                    return 0;
+                }
+
+                b1=fabs(dFactor[j-1])>15.0;
+                b2=fabs(dFactor[j-1])>fabs(2.0*dFactor[j]);
+                b3=fabs(dFactor[j-1])-fabs(dFactor[j])>2.0;
+
+                if (b1&&b2&&b3) {
+                    for (i=ibadsum=0;i<=j-1;i++) {
+                        ibadsn[ibadsum]=id[i];
+                        ibadsum++;
+                    }
+                }
+            }
+            else if (nBadRes==1) {
+                b1=fabs(dFactor[0])>25.0;
+                if (b1) {
+                    ibadsn[0]=id[0];
+                    ibadsum=1;
+                }
+            }
+        }
+    }
+
+    return ibadsum;
+}
+```
+
+#### 2. findGross()
+
+```c
+extern int findGross(int ppp, int bMulGnss, double *v, const int nv, const int nbad, 
+	                 double *std_ex, double *ave_ex, int *ibadsn, const double ratio, 
+					 const double minv, const double stdmin)
+{
+	int i,j,badn=0,*ibadsn_t,badn_min=0;
+	double dstd_min=1.0e9,dstd=0.0,dave=0.0,dave_min=0.0;
+	int kk=4;
+
+	if (nv<=1) return 0;
+
+	ibadsn_t=imat(nv,1);	// 用于标记粗差
+
+	if (bMulGnss) {
+		kk--;
+	}
+
+	if (kk<=1) kk=1;
+
+	for (i=0;i<=nbad;i++) {
+		if (ppp&&(nv<i+kk||nv<2*i+1)&&i) continue;
+
+		badn=findGross_(i,v,nv,&dstd,&dave,ibadsn_t,ratio,minv,stdmin);
+
+		if (dstd>0.0&&dstd<dstd_min) {
+			dstd_min=dstd;
+			dave_min=dave;
+			badn_min=badn;
+
+			if (ibadsn)
+				for (j=0;j<badn;j++) ibadsn[j]=ibadsn_t[j];
+		}
+
+		if (dstd>0.0&&dstd<=stdmin) break;
+	}
+
+	if (std_ex) *std_ex=dstd_min;
+	if (ave_ex) *ave_ex=dave_min;
+
+	free(ibadsn_t);
+
+	return badn_min;
+}
+```
+
+#### 3. findGross_()：粗差探测
+
+找出在一组数据中，哪些数据对整体数据的标准差 `Std_ex` 和平均值 `Ave_ex` 产生了较大的影响，在 `ibadsn` 标记。
+
+1. 首先检查一些条件，例如数据块的数量和大小、比率等。如果这些条件不满足，那么就返回0，并可能设置一些期望值。
+2. 定义并初始化了一些变量和数组。
+3. 计算组合的数量，然后调用`select_combination`函数来选择一个组合。
+4. 在选择的组合中，通过迭代计算每个数据块的标准差，并找出最小标准差和对应的平均值。
+5. 如果找到的标准差小于设定的最小标准差，并且大于 0，那么就更新最小标准差和对应的平均值。
+6. 在计算完所有组合后，释放分配的内存。
+7. 通过检查每个数据块的值和标准差，找出对标准差影响较大的数据块，并标记它们。
+8. 如果提供了`ibadsn`指针，那么就将标记的数据块的索引存储在其中。
+9. 如果设置了期望值，那么就设置它们为找到的最小标准差和对应的平均值。
+10. 释放最后一块分配的内存，返回标记为不良的数据块的数量。
+
+```c
+static int findGross_(const int nb, double *dv, const int nv, double *std_ex, double *ave_ex, int *ibadsn,
+	                  const double ratio, const double minv, const double minstd)
+{
+	int bbad=0,*bused;
+	int i,j,n,*it,*ibadsn_t;
+	int j0,j9;
+	double dstd_min=1.0e9,dt0=0.0,dt1=0.0,dave_min=0.0;
+
+	// 代码首先检查一些条件，例如数据块的数量和大小、比率等。如果这些条件不满足，那么就返回 0，并可能设置一些期望值
+	if ((nv-nb<=nb)||nv<=0||ratio<=1.0) {
+		if (std_ex)	*std_ex=-1.0;
+		if (ave_ex)	*ave_ex=0.0;
+		return 0;
+	}
+
+	bused=imat(nv,1);
+	ibadsn_t=imat(nv,1);
+
+	for (i=0,n=1;i<nb;i++)
+		n=n*(nv-i)/(i+1);
+
+	if (nb<=0) it=imat(n,1);
+	else       it=imat(n*nb,1);
+
+	comb_j=0;
+	select_combination(0,0,nv,nb,it);
+
+	// 在选择的组合中，通过迭代计算每个数据块的标准差，并找出最小标准差和对应的平均值
+	for (i=0;i<n;i++) {
+		j0=i*nb;
+		j9=j0+nb;
+		for (j=0;j<nv;j++)	bused[j]=1;
+		for (j=j0;j<j9;j++)	bused[it[j]-1]=0;
+
+		dt0=calStd_ex(dv,nv,bused,&dt1);
+
+		// 如果找到的标准差小于设定的最小标准差，并且大于 0，那么就更新最小标准差和对应的平均值。
+		if (dt0<dstd_min&&dt0>0.0) {
+			dstd_min=dt0;
+			dave_min=dt1;
+		}
+
+		if (dt0<minstd && dt0>0.0) break;
+	}
+	free(bused); free(it);
+
+	// 通过检查每个数据块的值和标准差，找出对标准差影响较大的数据块，并标记它们
+	for (i=j=0;i<nv;i++) {
+		bbad=0;
+		dt0=fabs(dv[i]-dave_min);
+		if ( dt0>ratio*dstd_min&&dstd_min>1.0e-8) {
+			if (minv>0.0) {
+				if (fabs(dt0)>minv) bbad=1;
+			}
+			else
+				bbad=1;
+		}
+		if (bbad) {
+			if (j<nv)
+				ibadsn_t[j]=i;
+			else {
+				//
+			}
+			j++;
+		}
+	}
+	if (ibadsn) {
+		for (i=0;i<j;i++) ibadsn[i]=ibadsn_t[i];
+	}
+
+	if (std_ex) *std_ex=dstd_min;
+	if (ave_ex) *ave_ex=dave_min;
+
+	free(ibadsn_t);
+
+	return j;
+}
+```
+
+#### 4. calStd_ex()：计算均值、标准差
+
+1. 首先，函数通过循环计算所有被标记为"bused"的数据的平均值。
+2. 如果"bused"的数据数量为0（也就是没有数据被使用），那么函数返回-1.0，表示计算失败。
+3. 否则，计算所有被标记为"bused"的数据的平均值，并将结果存储在变量`dave`中。
+4. 然后，函数通过循环计算所有被标记为"bused"的数据的方差（即每个数据点与平均值的差的平方）。
+5. 最后，计算方差的平方根得到标准差，并将结果作为函数的返回值。同时，如果提供了`ave`指针，将平均值也存储在该指针指向的位置。
+
+```c
+static double calStd_ex(const double *v, const int n, int *bused, double *ave)
+{
+	int i,j;
+	double dave=0.0,std=0.0;
+
+	// 首先，函数通过循环计算所有被标记为"used"的数据的平均值
+	for (i=j=0;i<n;i++) {
+		if (bused) {
+			if (bused[i]==0) continue;
+		}
+
+		dave+=v[i];
+		j++;
+	}
+
+	// 如果"bused"的数据数量为0（也就是没有数据被使用），那么函数返回-1.0，表示计算失败。
+	if (j<=0) {
+		return -1.0;
+	}
+
+	// 否则，计算所有被标记为"bused"的数据的平均值，并将结果存储在变量dave中。
+	dave/=j;
+
+	// 然后，函数通过循环计算所有被标记为"bused"的数据的方差（即每个数据点与平均值的差的平方）。
+	for (i=0;i<n;i++) {
+		if (bused) {
+			if (bused[i]==0) continue;
+		}
+
+		std+=(v[i]-dave)*(v[i]-dave);
+	}
+
+	// 最后，计算方差的平方根（这就是标准差），并将结果作为函数的返回值。同时，如果提供了ave指针，将平均值也存储在该指针指向的位置。
+	std=sqrt(std/j);
+
+	if (ave) *ave=dave;
+
+	return std;
+}
+```
+
+#### 5. select_combination()：生成组合
+
+这个函数的主要逻辑是生成所有可能的组合，每个组合的元素数量从`l`开始，逐步增加到`m`。每次找到一个新的组合时，它都会复制到`sn`数组中。当找到一个完整的组合时（即长度等于`m`），它会立即返回，不再继续寻找其他组合。
+
+- `l`：当前组合的长度
+- `p`：一个固定点，可能是一个界限或起始点，影响递归的方向或方式
+- `n`：集合的大小或元素的数量
+- `m`：组合的长度
+- `sn`：一个整数数组，用于存储生成的组合
+
+```c
+extern void select_combination(const int l, const int p, const int n, const int m, int *sn)
+{
+	int i;
+	
+    // 如果l等于m，说明已经找到了一个完整的组合，该组合以rcd[0]到rcd[m-1]的形式存储在数组rcd中。
+    // 此时，将这个组合复制到sn数组中，并增加comb_j的值。然后返回，不再继续寻找其他组合。
+	if (l==m) {
+		for (i=0;i<m;i++)
+			sn[comb_j*m+i]=rcd[i];
+		comb_j++;
+		return;
+	}
+	// 如果l不等于m，则函数将循环遍历从p到n-(m-l)的所有整数。
+    // 对于每个整数i，它都会将i+1存储在rcd[l]中，然后递归调用自身，将参数l增加1，i+1增加1，以便在下一次迭代中生成下一个元素。
+	for (i=p;i<=n-(m-l);i++) {
+		rcd[l]=i+1;
+		select_combination(l+1,i+1,n,m,sn);
+	}
+}
+```
+
+## 三、lsqplus()：最小二乘估计
+
+### 1、原理
 
 最小二乘准则为：
 $$
@@ -1405,13 +1665,83 @@ x=\left(B^{T} P B\right)^{-1} B^{T} P l \\
 $$
 式中 $\sigma_{0}, Q_{x x}$ 分别表示中误差和协因数矩阵。
 
+### 2、lsqPlus()
 
+我的理解这个函数就是对 RTKLIB 原版的最小二乘函数 `lsq()` 做了一层封装，先找出对最小二乘求解有贡献的未知数，记录它们的原来的下标到 `ix`，按照 `ix` 重新构建参数向量、设计矩阵、新息向量，计算最小二乘之后再还原回原来的维度。
 
+```c
+extern int lsqPlus(const double *A, const double *y, const int nx, const int nv, double *x, double *Q)
+{
+	int i,j,k,info=0;
+	int *ix;
+	double *A_,*x_,*Q_;
 
+	// 创建一个 nx1 的整型矩阵 ix，用于存参数的下标
+	ix=imat(nx,1);
 
+	// 两个嵌套循环用于选择对线性方程有贡献的未知数。
+	// 对于每一个未知数 i，如果在系数矩阵 A 中对应的元素绝对值大于 10e-10，
+	// 则将该未知数的索引存储在 ix 中
+	for (i=k=0;i<nx;i++) {
+		for (j=0;j<nv;j++) {
+			if (fabs(A[j*nx+i])>1.0e-10) {
+				ix[k++]=i;
+				j=1000;
+			}
+		}
+	}
 
+	A_=mat(k*nv,1); x_=mat(k,1); Q_=mat(k*k,1);
 
+	// 接下来的两个嵌套循环用于从系数矩阵 A 和未知数 x 中抽取对应于选定的未知数的行和列
+	for (j=0;j<k;j++) {
+		for (i=0;i<nv;i++) {
+			A_[i*k+j]=A[i*nx+ix[j]];
+		}
 
+		x_[j]=x[ix[j]];
+	}
 
+	// 调用和 RTKLIB 相同的 lsq 函数最小二乘求解
+	/* least square estimation */
+	info=lsq(A_,y,k,nv,x_,Q_);
 
+	for (i=0;i<nx*nx;i++) Q[i]=0.0;
+
+	for (i=0;i<k;i++) {
+		x[ix[i]]=x_[i];
+
+		for (j=0;j<k;j++)
+			Q[ix[i]+ix[j]*nx]=Q_[i+j*k];
+	}
+
+	free(ix); free(A_); free(x_); free(Q_);
+
+	return info;
+}
+```
+
+### 3、lsq()
+
+- **A**：nm 阶设计矩阵的转置，m<n 则无法计算。
+- **y**：m 阶观测残差，**y=v=l-HX** 。
+- **X**：传出参数、待估计的 n 阶参数向量的增量。
+- **Q**：传出参数、nn协方差阵。
+
+```c
+extern int lsq(const double *A, const double *y, int n, int m, double *x,
+               double *Q)
+{
+    double *Ay;
+    int info;
+    
+    if (m<n) return -1;
+    Ay=mat(n,1);
+    matmul("NN",n,1,m,1.0,A,y,0.0,Ay); /* Ay=A*y */
+    matmul("NT",n,n,m,1.0,A,A,0.0,Q);  /* Q=A*A' */
+    if (!(info=matinv(Q,n))) matmul("NN",n,1,n,1.0,Q,Ay,0.0,x); /* x=Q^-1*Ay */
+    free(Ay);
+    return info;
+}
+```
 

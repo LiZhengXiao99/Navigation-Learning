@@ -297,7 +297,7 @@
      * 调用`tropcorr()`函数,计算对流层延时`T`。
      * 调用`prange()`函数，计算经过DCB校正后的伪距值`p`。
      * 计算伪距残差`v[nv]`，即经过钟差，对流层，电离层改正后的伪距。
-     * 组装设计矩阵`H`
+     * 组装设计矩阵 `H`
 
      ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/8bf06744b5c24e25bb1c543afdaca29b.png)
 
@@ -424,6 +424,7 @@
 #### 1.satsys()：传入卫星satellite number，返回卫星系统
 
 #### 2.satexclude()：检测某颗卫星在定位时是否需要将其排除
+
 根据svh、导航系统设置，导航卫星设置。排除返回1。
 
  ```c
@@ -485,10 +486,6 @@ $$
      return r+OMGE*(rs[0]*rr[1]-rs[1]*rr[0])/CLIGHT; 	//(E.3.8b)
  }
 ```
-
-
-
-
 
 #### 4. satazel()：计算方位角、高度角
 
@@ -866,7 +863,7 @@ E6.24 的第一项
      * 计算ECEF中卫星相对于接收机的速度，卫星速度`rs[j+3+i*6]`-传入的定速初值`x[j] `。
      * 计算考虑了地球自转的用户和卫星之间的几何距离变化率`rate `。
      * 计算`rate`的标准差、残差。
-     * 构建设计矩阵`H`，将观测方程数`nv`加1
+     * 构建设计矩阵 `H`，将观测方程数 `nv` 加1
 
      ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1bef70de3ef1494bab4fb6af5fdc8602.png)
 

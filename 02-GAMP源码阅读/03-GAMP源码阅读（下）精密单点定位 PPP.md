@@ -1,8 +1,60 @@
 > 原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
 
-
+![image-20231101211450651](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231101211450651.png)
 
 [TOC]
+
+## 一、PPP 模型
+
+
+
+
+
+以非差非组合双频 PPP 模型为例，假如某一时刻观测到 $\mathrm{m}$ 颗卫星，则可建立 $4 \mathrm{~m}$ 个观测方程，其误差方程为：
+$$
+\underset{4 m \times 1}{\mathbf{V}}=\underset{4 m \times n}{\mathbf{H}} \cdot \mathbf{X}-\underset{n \times 1}{\mathbf{l}}
+$$
+式中，$\mathrm{V}$ 为观测值残差向量；$\mathbf{H}$ 为系数矩阵；1 为观测量减去计算量。状态向量 $\mathbf{X}$包含接收机位置坐标增量、接收机钟差改正、天顶对流层湿延迟、倾斜电离层延迟以及 $\mathrm{L}_{1}$ 和 $\mathrm{L}_{2}$ 上的载波相位模糊度六类基本参数 $(n=5+3 m)$ ，即：
+$$
+\mathbf{X}=[\underbrace{\Delta x, \Delta y, \Delta z}_{\text {位置 }}, c d t_{r}, \underbrace{\mathrm{ZWD}^{2}}_{\text {天顶对流层延迟 }}, \overbrace{\mathrm{I}_{r, 1}^{1}, \cdots, \bar{I}_{r, 1}^{m}}^{L_{1} \text { 上的斜电离层延迟 }}, \underbrace{\bar{N}_{r, 1}^{1}, \cdots, \bar{N}_{r, 1}^{m},}_{L_{1} \text { 上的相位模糊度 }} \overbrace{\bar{N}_{r, 2}^{1}, \cdots, \bar{N}_{r, 2}^{m}}^{L_{2} \text { 上的相位模糊度 }}]^{T}
+$$
+系数矩阵 $\mathbf{H}$ 可表示为：
+$$
+\mathbf{H}=\left[\begin{array}{c}
+\partial f_{\left(\mathbf{X}, p_{1}\right)}^{1} / \partial \mathbf{X} \\
+\partial f_{\left(\mathbf{X}, l_{1}\right)}^{1} / \partial \mathbf{X} \\
+\partial f_{\left(\mathbf{X}, p_{2}\right)}^{1} / \partial \mathbf{X} \\
+\partial f_{\left(\mathbf{X}, l_{2}\right)}^{1} / \partial \mathbf{X} \\
+\vdots \\
+\partial f_{\left(\mathbf{X}, p_{1}\right)}^{m} / \partial \mathbf{X} \\
+\partial f_{\left(\mathbf{X}, l_{1}\right)}^{m} / \partial \mathbf{X} \\
+\partial f_{\left(\mathbf{X}, p_{2}\right)}^{m} / \partial \mathbf{X} \\
+\partial f_{\left(\mathbf{X}, l_{2}\right)}^{m} / \partial \mathbf{X}
+\end{array}\right]=\left[\begin{array}{cccccccccccccc}
+a^{1} & b^{1} & e^{1} & 1 & \mathrm{Mw}_{r}^{1} & 1 & \cdots & 0 & 0 & \cdots & 0 & 0 & \cdots & 0 \\
+a^{1} & b^{1} & e^{1} & 1 & \mathrm{Mw}_{r}^{1} & -1 & \cdots & 0 & 1 & \cdots & 0 & 0 & \cdots & 0 \\
+a^{1} & b^{1} & e^{1} & 1 & \mathrm{Mw}_{r}^{1} & \gamma_{1} & \cdots & 0 & 0 & \cdots & 0 & 0 & \cdots & 0 \\
+a^{1} & b^{1} & e^{1} & 1 & \mathrm{Mw}_{r}^{1} & -\gamma_{1} & \cdots & 0 & 0 & \cdots & 0 & 1 & \cdots & 0 \\
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+a^{m} & b^{m} & e^{m} & 1 & \mathrm{Mw}_{r}^{m} & 0 & \cdots & 1 & 0 & \cdots & 0 & 0 & \cdots & 0 \\
+a^{m} & b^{m} & e^{m} & 1 & \mathrm{Mw}_{r}^{m} & 0 & \cdots & -1 & 0 & \cdots & 1 & 0 & \cdots & 0 \\
+a^{m} & b^{m} & e^{m} & 1 & \mathrm{Mw}_{r}^{m} & 0 & \cdots & \gamma_{1} & 0 & \cdots & 0 & 0 & \cdots & 0 \\
+a^{m} & b^{m} & e^{m} & 1 & \mathrm{Mw}_{r}^{m} & 0 & \cdots & -\gamma_{1} & 0 & \cdots & 0 & 0 & \cdots & 1
+\end{array}\right]
+$$
+式中，$a, b$ 和 $e$ 为卫星-接收机连线的方向余弦。
+
+观测噪声的方差矩阵 $\mathbf{R}_{k}$ 可根据卫星高度角或信噪比随机模型确定，即:
+$$
+\mathbf{R}_{k}=\left[\begin{array}{ccccccccc}\left(\sigma_{p_{1}}^{1}\right)^{2} & 0 & 0 & 0 & & & & & \\ 0 & \left(\sigma_{l_{1}}^{1}\right)^{2} & 0 & 0 & & & & & \\ 0 & 0 & \left(\sigma_{p_{2}}^{1}\right)^{2} & 0 & & & & & \\ 0 & 0 & 0 & \left(\sigma_{l_{2}}^{1}\right)^{2} & & & & & \\ & & & & \ddots & & & & \\ & & & & & \left(\sigma_{p_{1}}^{m}\right)^{2} & 0 & 0 & 0 \\ & & & & & 0 & \left(\sigma_{l_{1}}^{m}\right)^{2} & 0 & 0 \\ & & & & & 0 & 0 & \left(\sigma_{p_{2}}^{m}\right)^{2} & 0 \\ & & & & & 0 & 0 & 0 & \left(\sigma_{l_{2}}^{m}\right)^{2}\end{array}\right]
+$$
+式中，$\sigma_{p_{1}}$ 和 $\sigma_{l_{1}}$ 分别表示卫星伪距和相位观测值的噪声。
+
+对于 PPP 定位，其状态转移矩阵 $\boldsymbol{\Phi}_{k, k-1}$ 为单位阵，因此状态方程可描述为：
+$$
+\hat{\mathbf{X}}_{k, k-1}=\mathbf{X}_{k-1}
+$$
+其中，相位模糊度参数当作常数处理，其初值由伪距和载波观测值扣除电离层延迟得到，初始方差设为 $10^{4} \mathrm{~m}^{2}$；考虑到接收机钟差主要表现为高频信号，采用白噪声过程来描述它较为合适，每历元的初值由伪距单点定位确定，初始方差设为 $10^{4} \mathrm{~m}^{2}$；对流层延迟和电离层延迟参数利用随机游走参数过程估计，其初值分别由 Saastamoinen 模型和双频伪距观测值得到，初始方差分别设为 $0.6 \mathrm{~m}^{2}$ 和 $10^{4} \mathrm{~m}^{2}$，过程噪声分别设为 $10^{-8} \mathrm{~m}^{2} / \mathrm{s}^{[98]}$ 和 $0.0016 \mathrm{~m}^{2} / \mathrm{s}$ 。静态坐标参数作为常数估计，伪距单点定位结果作为初值，初始方差设为 $10^{4} \mathrm{~m}^{2}$；动态坐标参数作为白噪声估计，每历元的初值由伪距单点定位解得到，初始方差设为 $10^{4} \mathrm{~m}^{2}$ 。
 
 
 
@@ -16,7 +68,121 @@
 
 
 
-## 二、模型改正
+
+
+
+
+## 二、周跳检测
+
+目前用于非差周跳探测最常用的方法是联合使用 Geometry-free (GF) 和 MW 组合观测值进行周跳探测，其充分利用了双频观测值线性组合的特点。GF 和 MW 组合观测值分别为：
+$$
+\begin{array}{c}
+L_{\mathrm{GF}}(i)=\lambda_{1} \Phi_{1}(i)-\lambda_{2} \Phi_{2}(i)=\left(\gamma_{2}-1\right) I_{1}(i)+\left(\lambda_{1} N_{1}-\lambda_{2} N_{2}\right) \\
+\left\{\begin{array}{l}
+\lambda_{\delta} \Phi_{\delta}(i)=\left(f_{1} \lambda_{1} \Phi_{1}(i)-f_{2} \lambda_{2} \Phi_{2}(i)\right) /\left(f_{1}-f_{2}\right)=\rho(i)+f_{1} f_{2} /\left(f_{1}^{2}-f_{2}^{2}\right) \cdot I_{1}(i)+\lambda_{\delta} N_{\delta} \\
+P_{\delta}(i)=\left(f_{1} P_{1}(i)+f_{2} P_{2}(i)\right) /\left(f_{1}+f_{2}\right)=\rho(i)+f_{1} f_{2} /\left(f_{1}^{2}-f_{2}^{2}\right) \cdot I_{1}(i) \\
+N_{\delta}=N_{1}-N_{2}=\Phi_{\delta}(i)-P_{\delta}(i) / \lambda_{\delta} \\
+\lambda_{\delta}=c /\left(f_{1}-f_{2}\right)
+\end{array}\right.
+\end{array}
+$$
+式中，$i$ 表示观测历元号；$\lambda_{\delta}$ 和 $N_{\delta}$ 分别为宽巷波长和宽巷模糊度。 可以看出，MW 组合的精度受伪距观测噪声和多路径效应的影响，可通过下述递推公式减弱其影响，第 $i$ 个历元的 MW 组合观测量的平均值及方差为：
+$$
+\begin{array}{c}
+\left\langle N_{\delta}\right\rangle_{i}=\left\langle N_{\delta}\right\rangle_{i-1}+\frac{1}{i}\left(N_{\delta i}-\left\langle N_{\delta}\right\rangle_{i-1}\right) \\
+\sigma_{i}^{2}=\sigma_{i-1}^{2}+\frac{1}{i}\left\{\left(N_{\delta i}-\left\langle N_{\delta}\right\rangle_{i-1}\right)^{2}-\sigma_{i-1}^{2}\right\}
+\end{array}
+$$
+式中，〈〉表示多个历元的平滑值。对于 GF 组合，利用当前历元组合观测值与前一历元组合观测值的差值的绝对值 $\left|L_{\mathrm{GF}}(i)-L_{\mathrm{GF}}(i-1)\right|$ 作为检验量进行周跳探测。对于 MW 组合，将当前历元 $i$ 的 MW 观测量 $N_{\delta i}$ 与前 $i-1$ 历元宽巷模糊度平滑值 $\left\langle N_{\delta}\right\rangle_{i-1}$ 差值的绝对值进行比较判断是否发生周跳。顾及观测数据的采样率和高度角，给出确定周跳探测经验阈值：
+$$
+\begin{array}{l}\begin{array}{l}R_{\mathrm{GF}}(E, R)=\left\{\begin{array}{cc}(-1.0 / 15.0 \cdot E+2) \cdot b_{\mathrm{GF}}, & E \leq 15^{\circ} \\ b_{\mathrm{GF}}, & E>15^{\circ}\end{array}\right. \\ b_{\mathrm{GF}}(R)=\left\{\begin{array}{cc}0.05 \mathrm{~m}, & 0<R \leq 1 \mathrm{~s} \\ 0.1 / 20.0 \cdot R+0.05 \mathrm{~m}, & 1<R \leq 20 \mathrm{~s} \\ 0.15 \mathrm{~m}, & 20<R \leq 60 \mathrm{~s} \\ 0.25 \mathrm{~m}, & 60<R \leq 100 \mathrm{~s} \\ 0.35 \mathrm{~m}, & \text { 其它 }\end{array}\right.\end{array} \\ R_{\mathrm{MW}}(E, R)=\left\{\begin{array}{cc}(-0.1 \cdot E+3) \cdot b_{\mathrm{MW}}, & E \leq 20^{\circ} \\ b_{\mathrm{MW}}, & E>20^{\circ}\end{array}\right. \\ b_{\text {MW }}(R)=\left\{\begin{array}{cc}2.5 \mathrm{c}, & 0<R \leq 1 \mathrm{~s} \\ 2.5 / 20.0 \cdot R+2.5 \mathrm{c}, & 1<R \leq 20 \mathrm{~s} \\ 5.0 \mathrm{c}, & 20<R \leq 60 \mathrm{~s} \\ 7.5 \mathrm{c}, & \text { 其它 }\end{array}\right. \\\end{array}
+$$
+式中，$R_{\mathrm{GF}}$ (单位: $\mathrm{m}$ 或米) 和 $R_{\mathrm{MW}}$ (单位: $\mathrm{c}$ 或周) 分别为 $\mathrm{GF}$ 组合和 $\mathrm{MW}$ 组合周跳检验量的阈值；$E 、 R$ 分别为卫星高度角 (单位：度) 和观测值采样间隔 (单位：$s$ )。
+
+
+
+### 1、detecs()
+
+
+
+### 2、calCsThres()：计算 MW、GF 周跳检测阈值
+
+$$
+\begin{array}{l}\begin{array}{l}R_{\mathrm{GF}}(E, R)=\left\{\begin{array}{cc}(-1.0 / 15.0 \cdot E+2) \cdot b_{\mathrm{GF}}, & E \leq 15^{\circ} \\ b_{\mathrm{GF}}, & E>15^{\circ}\end{array}\right. \\ b_{\mathrm{GF}}(R)=\left\{\begin{array}{cc}0.05 \mathrm{~m}, & 0<R \leq 1 \mathrm{~s} \\ 0.1 / 20.0 \cdot R+0.05 \mathrm{~m}, & 1<R \leq 20 \mathrm{~s} \\ 0.15 \mathrm{~m}, & 20<R \leq 60 \mathrm{~s} \\ 0.25 \mathrm{~m}, & 60<R \leq 100 \mathrm{~s} \\ 0.35 \mathrm{~m}, & \text { 其它 }\end{array}\right.\end{array} \\ R_{\mathrm{MW}}(E, R)=\left\{\begin{array}{cc}(-0.1 \cdot E+3) \cdot b_{\mathrm{MW}}, & E \leq 20^{\circ} \\ b_{\mathrm{MW}}, & E>20^{\circ}\end{array}\right. \\ b_{\text {MW }}(R)=\left\{\begin{array}{cc}2.5 \mathrm{c}, & 0<R \leq 1 \mathrm{~s} \\ 2.5 / 20.0 \cdot R+2.5 \mathrm{c}, & 1<R \leq 20 \mathrm{~s} \\ 5.0 \mathrm{c}, & 20<R \leq 60 \mathrm{~s} \\ 7.5 \mathrm{c}, & \text { 其它 }\end{array}\right. \\\end{array}
+$$
+
+```c
+extern int calCsThres(prcopt_t *opt, const double sample)
+{
+	int b=0;
+
+	if (sample>0.0) {
+		if (PPP_Glo.prcOpt_Ex.bUsed_gfCs==1&&fabs(PPP_Glo.prcOpt_Ex.csThresGF)<0.01) {
+			if (sample<=1.0)        PPP_Glo.prcOpt_Ex.csThresGF=0.05;
+			else if (sample<=20.0)  PPP_Glo.prcOpt_Ex.csThresGF=(0.10)/(20.0-0.0)*sample+0.05;
+			else if (sample<=60.0)  PPP_Glo.prcOpt_Ex.csThresGF=0.15;
+			else if (sample<=100.0) PPP_Glo.prcOpt_Ex.csThresGF=0.25;
+			else                    PPP_Glo.prcOpt_Ex.csThresGF=0.35;
+
+			b=1;
+		}
+		if (PPP_Glo.prcOpt_Ex.bUsed_mwCs==1&&fabs(PPP_Glo.prcOpt_Ex.csThresMW)<0.01) {
+			if (sample<=1.0)        PPP_Glo.prcOpt_Ex.csThresMW=2.5;
+			else if (sample<=20.0)  PPP_Glo.prcOpt_Ex.csThresMW=(2.5)/(20.0-0.0)*sample+2.5;
+			else if (sample<=60.0)  PPP_Glo.prcOpt_Ex.csThresMW=5.0;
+			else                    PPP_Glo.prcOpt_Ex.csThresMW=7.5;
+
+			b=1;
+		}
+
+		return b;
+	}
+	else {
+		//sample<=0.0
+		PPP_Glo.prcOpt_Ex.csThresGF=0.15;
+		PPP_Glo.prcOpt_Ex.csThresMW=5.0;
+		b=0;
+	}
+
+	return b;
+}
+```
+
+
+
+### 3、wlAmbMeas()
+
+
+
+
+
+
+
+### 4、gfmeas()
+
+
+
+
+
+
+
+### 5、detslp_mw()
+
+
+
+
+
+
+
+### 6、detslp_gf()
+
+
+
+
+
+
+
+## 三、模型改正
 
 ### 1、satantpcv()：卫星天线相位中心改正
 
@@ -100,46 +266,21 @@ $$
 
 
 
-
-
-
-
-## 三、周跳检测
-
-目前用于非差周跳探测最常用的方法是联合使用 Geometry-free (GF) 和 MW 组合观测值进行周跳探测，其充分利用了双频观测值线性组合的特点。GF 和 MW 组合观测值分别为：
-$$
-\begin{array}{c}
-L_{\mathrm{GF}}(i)=\lambda_{1} \Phi_{1}(i)-\lambda_{2} \Phi_{2}(i)=\left(\gamma_{2}-1\right) I_{1}(i)+\left(\lambda_{1} N_{1}-\lambda_{2} N_{2}\right) \\
-\left\{\begin{array}{l}
-\lambda_{\delta} \Phi_{\delta}(i)=\left(f_{1} \lambda_{1} \Phi_{1}(i)-f_{2} \lambda_{2} \Phi_{2}(i)\right) /\left(f_{1}-f_{2}\right)=\rho(i)+f_{1} f_{2} /\left(f_{1}^{2}-f_{2}^{2}\right) \cdot I_{1}(i)+\lambda_{\delta} N_{\delta} \\
-P_{\delta}(i)=\left(f_{1} P_{1}(i)+f_{2} P_{2}(i)\right) /\left(f_{1}+f_{2}\right)=\rho(i)+f_{1} f_{2} /\left(f_{1}^{2}-f_{2}^{2}\right) \cdot I_{1}(i) \\
-N_{\delta}=N_{1}-N_{2}=\Phi_{\delta}(i)-P_{\delta}(i) / \lambda_{\delta} \\
-\lambda_{\delta}=c /\left(f_{1}-f_{2}\right)
-\end{array}\right.
-\end{array}
-$$
-式中，$i$ 表示观测历元号; $\lambda_{\delta}$ 和 $N_{\delta}$ 分别为宽巷波长和宽巷模糊度。 可以看出，MW 组合的精度受伪距观测噪声和多路径效应的影响，可通过下述递推公式减弱其影响，第 $i$ 个历元的 MW 组合观测量的平均值及方差为：
-$$
-\begin{array}{c}
-\left\langle N_{\delta}\right\rangle_{i}=\left\langle N_{\delta}\right\rangle_{i-1}+\frac{1}{i}\left(N_{\delta i}-\left\langle N_{\delta}\right\rangle_{i-1}\right) \\
-\sigma_{i}^{2}=\sigma_{i-1}^{2}+\frac{1}{i}\left\{\left(N_{\delta i}-\left\langle N_{\delta}\right\rangle_{i-1}\right)^{2}-\sigma_{i-1}^{2}\right\}
-\end{array}
-$$
-式中, 〈〉表示多个历元的平滑值。对于 GF 组合，利用当前历元组合观测值与前一历元组合观测值的差值的绝对值 $\left|L_{\mathrm{GF}}(i)-L_{\mathrm{GF}}(i-1)\right|$ 作为检验量进行周跳探测。对于 MW 组合，将当前历元 $i$ 的 MW 观测量 $N_{\delta i}$ 与前 $i-1$ 历元宽巷模糊度平滑值 $\left\langle N_{\delta}\right\rangle_{i-1}$ 差值的绝对值进行比较判断是否发生周跳。顾及观测数据的采样率和高度角，给出确定周跳探测经验阈值：
-$$
-\begin{array}{l}\begin{array}{l}R_{\mathrm{GF}}(E, R)=\left\{\begin{array}{cc}(-1.0 / 15.0 \cdot E+2) \cdot b_{\mathrm{GF}}, & E \leq 15^{\circ} \\ b_{\mathrm{GF}}, & E>15^{\circ}\end{array}\right. \\ b_{\mathrm{GF}}(R)=\left\{\begin{array}{cc}0.05 \mathrm{~m}, & 0<R \leq 1 \mathrm{~s} \\ 0.1 / 20.0 \cdot R+0.05 \mathrm{~m}, & 1<R \leq 20 \mathrm{~s} \\ 0.15 \mathrm{~m}, & 20<R \leq 60 \mathrm{~s} \\ 0.25 \mathrm{~m}, & 60<R \leq 100 \mathrm{~s} \\ 0.35 \mathrm{~m}, & \text { 其它 }\end{array}\right.\end{array} \\ R_{\mathrm{MW}}(E, R)=\left\{\begin{array}{cc}(-0.1 \cdot E+3) \cdot b_{\mathrm{MW}}, & E \leq 20^{\circ} \\ b_{\mathrm{MW}}, & E>20^{\circ}\end{array}\right. \\ b_{\text {MW }}(R)=\left\{\begin{array}{cc}2.5 \mathrm{c}, & 0<R \leq 1 \mathrm{~s} \\ 2.5 / 20.0 \cdot R+2.5 \mathrm{c}, & 1<R \leq 20 \mathrm{~s} \\ 5.0 \mathrm{c}, & 20<R \leq 60 \mathrm{~s} \\ 7.5 \mathrm{c}, & \text { 其它 }\end{array}\right. \\\end{array}
-$$
-式中，$R_{\mathrm{GF}}$ (单位: $\mathrm{m}$ 或米) 和 $R_{\mathrm{MW}}$ (单位: $\mathrm{c}$ 或周) 分别为 $\mathrm{GF}$ 组合和 $\mathrm{MW}$ 组合周跳检验量的阈值；$E 、 R$ 分别为卫星高度角 (单位：度) 和观测值采样间隔 (单位：$s$ )。
-
-
-
-### 1、detecs()
+### 四、ppp_res()：残差计算、设计矩阵构建
 
 
 
 
 
-## 四、PPP 时间更新
+
+
+
+
+## 五、PPP 时间更新
+
+
+
+
 
 ### 1、udstate_ppp()：Kalman 滤波时间更新
 
@@ -217,7 +358,7 @@ p_{i} \frac{k_{0}}{\left|\tilde{v}_{i}\right|}\left(\frac{k_{1}-\left|\tilde{v}_
 $$
 
 
-式中，$p_{i}$ 为观测量 $l_{i}$ 对应的权; $\tilde{v}_{i}$ 为标准化残差；$k_{0}$ 和 $k_{1}$ 为阈值常量，一般取 $k_{0}=1.0 \sim 1.5, \quad k_{1}=2.0 \sim 3.0$ 。
+式中，$p_{i}$ 为观测量 $l_{i}$ 对应的权；$\tilde{v}_{i}$ 为标准化残差；$k_{0}$ 和 $k_{1}$ 为阈值常量，一般取 $k_{0}=1.0 \sim 1.5, \quad k_{1}=2.0 \sim 3.0$ 。
 
 
 
