@@ -773,7 +773,7 @@ extern int rtkoutstat(rtk_t *rtk, char *buff)
 
 ### 4、rtkpos.c开头的宏函数
 
-	RTKLIB中常用很长的一维数组存信息，为方便找对应数据的数组下标，开头定义了几个宏函数
+RTKLIB中常用很长的一维数组存信息，为方便找对应数据的数组下标，开头定义了几个宏函数：
 
 * **NF**：`define NF(opt)     ((opt)->ionoopt==IONOOPT_IFLC?1:(opt)->nf)`，Iono-Free LC：频率数，电离层与双频的线性组合时为1，否则为设置的频率数 
 * **NP**：`define NP(opt)     ((opt)->dynamics==0?3:9)`，位置参数数量，正常为3，dynamics动力学模式为9 

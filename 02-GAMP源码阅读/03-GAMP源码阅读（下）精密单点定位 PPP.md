@@ -6,7 +6,7 @@
 
 ## 一、PPP 模型
 
-
+### 1、非差非组合 PPP
 
 
 
@@ -55,6 +55,122 @@ $$
 \hat{\mathbf{X}}_{k, k-1}=\mathbf{X}_{k-1}
 $$
 其中，相位模糊度参数当作常数处理，其初值由伪距和载波观测值扣除电离层延迟得到，初始方差设为 $10^{4} \mathrm{~m}^{2}$；考虑到接收机钟差主要表现为高频信号，采用白噪声过程来描述它较为合适，每历元的初值由伪距单点定位确定，初始方差设为 $10^{4} \mathrm{~m}^{2}$；对流层延迟和电离层延迟参数利用随机游走参数过程估计，其初值分别由 Saastamoinen 模型和双频伪距观测值得到，初始方差分别设为 $0.6 \mathrm{~m}^{2}$ 和 $10^{4} \mathrm{~m}^{2}$，过程噪声分别设为 $10^{-8} \mathrm{~m}^{2} / \mathrm{s}^{[98]}$ 和 $0.0016 \mathrm{~m}^{2} / \mathrm{s}$ 。静态坐标参数作为常数估计，伪距单点定位结果作为初值，初始方差设为 $10^{4} \mathrm{~m}^{2}$；动态坐标参数作为白噪声估计，每历元的初值由伪距单点定位解得到，初始方差设为 $10^{4} \mathrm{~m}^{2}$ 。
+
+
+
+
+
+### 参数数量、下标宏定义
+
+状态向量 $\mathbf{X}$ 包含接收机位置坐标增量、接收机钟差改正、天顶对流层湿延迟、倾斜电离层延迟以及 $\mathrm{L}_{1}$ 和 $\mathrm{L}_{2}$ 上的载波相位模糊度六类基本参数 $(n=5+3 m)$ ，即：
+$$
+\mathbf{X}=[\underbrace{\Delta x, \Delta y, \Delta z}_{\text {位置 }}, c d t_{r}, \underbrace{\mathrm{ZWD}^{2}}_{\text {天顶对流层延迟 }}, \overbrace{\mathrm{I}_{r, 1}^{1}, \cdots, \bar{I}_{r, 1}^{m}}^{L_{1} \text { 上的斜电离层延迟 }}, \underbrace{\bar{N}_{r, 1}^{1}, \cdots, \bar{N}_{r, 1}^{m},}_{L_{1} \text { 上的相位模糊度 }} \overbrace{\bar{N}_{r, 2}^{1}, \cdots, \bar{N}_{r, 2}^{m}}^{L_{2} \text { 上的相位模糊度 }}]^{T}
+$$
+在 gamp.h 
+
+N 开头的宏定义是参数数量：
+
+* **NF**：**频率数量**：电离层与双频的线性组合时为 1，否则为设置的频率数 
+
+  ```cpp
+  #define NF(opt)     ((opt)->ionoopt==IONOOPT_IF12?1:(opt)->nf)
+  ```
+
+* **NP**：**位置参数数量**：正常为 3（ XYZ坐标），dynamics 动力学模式还有估计速度加速度为 9。
+
+  ```cpp
+  #define NP(opt)     ((opt)->dynamics?9:3)
+  ```
+
+* **NC**：**系统数量、钟差参数数量**：设为卫星系统数量，GPS 对应的是接收机钟差，其它系统对应的是与 GPS 之间的系统间偏差 ISB（包括系统间时间偏差和硬件延迟等）。
+
+  ```cpp
+  #define NC(opt)     (NSYS)
+  ```
+
+* **ND**：**接收机 DCB 参数数量**：如果频率数量 nf>=3，或者双频非差非组合，设为 1，否则为 0。
+
+  ```cpp
+  #define ND(opt)     ((opt)->nf>=3||(opt)->ionoopt==IONOOPT_UC12?1:0)
+  ```
+
+* **NICB**：**GLONASS 伪距频间偏差 ICB 数量**：不估计是为 0，线性模型为 1，二次多项式模型为 2，每颗卫星估计一个 GLONASS 卫星数 NSATGLO，否则是 13（13 是啥意思，没看懂）。
+
+  ```cpp
+  #define NICB(opt)   ((opt)->gloicb==GLOICB_OFF?0:((opt)->gloicb==GLOICB_LNF?1:((opt)->gloicb==GLOICB_QUAD?2:((opt)->gloicb==GLOICB_1SAT?NSATGLO:13))))
+  ```
+
+* **NT**：**对流层参数数量**：不估计对流层时为 0，`TROPOPT_EST`时为 1，`TROPOPT_ESTG`时为 3。
+
+  ```cpp
+  #define NT(opt)     ((opt)->tropopt<TROPOPT_EST?0:((opt)->tropopt==TROPOPT_EST?1:3))
+  ```
+
+* **NI**：**电离层参数数量**：非差非组合模式为最大卫星数 MAXSAT，否则为 0 不估计电离层。
+
+  ```cpp
+  #define NI(opt)     ((opt)->ionoopt==IONOOPT_UC1||(opt)->ionoopt==IONOOPT_UC12?MAXSAT:0)
+  ```
+
+* **NR**：**除模糊度之外的参数数量**：上面的几个相加。
+
+  ```cpp
+  #define NR(opt)     (NP(opt)+NC(opt)+ND(opt)+NICB(opt)+NT(opt)+NI(opt))
+  ```
+
+* **NB**：**模糊度参数数量**：频率数 NF 乘以卫星数 MAXSAT。
+
+  ```cpp
+  #define NB(opt)     (NF(opt)*MAXSAT)
+  ```
+
+* **NX**：**总参数数量**：除模糊度之外的参数数量 NR + 总参数数量 NX。
+
+  ```cpp
+  #define NX(opt)     (NR(opt)+NB(opt))
+  ```
+
+I 开头的宏定义是参数下标：
+
+> 为啥直接从 IC 开始，没有 IP？因为位置参数在最前面，就是前 3 或者前 9，直接取就行。
+
+* **IC**：**钟差、ISB 参数下标**：
+
+  ```cpp
+  #define IC(s,opt)   (NP(opt)+(s))
+  ```
+
+* **ID**：**DCB 参数下标**：
+
+  ```cpp
+  #define ID(opt)     (NP(opt)+NC(opt))
+  ```
+
+* **IICB**：**GLONASS 伪距频间偏差 ICB 下标**：
+
+  ```cpp
+  #define IICB(s,opt) (NP(opt)+NC(opt)+ND(opt)+(s)-1)
+  ```
+
+* **IT**：**对流层参数下标**：
+
+  ```cpp
+  #define IT(opt)     (NP(opt)+NC(opt)+ND(opt)+NICB(opt))
+  ```
+
+* **II**：**电离层参数下标**：
+
+  ```cpp
+  #define II(s,opt)   (NP(opt)+NC(opt)+ND(opt)+NICB(opt)+NT(opt)+(s)-1)
+  ```
+
+* **IB**：**模糊度参数下标**：
+
+  ```cpp
+  #define IB(s,f,opt) (NR(opt)+MAXSAT*(f)+(s)-1)
+  ```
+
+  
 
 
 
@@ -210,6 +326,56 @@ $$
 $$
 式中，$\mathbf{e}_{r}^{s}$ 表示卫星指向接收机的单位向量；$\mathbf{x}, \mathbf{y}$ 和 $\mathbf{x}^{\prime}, \mathbf{y}^{\prime}$ 分别表示接收机和卫星的两个有效偶极矢量；sign 表示符号函数。
 
+```c
+static int model_phw(gtime_t time, int sat, const char *type, int opt,
+                     const double *rs, const double *rr, double *phw)
+{
+    double exs[3],eys[3],ek[3],exr[3],eyr[3],eks[3],ekr[3],E[9];
+    double dr[3],ds[3],drs[3],r[3],pos[3],cosp,ph;
+    int i;
+    
+    if (opt<=0) return 1; /* no phase windup */
+    
+    // 首先调用 sat-yaw 函数，根据卫星的姿态模型计算出卫星本体坐标系 X,Y 方向的单位矢量exs、eys，即上面公式里的SX、SY
+    /* satellite yaw attitude model */
+    if (!sat_yaw(time,sat,type,opt,rs,exs,eys)) return 0;
+    
+    // 计算卫星至接收机的单位矢量
+    /* unit vector satellite to receiver */
+    for (i=0;i<3;i++) r[i]=rr[i]-rs[i];
+    if (!normv3(r,ek)) return 0;
+    
+    // 计算接收机天线在当地坐标系的北向、西向单位矢量
+    /* unit vectors of receiver antenna */
+    ecef2pos(rr,pos);
+    xyz2enu(pos,E);
+    exr[0]= E[1]; exr[1]= E[4]; exr[2]= E[7]; /* x = north */
+    eyr[0]=-E[0]; eyr[1]=-E[3]; eyr[2]=-E[6]; /* y = west  */
+    
+    // 根据公式以及前一次的相位缠绕误差计算当前时刻相位缠绕误差
+    /* phase windup effect */
+    cross3(ek,eys,eks);
+    cross3(ek,eyr,ekr);
+    for (i=0;i<3;i++) {
+        ds[i]=exs[i]-ek[i]*dot(ek,exs,3)-eks[i];
+        dr[i]=exr[i]-ek[i]*dot(ek,exr,3)+ekr[i];
+    }
+    cosp=dot(ds,dr,3)/norm(ds,3)/norm(dr,3);
+    if      (cosp<-1.0) cosp=-1.0;
+    else if (cosp> 1.0) cosp= 1.0;
+    ph=acos(cosp)/2.0/PI;
+    cross3(ds,dr,drs);
+    if (dot(ek,drs,3)<0.0) ph=-ph;
+    
+    *phw=ph+floor(*phw-ph+0.5); /* in cycle */
+    return 1;
+}
+```
+
+#### sat_yaw()：
+
+
+
 
 
 ### 4、tidedisp()：潮汐改正
@@ -266,9 +432,15 @@ $$
 
 
 
+
+
+
+
+
+
 ### 四、ppp_res()：残差计算、设计矩阵构建
 
-
+![image-20231102142834322](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231102142834322.png)
 
 
 
@@ -278,7 +450,7 @@ $$
 
 ## 五、PPP 时间更新
 
-
+时间更新函数对理解 PPP 模型至关重要，
 
 
 

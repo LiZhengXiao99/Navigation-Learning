@@ -14,7 +14,7 @@ GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and mul
 
 ### 2、相较于 RTKLIB 的增强
 
-* **非差非组合、UOFC 的 PPP 模型**
+* **非差非组合的 PPP 模型**
 * **钟跳修复**
 * **北斗多路径延迟改正**
 * **观测值信号量支持更多**
