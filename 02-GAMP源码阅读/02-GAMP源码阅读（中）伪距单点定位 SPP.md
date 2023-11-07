@@ -454,7 +454,7 @@ int      *bDeleted IO   需要排除卫星的 bDeleted[] 对应项置 0，rescod
 
   * 计算伪距残差 `v[nv]`，即经过钟差，对流层，电离层改正后的伪距与近似距离直接的差值。
 
-  * 组装设计矩阵 `H`
+  * 组装设计矩阵 `H` 
     $$
     \boldsymbol{h}(\boldsymbol{x})=\left(\begin{array}{c}\rho_{r}^{1}+c d t_{r}-c d T^{1}+I_{r}^{1}+T_{r}^{1} \\ \rho_{r}^{2}+c d t_{r}-c d T^{2}+I_{r}^{2}+T_{r}^{2} \\ \rho_{r}^{3}+c d t_{r}-c d T^{3}+I_{r}^{3}+T_{r}^{s 3} \\ \vdots \\ \rho_{r}^{m}+c d t_{r}-c d T^{m}+I_{r}^{m}+T_{r}^{m}\end{array}\right) \boldsymbol{H}=\left(\begin{array}{cc}-e_{r}^{1 T} & 1 \\ -e_{r}^{2 T} & 1 \\ -e_{r}^{3 T} & 1 \\ \vdots & \vdots \\ -e_{r}^{m T} & 1\end{array}\right)
     $$
@@ -1080,6 +1080,10 @@ GPT 系列模型是 Boehm 等利用欧洲中尺度天气预报中心 (European C
 ![5f5cec497ffb8ae62cb16a7ae2519cff](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/5f5cec497ffb8ae62cb16a7ae2519cff.png)
 
 #### 4. tropmodel() 代码
+
+用标准大气模型或 GPT 模型计算一些标准大气值，包括总压 p、大气温度 T、水汽压力 e；然后计算了静力学延迟(干延迟) trph计算了湿延迟 trpw。
+
+> humi 传 0，就只计算干延迟，湿延迟作为参数估计
 
 ```c
 extern double tropmodel(gtime_t time, const double *pos, const double *azel,

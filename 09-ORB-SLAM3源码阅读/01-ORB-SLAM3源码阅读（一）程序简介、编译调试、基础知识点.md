@@ -422,19 +422,19 @@ $$
 先来看 SVD 法，分为三个步骤求解：
 
 1. 计算两组点的质心位置 $\boldsymbol{p}, \boldsymbol{p}^{\prime}$, 然后计算每:个点的去质心坐标：
-  $$
+$$
   \boldsymbol{q}{i}=\boldsymbol{p}{i}-\boldsymbol{p}, \quad \boldsymbol{q}{i}^{\prime}=\boldsymbol{p}{i} ({\prime}-\boldsymbol{p}){\prime}
-  $$
+$$
 
 2. 根据以下优化问题计算旋转矩阵：
-  $$
+$$
   \boldsymbol{R}^{*}=\arg \min {\boldsymbol{R}} \frac{1}{2} \sum{i=1}^{n}\left|\boldsymbol{q}{i}-\boldsymbol{R} \boldsymbol{q}{i} ({\prime}\right\|){2}
-  $$
+$$
 
 3. 根据第二步的 $\boldsymbol{R}$, 计算 $\boldsymbol{t}$：
-  $$
+$$
   t^{*}=p-R p^{\prime}
-  $$
+$$
 
 展开关于 $R$ 的误差项：
 $$

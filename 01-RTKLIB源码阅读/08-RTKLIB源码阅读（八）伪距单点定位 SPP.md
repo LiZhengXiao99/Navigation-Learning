@@ -1117,11 +1117,11 @@ extern double ionmodel(gtime_t t, const double *ion, const double *pos,
 
 ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/894f3255c10846b994d589fcc1746100.png)
 
-
 #### 1、IONEX文件概述
 
 ##### 1.文件结构
-分四大部分：**文件头**结束于`END OF HEADER`。**多组总电子含量**，每组以`START OF TEC MAP` ，结束于`END OF TEC MAP` 。**多组电子含量均方根误差** ，与总电子含量对应，开始于`START OF RMS MAP`，结束于`END OF RMS MAP`，**DCB数据块**开始于`START OF AUS DATA`，结束于`END OF AUS DATA`，也称**辅助数据块**（Auxiliary Data Blocks）。
+
+IONEX 文件分四大部分：**文件头**结束于`END OF HEADER`。**多组总电子含量**，每组以`START OF TEC MAP` ，结束于`END OF TEC MAP` 。**多组电子含量均方根误差** ，与总电子含量对应，开始于`START OF RMS MAP`，结束于`END OF RMS MAP`，**DCB数据块**开始于`START OF AUS DATA`，结束于`END OF AUS DATA`，也称**辅助数据块**（Auxiliary Data Blocks）。
 
 ##### 2.文件头
 
@@ -1241,6 +1241,7 @@ extern void readtec(const char *file, nav_t *nav, int opt)
 格网改正模型电离层格网模型文件 IONEX，通过内插获得穿刺点位置，并结合当天电离层格网数据求出穿刺点的垂直电子含量，获得电离层延迟误差 。
 
 ##### 2.iontec()：TEC格网改正主入口函数
+
 由所属时间段两端端点的TEC网格数据**时间插值**计算出电离层延时 (L1) (m) 
 
 
@@ -1307,7 +1308,7 @@ extern void readtec(const char *file, nav_t *nav, int opt)
 
    
 
-##### 3.iondelay()：计算指定时间电离层延时 (L1) (m) 
+##### 3.iondelay()：计算指定时间电离层延时 (L1) (m)
 
    * while大循环`tec->ndata[2]`次：
    * 调用`ionppp()`函数，计算当前电离层高度，穿刺点的位置 {lat,lon,h} (rad,m)和倾斜率
@@ -1399,6 +1400,7 @@ extern void readtec(const char *file, nav_t *nav, int opt)
    
 
 ##### 5.dataindex()：获取TEC格网数据下标
+
 先判断点位是否在格网中，之后获取网格点的tec数据在 tec.data中的下标
 
    ```c
@@ -1412,6 +1414,7 @@ extern void readtec(const char *file, nav_t *nav, int opt)
    
 
 ##### 6.interptec()：插值计算穿刺点处TEC
+
 通过在经纬度网格点上进行双线性插值，计算第k个高度层时穿刺点处的电子数总量TEC
 
    ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/8c24cde54f6e4005b7858f2fef0c1dce.png)
@@ -1432,12 +1435,12 @@ extern void readtec(const char *file, nav_t *nav, int opt)
        int i,j,n,index;
        
        trace(3,"interptec: k=%d posp=%.2f %.2f\n",k,posp[0]*R2D,posp[1]*R2D);
-       *value=*rms=0.0;        //将 value和 rms所指向的值置为 0
+       *value=*rms=0.0;        // 将 value和 rms所指向的值置为 0
        
        if (tec->lats[2]==0.0||tec->lons[2]==0.0) return 0; //检验 tec的纬度和经度间隔是否为 0。是，则直接返回 0
        
-       //将穿刺点的经纬度分别减去网格点的起始经纬度，再除以网格点间距，对结果进行取整，
-       //得到穿刺点所在网格的序号和穿刺点所在网格的位置(比例) i,j 
+       // 将穿刺点的经纬度分别减去网格点的起始经纬度，再除以网格点间距，对结果进行取整，
+       // 得到穿刺点所在网格的序号和穿刺点所在网格的位置(比例) i,j 
        dlat=posp[0]*R2D-tec->lats[0];
        dlon=posp[1]*R2D-tec->lons[0];
        if (tec->lons[2]>0.0) dlon-=floor( dlon/360)*360.0; /*  0<=dlon<360 */
@@ -1447,9 +1450,9 @@ extern void readtec(const char *file, nav_t *nav, int opt)
        i=(int)floor(a); a-=i;
        j=(int)floor(b); b-=j;
        
-       //调用 dataindex函数分别计算这些网格点的 tec数据在 tec.data中的下标，
-       //按从左下到右上的顺序
-       //从而得到这些网格点处的 TEC值和相应误差的标准差
+       // 调用 dataindex() 函数分别计算这些网格点的 tec 数据在 tec.data中的下标，
+       // 按从左下到右上的顺序
+       // 从而得到这些网格点处的 TEC 值和相应误差的标准差
        /* get gridded tec data */
        for (n=0;n<4;n++) {     
            if ((index=dataindex(i+(n%2),j+(n<2?0:1),k,tec->ndata))<0) continue;
@@ -1457,18 +1460,18 @@ extern void readtec(const char *file, nav_t *nav, int opt)
            r[n]=tec->rms [index];
        }
        if (d[0]>0.0&&d[1]>0.0&&d[2]>0.0&&d[3]>0.0) {
-           //穿刺点位于网格内，使用双线性插值计算出穿刺点的 TEC值
+           // 穿刺点位于网格内，使用双线性插值计算出穿刺点的 TEC 值
            /* bilinear interpolation (inside of grid) */
            *value=(1.0-a)*(1.0-b)*d[0]+a*(1.0-b)*d[1]+(1.0-a)*b*d[2]+a*b*d[3];
            *rms  =(1.0-a)*(1.0-b)*r[0]+a*(1.0-b)*r[1]+(1.0-a)*b*r[2]+a*b*r[3];
        }
-       //穿刺点不位于网格内,使用最邻近的网格点值作为穿刺点的 TEC值，不过前提是网格点的 TEC>0
+       // 穿刺点不位于网格内,使用最邻近的网格点值作为穿刺点的 TEC值，不过前提是网格点的 TEC>0
        /* nearest-neighbour extrapolation (outside of grid) */
        else if (a<=0.5&&b<=0.5&&d[0]>0.0) {*value=d[0]; *rms=r[0];}
        else if (a> 0.5&&b<=0.5&&d[1]>0.0) {*value=d[1]; *rms=r[1];}
        else if (a<=0.5&&b> 0.5&&d[2]>0.0) {*value=d[2]; *rms=r[2];}
        else if (a> 0.5&&b> 0.5&&d[3]>0.0) {*value=d[3]; *rms=r[3];}
-       //否则，选用四个网格点中 >0的值的平均值作为穿刺点的 TEC值
+       // 否则，选用四个网格点中 >0的值的平均值作为穿刺点的 TEC值
        else {
            i=0;
            for (n=0;n<4;n++) if (d[n]>0.0) {i++; *value+=d[n]; *rms+=r[n];}

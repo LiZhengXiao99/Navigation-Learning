@@ -1067,7 +1067,6 @@ static int relpos(rtk_t *rtk, const obsd_t *obs, int nu, int nr,
 
 ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/54ec5a0d997b4af39086535821c75248.png)
 
-
 ### 1、传入参数
 
 ```c
@@ -1281,9 +1280,9 @@ extern double geodist(const double *rs, const double *rr, double *e)
 
 
 
-### 5、tropmodel()：Saastamoinen模型计算对流层延迟 
+### 5、tropmodel()：Saastamoinen 模型计算对流层延迟
 
-利用 Saastamoinen 模型只改正对流层干延迟`zhd`（由于湿度值传0，高度角传0，只计算了天顶方向干延迟 ），先计算一些标准大气值，包括总压`p`、大气温度`T`、水汽压力`e`，计算静力学延迟(干延迟)`trph`，然后计算了湿延迟`trpw`
+利用 Saastamoinen 模型只改正对流层干延迟`zhd`（由于湿度值传 0，高度角传 0，只计算了天顶方向干延迟），先计算一些标准大气值，包括总压 `p`、大气温度 `T`、水汽压力 `e`，计算静力学延迟(干延迟) `trph`，然后计算了湿延迟 `trpw`
 
 ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/60ccc36567ae4c749cc0d931be4e5536.png)
 
@@ -1314,7 +1313,7 @@ extern double tropmodel(gtime_t time, const double *pos, const double *azel,
 
 ### 6、tropmapf()：计算干湿延迟投影系数
 
-干投影函数是通过返回值获得的，而湿投影是通过输入/输出参数`mapfw`获得的，有两种投影函数的计算方法，分别是GMF和NMF,默认使用的是NMF方法，也可以通过定义`IERS_MODEL`宏来使用GMF方法。
+干投影函数是通过返回值获得的，而湿投影是通过输入/输出参数`mapfw`获得的，有两种投影函数的计算方法，分别是 GMF 和 NMF ，默认使用的是 NMF 方法，也可以通过定义`IERS_MODEL`宏来使用 GMF 方法。
 
 ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/91ef038974d34520bbfa700e7a935a73.png)
 
@@ -1404,29 +1403,27 @@ extern double tropmapf(gtime_t time, const double pos[], const double azel[],
 
 ## 五、天线相位中心改正
 
-> 参考博客：[RTKLIB中的卫星天线与接收机天线修正](http://t.csdn.cn/lDSDN)
-
 ### 1、理论概述
 
 * **天线相位中心**，即天线]接收信号的**电气中心**，其空间位置在出厂时往往不在天线的**几何中心**上。天线所辐射出的电磁波在离开天线一定的距离后，其等相位面会近似为一个球面，该球面的球心即为该天线的等效相位中心，即天线相位中心（Antenna Phase Center ） 
 
 * GNSS观测量是相对于**接收机天线的平均相位中心**而言的，而接收机天线对中是相对于几何中也而言的，这两种中心一般不重合，两者之差就称为**平均相位中心偏差（PCO）**，其大小可达**毫米级或厘米级**。且接收机天线的相位中也会随卫星信号输入的方向和强度的变化而变化，此时观测时刻的瞬时相位中也与平均相位中心的偏差称为**平均相位中心变化（PCV）**，它与卫星的高度角和方位角有关。因此接收机天线相位偏差由接收机天线PCO和PCV两部分组成。
 
-* NGS提供的ANTEX格式天线模型，包含了卫星天线模型以及部分接收机天线模型。使用天线模型的目的包括： 
+* NGS 提供的 ANTEX 格式天线模型，包含了卫星天线模型以及部分接收机天线模型。使用天线模型的目的包括： 
 
   * 修正天线参考点和天线相位中心的之间的偏差；
   * 修正和仰角有关的误差；
-  * 修正L1和L2之间的相位中心偏差（这个误差可能对整周模糊度固定造成影响）
+  * 修正 L1 和 L2 之间的相位中心偏差（这个误差可能对整周模糊度固定造成影响）
 
 * **接收机天线相位中心模型**：一般选取接收机天线底部与天线中轴的交点作为参考点（称天线参考点，ARP）： 
 
-  * ARP与实际相位中心的几何偏差值称为**天线相位中心偏差**（PCO）
+  * ARP 与实际相位中心的几何偏差值称为**天线相位中心偏差**（PCO）
   * 由不同高度角、方位角测得的距离产生系统性的测量偏差为**天线相位中心变化**（PCV）
 
   ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/fc25f5a5d20b4d15ba35ea130701519c.png)
 
 
-  * RTKLIB支持NGS PCV以及ANTEX格式的天线模型，其中包括了PCO和PCV修正参数。通过手册E.8章节可知，接收机天线修正如下： 
+  * RTKLIB 支持 NGS PCV 以及 ANTEX 格式的天线模型，其中包括了 PCO 和 PCV 修正参数。通过手册 E.8 章节可知，接收机天线修正如下： 
 
     * **PCO修正**通常是当地坐标系ENU参数，因此需要利用转换矩阵转到ECEF坐标系  
       $$
@@ -1450,11 +1447,11 @@ extern double tropmapf(gtime_t time, const double pos[], const double azel[],
 ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/706f1ff966ec4068a57c96ab4463b64b.png)
 
 
-> readantex()函数有bug，接收机端同时出现GPS、GLO的PCO、PCV时，会用GLO系统的值覆盖GPS
+> readantex() 函数有bug，接收机端同时出现 GPS、GLO 的PCO、PCV时，会用 GLO 系统的值覆盖 GPS
 
 ### 3、RTK中的接收机天线相位中心改正：antmodel()
 
-	`zdres()`函数:位于rtkpos.c中，调用`antmodel()`函数计算接收机端修正值，在`zdres_sat()`函数中进行修正。相对定位进行单差时，已经将卫星端的天线误差消除了，在处理相对定位中，可采用同一类型的天线且天线指北的方法从而消除接收机天线相位中也偏差的影响，但是在基线两端使用不用的天线时必须对其进行改正。执行流程如下：
+`zdres()`函数:位于rtkpos.c中，调用`antmodel()`函数计算接收机端修正值，在`zdres_sat()`函数中进行修正。相对定位进行单差时，已经将卫星端的天线误差消除了，在处理相对定位中，可采用同一类型的天线且天线指北的方法从而消除接收机天线相位中也偏差的影响，但是在基线两端使用不用的天线时必须对其进行改正。执行流程如下：
 
 * 计算LOS视向量在ENU中的单位矢量`e`
 * 频段不同，天线的相位中心偏移(PCO)不同，先计算出每个频段天线在东、北、天三个方向总的偏移,即相位中心偏移`pcv->off`与`del[j]`之和。
@@ -2139,7 +2136,6 @@ static double sdobs(const obsd_t *obs, int i, int j, int k)
 - 由载波相位的观测方程可知，在方程中随时间变化的项主要有接收机至卫星间的几何距离、接收机和卫星的钟差以及及大气层延迟等三项。**对GNSS观测值进行适当的組合，将上面三项中的大部分误差消除，即可构成周跳检测量**。
 
 ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/da426007994d49c2b09ab1c918aeb42d.png)
-
 
 #### 4.LLI：失锁标识符
 

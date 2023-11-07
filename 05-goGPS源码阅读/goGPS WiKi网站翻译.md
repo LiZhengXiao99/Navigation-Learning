@@ -391,10 +391,10 @@ goGPS菜单允许执行简单的操作和打开工具或其他窗口。它仍在
 * **Meteo Data**：气象数据的来源
   * **1 - Standard Atmosphere**：标准大气模型，压力（1013.25mbar）、温度。（18℃elsius）、湿度（50%）
   * **2 - GPT**：全球气压温度模型。
-  * **3 - MET files**：使用下面字段中指定的气象RINEX
+  * **3 - MET files**：使用下面字段中指定的气象 RINEX
 * **MET files**：goGPS 可以使用气象学 RINEX 文件来导入气象站的温度、压力和湿度。它自动在正确的海拔高度和站点位置上插值数据（更多细节见 `Meteo_Data.getVMS`）。
 
-#####③Tab Generic-Options
+##### ③Tab Generic-Options
 
 在这个选项卡中，用户可以选择修改预处理工作方式的选项。
 
@@ -689,7 +689,7 @@ goGPS菜单允许执行简单的操作和打开工具或其他窗口。它仍在
 
 
 
-#### 7.Commands 选项卡
+#### 7. Commands 选项卡
 
 这是主选项卡，定义了goGPS在执行过程中要执行的命令序列。
 
@@ -925,21 +925,21 @@ gos = Go_Slave.getInstance(); gos.live();
 
 为了简化从机的生成和维护，我们创建了几个 goGPS 命令：
 
-#### 1.PINIT
+#### 1. PINIT
 
 该命令用于初始化或检查在后台运行的并行从机的存在。
 
-**PINIT命令参数**：
+**PINIT 命令参数**：
 
 * **-n=**：这是唯一且是强制性的参数，指定要并行执行的后台任务的数量。如：`PINIT n=7`、`PINIT N7`
 
-**PINIT命令示例**：
+**PINIT 命令示例**：
 
 ```
 PINIT -n=7
 ```
 
-#### 2.PKILL
+#### 2. PKILL
 
 该命令没有参数，用于杀死所有后台从机。
 
@@ -1199,7 +1199,7 @@ $$
 
 #### MPEST
 
- `MPEST` 命令可用于先前在 PPP/NET 中处理过的仍含有相位残差的目标接收机。它为每个观测组合（或 RAW ）自动生成六张地图：一张由 Zernike 插值估计（Zernike interpolation ）的图，第二张由简单堆叠（simple stacking）而成，加上两个规则格网（regular grids）和两个共轭格网。如果启用了多径缓解，并且存在未合并的残差，在计算结束时，该命令将修正结果应用于包含在接收机中的相位观测。该命令的结果存储在 `GNSS_Staion` 类的 `obj` 中的 `ant_mp` 字段中。 
+ `MPEST` 命令可用于先前在 PPP/NET 中处理过的仍含有相位残差的目标接收机。它为每个观测组合（或 RAW）自动生成六张地图：一张由 Zernike 插值估计（Zernike interpolation）的图，第二张由简单堆叠（simple stacking）而成，加上两个规则格网（regular grids）和两个共轭格网。如果启用了多径缓解，并且存在未合并的残差，在计算结束时，该命令将修正结果应用于包含在接收机中的相位观测。该命令的结果存储在 `GNSS_Staion` 类的 `obj` 中的 `ant_mp` 字段中。 
 
 用命令 `EXPORT T* MP` 输出一个多路径图：
 
