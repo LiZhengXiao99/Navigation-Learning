@@ -12,7 +12,9 @@ GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR
 
 软件接收机可在普通的 PC 中运行，并通过 USB 和以太网总线为各种市售或定制的射频前端提供接口，使处理算法适应不同的采样频率、中间频率和采样分辨率。它还可以处理存储在文件中的原始数据样本。软件对可用的卫星信号进行信号采集和跟踪，对导航信息进行解码，并计算定位算法所需的观测值，最终实现完整导航解决方案。处理输出可存储在 RINEX 文件中，或通过 TCP/IP 服务器以 RTCM 3.2 消息形式实时传输。导航结果以 KML 和 GeoJSON 格式存储。
 
-### 2、
+### 2、代码风格
+
+
 
 
 
@@ -192,7 +194,7 @@ GNSSFlowgraph 类对象将解析配置文件，并要求块工厂提供相应的
 
 ![Basic GNSS flow graph](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/simple-gnss-sdr-flowgraph.png)
 
-GNSS-SDR 的配置机制非常灵活，足以允许其他更复杂的流程图。例如，您可以用八个通道来接收一个给定信号（如 GPS L1 C/A），并定义另外八个通道来接收伽利略 E1 B/C 信号，从而定义一个多系统接收器。或者也可以将该结构扩展到另一个频段，定义一个多系统、双频 GNSS 接收机的流程图：
+GNSS-SDR 的配置机制非常灵活，足以允许其他更复杂的流图。例如，您可以用八个通道来接收一个给定信号（如 GPS L1 C/A），并定义另外八个通道来接收伽利略 E1 B/C 信号，从而定义一个多系统接收器。或者也可以将该结构扩展到另一个频段，定义一个多系统、双频 GNSS 接收机的流程图：
 
 ![Complex GNSS flow graph](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/multi-band-multi-system-flow-graph.png)
 
@@ -205,12 +207,12 @@ GNSS-SDR 的配置机制非常灵活，足以允许其他更复杂的流程图�
 * [Signal Source 信号源](https://gnss-sdr.org/docs/sp-blocks/signal-source/)：信号源是向处理流程图注入连续的 GNSS 信号原始样本流的模块。它是一个抽象概念，涵盖了各种信号源，从文件中存储的样本（各种格式）到射频前端实时传输的多个样本流。
 
 * [Signal Conditioner 信号调节器](https://gnss-sdr.org/docs/sp-blocks/signal-conditioner/)：信号调节器模块负责将采样比特深度调整为可在运行软件接收器的主机上使用的数据类型，还可进行中频到基带的转换、重采样和滤波。
-* [Data Type Adapter 数据类型适配器](https://gnss-sdr.org/docs/sp-blocks/data-type-adapter/)：数据类型适配器块的作用是对采样流中的数据类型进行转换。
+* [Data Type Adapter 数据类型适配器](https://gnss-sdr.org/docs/sp-blocks/data-type-adapter/)：数据类型适配器的作用是对采样流中的数据类型进行转换。
 * [Input Filter 输入滤波器](https://gnss-sdr.org/docs/sp-blocks/input-filter/)：输入滤波器模块的作用是从输入信号中过滤噪音和可能的干扰。
-* [Resampler 重采样](https://gnss-sdr.org/docs/sp-blocks/resampler/)：重采样器模块负责对信号进行重采样，并将其传送到并行处理通道。
+* [Resampler 重采样](https://gnss-sdr.org/docs/sp-blocks/resampler/)：重采样器负责对信号进行重采样，并将其传送到并行处理通道。
 
 * [Channels 通道](https://gnss-sdr.org/docs/sp-blocks/channels/)：每个通道都封装了用于信号采集、跟踪和解调单颗卫星导航信息的模块。这些抽象接口可采用不同的算法来处理任何合适的 GNSS 信号。用户可以定义软件接收器实例化的并行通道数量，GNU Radio 采用的每块线程调度器可自动管理现代多核处理器的多任务处理能力。
-* [Acquisition 采集](https://gnss-sdr.org/docs/sp-blocks/acquisition/)：采集块的作用是检测是否存在来自特定 GNSS 卫星的信号。如果检测到信号，可以提码相位和多普勒频移的粗略估计。码相位和多普勒频移但必须足够精确，以便初始化延迟和相位跟踪环路。
+* [Acquisition 捕获](https://gnss-sdr.org/docs/sp-blocks/acquisition/)：是检测是否存在来自特定 GNSS 卫星的信号，如果检测到信号，可以提码相位和多普勒频移的粗略估计。码相位和多普勒频移但必须足够精确，以便初始化延迟和相位跟踪环路。
 * [Tracking 跟踪](https://gnss-sdr.org/docs/sp-blocks/tracking/)： 跟踪模块的作用是跟踪信号同步参数的变化：码相位、多普勒频移、载波相位。
 
 * [Telemetry Decoder 遥测解码器](https://gnss-sdr.org/docs/sp-blocks/telemetry-decoder/)：遥测解码器模块的作用是从全球导航卫星系统卫星广播的导航信息中获取数据比特，获取导航电文数据。
@@ -223,7 +225,7 @@ GNSS-SDR 的配置机制非常灵活，足以允许其他更复杂的流程图�
 
 ### 6、依赖的库
 
-- [GNU Radio](https://www.gnuradio.org/)：一个免费开源的软件无线电工具包。反过来，GNU Radio 也需要一些软件依赖，其中一些也被 GNSS-SDR 使用。特别是 [Boost](https://www.boost.org/)、[FFTW](http://www.fftw.org/) 、[VOLK](https://www.libvolk.org/)
+- [GNU Radio](https://www.gnuradio.org/)：一个免费开源的软件无线电工具包。反过来，GNU Radio 也需要一些软件依赖，其中一些也被 GNSS-SDR 使用，特别是 [Boost](https://www.boost.org/)、[FFTW](http://www.fftw.org/) 、[VOLK](https://www.libvolk.org/)
 - [Armadillo](http://arma.sourceforge.net/)：是一个 C++ 线性代数库。它是系统中所有相关库（ [LAPACK](https://www.netlib.org/lapack/), [BLAS](https://www.netlib.org/blas/), [OpenBlas](https://www.openblas.net/), [ATLAS](http://math-atlas.sourceforge.net/),  [others](http://arma.sourceforge.net/faq.html#linking).）的封装器。
 - [glog](https://github.com/google/glog)：是 Google 日志模块的 C++ 实现。
 - [gflags](https://github.com/gflags/gflags)：是一个实现命令行标志处理的 C++ 库。
