@@ -1,6 +1,6 @@
 > 原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
 
-![image-20231101211450651](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231101211450651.png)
+
 
 [TOC]
 
@@ -138,25 +138,40 @@ I 开头的宏定义是参数下标：
 
 
 
-* 调用 satposs_rtklib() 精密星历计算卫星位置、钟差
-* 调用 testeclipse() 排除日食卫星卫星
-* 调用 calElev() 其通过调用 geodist()、satazel() 计算近似几何距离、方位角高度角
+* 调用 satposs_rtklib() 精密星历计算卫星位置、钟差。
+* 调用 testeclipse() 排除日食卫星卫星。
+* 调用 calElev() 其通过调用 geodist()、satazel() 计算近似几何距离、方位角高度角。
+
+
+
+* 计算 RCVEX 的数据，存到 PPP_Info 里，对解算好像不起做用。
+* 调用 detecs() 周跳检测。
+* 调用 udstate_ppp() 时间更新，注意时间更新在迭代计算之前。
+* for 循环迭代进行，最多迭代 8 次，超出迭代次数输出错误信息。
+  * 调用 ppp_res() 计算残差 V、设计矩阵 H。
+  * 调用 filter() EKF 估计。
+  * 调用 ppp_res() 计算后验残差，符合限制则输出为精密单点定位状态
+* 如果 PPP 解算成功，调用 update_stat() 保存结果。
+* free() 释放开辟的矩阵。
+
+
+
+### 1、testeclipse()：排除日食卫星
+
+* 调用 sunmoonpos() 计算太阳 ECEF 坐标 rsun，调用 normv3() 单位向量 esun
+* 遍历观测值，
 
 
 
 
 
-### 1、testeclipse()：
+### 2、calElev()：计算卫地距、方位角、高度角
 
-
-
-
-
-
-
-### 2、calElev()：
-
-
+* 先把 azel 全赋值 0。
+* 如果有静态 PPP 参考坐标，赋值 rr[i]，否则用状态向量 rtk->x 或者结果 rtk->sol.rr 赋值 rr[i]。
+* 遍历当前历元每颗卫星：
+  * 调用 geodist() 计算改正了 sagnac 效应的近似距离、单位视线向量 e。
+  * 调用 satazel() 计算方位角高度角到 azel。
 
 ```c
 extern void calElev(rtk_t *rtk, const obsd_t *obs, int n, double *rs)
@@ -202,6 +217,10 @@ extern void calElev(rtk_t *rtk, const obsd_t *obs, int n, double *rs)
 	}
 }
 ```
+
+
+
+### 3、update_stat()：
 
 
 
@@ -324,15 +343,19 @@ extern int calCsThres(prcopt_t *opt, const double sample)
 }
 ```
 
-### 3、detecs()：
+### 3、detecs()：周跳检测入口函数
 
 
 
 
+
+* 先后调用 detslp_mw()、detslp_gf() 进行周跳检测
 
 
 
 ### 4、detslp_mw()：
+
+
 
 
 
@@ -354,6 +377,34 @@ extern int calCsThres(prcopt_t *opt, const double sample)
 
 ![image-20231102142834322](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231102142834322.png)
 
+* 存下当前历元时间字符串 str，用于 Trace 输出。
+* 遍历当前历元卫星，初始化 azel；如果是反向滤波，resc_pri、resp_pri 设为 0；如果是正向滤波，resc_pos、resp_pos 设为 0。
+* rr 设为传入的接收机 ECEF 坐标 x，如果 rr 过小，说明取值有误，return。
+* 调用 tidedisp() 算出潮汐改正量 dr，加到接收机 ECEF 坐标  rr 上。
+* 用潮汐改正后的测站 ECEF 准备计算测站纬经高 pos。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -374,11 +425,69 @@ extern int calCsThres(prcopt_t *opt, const double sample)
 
 ### 2、udpos_ppp()：位置参数时间更新
 
+GAMP 只支持三种定位模式：SPP、static  PPP、kinematic PPP；PPP 只有静态和动态两种，只估计位置，不估计速度、加速度。
+
+* 如果是 PPP 固定解模式，直接用已知点的固定坐标初始化，给一个极小的协方差 1E-8。
+* 如果是首历元，赋值单点定位的解，设协方差 VAR_POS ((60.0)*(60.0))。
+* 如果是 PMODE_PPP_STATIC 模式，状态量不变，P 矩阵也不加过程噪声。
+* 动态 PPP 模式，状态量不变，设固定协方差 VAR_POS ((60.0)*(60.0))。
+
+```c
+static void udpos_ppp(rtk_t *rtk)
+{
+	int i;
+
+	// GAMP 只支持三种定位模式：SPP、static  PPP、kinematic PPP
+
+	// 如果是 PPP 固定解模式，直接用已知点的固定坐标初始化，给一个极小的协方差 1E-8
+	/* fixed mode */
+	if (rtk->opt.mode==PMODE_PPP_FIXED) {
+		for (i=0;i<3;i++) initx(rtk,rtk->opt.ru[i],1E-8,i);
+		return;
+	}
+
+	// 如果是首历元，赋值单点定位的解，设协方差 VAR_POS ((60.0)*(60.0))
+	/* initialize position for first epoch */
+	if (norm(rtk->x,3)<=0.0) {
+		for (i=0;i<3;i++) initx(rtk,rtk->sol.rr[i],VAR_POS,i);
+	}
+	
+	// 如果是 PMODE_PPP_STATIC 模式，状态量不变，P 矩阵也不加过程噪声
+	/* static ppp mode */
+	if (rtk->opt.mode==PMODE_PPP_STATIC) {
+		/*for (i=0;i<3;i++) {
+		rtk->P[i*(1+rtk->nx)]+=SQR(rtk->opt.prn[5])*fabs(rtk->tt);
+		}*/
+		return;
+	}
+
+	// 动态 PPP 模式，状态量不变，设协方差 VAR_POS ((60.0)*(60.0))
+	/* kinmatic mode without dynamics */
+	for (i=0;i<3;i++) {
+		initx(rtk,rtk->sol.rr[i],VAR_POS,i);
+	}
+}
+```
+
+### 3、udclk_ppp()：钟差、ISB 参数时间更新
+
+相关的配置选项有很多，
 
 
 
 
-### 3、udclk_ppp()：钟差参数时间更新
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
