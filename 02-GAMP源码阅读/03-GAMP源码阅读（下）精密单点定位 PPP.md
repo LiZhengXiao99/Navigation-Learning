@@ -136,8 +136,6 @@ I 开头的宏定义是参数下标：
 
 ![image-20231028182626796](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231028182626796.png)
 
-
-
 * 调用 satposs_rtklib() 精密星历计算卫星位置、钟差。
 * 调用 testeclipse() 排除日食卫星卫星。
 * 调用 calElev() 其通过调用 geodist()、satazel() 计算近似几何距离、方位角高度角。
@@ -157,6 +155,8 @@ I 开头的宏定义是参数下标：
 
 
 ### 1、testeclipse()：排除日食卫星
+
+![image-20231216194316977](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231216194316977.png)
 
 * 调用 sunmoonpos() 计算太阳 ECEF 坐标 rsun，调用 normv3() 单位向量 esun
 * 遍历观测值，
@@ -345,7 +345,7 @@ extern int calCsThres(prcopt_t *opt, const double sample)
 
 ### 3、detecs()：周跳检测入口函数
 
-
+![image-20231216194414960](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231216194414960.png)
 
 
 
@@ -382,8 +382,11 @@ extern int calCsThres(prcopt_t *opt, const double sample)
 * rr 设为传入的接收机 ECEF 坐标 x，如果 rr 过小，说明取值有误，return。
 * 调用 tidedisp() 算出潮汐改正量 dr，加到接收机 ECEF 坐标  rr 上。
 * 用潮汐改正后的测站 ECEF 准备计算测站纬经高 pos。
+* 接下来是两层 for 循环：外层遍历卫星，索引为 n；内层遍历伪距载波观测值，索引为 j。
+  * 
 
-
+* 如果是 GLONASS，
+* 
 
 
 
@@ -413,13 +416,30 @@ extern int calCsThres(prcopt_t *opt, const double sample)
 
 ## 四、PPP 时间更新
 
-时间更新函数对理解 PPP 模型至关重要，
+时间更新函数对理解 PPP 模型至关重要，PPP 的核心是参数估计，
+
+而且初始协方差也在此函数中设置。
 
 
 
 ### 1、udstate_ppp()：Kalman 滤波时间更新
 
+![image-20231216194513211](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231216194513211.png)
 
+
+
+
+
+
+
+* **udpos_ppp()**：位置参数时间更新，
+* **udclk_ppp()**：钟差、ISB 参数时间更新，
+* **udtrop_ppp()**：对流层参数时间更新，
+* **udiono_ppp()**：电离层参数时间更新，
+* **uddcb_ppp()**：DCB 参数时间更新，
+* **udbias_ppp()**：模糊度参数时间更新，
+
+下面将对这些函数做具体介绍。
 
 
 
@@ -427,10 +447,10 @@ extern int calCsThres(prcopt_t *opt, const double sample)
 
 GAMP 只支持三种定位模式：SPP、static  PPP、kinematic PPP；PPP 只有静态和动态两种，只估计位置，不估计速度、加速度。
 
-* 如果是 PPP 固定解模式，直接用已知点的固定坐标初始化，给一个极小的协方差 1E-8。
-* 如果是首历元，赋值单点定位的解，设协方差 VAR_POS ((60.0)*(60.0))。
-* 如果是 PMODE_PPP_STATIC 模式，状态量不变，P 矩阵也不加过程噪声。
-* 动态 PPP 模式，状态量不变，设固定协方差 VAR_POS ((60.0)*(60.0))。
+* 如果是 **PPP 固定解模式**：直接用已知点的固定坐标初始化，给一个极小的协方差 1E-8。
+* 如果是**首历元**：赋值单点定位的解，设协方差 VAR_POS ((60.0)*(60.0))。
+* 如果是 **静态 PPP 模式**：状态量不变，P 矩阵也不加过程噪声。
+* 如果是 **动态 PPP 模式**：状态量不变，设固定协方差 VAR_POS ((60.0)*(60.0))。
 
 ```c
 static void udpos_ppp(rtk_t *rtk)
@@ -483,23 +503,67 @@ static void udpos_ppp(rtk_t *rtk)
 
 
 
-
-
-
-
-
-
-
-
-
-
 ### 4、udtrop_ppp()：对流层参数时间更新
 
+* 获取对流层参数下标 i、历元间时间间隔 tt
+* 如果对流层状态量为 0，相当于要给协方差赋初值：
+  * 用 0.15、0.3*0.3 初始化天顶方向对流层延迟。
+  * 如果是 ROPOPT_ESTG 对流层梯度估计模式：用 1E-6、VAR_GRA 初始化东向、北向的对流层梯度系数。
+* 对流层状态量不为 0，就是加过程噪声：
+  * 增加过程噪声 `SQR(rtk->opt.prn[2])*fabs(tt)`，就是设置的对流层过程噪声标准差取平方得到方差，再乘以历元间时间间隔 tt。
+  * 如果是 ROPOPT_ESTG 对流层梯度估计模式：给东向、北向的对流层梯度系数加过程噪声 `SQR(rtk->opt.prn[2]*0.1)*tt`，就是设置的对流层过程噪声标准差的十分之一取平方得到方差，再乘以历元间时间间隔 tt。
 
+```c
+static void udtrop_ppp(rtk_t *rtk)
+{
+	// 获取对流层参数下标 i、历元间时间间隔 tt
+	double var,tt=fabs(rtk->tt);
+	int i=IT(&rtk->opt),j;	
 
-
+	// 如果对流层状态量为 0，相当于要给协方差赋初值
+	if (rtk->x[i]==0.0) {
+		var=SQR(0.3);
+		// 用 0.15、0.3*0.3 初始化天顶方向对流层延迟
+		initx(rtk,0.15,var,i);
+		// TROPOPT_ESTG 模式，用 1E-6、VAR_GRA 初始化东向、北向的对流层梯度系数
+		if (rtk->opt.tropopt>=TROPOPT_ESTG) {
+			for (j=i+1;j<i+3;j++) initx(rtk,1E-6,VAR_GRA,j);
+		}
+	}
+	// 对流层状态量不为 0，就是加过程噪声
+	else {
+		// 增加过程噪声 SQR(rtk->opt.prn[2])*fabs(tt)
+		// 设置的对流层过程噪声标准差取平方得到方差，再乘以历元间时间间隔 tt
+		rtk->P[i+i*rtk->nx]+=SQR(rtk->opt.prn[2])*tt;
+		// TROPOPT_ESTG 模式，给东向、北向的对流层梯度系数加过程噪声 SQR(rtk->opt.prn[2]*0.1)*tt
+		if (rtk->opt.tropopt>=TROPOPT_ESTG) {
+			for (j=i+1;j<i+3;j++) {
+				// 设置的对流层过程噪声标准差的十分之一取平方得到方差，再乘以历元间时间间隔 tt
+				rtk->P[j+j*rtk->nx]+=SQR(rtk->opt.prn[2]*0.1)*tt;
+			}
+		}
+	}
+}
+```
 
 ### 5、udiono_ppp()：电离层参数时间更新
+
+与电离层参数相关的选项有 ionoopt、ionopnoise、ionoconstraint。当 ionoopt 选 3 单频估计和 4 双频估计时才会进入这个函数。
+
+* **ionoopt**：电离层处理选项：0 不处理、1 广播星历克罗布歇模型、2 消电离层、3 单频估计、4 双频估计、5 电离层格网模型。
+* **ionopnoise**：估计电离层随机模型：0 静态、1 随机游走、2 新随机游走、3 白噪声。
+  * 静态：
+  * 随机游走：
+  * 新随机游走：
+  * 白噪声：
+
+* **ionoconstraint**：增加电离层的虚拟观测参数及其对观测方程的相应约束：0 关闭、1 打开。
+
+执行流程：
+
+* 遍历每颗卫星，获取电离层参数下标 j，载波中断计数都大于 gap_resion(默认120)，重置电离层参数为 0。
+
+
 
 
 
@@ -511,12 +575,40 @@ static void udpos_ppp(rtk_t *rtk)
 
 
 
+```c
+static void uddcb_ppp(rtk_t *rtk)
+{
+	int i=ID(&rtk->opt);	// 取 DCB 参数下标 i
+
+	// 如果 DCB 参数为 0，用 1E-6、VAR_DCB 初始化
+	if (rtk->x[i]==0.0) {
+		initx(rtk,1E-6,VAR_DCB,i);
+	}
+}
+```
+
+
+
+
+
 ### 7、udbias_ppp()：模糊度参数时间更新
 
 
 
 
 
+* 判断当前历元是否在日界线上。
+* 遍历每个频率：
+  * 三种情况会重置模糊度，重置为 0,0
+    * 载波中断计数大于阈值
+    * 模糊度固定模式为 instantaneous
+    * 当前历元处于日界线上
+  * 遍历当前历元卫星，得到各卫星载波伪距偏差与模糊度的差值总和 offset
+    * 调用 corr_meas() 获取天线改正、DCB 改正后的伪距载波观测值 P、L，消电离层组合后的伪距载波观测值 Pc、Lc
+    * 如果是消电离层组合用 Lc - Pc 得到载波伪距偏差 bias[i]
+    * 如果是非差非组合模式
+    * 如果有周跳、载波伪距偏差为 0、模糊度参数为 0，跳过当前观测值
+  * 
 
 
 
@@ -525,17 +617,8 @@ static void udpos_ppp(rtk_t *rtk)
 
 
 
-## 五、ppp_res()
 
-
-
-
-
-
-
-
-
-## 六、filter()：EKF 估计
+## 五、filter()：EKF 估计
 
 
 
@@ -558,6 +641,16 @@ $$
 
 
 
+
+## 七、PPP 参数估计总结
+
+PPP 的核心是参数估计，看一下三个方面：
+
+* 看各个参数的初始值、协方差，在 udstate_ppp() 函数。
+
+* 看各个参数的过程噪声咋加的，什么样的情况会重置参数估计值和对应的协方差，在 udstate_ppp() 函数。
+
+* 看各个参数对应的设计矩阵，在 ppp_res() 函数。
 
 
 

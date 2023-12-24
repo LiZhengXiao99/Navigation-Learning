@@ -1,10 +1,8 @@
 > 原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
 
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1698494049(1).png)
-
 [TOC]
 
-### 1、satposs_rtklib()
+### 1、satposs_rtklib()：卫星位置钟差计算入口函数
 
 ```c
 gtime_t teph     I     (gpst) 用于选择星历的时刻 (gpst)
@@ -78,7 +76,9 @@ extern void satposs_rtklib(gtime_t teph, const obsd_t *obs, int n, const nav_t *
 }
 ```
 
-### 2、ephclk()
+### 2、ephclk()：广播星历计算卫星钟差
+
+> 不作为最终卫星钟差，计算出的钟差只是对原本卫星信号发射时间做改进，让 ephpos() 计算出更准确的卫星位置。
 
 ![image-20230929100921394](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230929100921394.png)
 
@@ -185,7 +185,7 @@ extern double geph2clk(gtime_t time, const geph_t *geph)
 
 用（$\tau_{n}、\gamma_{n}$）计算 GLONASS 卫星钟差的时候已经考虑了相对论效应了，无需再改正。
 
-### 3、ephpos()
+### 3、ephpos()：广播星历计算卫星位置钟差
 
 ![image-20230929101151404](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230929101151404.png)
 
@@ -511,7 +511,6 @@ extern int peph2pos(gtime_t time, int sat, const nav_t *nav, int opt,
 
 * `nav->peph[]` 存精密星历数据，`nav->ne` 精密钟差数量。
 * `nav->pclk[]` 存精密钟差数据，`nav->nc` 精密钟差数量。
-
   * **execses_b**() 中调用`readpreceph()`。
   * **readpreceph**() 中：`readsp3()`读取精密星历，`readrnxc()` 读取精密钟差。
   * **readsp3**() 中：`readsp3h() `读文件头，`readsp3b()` 读文件体，`combpeph() `对精密星历按时间、index 排序，再将相同星历合并。

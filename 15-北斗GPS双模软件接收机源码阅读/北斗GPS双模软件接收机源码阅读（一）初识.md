@@ -1,5 +1,7 @@
 ## 一、程序概述
 
+
+
 > 网址：http://www.gnssbook.cn/book2/index.html
 >
 > 程序下载：http://www.gnssbook.cn/book2/GnssRcvr_V14.rar
@@ -8,76 +10,7 @@
 
 
 
-## 二、程序目录
 
-
-
-### 1、Acquisition
-
-接收机初始化、GPS和BD伪随机码产生、各种LUT的产生、信号捕获的实现
-
-* **AcqusitionByFFT.m**：利用FFT方法实现伪码相位纬度的并行搜索
-* **AcquisitionEngine.m**：进行信号捕获
-* **BdCodeGen.m**：产生BD伪随机码
-* **GpsCodeGen.m**：产生GPS伪随机码
-* **BDsearchNH.m**：进行北斗信号NH码同步
-* **createValueMapping.m**：产生电平转换和串并转换的查找表
-* **DownSampling.m**：完成降采样过程和串并转换过程
-* **gnssInit.m**：初始化和GNSS接收机相关的全局变量
-* **ReadGnssConfig.m**：读取选项参数
-
-### 2、GUI
-
-
-
-### 3、Navmsg
-
-GPS和BD信号的子帧同步、GPS数据校验和BD数据的BCH校验、星历数据的解调 
-
-* **BdBchDecode.m**：BD BCH 译码结果
-* **BdGeoDecodeEph.m**：解调北斗GEO卫星星历参数
-* **BdMeoDecodeEph.m**：解调北斗MEO/IGSO卫星星历参数
-* **BdNavProcess.m**：处理BD导航电文bit
-* **BdSearchPreamble.m**：寻找子帧同步字（BD）
-* **GpsDecodeEph.m**：解调GPS星历参数
-* **GpsNavProcess.m**：处理GPS导航电文bite 
-* **GpsParityCheck.m**：检查导航电文字完整性
-* **GpsSearchPreamble.m**：寻找子帧同步字（GPS）
-
-### 4、Postprocessing
-
-* **pbProcess.m**：读取跟踪通道输出的文件，积累I路数据，并对数据进行解调得到星历参数，同时读取观测量数据，完成PVT解算
-
-### 5、PVT
-
-PVT解算、最小二乘法解算、卡尔曼滤波解算、ECEF到LLH坐标转换、GPS和BD卫星位置和速度的计算 
-
-* **Ecef2Llh.m**：ECEF-XYZ 到 LLH 坐标转换
-* **Llh2Ecef.m**：LLH 到 ECEF-XYZ 坐标转换
-* **gnssPvt.m**：定位解算主函数入口
-* **initKF.m**：用最小二乘的结果初始化卡尔曼滤波
-* **kalmanFix.m**：卡尔曼滤波，PVT解算，含时间更新和观测量更新
-* **lsfix_double.m**：最小二乘法定位解算，双模定位（GPS+北斗）
-* **lsfix_single.m**：最小二乘法定位解算，单模定位（单GPS或单北斗）
-* **sv_pos_eph.m**：计算 GPS 或 BD MEO/IGSO 卫星的位置和速度，及相对论修正量
-* **sv_pos_eph_geo.m**：计算 BD GEO 卫星的位置和速度，及相对论修正量
-
-### 6、Tracking
-
-* **AllocateTrackingChannel**：根据捕获引擎得到的结果分配跟踪通道，并初始化跟踪通道参数
-* **BDGeoTrkLoop**：北斗GEO卫星跟踪环路更新
-* **BDMeoTrkLoop**：BD MEO/IGSO卫星跟踪环路更新
-* **GPSTrkLoop**：GPS卫星跟踪环路更新
-* **CorrelationBatch**：计算I/Q相关值， 包括跟踪环路需要的E/P/L支路
-* **ResetChannel**：复位跟踪通道
-* **SignalTracking**：跟踪通道更新
-* **SignalTrackingByC.c**：C语言版跟踪通道更新
-* **TicMeasurement**：取观测量函数
-* **UpdateTrackingLoop**：跟踪通道更新
-
-### 7、startRun.m
-
-程序主入口
 
 
 
@@ -93,7 +26,7 @@ PVT解算、最小二乘法解算、卡尔曼滤波解算、ECEF到LLH坐标转�
 
 
 
-## 三、程序使用
+## 二、程序使用
 
 
 
@@ -101,7 +34,7 @@ PVT解算、最小二乘法解算、卡尔曼滤波解算、ECEF到LLH坐标转�
 
 
 
-## 四、startRun.m
+## 三、startRun.m
 
 执行流程：
 
@@ -478,6 +411,10 @@ end;
 
 
 ## 八、AllocateTrackingChannel()：分配跟踪通道 
+
+
+
+
 
 
 

@@ -1,7 +1,5 @@
 >原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
 
-![1698494049(1)](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1698494049(1).png)
-
 [TOC]
 
 GAMP 的文件读取与 RTKLIB 大致相同，只做了一点点增强：

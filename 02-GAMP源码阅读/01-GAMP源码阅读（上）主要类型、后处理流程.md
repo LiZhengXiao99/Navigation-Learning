@@ -6,7 +6,7 @@
 
 ### 1、程序概述
 
-GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and multi-frequency **P**recise positioning)，在 RTKLIB 的基础上，将一些多余的函数、代码简洁化，精简出后处理 PPP 部分，并对算法进行改进增强。简化后代码比 RTKLIB 原版还要简单，对初学者非常友好，在我接触过的导航定位开源程序中算是最简单的。使用也很方便，软件包里提供了 VS 工程，和组织好的配置文件、数据文件；设置好 pthreads 库，简单改改文件路径就能算出结果。
+GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and multi-frequency **P**recise positioning)，在 RTKLIB 的基础上，将一些多余的函数、代码简洁化，精简出后处理 PPP 部分，并对算法进行改进增强。简化后代码比 RTKLIB 原版还要简单，对初学者非常友好，在我接触过的导航定位开源程序中算是最简单的。使用也很方便，软件包里提供了 VS 工程，和组织好的配置文件、数据文件；设置好 pthreads 库，简单改改文件路径就能算出结果。![GAMP](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/GAMP.png)
 
 ![GAMP 系统结构图](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/GAMP%20%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%9B%BE.png)
 
@@ -46,13 +46,13 @@ GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and mul
 * **soltype**：滤波模式：0 正向、1 反向、2 正方向结合
 * **navsys**：卫星系统，用 7 为二进制码表示：1 GPS、4 GLONASS、8 Galileo、16 QZSS、32 BDS；比如使用 BDS、GPS 要填 33。
 * **gnsisb**：ISB 噪声模型：1 常值、2 精确先验常值、3 随机游走、4 白噪声。
-* **gloicb**：GLONASS 伪距 IFB模型：0 忽略、1 线性模型、2 二次多项式模型、3 估计每颗卫星、3 估计每个频率。
+* **gloicb**：GLONASS 伪距 IFB 模型：0 忽略、1 线性模型、2 二次多项式模型、3 估计每颗卫星、4 估计每个频率。
 * **minelev**：卫星截止高度角，默认 10。
 * **maxout**：重置模糊度的最低停测段数，默认 3。
 * **sampleprc**：截止观测值，默认 0。
 * **inpfrq**：频率选择：1 单频或者消电离层 PPP、2 双频非差非组合 PPP
-* **ionoopt**：电离层处理选项：0 不处理、1 广播星历克罗布歇模型、2 消电离层、3、单频估计、4 双频估计、5 电离层格网模型。
-* **ionopnoise**：估计电离层随机随机：1 静态、2 随机游走、3 白噪声。
+* **ionoopt**：电离层处理选项：0 不处理、1 广播星历克罗布歇模型、2 消电离层、3 单频估计、4 双频估计、5 电离层格网模型。
+* **ionopnoise**：估计电离层随机模型：0 静态、1 随机游走、2 新随机游走、3 白噪声。
 * **ionoconstraint**：增加电离层的虚拟观测参数及其对观测方程的相应约束：0 关闭、1 打开。
 * **troopt**：对流层处理选项：0 不处理、1 Saastamoninen 模型、2 SBAS 模型、3 估计 ZTD、估计 ZTD 格网。
 * **tropmf**：对流层投影映射函数：0 NMF、1 GMF。
@@ -83,6 +83,12 @@ GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and mul
 
 ![rtklib.h结构体](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/rtklib.h%25E7%25BB%2593%25E6%259E%2584%25E4%25BD%2593.png)
 
+除此以为 GAMP 还新加入了：
+
+
+
+
+
 ### 3、矩阵、向量、最小二乘、卡尔曼滤波
 
 * GAMP 中用 double 类型一维数组表示矩阵，不能自动识别矩阵的行列数，每次传矩阵的时候都要传入行数 n、列数 m。
@@ -103,8 +109,8 @@ GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and mul
 
 ### 5、坐标系统
 
-* ECI 用的很少，只在 `sunmoonpos()` 函数中计算太阳月亮时候用到了，不用太关注。
-* ENU、ECEF、LLH 三套坐标系都频繁使用，要熟练掌握他们直接的转换，包括协方差的转换
+* ECI 用的很少，只在 `sunmoonpos()` 函数中计算日月坐标的时候用到了，不用太关注。
+* ENU、ECEF、LLH 三套坐标系都频繁使用，要熟练掌握他们直接的转换，包括协方差的转换。
 * ENU 是局部相对坐标系，以某一个 LLH 坐标为原点，坐标转换的时候要传入这个 LLH 坐标。
 * ENU 常用 `e`表示、ECEF 常用 `r` 表示、LLH 常用 `pos` 表示。
 
