@@ -2,11 +2,11 @@
 
 
 
-> 网址：http://www.gnssbook.cn/book2/index.html
+> * 网址：http://www.gnssbook.cn/book2/index.html
 >
-> 程序下载：http://www.gnssbook.cn/book2/GnssRcvr_V14.rar
+> * 程序下载：http://www.gnssbook.cn/book2/GnssRcvr_V14.rar
 >
-> 实例北斗GPS双模中频数据文件下载：[UTREK210_16369000_70s.DAT](https://pan.baidu.com/s/1EWB0oQxDneNDk9iqExLuqQ)，提取码: 829c 
+> * 实例北斗GPS双模中频数据文件下载：[UTREK210_16369000_70s.DAT](https://pan.baidu.com/s/1EWB0oQxDneNDk9iqExLuqQ)，提取码: 829c 
 
 
 
