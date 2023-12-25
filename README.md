@@ -4,7 +4,10 @@
 
 ---
 
+
+
 * 本仓库会长期更新，做为我学习的记录，分享出来，一方面是希望有人用得上，另一方面也是激励着自己坚持学下去。
+* 我还有一个仓库【[Navigation-Hardware](https://github.com/LiZhengXiao99/Navigation-Hardware)】，，两者相结合，希望打下一个扎实的软硬件基础。
 
 - 有些程序会详细写（比如 RTKLIB、KF-GINS），另外一些可能不会写的面面俱到（比如 TGINS、PPPLIB），就只画个流程图、列举重点的函数。
 - 水平不高，理解尚浅，列举的理论公式无法保证准确性，只能作为读代码时候的一个参考，千万不要照着我的笔记来写代码写论文，希望小伙伴们注意。
@@ -24,7 +27,7 @@
 
 ---
 
-### 01-RTKLIB：GNSS 数据处理
+## 01-RTKLIB：GNSS 数据处理
 
 RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本东京海洋大学的高须知二（Tomoji Takasu）开发，由一个**核心程序库**和多个**命令行程序**、**界面程序**组成；代码规范、功能完善、可拓展性好，许多 GNSS 导航定位程序开源程序都是基于 RTKLIB 二次开发衍生而来，适合作为 GNSS 入门学习的代码。
 
@@ -53,7 +56,7 @@ RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本�
 
 ---
 
-### 02-GAMP：基于 RTKLIB 的后处理双频 PPP
+## 02-GAMP：基于 RTKLIB 的后处理双频 PPP
 
 GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and multi-frequency **P**recise positioning)，在 RTKLIB 的基础上，将一些些多余的函数、代码简洁化，精简出后处理 PPP 部分，并对算法进行改进增强。对初学者非常友好，在我接触过的导航定位开源程序中算是最简单的，是用纯 C 语言编写，由于做了简化，代码比 RTKLIB 原版还要简单；使用也非常简单，软件包里直接有 VS 工程，和组织好的配置、数据文件，简单改改路径就能算出结果。
 
@@ -65,7 +68,7 @@ GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and mul
 
 ---
 
-### 03-PSINS：MATLAB-C++ 捷联惯导工具箱
+## 03-PSINS：MATLAB-C++ 捷联惯导工具箱
 
 PSINS（Precise Strapdown Inertial Navigation System 高精度捷联惯导系统算法）工具箱由西北工业大学自动化学院惯性技术教研室严恭敏老师开发和维护。工具箱分为Matlab和C++两部分。主要应用于**捷联惯导**系统的数据处理和算法验证开发，它包括**惯性传感器数据分析**、**惯组标定**、**初始对准**、**惯导AVP**（姿态-速度-位置）更新解算、**组合导航**Kalman滤波等功能。C++部分采用VC6编写，可以用于嵌入式开发。
 
@@ -73,7 +76,7 @@ PSINS（Precise Strapdown Inertial Navigation System 高精度捷联惯导系统
 
 ---
 
-### 04-PPPLib
+## 04-PPPLib
 
 **PPPLib** 全称 (**P**recise **P**oint **P**ositioning **Lib**rary) 是我的老师写的一套 C++ 版的 GNSS 数据处理软件，改写自 RTKLIB，支持单频、双频、三频的消电离层和非差非组合定位，支持与惯导的松紧组合。
 
@@ -81,7 +84,7 @@ PSINS（Precise Strapdown Inertial Navigation System 高精度捷联惯导系统
 
 ---
 
-### 05-goGPS：MATLAB-GNSS 数据处理
+## 05-goGPS：MATLAB-GNSS 数据处理
 
 **goGPS**是一个处理GNSS原始数据的软件，最初支持单频低成本GPS接收机数据，但现在也可以用来处理多频多系统GNSS数据。它实现了多种算法来解算，目前包括两个主要的最小二乘法（LS）引擎：一个基于于组合观测数据（例如无电离层观测）；另一个能够使用所有的频率和记录的信号数据，而不进行任何组合（电离层延迟是正常方程的参数）。组合和不组合的引擎都支持PPP、NET解算。目前只支持静态测站的解算，还不能动态解算。
 
@@ -89,7 +92,7 @@ PSINS（Precise Strapdown Inertial Navigation System 高精度捷联惯导系统
 
 ---
 
-### 06-GICI-LIB：GNSS+INS+Camera 图优化融合定位
+## 06-GICI-LIB：GNSS+INS+Camera 图优化融合定位
 
 GICI-LIB 全称 **G**NSS/**I**NS/**C**amera **I**ntegrated Navigation Library，是上海交大最新开源的一套基于图优化的 GNSS+INS+Camera 集成导航定位库。基于 RTKLIB 处理 I/O 流、编解码；基于 OKVIS 因子图优化类型封装；基于 SVO 做特征提取。以 GNSS 为主，再加入 INS、Camera 做组合，支持相当多的数据格式、定位模式，包含很多 GNSS 因子、惯导因子、视觉因子及运动约束。以处理实时数据为主，后处理也采用模拟实时数据处理的方式进行。
 
@@ -107,7 +110,7 @@ GICI-LIB 全称 **G**NSS/**I**NS/**C**amera **I**ntegrated Navigation Library，
 
 ---
 
-### 07-SoftGSS：MATLAB-GPS 软件接收机
+## 07-SoftGSS：MATLAB-GPS 软件接收机
 
 SoftGNSS 是《软件定义的GPS和伽利略接收机》附带的程序，MATLAB 编写，实现了一套最简单的 GNSS 软件接收机功；输入经过天线接收，射频前端滤波下变频后的数字中频信号文件，进行 GPS L1 C/A 码的捕获跟踪，生成伪距观测值，解译导航电文，最小二乘定位解算；代码量很小也很简单，适合作为 GNSS 基带数字信号处理的入门阅读程序。主要执行流程如下：
 
@@ -115,7 +118,7 @@ SoftGNSS 是《软件定义的GPS和伽利略接收机》附带的程序，MATLA
 
 ---
 
-### 08-VINS：
+## 08-VINS：
 
 与双目相机和 RGB-D 相机相比，单目相机具有结构简单、成本低和处理速度快的优点。然而，单目 VSLAM 存在尺度不确定性、无法对齐位姿和重力方向的自身缺点和快速运动导致的运动模糊的环境下容易跟踪丢失等不足。为弥补此问题，可将单目相机和 IMU 相结合的传感器融合，这种融合方案被称为单目视觉惯性里程计（Visual Inertial Odometry，VIO）或单目视觉惯性 SLAM（Visual-inertial SLAM，VINS）。
 
@@ -129,7 +132,7 @@ SoftGNSS 是《软件定义的GPS和伽利略接收机》附带的程序，MATLA
 
 ---
 
-### 09-ORB-SLAM3：
+## 09-ORB-SLAM3：
 
 ORB 指 **O**riented FAST and **r**otated **B**RIEF，是一种结合 FAST 和 BRIEF，并引入旋转不变性的一种特征点和描述子；SLAM 指 **S**imultaneous **L**ocalization **a**nd **M**apping，指的是同时进行实时定位和地图构建。
 
@@ -139,7 +142,7 @@ ORB-SLAM3 是**迄今为止，最完整的视觉惯性 SLAM 系统系统**，它
 
 ---
 
-### 10-GNSS-SDR：GNSS 软件接收机
+## 10-GNSS-SDR：GNSS 软件接收机
 
 GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR:** **S**oftware **D**efined **R**eceiver），在 GitHub 上搜索 “GNSS” 排第一的仓库，收藏量也高达 1.3k。与上面列举的 RTKLIB、GAMP 等 GNSS 数据处理软件不同，GNSS-SDR 直接对信号进行处理，是一个用 C++ 实现的 GNSS 软件接收机开源项目。有了 GNSS-SDR，用户可以通过创建一个图来构建 GNSS 软件接收器，图中的节点是信号处理块，线条代表它们之间的数据流。该软件为不同的合适射频前端提供接口，并实现从接收器一直到 PVT 解算的所有功能。它的设计允许任何形式的定制，包括信号源、信号处理算法、与其他系统的互操作性、输出格式的互换，并为所有中间信号、参数和变量提供接口。
 
@@ -153,7 +156,7 @@ GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR
 
 ---
 
-### 11-TGINS：
+## 11-TGINS：
 
 
 
@@ -163,7 +166,7 @@ GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR
 
 ---
 
-### 12-KF-GINS：
+## 12-KF-GINS：
 
 KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以读取 IMU 数据文件、GNSS 结果文件，进行松组合解算，计算位置、速度、姿态、陀螺仪零偏、加速度计零偏、陀螺仪比例、加速度计比力，共 21 维状态向量。代码量小，有详细的文档、注释和讲解，代码结构很好理解，有一些可以学习的工程技巧。
 
@@ -193,7 +196,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 
 ---
 
-### 14-ROS导航功能包：
+## 14-ROS导航功能包
 
 功能简单来说，就是根据输入的里程计等传感器的信息流和机器人的全局位置，通过导航算法，计算得出安全可靠的机器人速度控制指令。广泛用在一些对可靠性要求没那么高的自主导航机器人场景中，比如扫地机器人、物流机器人等。
 
@@ -203,7 +206,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 
 ---
 
-### 15-北斗GPS双模软件接收机：
+## 15-北斗GPS双模软件接收机
 
 《北斗GPS双模软件接收机》书配套程序，MATLAB 编写，程序运行相当耗时，70s 的示例程序要算几个小时。
 
