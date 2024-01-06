@@ -27,7 +27,7 @@
       <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=LiZhengXiao99/Navigation-Learning&type=Date" width=80% />
     </picture>
 
-  </a>](https://star-history.com/?utm_source=bestxtools.com#LiZhengXiao99/Navigation-Learning&Date)
+  </a>
 
 ---
 
