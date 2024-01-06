@@ -8,13 +8,26 @@
 * 我还有一个仓库【[Navigation-Hardware](https://github.com/LiZhengXiao99/Navigation-Hardware)】，，两者相结合，希望打下一个扎实的软硬件基础。
 
 - 有些程序会详细写（比如 RTKLIB、KF-GINS），另外一些可能不会写的面面俱到（比如 TGINS、PPPLIB），就只画个流程图、列举重点的函数。
+
 - 水平不高，理解尚浅，列举的理论公式无法保证准确性，只能作为读代码时候的一个参考，千万不要照着我的笔记来写代码写论文，希望小伙伴们注意。
+
 - 不建议直接下载整个仓库，内容太多可能大部分都用不着，Markdown 文件和 PDF 论文可以在线看，想要的文件也可以[单独下载](https://zhuanlan.zhihu.com/p/578116206)。Github 上的 Markdown 公式可能显示不完全，可以下载下来用 [Typora](https://typoraio.cn/) 看，强烈建议用纯白色做背景，否则显示出的图片会很奇怪。
+
 - 整理差不多的笔记，会发到[知乎](https://www.zhihu.com/people/dao-ge-92-60)、[CSDN](https://blog.csdn.net/daoge2666)上，既看着方便，也是做个推广，辛苦写出来东西肯定希望能让更多人看到。
+
 - 本仓库所有内容都可以随意转载，可以用于任何目的，不必征求我的意见。
+
 - 如果您认可我的整理，并且想在该仓库更新时在 Github All activity 页面和 Github 通知页面看到本仓库更新，欢迎您 watch 本仓库而不是 fork 本仓库，fork 到自己名下的仓库只会保持您 fork 时的状态，不会自动更新。如果您愿意 star 一下那当然更好不过啦~
 
-[![Star History Chart](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/svg)](https://star-history.com/?utm_source=bestxtools.com#LiZhengXiao99/Navigation-Learning&Date)
+  <a href="https://star-history.com/?utm_source=bestxtools.com#LiZhengXiao99/Navigation-Learning&Date">
+
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=LiZhengXiao99/Navigation-Learning&type=Date&theme=dark" />
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=LiZhengXiao99/Navigation-Learning&type=Date" />
+      <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=LiZhengXiao99/Navigation-Learning&type=Date" width=80% />
+    </picture>
+
+  </a>](https://star-history.com/?utm_source=bestxtools.com#LiZhengXiao99/Navigation-Learning&Date)
 
 ---
 
