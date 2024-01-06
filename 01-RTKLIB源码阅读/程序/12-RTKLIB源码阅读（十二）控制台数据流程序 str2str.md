@@ -254,12 +254,6 @@ Socket本质是编程接口(API)，对TCP/IP的封装，TCP/IP也要提供可供
 
 2007 年，IGS-RTPP（IGS Real-Time Pilot Project）项目正式运作，IGS-RTPP 项目可以收集全球数百个实时跟踪站的数据并且生成高精度的钟差与轨道产品；NTRIP 协议作为一种网络数据传输协议，可以实现将信息以 RTCM 的格式通过互联网向全世界播发。基于 NTRIP 协议，2013 年 4 月，IGS 正式开始向全球用户播发高精度的实时产品。 目前可以从 IGS 的各分析中心获取实时精密轨道和钟差产品，我国武汉大学等机构也能实现实时产品的播发。
 
-
-
-
-
-
-
 ### 7、NTRIP 协议
 
 NTRIP 协议（Networked Transport of RTCM via Internet Protocol）是一个基于超文本传输议 (HTTP/1.1) 开发的非专有协议, 并且作为 CORS 系统的通用协议之一, 用于网络传输 GNSS 数据流的专业应用层协议，解决了 CORS 参考站和 RTCM 差分数据通讯标准问题 。移动定位用户可通过移动网络、无线或者 TCP/IP 网络，如 GSM, GPRS, EDGE, WiMax 或 UMTS 等, 实时获取 RTCM 差分数据进行改正定位信息。 NTRIP 协议包括以下四个系统软件或硬件组件：

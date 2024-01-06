@@ -4,8 +4,6 @@
 
 ---
 
-
-
 * 本仓库会长期更新，做为我学习的记录，分享出来，一方面是希望有人用得上，另一方面也是激励着自己坚持学下去。
 * 我还有一个仓库【[Navigation-Hardware](https://github.com/LiZhengXiao99/Navigation-Hardware)】，，两者相结合，希望打下一个扎实的软硬件基础。
 
@@ -15,6 +13,8 @@
 - 整理差不多的笔记，会发到[知乎](https://www.zhihu.com/people/dao-ge-92-60)、[CSDN](https://blog.csdn.net/daoge2666)上，既看着方便，也是做个推广，辛苦写出来东西肯定希望能让更多人看到。
 - 本仓库所有内容都可以随意转载，可以用于任何目的，不必征求我的意见。
 - 如果您认可我的整理，并且想在该仓库更新时在 Github All activity 页面和 Github 通知页面看到本仓库更新，欢迎您 watch 本仓库而不是 fork 本仓库，fork 到自己名下的仓库只会保持您 fork 时的状态，不会自动更新。如果您愿意 star 一下那当然更好不过啦~
+
+[![Star History Chart](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/svg)](https://star-history.com/?utm_source=bestxtools.com#LiZhengXiao99/Navigation-Learning&Date)
 
 ---
 
@@ -180,7 +180,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 
 ---
 
-### 13-OB-GINS：
+## 13-OB-GINS：
 
 武大 I2NAV 开源，基于图优化的 IMU/GNSS 松组合解算，IMU 预积分算法相比以视觉为主的 ORB-SLAM3、VINS 要精细一些。
 

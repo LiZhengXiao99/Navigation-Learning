@@ -6,7 +6,7 @@
 
 ### 1、时间、伪距
 
-1. 伪距 $\rho \left ( t \right )$的定义：信号接收时间 $t_u\left ( t \right )$与信号的发送时间 $t^{(S)}\left ( t-\tau  \right )$的差乘以光在真空中的速度c，即：
+1. 伪距 $\rho \left ( t \right )$的定义：信号接收时间 $t_u\left ( t \right )$与信号的发送时间 $t^{(S)}\left ( t-\tau  \right )$的差乘以光在真空中的速度 c，即：
    $$
    \rho \left ( t \right ) =c( t_u\left ( t \right ) - t^{(S)}\left ( t-\tau  \right ) )
    $$
@@ -29,7 +29,7 @@
      $$
      t^{(s)}=TOW +\left ( 30w+b \right )\times 0.020+\left ( c+\frac{CP}{1023}  \right )  \times 0.001
      $$
-     其中 TOW 是周内秒子帧起始时间，每个字 30 比特，w 个字，b 个比特，每个比特0.02s，c 个周期，CP码相位，C/A 码周期 0.001s。
+     其中 TOW 是周内秒子帧起始时间，每个字 30 比特，w 个字，b 个比特，每个比特 0.02s，c 个周期，CP 码相位，C/A 码周期 0.001s。
 
 ### 2、载波相位测量值、多普勒频移、积分多普勒
 

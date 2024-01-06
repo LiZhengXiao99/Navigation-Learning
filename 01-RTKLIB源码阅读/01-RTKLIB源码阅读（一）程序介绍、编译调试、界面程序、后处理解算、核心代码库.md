@@ -18,7 +18,9 @@
 
 #### 1. 简介
 
-RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本东京海洋大学的高须知二（Tomoji Takasu）开发，由一个**核心程序库**和多个**命令行程序**、**界面程序**组成；代码规范、功能完善、可拓展性好，许多 GNSS 导航定位程序开源程序都是基于 RTKLIB 二次开发衍生而来，适合作为 GNSS 入门学习的代码。
+RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本东京海洋大学的高须知二（Tomoji Takasu）开发，由一个**核心程序库**和多个**命令行程序**、**界面程序**组成；代码规范、功能完善、可拓展性好。RTKLIB 功能很齐全，GNSS 数据处理所需的基本功能都有，支持的数据格式很多，既可以实时解算也可以后处理，既可以 RTK 也可以 PPP；许多 GNSS 导航定位程序开源程序都是基于 RTKLIB 二次开发衍生而来，适合作为 GNSS 入门学习的代码。
+
+
 
 ![RTKLIB](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/RTKLIB.png)
 
@@ -72,7 +74,7 @@ RTKLIB 可以初步实现以下功能，相对于商业软件，可靠性没那�
 * [Ginan](https://github.com/GeoscienceAustralia/ginan)：澳大利亚，包括精密定位程序 PEA、定轨程序 POD，文档很详细，老师让我看，但我没看下去，代码比较难懂，而且它的代码风格很奇怪。
 * [GraphGNSSLib](https://github.com/weisongwen/GraphGNSSLib)：港理工，支持图优化 SPP、RTK。作者在知乎很活跃，时常发一些科普文章。
 * PPPLIB：我老师在矿大读研的时候写的，
-* [TGINS](https://github.com/heiwa0519/TGINS)：我老师去年刚来安理的时候写的，
+* [TGINS](https://github.com/heiwa0519/TGINS)：我老师刚来安理的时候写的，
 * GINAV：MATLAB 紧组合，文件名起的和 RTKLIB 函数名一模一样，
 * [GICI-LIB](https://github.com/chichengcn/gici-open)：上海交大，以 GNSS 为主， 
 * [PPP-AR](https://github.com/PrideLab/PRIDE-PPPAR)：武大GNSS中心，使用了 rnx2rtkp 可执行程序计算测站初值坐标，网址
@@ -468,7 +470,9 @@ RTKLIB APP 目录下有 5 个命令行程序
 * **convbin**：数据转换
 * **pos2kml**：定位结果转谷歌地图数据格式
 
-用一个 CMakeList.txt 
+ 可以用一个 CMake 工程同时构建这几个命令行程序：
+
+ 
 
 
 
@@ -478,10 +482,6 @@ RTKLIB APP 目录下有 5 个命令行程序
 
 ```C++
 ```
-
-
-
-
 
 
 
@@ -584,13 +584,7 @@ rnx2rtkp 全称 RINEX to RTK pos，通过原始 RINEX 文件，输出 RTKLIB 的
 
 #### 3. 数据下载
 
-我没咋下载过，推荐两篇博客吧：
 
-* IGS官方产品及数据下载地址汇总
-
-* 
-
-把
 
 
 
@@ -1003,8 +997,7 @@ char   *base     I   基准站ID列表，空格隔开
 
    * 连接：输入模式选 Ntrip Client，通过网址和端口，点 Ntrip 就会弹出弹出数据源
 
-
-#### 4. 输出
+4. 输出
 
 * 点左下角 □ 框，开 Input Stream Monitor 查看数据流状态，可选很多种格式
 * 输出也可选很多种，比如 Ntrip Server 可把自己的数据作为 Caster，别人可以通过网络接受你的数据，选 File 把数据存成文件
@@ -1264,11 +1257,11 @@ RTKLIB 提供许多代码库和 API，包括：卫星和导航系统函数、矩
 
 总结一些命名和函数定义习惯：
 
-* 矩阵做参数时一点要带上维度，矩阵 m 为行、n 为列，
+* 矩阵做参数时一点要带上维度，矩阵 m 为行、n 为列，一般先传 n 后传 m。
 * 
-* 带 const 的指针一定是输入参数，不带 const 的指针一定是输出参数或者既是输入也是输出。
+* 带 const 的指针一定是输入参数，不带 const 的指针是输出参数或者既是输入也是输出。
 * 类型命名结尾都带 `_t`，
-* 读文件函数：结尾带 t，
+* 很多读文件的函数都有结尾带 t 和结尾不带 t 两种，带 t 表示要传入开始时间和结束时间的。
 * 
 
 
