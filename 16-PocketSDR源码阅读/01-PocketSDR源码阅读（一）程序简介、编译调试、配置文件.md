@@ -27,11 +27,9 @@ PocketSDR 是 RTKLIB 作者写的一款 GNSS 软件接收机，包含一个射�
 
 ### 3、射频前端
 
+![image-20240110092301571](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240110092301571.png)
 
 
-
-
-![image-20240105200757404](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105200757404.png)
 
 
 

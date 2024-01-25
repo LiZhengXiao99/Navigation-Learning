@@ -1,4 +1,4 @@
-> 原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
+> 原始 Markdown 文档、Visio 流程图、XMind 思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
 
 [TOC]
 

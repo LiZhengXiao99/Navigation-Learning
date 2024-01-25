@@ -5,7 +5,7 @@
 ---
 
 * 本仓库会长期更新，做为我学习的记录，分享出来，一方面是希望有人用得上，另一方面也是激励着自己坚持学下去。
-* 我还有一个仓库【[Navigation-Hardware](https://github.com/LiZhengXiao99/Navigation-Hardware)】，，两者相结合，希望打下一个扎实的软硬件基础。
+* 我还有一个仓库【[Navigation-Hardware](https://github.com/LiZhengXiao99/Navigation-Hardware)】，两者相结合，希望打下一个扎实的软硬件基础。
 
 - 有些程序会详细写（比如 RTKLIB、KF-GINS），另外一些可能不会写的面面俱到（比如 TGINS、PPPLIB），就只画个流程图、列举重点的函数。
 
