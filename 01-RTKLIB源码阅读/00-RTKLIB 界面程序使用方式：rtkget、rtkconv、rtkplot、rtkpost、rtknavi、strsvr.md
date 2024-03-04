@@ -120,9 +120,16 @@
 
      * **Continues**：认为模糊度是连续解，通过前面历元的解算结果滤波提高后续历元模糊度固定精度。
 
-     * **Instantaneous**：瞬时模糊度固定，单历元模糊度固定，每个历元都初始化一个参数，这个历元和上个历元模糊度不相关。
+     * **Instantaneous**：瞬时模糊度固定，单历元模糊度固定，每个历元都初始化一个参数，这个历元和上个历元模糊度不相关，用伪距和载波计算的整周模糊度作为模糊度的状态。
 
-     * **Fix and Hold**：先 Continues，在不发生周跳情况下都采用之前模糊度固定的结果作为约束，也有问题：固定错了，时间序列会一直飘，到一定程度变成浮点解，会重置模糊度重新算。
+     * **Fix and Hold**：先 Continues，在不发生周跳情况下都采用之前模糊度固定的结果作为约束，表示用上一个历元求得的模糊度固定解作为量测，上一 个历元求得的模糊度实数解为状态，进行卡尔曼滤波，融合后的模糊度作为当前模糊度的状态。也有问题：固定错了，时间序列会一直飘，到一定程度变成浮点解，会重置模糊度重新算。
+
+       > 模糊度固定效果总结，摘自[博客](https://blog.csdn.net/qq_38607471/article/details/127392254?spm=1001.2014.3001.5502)：
+       >
+       > * 与 continuous 和 fix-and-hold 方法相比，instantaneous 方案的误差曲线突刺较多，定位误差较大，这主要是因为伪距噪声较大，用伪距求得的模糊度精度较差；
+       > * 当无周跳发生时，continuous 和 fix-and-hold 方法精度应该会高于 instantaneous 方法；当有周跳发生并且没有探测出来时，instantaneous 方法精度可能优于 continuous 和 fix-and-hold 方法；
+       >
+       > * 当模糊度固定正确时，fix-and-hold 方法精度应该高于 instantaneous 和 continuous 方法；固定错误时，instantaneous 和 continuous 方法精度应该好于 fix-and-hold 方法。
 
        > 做工程可做两套，Instantaneous 和 Fix and Hold，发现 Fix and Hold 错了，就用 Instantaneous 的解把它替换掉，相当于把模糊度和方差初始化了一次，避免漂移和模糊度重新收敛的过程。
 

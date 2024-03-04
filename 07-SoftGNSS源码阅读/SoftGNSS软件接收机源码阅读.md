@@ -80,11 +80,11 @@ GPS 卫星所发送的信号从结构上可以分为载波、伪码和数据码�
 
 以载波 L1上的 C/A 码为例，在卫星信号发射端，PRN 编号为 *i* 的卫星首先将数据码与 C/A 码 $G_i$ 异或相加，实现了扩频操作。接着，采用载波 L1 对扩频后的码进行 BPSK 调制， 使整个 C/A 码信号以 L1 为中心频率被卫星发射出去：
 
-![image-20240105100256787](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105100256787.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105100256787.png" alt="image-20240105100256787" style="zoom:33%;" />
 
 GPS接收机接收到卫星信号后，首先对卫星信号进 行载波解调，然后再将载波解调后的卫星信号与内部复制的 C/A 码 $G_i$ 做自相关运算，剥离卫星信号中的 C/A 码，使信号频宽变回只含数据码的基带信号：
 
-![image-20240105100424572](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105100424572.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105100424572.png" alt="image-20240105100424572" style="zoom: 33%;" />
 
 凭着 C/A 码良好的自相关特性，接收机一方面解出 卫星信号中的数据码（导航电文）；另一方面根据 C/A 码自相关函数主峰位置而获得接收到的 C/A 码信号的相位，进而将其转化为从卫星到接收机的距离测量值。
 
@@ -107,7 +107,7 @@ R{x}(\tau)=\lim \limits{T \rightarrow \infty} \frac{1}{T} \int_{0}^{T} x(t) x(t-
 $$
 因为 $x(t-\tau)$ 是信号 $x(t)$ 在时间上向右平移 $\tau$ 后得到的波形，所以自相关函数 $R_{x}(\tau)$ 检查 $x(t)$ 与它本身平移后的波形 $x(t-\tau)$ 两者之间的相似程度。自相关函数 $R_{x}(\tau)$ 是个偶函数, 关于纵轴左右对称。
 
-![image-20240105094727252](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105094727252.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105094727252.png" alt="image-20240105094727252" style="zoom: 50%;" />
 
 * **移位寄存器**：这种周期性的伪随机码可由一个多级反馈移位寄存器产生。
 
@@ -122,9 +122,7 @@ $$
   $$
   当 $\tau$ 不是码宽 $\mathrm{T}_{\mathrm{C}}$ 的整数倍时, 那么 $R_{x}(\tau)$ 等于相邻两点之间相关函数的线性插值。
 
-  ![image-20240105095121760](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105095121760.png)
-
-  
+  <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105095121760.png" alt="image-20240105095121760" style="zoom: 33%;" />
 
 * **Gold 码**：伪码可以通过 m 序列产生，也可以通过两个或多个 m 序列组合而成。GPS 广泛使用的 C/A 码属于 Gold 码，就是由一对技术相同的 m 序列线性组合而成。但是，并不是任何一对级数相同的 m 序列都可以产生金码，我们把能产生 Gold 码的一对 m 序列称为优选m序列对。通过调节其中一个 m 序列的延时，一对 n 级优选 m 序列可组合产生 $2^n-1$ 个不同的 Gold 码，再加上他们自身的一对 m 序列，总共就有 $2^n+1$ 个金码。
 
@@ -144,11 +142,11 @@ $$
 
   C/A码产生器由两个十级反馈移位寄存器构成，这 两个移位寄存器的特征多项式分别为：
 
-  ![image-20240105095856784](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105095856784.png)
+  <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105095856784.png" alt="image-20240105095856784" style="zoom: 33%;" />
 
   改变不同的抽头，可以产出不同卫星的 C\A 码：
 
-  ![image-20240105100024813](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105100024813.png)
+  <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105100024813.png" alt="image-20240105100024813" style="zoom:50%;" />
 
 #### 3. 数据码
 
@@ -170,18 +168,18 @@ $$
 
 GPS 对第三数据块采用了分页结构，即第一帧中的第四和第五帧为一页，然后在下一帧中的第四和第五帧继续发送下一页，而第三数据块的内容各占 25 页。因为一帧电文长 30 秒，所以发送一套完整的导航电文总共需要花 750 秒（12.5分钟）的时间，然后整个导航电文的内容每 12.5 分钟重复一次，整体的结构层次如下图：
 
-![image-20240104164408088](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240104164408088.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240104164408088.png" alt="image-20240104164408088" style="zoom: 50%;" />
 
 * **遥测字**
 
-  ![image-20240105101107860](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105101107860.png)
+  <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105101107860.png" alt="image-20240105101107860" style="zoom: 50%;" />
 
   * **同步码** 10001011 是每一子帧的最先 8 个比特，接收机用它来匹配接收到的数据。
   * 每一个字中的**奇偶校验码**可以帮助用户接收机检查 经解调得到的字中是否包含错误比特。
 
 * **交接字**
 
-  ![image-20240105101225616](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105101225616.png)
+  <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105101225616.png" alt="image-20240105101225616" style="zoom: 50%;" />
 
   * **截短的周内时计数**：交接字包含从 Z 计数器上得到的截短的周内时计数值，由于计数单位为 1.5 秒，所以将周期内时数乘 以 6 可得在这一子帧结束、下一子帧开始所对应的 GPS 时间。
   * **子帧码**：子帧码可以标识该子帧是第几子帧。如果知道了当 前子帧的识别标识，则接收机就可以按照这一子帧 的相应格式解译数据码。
@@ -196,7 +194,7 @@ GPS 对第三数据块采用了分页结构，即第一帧中的第四和第五�
 
 假如某一卫星信号的发射功率为 $P_{T}$, 卫星天线在某一方向上的增益为 $G_{T}$, 那么在此方向上与该卫星相距为 $d$ 的接收点 $R$ 处，接收天线单位面积所拦截的卫星信号功率等于发射功率 $P_{T}$除以球面积 $4 \pi d^{2}$ 再乘以增益 $G_{T}$, 即：
 
-![image-20240105103054093](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105103054093.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105103054093.png" alt="image-20240105103054093" style="zoom: 33%;" />
 
 同样，用来接收信号的接收天线经常也具有一定的指向性。若接收天线在某一方向上的有效接收面积为 $A_{R}$, 则该接收天线的相应增益 $G_{R}$为：
 $$

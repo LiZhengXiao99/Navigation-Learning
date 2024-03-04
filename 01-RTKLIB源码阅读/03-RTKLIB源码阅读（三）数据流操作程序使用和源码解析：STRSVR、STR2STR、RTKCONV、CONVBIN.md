@@ -2,15 +2,7 @@
 
 [TOC]
 
-## 一、使用 STRSVR
-
-
-
-
-
-
-
-
+## 一、数据流程序使用
 
 RTKLIB 涉及到数据流的程序主要包括 STR2STR、RTKRCV
 
@@ -21,6 +13,8 @@ RTKLIB 涉及到数据流的程序主要包括 STR2STR、RTKRCV
 
 
 ![image-20231025210938225](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231025210938225.png)
+
+
 
 
 
@@ -140,13 +134,13 @@ Socket 本质是编程接口(API)，对 TCP/IP 的封装，TCP/IP 也要提供�
 
 **传输控制协议** (Transmission Control Protocol)。TCP协议是面向连接的通信协议，即传输数据之前，在发送端和接收端建立逻辑连接，然后再传输数据，它提供了两台计算机之间可靠无差错的数据传输。流程如下：
 
-![TCP](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/TCP.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/TCP.png" alt="TCP" style="zoom: 67%;" />
 
 #### 6. UDP 协议
 
 **用户数据报协议(**User Datagram Protocol)。UDP协议是一个面向无连接的协议。传输数据时，不需要建立连接，不管对方端服务是否启动，直接将数据、数据源和目的地都封装在数据包中，直接发送。每个数据包的大小限制在64k以内。它是不可靠协议，因为无连接，所以传输速度快，但是容易丢失数据。日常应用中,例如视频会议、QQ聊天等。流程如下：
 
-![UDP](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/UDP.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/UDP.png" alt="UDP" style="zoom: 67%;" />
 
 ### 3、串口通信
 

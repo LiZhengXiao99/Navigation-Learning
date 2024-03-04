@@ -1,4 +1,4 @@
-![cover](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/cover.png)
+![Navigation-Learning-cover](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/Navigation-Learning-cover.png)
 
 [TOC]
 
@@ -7,7 +7,7 @@
 * 本仓库会长期更新，做为我学习的记录，分享出来，一方面是希望有人用得上，另一方面也是激励着自己坚持学下去。
 * 我还有一个仓库【[Navigation-Hardware](https://github.com/LiZhengXiao99/Navigation-Hardware)】，两者相结合，希望打下一个扎实的软硬件基础。
 
-- 有些程序会详细写（比如 RTKLIB、KF-GINS），另外一些可能不会写的面面俱到（比如 TGINS、PPPLIB），就只画个流程图、列举重点的函数。
+- 有些程序会详细写（比如 RTKLIB、KF-GINS），另外一些可能不会写的面面俱到，就只画个流程图、列举重点的函数。
 
 - 水平不高，理解尚浅，列举的理论公式无法保证准确性，只能作为读代码时候的一个参考，千万不要照着我的笔记来写代码写论文，希望小伙伴们注意。
 
@@ -19,6 +19,8 @@
 
 - 如果您认可我的整理，并且想在该仓库更新时在 Github All activity 页面和 Github 通知页面看到本仓库更新，欢迎您 watch 本仓库而不是 fork 本仓库，fork 到自己名下的仓库只会保持您 fork 时的状态，不会自动更新。如果您愿意 star 一下那当然更好不过啦~
 
+- 有问题欢迎随时联系我：**电话** (15255291038)、**微信** (lizhengxiao99)、**QQ** (1482275402)、**Email** (dauger@126.com)
+
   <a href="https://star-history.com/?utm_source=bestxtools.com#LiZhengXiao99/Navigation-Learning&Date">
 
     <picture>
@@ -26,17 +28,22 @@
       <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=LiZhengXiao99/Navigation-Learning&type=Date" />
       <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=LiZhengXiao99/Navigation-Learning&type=Date" width=80% />
     </picture>
-
-  </a>
+</a>
 
 ---
 
-有问题欢迎随时联系我：
+列举一些我了解的开源项目，点击跳转项目链接，其中加粗的项目会在本仓库介绍：
 
-* **电话**：15255291038
-* **微信**：lizhengxiao99
-* **QQ**：1482275402
-* **Email**：dauger@126.com
+|       类型        |                             描述                             |
+| :---------------: | :----------------------------------------------------------: |
+| **GNSS 数据处理** | **[RTKLIB](https://www.rtklib.com/)**、**[GAMP](https://geodesy.noaa.gov/gps-toolbox/GAMP.htm)**、**[Ginan](https://github.com/GeoscienceAustralia/ginan)**、**[goGPS](https://github.com/goGPS-Project/goGPS_MATLAB)**、[BNC](https://igs.bkg.bund.de/ntrip/bnc)、[GFZRNX](https://dataservices.gfz-potsdam.de/panmetaworks/showshort.php?id=escidoc:1577894)、[GAMIT/GLOBK](GAMIT//GLOBK)、[GraphGNSSLib](https://github.com/weisongwen/GraphGNSSLib)、[POSGO](https://github.com/lizhengnss/POSGO)、[Pride-PPPAR](https://github.com/PrideLab/PRIDE-PPPAR)、[PPPwizard](http://www.ppp-wizard.net/)、[G-NUT/Anubis](https://www.pecny.cz/Joomla25/index.php/gnss/sw/anubis)、[Teqc](https://www.unavco.org/software/data-processing/teqc/teqc.html)、[GAMPII-GOOD](https://github.com/zhouforme0318/GAMPII-GOOD)、[cors](https://github.com/Erensu/cors)、[GDDS](https://geodesy.noaa.gov/gps-toolbox/gdds.shtml)、 [OREKIT](https://link.zhihu.com/?target=https%3A//www.orekit.org/)、[GPSToolbox 投稿](https://geodesy.noaa.gov/gps-toolbox/exist.htm)、[awesome-gnss 整理](https://github.com/barbeau/awesome-gnss) |
+| **GNSS 信号处理** | **[GNSS-SDR](https://github.com/gnss-sdr/gnss-sdr)**、**[SoftGNSS](https://github.com/kristianpaul/SoftGNSS)**、[SoftGNSS-python](https://github.com/perrysou/SoftGNSS-python)、**[PocketSDR](https://github.com/tomojitakasu/PocketSDR)**、[GNSS-SDRLIB](https://github.com/taroz/GNSS-SDRLIB)、[gps-sdr-sim](https://github.com/osqzss/gps-sdr-sim)、[galileo-sdr-sim](https://github.com/harshadms/galileo-sdr-sim)、[SignalSim](https://github.com/globsky/SignalSim)、[greta-oto](https://github.com/globsky/greta-oto)、[Analog-GPS-data-receiver](https://github.com/leaningktower/Analog-GPS-data-receiver)、[GNSS-DSP-tools](https://github.com/pmonta/GNSS-DSP-tools) |
+| **INS、组合导航** | **[PSINS](http://www.psins.org.cn/)**、**[KF-GINS](https://github.com/i2Nav-WHU/KF-GINS)**、**[OB-GINS](https://github.com/i2Nav-WHU/OB_GINS)**、**[TGINS](https://github.com/heiwa0519/TGINS)**、[PPPLIB](https://geodesy.noaa.gov/gps-toolbox/PPPLib.htm)、[Campus](https://gitee.com/hw_cc/compass)、[GINAV](https://github.com/kaichen686/GINav)、[IGNAV](https://github.com/Erensu/ignav)、[TightlyCoupledINSGNSS](https://github.com/benzenemo/TightlyCoupledINSGNSS)、 [Wheel-INS ](https://github.com/i2Nav-WHU/Wheel-INS)、[imu_utils](https://github.com/gaowenliang/imu_utils)、[GyroAllan](https://github.com/XinLiGH/GyroAllan)、[nav_matlab](https://github.com/yandld/nav_matlab)、 [ZCJ_GNSSINS_DeepIntegration ](https://github.com/kongtian-SiBu/ZCJ_GNSSINS_DeepIntegration) |
+|   **视觉 SLAM**   | **[Vins-Mono](https://github.com/HKUST-Aerial-Robotics/VINS-Mono)/[Fusion](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion)**、**[ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3)**/[2](https://github.com/raulmur/ORB_SLAM2)/[1](https://github.com/raulmur/ORB_SLAM)、[OpenVINS](https://github.com/rpng/open_vins)、[Openvslam](https://github.com/xdspacelab/openvslam)、[svo](https://github.com/uzh-rpg/rpg_svo)、[svo_pro](https://github.com/uzh-rpg/rpg_svo_pro_open)、[msckf_vio](https://github.com/KumarRobotics/msckf_vio)、[okvis](https://github.com/ethz-asl/okvis)、[DM-VIO](https://github.com/lukasvst/dm-vio)、[DSO](https://github.com/JakobEngel/dso)、[DSOL](https://github.com/versatran01/dsol)、[NeRF](https://github.com/bmild/nerf)、[Elasticfusion](https://github.com/mp3guy/ElasticFusion)、[OpenMVG](https://github.com/openMVG/openMVG)、[Kintinuous](https://github.com/mp3guy/Kintinuous)、[Mvision](https://github.com/Ewenwan/MVision)、[awesome-visual-slam 整理](https://github.com/tzutalin/awesome-visual-slam)、[Recent_SLAM_Research 整理](https://github.com/YiChenCityU/Recent_SLAM_Research)、[Awesome CV Works 整理](https://vincentqin.tech/posts/awesome-works/)、[Lee-SLAM-source 整理](https://github.com/AlbertSlam/Lee-SLAM-source)、[awesome-slam 整理](https://github.com/kanster/awesome-slam)、[awesome-NeRF 整理](https://github.com/awesome-NeRF/awesome-NeRF) |
+|   **激光 SLAM**   | [Gmapping](https://github.com/ros-perception/slam_gmapping)、[Cartographer](https://github.com/cartographer-project/cartographer)、[hector-slam](https://github.com/tu-darmstadt-ros-pkg/hector_slam)、[LeGO-LOAM](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM)、[LOAM-Livox](https://github.com/hku-mars/loam_livox)、[A-LOAM](https://github.com/HKUST-Aerial-Robotics/A-LOAM)、[SuMa](https://github.com/jbehley/SuMa)、[LIO-SAM](https://github.com/TixiaoShan/LIO-SAM)、[FAST-LIO-SAM](https://github.com/kahowang/FAST_LIO_SAM)、[FAST-LIO](https://github.com/hku-mars/FAST_LIO)、[LIO-Mapping](https://github.com/hyye/lio-mapping)、[CT-ICP](https://github.com/jedeschaud/ct_icp)、[BoW3D](https://github.com/YungeCui/BoW3D)、[LT-Mapper](https://github.com/gisbi-kim/lt-mapper) |
+|   **多源融合**    | **[GICI-LIB](https://github.com/chichengcn/gici-open)**、[GVINS](https://github.com/HKUST-Aerial-Robotics/GVINS)、[GLIO](https://github.com/XikunLiu-huskit/GLIO)、[Multi-Sensor-Fusion](https://github.com/2013fangwentao/Multi_Sensor_Fusion)、[MINS](https://github.com/rpng/MINS)、[IC_GVINS](https://github.com/i2Nav-WHU/IC-GVINS)、[FAST-LIVO](https://github.com/hku-mars/FAST-LIVO)、[carvig](https://github.com/Erensu/carvig)、[LVI-SAM](https://link.zhihu.com/?target=https%3A//github.com/TixiaoShan/LVI-SAM) |
+|   **规划控制**    | [**navigation**](https://github.com/ros-planning/navigation)、**[navigation2 ](https://github.com/ros-planning/navigation2)**、[Apollo](https://github.com/ApolloAuto/apollo)、[Autoware](https://github.com/autowarefoundation/autoware)、[PX4-Autopilot](https://github.com/PX4/PX4-Autopilot) |
+|    **常用库**     | [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page)、[OpenBLAS](https://github.com/OpenMathLib/OpenBLAS)、[Gflags](https://github.com/gflags/gflags)、[Glog](https://github.com/google/glog)、[easyloggingpp](https://github.com/abumq/easyloggingpp)、[Ceres-Solver](https://github.com/ceres-solver/ceres-solver)、[g2o](https://github.com/RainerKuemmerle/g2o)、[gtsam](https://github.com/borglab/gtsam)、[Yaml-Cpp](https://github.com/jbeder/yaml-cpp)、[OpenCV](https://github.com/opencv/opencv)、[PCL](https://pointclouds.org/)、[Boost](https://github.com/boostorg/boost)、[better-enums](http://github.com/aantron/better-enums) |
 
 ---
 
@@ -67,6 +74,8 @@ RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本�
 
 * **提供许多代码库和API**：卫星和导航系统函数、矩阵和向量函数，时间和字符串函数、坐标的转换，输入和输出函数、调试跟踪函数、平台依赖函数、定位模型、大气模型、天线模型、地球潮汐模型、大地水准面模型、基准转换、RINEX函数、星历和时钟函数、精密星历和时钟、接收机原始数据函数、RTCM函数，解算函数、谷歌地球KML转换、SBAS函数、选项（option）函数、流数据输入和输出函数、整周模糊度解算、标准定位、精密定位、后处理定位（解算）、流服务器函数、RTK服务器函数、下载函数。
 
+> 推荐阅读：[不迷途导航程序员：RTKLIB 源码阅读笔记](https://mp.weixin.qq.com/s/2D3V0qDh6fwt_tZ0225znw)
+
 ---
 
 ## 02-GAMP：基于 RTKLIB 的后处理双频 PPP
@@ -89,11 +98,29 @@ PSINS（Precise Strapdown Inertial Navigation System 高精度捷联惯导系统
 
 ---
 
-## 04-PPPLib
+## 04-Ginan
 
-**PPPLib** 全称 (**P**recise **P**oint **P**ositioning **Lib**rary) 是我的老师写的一套 C++ 版的 GNSS 数据处理软件，改写自 RTKLIB，支持单频、双频、三频的消电离层和非差非组合定位，支持与惯导的松紧组合。
 
-![image-20231224221608754](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231224221608754.png)
+
+澳大利亚
+
+基于 RTKLIB 改写，做了面向对象封装，
+
+大量使用 C++11/14/17 的新特性，读起来比较困难；
+
+依赖的库较多，好在提供了 Docker；
+
+可以运行在 Linux 和 MacOS，在 Windows 下需运行在 WSL 或 Docker 环境
+
+文档很详细，而且可以生成 Doxygen，根据注释生成网站，可以方便的查看类型嵌套和程序调用
+
+包括 PEA 定位和 POD 定轨程序，
+
+PEA 用 C++、POD 部分用 Fortune，绘图和批处理脚本用 Python
+
+矩阵运算主要用 Eigen 实现，也用 OpenBLAS 进行多线程矩阵运算
+
+> 推荐阅读：[不迷途导航程序员：PEA源码阅读笔记](https://mp.weixin.qq.com/s/Z1-WT7ulJBPhN5wdVlZ17Q)
 
 ---
 
@@ -101,7 +128,7 @@ PSINS（Precise Strapdown Inertial Navigation System 高精度捷联惯导系统
 
 **goGPS**是一个处理GNSS原始数据的软件，最初支持单频低成本GPS接收机数据，但现在也可以用来处理多频多系统GNSS数据。它实现了多种算法来解算，目前包括两个主要的最小二乘法（LS）引擎：一个基于于组合观测数据（例如无电离层观测）；另一个能够使用所有的频率和记录的信号数据，而不进行任何组合（电离层延迟是正常方程的参数）。组合和不组合的引擎都支持PPP、NET解算。目前只支持静态测站的解算，还不能动态解算。
 
-![goGPS Main Window](https://gogps-project.github.io/wiki/images/goGPS_MainWindow.png?raw=true)
+<img src="https://gogps-project.github.io/wiki/images/goGPS_MainWindow.png?raw=true" alt="goGPS Main Window" style="zoom: 33%;" />
 
 ---
 
@@ -115,11 +142,11 @@ GICI-LIB 全称 **G**NSS/**I**NS/**C**amera **I**ntegrated Navigation Library，
 
 典型应用方式如下图：
 
-![1689512108793](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1689512108793.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1689512108793.png" alt="1689512108793"  />
 
 包含以下估计器：
 
-![1690024555067](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690024555067.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690024555067.png" alt="1690024555067" style="zoom: 50%;" />
 
 ---
 
@@ -141,7 +168,7 @@ SoftGNSS 是《软件定义的GPS和伽利略接收机》附带的程序，MATLA
 
 香港科技大学沈劭劼团队开发的 VINS 系统，用了一种紧耦合的非线性优化方法。该团队在 2017 年发布的 VINS-Mono 通过在四元数上进行 IMU 的预积分，并且采用滑动窗口法融合 IMU 信息和相机观测到的特征数据，实现了数据的紧耦合。并且采用四自由度的图优化方法实现了回环检测模块，来得到全局约束。在 2019 年，该团队又发布了 VINS-Fusion，在 VINS-Mono 的基础上又加入了双目、双目+IMU 等更多的传感器类型，以及支持了 VINS 和 GPS 的融合。它支持在线标定相机及 IMU 参数及鱼眼相机模型，并且支持保存当前地图和加载过往地图。在与 IMU 的结合上，它采用了四元数积分方案，与视觉信息进行紧耦合，具有很强的鲁棒性和定位精度。
 
-![img](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/v2-1939bbe6498166275bf55eec6b68542f_r.jpg)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/v2-1939bbe6498166275bf55eec6b68542f_r.jpg" alt="img" style="zoom: 67%;" />
 
 ---
 
@@ -151,7 +178,7 @@ ORB 指 **O**riented FAST and **r**otated **B**RIEF，是一种结合 FAST 和 B
 
 ORB-SLAM3 是**迄今为止，最完整的视觉惯性 SLAM 系统系统**，它是第一个集成了单目相机、双目相机、RGB-D相机，以及单目相机结合 IMU、双目相机结合 IMU 的 SLAM 系统。并且在 ORB-SLAM2 的基础上，改进了相机模型，使其不再局限于传统的小孔成像模型，而是可以**扩展到鱼眼模型**。在与 IMU 的结合上，它根据运动模型在流形上进行 **IMU 的预积分**的方式，然后采用非线性优化的思想，**将 IMU 的预积分结果和视觉 SLAM 的重投影模型一同进行图优化，使得预积分残差以及重投影误差共同达到最小**，以此来完成视觉信息和惯导系统的**紧耦合**。并且它采用了更为快速的**初始化**方法，以及丢失跟踪后利用惯导系统快速**重定位**方法。此外，它还采用**地图集**的方式，实现了对大场景的定位建图。这也是如今众多开源方案中，功能最强大、最精准的方法。系统框图如下：
 
-![image-20230815102741960](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230815102741960.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230815102741960.png" alt="image-20230815102741960" style="zoom:50%;" />
 
 ---
 
@@ -165,7 +192,7 @@ GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR
 
 软件接收机可在普通的 PC 中运行，并通过 USB 和以太网总线为各种市售或定制的射频前端提供接口，使处理算法适应不同的采样频率、中间频率和采样分辨率。它还可以处理存储在文件中的原始数据样本。软件对可用的卫星信号进行信号采集和跟踪，对导航信息进行解码，并计算定位算法所需的观测值，最终实现完整导航解决方案。处理输出可存储在 RINEX 文件中，或通过 TCP/IP 服务器以 RTCM 3.2 消息形式实时传输。导航结果以 KML 和 GeoJSON 格式存储。
 
-![GeneralBlockDiagram](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/GeneralBlockDiagram.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/GeneralBlockDiagram.png" alt="GeneralBlockDiagram" style="zoom:50%;" />
 
 ---
 
@@ -183,7 +210,7 @@ GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR
 
 KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以读取 IMU 数据文件、GNSS 结果文件，进行松组合解算，计算位置、速度、姿态、陀螺仪零偏、加速度计零偏、陀螺仪比例、加速度计比力，共 21 维状态向量。代码量小，有详细的文档、注释和讲解，代码结构很好理解，有一些可以学习的工程技巧。
 
-![image-20230928094541518](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230928094541518.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230928094541518.png" alt="image-20230928094541518" style="zoom: 33%;" />
 
 ![image-20230925181044694](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925181044694.png)
 
