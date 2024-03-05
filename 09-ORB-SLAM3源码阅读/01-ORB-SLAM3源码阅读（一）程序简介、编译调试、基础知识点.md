@@ -8,11 +8,11 @@ ORB 指 **O**riented FAST and **r**otated **B**RIEF，是一种结合 FAST 和 B
 
 ORB-SLAM3 是**迄今为止，最完整的视觉惯性 SLAM 系统系统**，它是第一个集成了单目相机、双目相机、RGB-D相机，以及单目相机结合 IMU、双目相机结合 IMU 的 SLAM 系统。并且在 ORB-SLAM2 的基础上，改进了相机模型，使其不再局限于传统的小孔成像模型，而是可以**扩展到鱼眼模型**。在与 IMU 的结合上，它根据运动模型在流形上进行 **IMU 的预积分**的方式，然后采用非线性优化的思想，**将 IMU 的预积分结果和视觉 SLAM 的重投影模型一同进行图优化，使得预积分残差以及重投影误差共同达到最小**，以此来完成视觉信息和惯导系统的**紧耦合**。并且它采用了更为快速的**初始化**方法，以及丢失跟踪后利用惯导系统快速**重定位**方法。此外，它还采用**地图集**的方式，实现了对大场景的定位建图。这也是如今众多开源方案中，功能最强大、最精准的方法。系统框图如下：
 
-![image-20230815102741960](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230815102741960.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230815102741960.png" alt="image-20230815102741960" style="zoom: 50%;" />
 
 ### 2、ORB-SLAM3 历史与演变
 
-![1690952265203](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690952265203.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690952265203.png" alt="1690952265203" style="zoom: 33%;" />
 
 ### 3、代码分析
 
@@ -32,13 +32,55 @@ ORB-SLAM3 是**迄今为止，最完整的视觉惯性 SLAM 系统系统**，它
 
 
 
+### 4、ORB-SLAM 论文
+
+* Parallel Tracking and Mapping for Small AR Workspaces，下载
+
+  > **摘要翻译**：
+  >
+  > * 本论文提出了一种在未知场景下估计相机位姿的方法。
+  > * 尽管之前已经有了很多将 SLAM 应用于机器人的尝试，我们
+  > * 我们将跟踪和建图分成两个单独的任务， 在双核计算机上以并行线程处理：
+  >   * 跟踪线程
+  >   * 建图线程根据之前观察到的视频帧生成点特征的三维地图。
+  > * 这样就可以使用计算量大的批处理优化技术，对实时性要求没那么高。
+  > * 该系统可绘制出包含数千个地标的详细地图，并可
+  >   以帧速率进行跟踪，其准确性和鲁棒性可与最先进的基于模型的系统相媲美。
+  >   先进的基于模型的系统
+  >
+  > 
+
+* ORB-SLAM: a Versatile and Accurate Monocular SLAM System，下载
+
+  > **摘要翻译**：
+  >
+  > 
+
+* ORB-SLAM2: an Open-Source SLAM System for Monocular, Stereo and RGB-D Cameras，下载
+
+  > **摘要翻译**：
+  >
+  > 
+
+* ORB-SLAM3: An Accurate Open-Source Library for Visual, Visual-Inertial and Multi-Map SLAM，下载
+
+  > **摘要翻译**：
+  >
+  > 
+
+
+
+
+
+
+
 ## 二、基础知识点
 
 ### 1、视觉SLAM简介
 
 #### 1. 定位与建图关系
 
-![1690934934097](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690935198158.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690935198158.png" alt="1690934934097" style="zoom: 33%;" />
 
 代表性 SLAM系统包括：
 
@@ -161,11 +203,11 @@ BIREF 算法**计算流程**：
 
 ![1690957525842](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690957751633.png)
 
-![image-20230814160947346](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814160947346.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230814160947346.png" alt="image-20230814160947346" style="zoom: 33%;" />
 
 ### 4、IMU 预积分
 
-![image-20230816132201403](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230816132201403.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230816132201403.png" alt="image-20230816132201403" style="zoom:50%;" />
 
 如图，IMU 量测值频率远高于时间量测，假设了短时间内的积分项为常数，将第 $k$ 帧和第 $k+1$ 帧之间的所有 IMU 进行积分，通过迭代优化估计非积分项的状态值，可得第 $\mathrm{k}+1$ 帧的位置、速度和旋转 (PVQ)，作为视觉估计的初始值，避免了优化过程中的重复积分，主要是为了提高计算效率。具体原理如下：
 

@@ -16,7 +16,7 @@
 
 * 用 cloc 统计 src 文件夹，结果如下：
 
-  ![image-20230808154537347](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230808154537347.png)
+  <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230808154537347.png" alt="image-20230808154537347" style="zoom:50%;" />
 
 
 
