@@ -12,7 +12,7 @@ PocketSDR 是 RTKLIB 作者写的一款 GNSS 软件接收机，包含一个射�
 * **GLONASS**: L1C/A, L2C/A, L3OCD, L3OCP,
 * **Galileo**: E1B, E1C, E5aI, E5aQ, E5bI, E5bQ, E6B, E6C,
 * **QZSS**: L1C/A, L1C/B, L1CP,L1CD, L1S, L2CM, L5I, L5Q, L5SI, L5SQ, L6D, L6E, 
-* **BeiDou**: B1I, B1CP, B1CD, B2I,B2aD, B2aP, B2bI, B3I, 
+* **BeiDou**: B1I, B1CP, B1CD, B2I,B2aD, B2aP, B2bI, B3I,
 * **NavIC**: L5-SPS, SBAS: L1C/A, L5I, L5Q
 
 不同于 RTKLIB 等 GNSS 数据处理软件，PocketSDR 直接对 GNSS 信号进行处理，
@@ -21,13 +21,11 @@ PocketSDR 是 RTKLIB 作者写的一款 GNSS 软件接收机，包含一个射�
 
 ### 2、文件结构
 
-
-
-![image-20240105200733817](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105200733817.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240105200733817.png" alt="image-20240105200733817" style="zoom:50%;" />
 
 ### 3、射频前端
 
-![image-20240110092301571](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240110092301571.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240110092301571.png" alt="image-20240110092301571" style="zoom:50%;" />
 
 
 

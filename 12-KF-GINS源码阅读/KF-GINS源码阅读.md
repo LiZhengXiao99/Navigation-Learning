@@ -18,13 +18,13 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 
 ### 3、文件结构
 
-![image-20230925154842096](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925154842096.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925154842096.png" alt="image-20230925154842096" style="zoom: 50%;" />
 
-![image-20230925155625914](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925155625914.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925155625914.png" alt="image-20230925155625914" style="zoom: 33%;" />
 
 用 cloc 对 src 目录进行统计，结果如下。可以看出代码量很小，只有1412行，注释很详细，足有804行。
 
-![image-20230924121001944](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230924121001944.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230924121001944.png" alt="image-20230924121001944" style="zoom: 67%;" />
 
 ### 4、第三方库
 
@@ -569,7 +569,7 @@ void GIEngine::initialize(const NavState &initstate, const NavState &initstate_s
 
 这个函数是松组合解算的入口，IMU 量测的频率远远大于 GNSS 量测；所以用 IMU 为基准，得到的系统状态向量和协方差阵是当前 IMU 时间的，每次调用这个函数都会取新 IMU 量测。函数的计算基于当前时刻 IMU 量测和上一时刻 IMU 量测，如果两次量测之间没有 GNSS 数据，就只是进行捷联惯导递推，将系统状态和噪声递推到当前时刻；如果两次量测间有 GNSS 数据，就先捷联惯导递推到 GNSS 时刻，在 GNSS 时刻进行量测更新、误差反馈，最后再捷联惯导递推到当前时刻。
 
-![image-20230925154404051](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925154404051.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925154404051.png" alt="image-20230925154404051" style="zoom: 50%;" />
 
 首先将当前 IMU 时间作为系统当前状态时间，也就是说这个函数执行完之后，得到的系统状态向量和协方差阵是当前 IMU 时间的：
 
@@ -585,7 +585,7 @@ double updatetime = gnssdata_.isvalid ? gnssdata_.time : -1;
 
 先调用 `isToUpdate()`，根据当前 GNSS 与当前和先前两 IMU 量测的时间关系，判断是否需要进行 GNSS 更新，有四种情况，分别返回不同的值：
 
-![image-20230925120000711](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925120000711.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925120000711.png" alt="image-20230925120000711" style="zoom:50%;" />
 
 ```cpp
 int GIEngine::isToUpdate(double imutime1, double imutime2, double updatetime) const {
@@ -685,7 +685,7 @@ if (res == 0) {
 
 几种情况可总结如下图：
 
-![image-20230925120109838](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925120109838.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925120109838.png" alt="image-20230925120109838" style="zoom:50%;" />
 
 处理完之后调用 `checkCov() `检查协方差对角线元素是否都为正，更新上一时刻的状态和 IMU 数据：
 ```cpp
@@ -700,7 +700,7 @@ imupre_ = imucur_;
 
 ## 五、捷联惯导更新：insPropagation()
 
-![image-20230922181230280](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230922181230280.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230922181230280.png" alt="image-20230922181230280" style="zoom: 33%;" />
 
 ### 1、insPropagation()：捷联惯导递推
 
@@ -745,7 +745,7 @@ void GIEngine::imuCompensate(IMU &imu) {
 
 ### 3、insMech()：IMU 状态更新（机械编排）
 
-![image-20230816151634166](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230816151634166.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230816151634166.png" alt="image-20230816151634166" style="zoom:50%;" />
 
 依次进行速度更新、位置更新、姿态更新，不可调换顺序。
 

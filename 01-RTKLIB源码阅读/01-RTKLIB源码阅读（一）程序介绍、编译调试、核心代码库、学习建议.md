@@ -1,4 +1,4 @@
-> * 原始Markdown文档、Visio流程图、XMind思维导图：https://github.com/LiZhengXiao99/Navigation-Learning
+> 原始Markdown文档、Visio流程图、XMind思维导图：https://github.com/LiZhengXiao99/Navigation-Learning
 
 [TOC]
 
@@ -8,7 +8,7 @@
 
 #### 1. 简介
 
-RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本东京海洋大学的高须知二（Tomoji Takasu）开发，由一个**核心程序库**和多个**命令行程序**、**界面程序**组成；代码规范、功能完善、可拓展性好。RTKLIB 功能很齐全，GNSS 数据处理所需的基本功能都有，支持的数据格式很多，既可以实时解算也可以后处理，既可以接自己的 GNSS 模块也可以连 IGS 的数据流，既可以解算自己采集的数据也可以算 IGS 测站的数据，既可以 RTK 也可以 PPP；许多 GNSS 导航定位程序开源程序都是基于 RTKLIB 二次开发衍生而来，适合作为 GNSS 入门学习的项目。它的项目结构如下所示：
+RTKLIB 是知名的全球导航卫星系统 GNSS 开源定位解算程序包，日本东京海洋大学的高须知二（Tomoji Takasu）开发，由一个**核心程序库**和多个**命令行程序**、**界面程序**组成；代码规范、功能完善、可拓展性好。RTKLIB 功能很齐全，GNSS 数据处理所需的基本功能都有，支持的数据格式很多，既可以实时解算也可以后处理，既可以接自己的 GNSS 模块也可以连 IGS 的数据流，既可以解算自己采集的数据也可以算 IGS 测站的数据，既可以 RTK 也可以 PPP；许多 GNSS 导航定位程序开源程序都是基于 RTKLIB 二次开发衍生而来，适合作为 GNSS 入门学习的项目。它的项目结构如下所示：
 
 ![RTKLIB](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/RTKLIB.png)
 
@@ -84,18 +84,18 @@ RTKLIB 可以初步实现以下功能，相对于商业软件，可靠性没那�
 
 * **支持六大 GNSS 系统**，包括 GPS，GLONASS，Beidou，Galileo，QZSS 和 SBAS。
 
-  > 但是不支持全频点，不支持印度IRNSS系统，多频算法不完善，对北斗的支持不好。
+  > 但是不支持全频点，不支持印度 IRNSS 系统，多频算法不完善，对北斗的支持不好。
 
 * **支持 9 种 GNSS 实时和后处理定位模式**：
   
-  * **single**：伪距单点定位
-  * **DGPS/DGNSS**：伪距差分
-  * **kinematic**：载波动态相对定位，动态RTK，假设流动站是移动的，可以做车载定位
-  * **Static**：载波静态相对定位，静态RTK，两站都是静止的，可以得到很高的精度
-  * **Moving-Baseline**：双天线，两站都动，主要用来定姿。
-  * **Fixed**：固定坐标，解算模糊度、对流层、电离层等参数
-  * **PPP-Kinematic**：动态精密单点定位
-  * **PPP-Static**：静态精密单点定位
+  * **single**：伪距单点定位；
+  * **DGPS/DGNSS**：伪距差分；
+  * **kinematic**：载波动态相对定位，动态RTK，假设流动站是移动的，可以做车载定位；
+  * **Static**：载波静态相对定位，静态RTK，两站都是静止的，可以得到很高的精度；
+  * **Moving-Baseline**：双天线，两站都动，主要用来定姿；
+  * **Fixed**：固定坐标，解算模糊度、对流层、电离层等参数；
+  * **PPP-Kinematic**：动态精密单点定位；
+  * **PPP-Static**：静态精密单点定位；
   * **PPP-Fixed**：PPP 固定坐标，解算模糊度、对流层、电离层等参数。
   
 * **支持多种 GNSS 标准格式和协议**：RINEX2.10、RINEX2.11、RINEX2.12、RINEX3.00、RINEX3.01、RINEX3.02、RTCM2.3、RTCM3.1、RTCM3.2、BINEX、NTRIP、NMEA0183、SP3、ANTEX1.4、IONEX1.0、NGS PCV、EMS 2.0。
@@ -127,18 +127,19 @@ RTKLIB 可以初步实现以下功能，相对于商业软件，可靠性没那�
 * [RTKLIB-demo5](https://github.com/rtklibexplorer/RTKLIB)：针对低成本接收机做了算法增强，下面的部分程序是基于 demo5 开发的。
 * [rtklib-py](https://github.com/rtklibexplorer/rtklib-py)：
 * [GPSTK](https://github.com/SGL-UT/GPSTk)：
-* GAMP：山科大周峰写的双频非差非组合浮点解 PPP，在 RTKLIB 基础上做精简和算法的增强，比原版 RTKLIB 简单，是入门学习 PPP 不错的选择。
-* [Ginan](https://github.com/GeoscienceAustralia/ginan)：澳大利亚，包括精密定位程序 PEA、定轨程序 POD，文档很详细，老师让我看，但我没看下去，代码比较难懂，而且它的代码风格很奇怪。
-* [GraphGNSSLib](https://github.com/weisongwen/GraphGNSSLib)：港理工，支持图优化 SPP、RTK。作者在知乎很活跃，时常发一些科普文章。
-* PPPLIB：我老师在矿大读研的时候写的，
-* [TGINS](https://github.com/heiwa0519/TGINS)：我老师刚来安理的时候写的，
-* GINAV：MATLAB 紧组合，文件名起的和 RTKLIB 函数名一模一样，
-* [GICI-LIB](https://github.com/chichengcn/gici-open)：上海交大，以 GNSS 为主， 
-* [PPP-AR](https://github.com/PrideLab/PRIDE-PPPAR)：武大GNSS中心，使用了 rnx2rtkp 可执行程序计算测站初值坐标，网址
-* [IGNAV](https://github.com/Erensu/ignav)：武大GNSS中心，
+* [GAMP](https://geodesy.noaa.gov/gps-toolbox/GAMP.htm)：山科大周峰写的双频浮点解 PPP，在 RTKLIB 基础上做精简和算法的增强，比原版 RTKLIB 简单，是入门学习 PPP 不错的选择。
+* [Ginan](https://github.com/GeoscienceAustralia/ginan)：澳大利亚，包括精密定位程序 PEA、定轨程序 POD，文档很详细，老师让我看，但我没看下去，代码比较难懂，
+* [GraphGNSSLib](https://github.com/weisongwen/GraphGNSSLib)：港理工，支持图优化 SPP、RTK，作者在知乎很活跃，发过一些科普文章。
+* [GLIO](https://github.com/XikunLiu-huskit/GLIO)：在 GraphGNSSLib 基础上做的 GNSS-IMU-Lidar 图优化紧组合；
+* [PPPLIB](https://geodesy.noaa.gov/gps-toolbox/PPPLib.htm)：我老师在矿大读研的时候写的，支持三频 SPP、PPK、PPP 和松紧组合。
+* [GINAV](https://github.com/kaichen686/GINav)：MATLAB 紧组合，文件名起的和 RTKLIB 函数名一模一样，虽说是组合导航，但也可以只用其中的 GNSS 部分，相比 goGPS 简单不少。
+* [GICI-LIB](https://github.com/chichengcn/gici-open)：上海交大池澄博士开源的 GNSS-IMU-Camera 图优化多源融合程序，以 GNSS 为主，实现了 RTK、PPP 的模糊度固定 
+* [PPP-AR](https://github.com/PrideLab/PRIDE-PPPAR)：武大 GNSS 中心开源的后处理 PPP，使用配套的产品可以实现 PPP 模糊度固定，支持五频数据处理，使用了 rnx2rtkp 可执行程序计算测站初值坐标。
+* [IGNAV](https://github.com/Erensu/ignav)：武大 GNSS 中心，图优化紧组合
 * [pppwizard](http://www.ppp-wizard.net/)：
 * [GNSS-SDR](https://github.com/gnss-sdr/gnss-sdr)：GNSS 软件接收机，与上面列举的数据处理软件不同，GNSS-SDR 实现基带算法直接对接收机输出的数字中频信号处理，PVT 部分用了 RTKLIB。
-* [APOLLO](https://github.com/ApolloAuto/apollo)：百度的开源无人驾驶系统，
+* [PocketSDR](https://github.com/tomojitakasu/PocketSDR)：RTKLIB 作者新开源的软件接收机，包含一个射频前端和一套后处理 GNSS 接收机程序（只支持后处理），实现了一整套完整的 GNSS 接收机功能，采用 C、Python 编写，支持几乎所有的 GNSS 信号（比商业接收机支持的还要多），引入 RTKLIB 做库，用到了 RTKLIB 的一些结构体。
+* [APOLLO](https://github.com/ApolloAuto/apollo)：百度的开源无人驾驶系统，用到了 RTKLIB 的 NMEA 结构体。
 
 ---
 

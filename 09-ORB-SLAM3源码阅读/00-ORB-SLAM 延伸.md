@@ -4,13 +4,13 @@
 
 ORB-SLAM3 生成的是稀释点云地图，只能定位，无法直接用于导航，需要对稀疏点云稠密化构建稠密地图。处理分为两大类：基于数据结构、基于机器学习。
 
-![1690961951185](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690961951185.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690961951185.png" alt="1690961951185" style="zoom: 33%;" />
 
 ### 1、八叉树地图
 
 把三维空间建模成许多小方块（体素），构建占据栅格地图（Occupancy Grid Map），节点存储它是否被占据的信息。学过地信的都知道这种地图编码方式比较高效，节省空间，当某个方块的子节点都相同，就无需展开。
 
-![1690962321093](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690962321093.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690962321093.png" alt="1690962321093" style="zoom: 50%;" />
 
 对于占据和空白来说，选择用概论的形式表达，这样就可以动态建模地图中的障碍物信息。
 
@@ -34,11 +34,11 @@ sudo apt-get install liboctomap-dev octovis
 
 ### 2、CodeMapping
 
-![1690963337908](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690963337908.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690963337908.png" alt="1690963337908" style="zoom:50%;" />
 
 CodeMapping 的网络结构如下：
 
-![1690964289530](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690964289530.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690964289530.png" alt="1690964289530" style="zoom: 50%;" />
 
 - 上层网络采用的是 **U-Net**，输入为：**灰度图**、**稀疏深度 depth** 和**重投影误差 maps** 。深度depth 和重投影误差值归一化在 $[0,1]$ 之间，输入的三个数据可以 concat 为一个三通道的输入，输出为：**深度不确定图**。
 
@@ -52,13 +52,13 @@ CodeMapping 的网络结构如下：
 
 效果如下：
 
-![1690964411332](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690964411332.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690964411332.png" alt="1690964411332" style="zoom:33%;" />
 
 ## 二、语义 ORB-SLAM3
 
 **语义 SLAM（Semantic SLAM）**指将**语义分割**、**目标检测**、**实例分割**等技术用于 SLAM 中，系统在建图过程中不仅仅获得**环境中的几何信息**，同时还可以**识别环境中独立的个体**，获取其位置、姿态和功能属性等语义信息，以应对复杂场景完成更高级的任务。
 
-![1690963453614](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690963453614.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690963453614.png" alt="1690963453614" style="zoom: 33%;" />
 
 语义 SLAM 的优势：
 
@@ -81,21 +81,15 @@ CodeMapping 的网络结构如下：
 
 ### 1、深度学习与特征提取
 
-![1690964694741](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690964694741.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1690964694741.png" alt="1690964694741" style="zoom: 50%;" />
 
 ### 2、深度学习与帧间估计
 
-**帧间估计**也称为**视觉里程计**，是通过分析关联相机图像之间的多视几何关系确定机器人位姿与朝向的 过程，可作为视觉 SLAM 的前端。相较于传统的基于稀疏特征或稠密特征，基于深度学习的帧间估计方法的优势在于 :
+**帧间估计**也称为**视觉里程计**，是通过分析关联相机图像之间的多视几何关系确定机器人位姿与朝向的过程，可作为视觉 SLAM 的前端。相较于传统的基于稀疏特征或稠密特征，基于深度学习的帧间估计方法的优势在于 :
 
 - 端到端的学习方式，**无需特征提取、特征匹配**，输入数据直接得结果。
 - 无需复杂的多视图几何计算过程，**方法更直观简洁**；
 - 训练好的模型，**运算速度快**，效率更高。
-
-
-
-
-
-
 
 
 

@@ -26,16 +26,16 @@
 
 ### 2、相关论文
 
-* Hailiang Tang, Tisheng Zhang, Xiaoji Niu, Jing Fan, and Jingnan Liu, “Impact of the Earth Rotation Compensation on MEMS-IMU Preintegration of Factor Graph Optimization,” *IEEE Sensors Journal*, 2022. [下载](http://www.i2nav.com/ueditor/jsp/upload/file/20220801/1659348408510061111.pdf)
+* Impact of the Earth Rotation Compensation on MEMS-IMU Preintegration of Factor Graph Optimization， [下载](http://www.i2nav.com/ueditor/jsp/upload/file/20220801/1659348408510061111.pdf)
 
   > **摘要翻译**：
   >
   > * 在基于滤波的 GNSS/INS 组合导航系统中，精密的 IMU 机械编排需要考虑到地球自转、牵连角速度、科氏加速度等的影响；然而大多数的图优化框架中的 IMU 预积分模型都没有考虑这些因素。
-  > * 我们提出了一种进行了地球自转补偿的滑动窗口图优化 GNSS/INS 组合导航算法，并且评估了地球自转等对MEMS-IMU预积分的影响。
+  > * 我们提出了一种进行了地球自转补偿的滑动窗口图优化 GNSS/INS 组合导航算法，并且评估了地球自转等对 MEMS-IMU 预积分的影响。
   > * 测试了 GNSS 量测缺失，采用了有效的方法对预积分结果进行评价。结果表明，此方法预积分的精度与精密机械编排的精度相当；相比之下，IMU 在不补偿地球自转的情况下，预积分的精度显著低于机械编排的精度，有显著的精度降级。
   > * 当 GNSS 中断时间为 60 秒时，工业级 MEMS 的降级可能为 200% 模块，消费级 MEMS 芯片超过 10%。此外，如果 GNSS 中断时间更长，精度降级还会更显著。
 
-* Junxiang Jiang, Xiaoji Niu, and Jingnan Liu, “Improved IMU Preintegration with Gravity Change and Earth Rotation for Optimization-Based GNSS/VINS,” *Remote Sensing*, vol. 12, no. 18, p. 3048, Sep. 2020, doi: [10.3390/rs12183048](https://doi.org/10.3390/rs12183048). [下载](https://sci-hub.se/10.3390/rs12183048)
+* Improved IMU Preintegration with Gravity Change and Earth Rotation for Optimization-Based GNSS/VINS，[下载](https://sci-hub.se/10.3390/rs12183048)
 
   > **摘要翻译**：
   >
@@ -45,7 +45,7 @@
   > * 为了评估算法的精度，我们使用了两种级别的 IMU 数据进行测试，测试结果表明，改进的IMU预集成算法能够很好地应对重力变化和地球自转。当处理能有效感知地球自转的高级 IMU 的数据时，必须考虑地球自转。
   > * 如果忽略重力的变化，水平姿态的均方根误差（RMSE）大约是 1.38  倍的大地位移；此外，定位 RMSE 也不在有限的范围内；这意味着几十公里和几百米的实验中分别使用的低级别和高级 IMU。
 
-* Le Chang, Xiaoji Niu, and Tianyi Liu, “GNSS/IMU/ODO/LiDAR-SLAM Integrated Navigation System Using IMU/ODO Pre-Integration,” *Sensors*, vol. 20, no. 17, p. 4702, Aug. 2020, doi: [10.3390/s20174702](https://doi.org/10.3390/s20174702). [下载](https://www.mdpi.com/1424-8220/20/17/4702/pdf)
+* GNSS/IMU/ODO/LiDAR-SLAM Integrated Navigation System Using IMU/ODO Pre-Integration，[下载](https://www.mdpi.com/1424-8220/20/17/4702/pdf)
 
   > **摘要翻译**：
   >
@@ -53,12 +53,12 @@
   > * **前端**进行航位推算，进行 IMU/ODO 预积分。**后端**通过图优化对 GNSS 坐标、IMU/ODO 预积分结果、LiDAR-SLAM 得出的相对位置和姿态进行融合。
   > * **里程计**信息用于降低 IMU 预积分算法中的**漂移率**。**滑动窗口**算法可以通过减少图优化的参数，来**降低**图优化的**计算量**。
   > * 分别在露天区域和隧道情况下进行车辆数据测试；测试结果表明，所提出的导航系统可以有效地提高导航的精确度和鲁棒性。
-  > * 在模拟两分钟 GNSS 中断期间，相比传统的 GNSS/INS（惯性导航系统）/ODO组合算法， 北东地的 RMS 分别下降62.8%、72.3%、52.1%。此外，与GNSS/IMU/激光雷达SLAM集成相比，误差降低了62.1%导航系统，里程计和非完整约束的辅助下减少垂直误差为 72.3%。
+  > * 在模拟两分钟 GNSS 中断期间，相比传统的 GNSS/INS/ODO组合算法， 北东地的 RMS 分别下降 62.8%、72.3%、52.1%。此外，与 GNSS/IMU/Lidar-SLAM 组合相比，误差降低了 62.1% ，里程计和非完整约束的辅助下减少垂直误差为 72.3%。
   > * 在实际隧道案例中的测试表明，在弱环境特征区域激光雷达 SLAM 几乎不能工作，里程计在预集成中的辅助作用至关重要，并且可以有效地减少沿正向方向的定位漂移并保持 SLAM 短期内有效。
   > * 因此，提出的 GNSS/IMU/ODO/Lidar-SLAM 组合导航系统可以有效地融合来自多个来源的信息，以维护 SLAM 过程显著降低导航误差，尤其是在 GNSS 信号严重的恶劣地区退化和环境特征不足以用于激光雷达 SLAM。
   >
 
-
+Impact of the Earth Rotation Compensation on MEMS-IMU Preintegration of Factor Graph Optimization
 
 ### 3、代码分析
 
@@ -76,9 +76,15 @@
 
 
 
+
+
+
+
 ### 5、重点函数
 
 * **主函数**：
+
+
 
 
 
@@ -104,6 +110,12 @@
 
 
 
+
+
+
+
+
+
 ## 四、主函数
 
 ### 1、函数调用关系图
@@ -120,9 +132,9 @@
 
 OB-GINS 主函数很长，可以说看懂主函数就把整个程序都看懂了，将近 500 行，可以分为三部分：
 
-* while 循环解算前：读取配置文件、创建解算对象，赋值初始的状态量，进行一次初始预积分。
-* while 循环解算：
-* while 循环解算后：释放创建的对象，输出解算时间。
+* **while 循环解算前**：读取配置文件、创建解算对象，赋值初始的状态量，进行一次初始预积分。
+* **while 循环解算**：
+* **while 循环解算后**：释放创建的对象，输出解算时间。
 
 
 
@@ -366,7 +378,7 @@ writeNavResult(integration->endTime(), station_origin, integration->currentState
 
 
 
-## 六、因子图优
+## 六、因子图优化
 
 ### 1、因子图模型
 
