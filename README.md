@@ -1,27 +1,13 @@
 
 ![Navigation-Learning-cover](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/Navigation-Learning-cover.png)
 
-[TOC]
-
----
-
-<details>
-<summary> 仓库说明 </summary>
-
-
-* 本仓库是我学习的记录，会长期更新，分享出来，希望有人用得上，也激励着自己坚持学下去。
-
-- 有些程序会详细写（比如 RTKLIB、KF-GINS），有些只画个流程图、列举重点的函数。
-- Github 上的 Markdown 公式可能显示不完全，可以下载下来用 [Typora](https://typoraio.cn/) 看。
-- 不建议直接下载整个仓库，内容可能大部分都用不着，Markdown 和 PDF 可以在线看，想要的文件也可以[单独下载](https://zhuanlan.zhihu.com/p/578116206)。
-- 水平不高，理解尚浅，列举的理论公式无法保证准确性，仅供参考，千万不要照着我的笔记来写代码写论文，更不要直接复制到论文里，希望小伙伴们注意。
-- 本仓库所有内容都可以随意转载，可用于任何目的，不必征求我的意见。
-- 有问题欢迎随时联系我：**电话** (15255291038)、**微信** (lizhengxiao99)、**QQ** (1482275402)、**Email** (dauger@126.com)。
-
-</details>
-
-
----
+<p>&emsp;&emsp;👋 嗨，你好，我是李郑骁，安徽理工大学导航工程本科生。</p>
+<p>&emsp;&emsp;💡 仓库所有内容都可以随意转载，可用于任何目的，不必征求我的意见。</p>
+<p>&emsp;&emsp;✨ 本仓库会长期更新，分享出来，希望有人用得上，也激励着自己坚持学下去。</p>
+<p>&emsp;&emsp;💻 有些程序会详细写（比如 RTKLIB、KF-GINS），有些只画个流程图、列举重点的函数。</p>
+<p>&emsp;&emsp;📚 水平不高，理解尚浅，列举的理论公式无法保证准确性，仅供参考。 </p>
+<p>&emsp;&emsp;🛠 不建议直接下载整个仓库，Markdown 和 PDF 可以在线看，<a href='https://zhuanlan.zhihu.com/p/578116206' target='_blank'>想要的文件也可以单独下载</a>。</p>
+<p>&emsp;&emsp;🤺 有问题欢迎随时联系我：<strong>电话</strong> (15255291038)、<strong>微信</strong> (lizhengxiao99)、<strong>QQ</strong> (1482275402)、<strong>Email</strong> (dauger@126.com)。</p>
 
 <details>
 <summary> 记录一些我看到过的项目，其中加粗的项目会在本仓库介绍： </summary>
@@ -43,8 +29,6 @@
 | **开源程序作者**  | [池澄](https://github.com/chichengcn/gici-open)、[周峰](https://github.com/zhouforme0318)、[陈超](https://github.com/heiwa0519)、[严恭敏](https://psins.org.cn/sy)、[李政](https://github.com/lizhengnss)、[苏景岚](https://github.com/Erensu)、[陈凯](https://github.com/kaichen686)、[王晗](https://github.com/wh200720041)、[刘国庆](https://github.com/DreamWaterFound)、[高翔](https://github.com/gaoxiang12)、[杨熙](https://github.com/yandld)、[张春杰](https://github.com/kongtian-SiBu)、[魏源](https://github.com/hui-Scholarliness)、[吕少麟](https://github.com/shaolinbit)、[布树辉](https://link.zhihu.com/?target=http%3A//www.adv-ci.com/blog/)、[谢立华](https://link.zhihu.com/?target=https%3A//wanghan.pro/)、[邹丹平](https://link.zhihu.com/?target=http%3A//drone.sjtu.edu.cn/dpzou/index.php)、[JzHuai0108](https://github.com/JzHuai0108)、[XikunLiu-huskit](https://github.com/XikunLiu-huskit)、[cggos](https://github.com/cggos)、[Welson WEN](https://www.zhihu.com/people/Welson-WEN)、[cggos](https://github.com/cggos)、[zarathustr](https://github.com/zarathustr)、[YizeZhang](https://github.com/YizeZhang)、[globsky](https://github.com/globsky)、[tomojitakasu](https://github.com/tomojitakasu)、[carlesfernandez](https://github.com/carlesfernandez)、[rtklibexplorer](https://github.com/rtklibexplorer)、[GeoscienceAustralia](https://github.com/GeoscienceAustralia)、[taroz](https://github.com/taroz)、[osqzss](https://github.com/osqzss)、[iliasam](https://github.com/iliasam)、[JonasBchrt](https://github.com/JonasBchrt) |
 
 </details>
-
----
 
 <details>
 <summary> 记录一些导航相关的网址、学习资源、导航设备： </summary>
@@ -72,11 +56,15 @@
 
 </details>
 
-## 📚 推荐书籍
+<details>
+<summary> 📚 推荐书籍 </summary>
 
 ![image-20240125155004417](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240125155004417.png)
 
----
+</details>
+
+<details>
+<summary> 在此介绍一下本仓库详细讲解的开源程序 </summary>
 
 ## 01-RTKLIB：GNSS 数据处理
 
@@ -301,3 +289,5 @@ PocketSDR 是 RTKLIB 作者写的一款 GNSS 软件接收机，包含一个射�
 * **NavIC**: L5-SPS, SBAS: L1C/A, L5I, L5Q
 
 <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240110092301571.png" alt="image-20240110092301571" style="zoom:50%;" />
+
+</details>
