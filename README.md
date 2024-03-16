@@ -1,14 +1,15 @@
 <div align="center">
-<h2>Navation-Learning：一个本科生的导航学习笔记</h2>
+<h1>Navation-Learning：一个本科生的导航学习笔记</h1>
+</div>
 
-
+<div align="center">
 <p>&emsp;&emsp;👋 嗨，你好，我是李郑骁，安徽理工大学导航工程本科生。</p>
 <p>&emsp;&emsp;💡 仓库所有内容都可以随意转载，可用于任何目的，不必征求我的意见。</p>
 <p>&emsp;&emsp;✨ 本仓库会长期更新，分享出来，希望有人用得上，也激励着自己坚持学下去。</p>
 <p>&emsp;&emsp;💻 有些程序会详细写（比如 RTKLIB、KF-GINS），有些只画个流程图、列举重点的函数。</p>
-<p>&emsp;&emsp;📚 水平不高，理解尚浅，列举的理论公式无法保证准确性，仅供参考。 </p>
-<p>&emsp;&emsp;🛠 不建议直接下载整个仓库，Markdown 和 PDF 可以在线看，<a href='https://zhuanlan.zhihu.com/p/578116206' target='_blank'>想要的文件也可以单独下载</a>。</p>
+<p>&emsp;&emsp;🛠 不建议直接下载整个仓库，Markdown 和 PDF 可以在线看，想要的文件也可以<a href='https://zhuanlan.zhihu.com/p/578116206' target='_blank'>单独下载</a>。</p>
 <p>&emsp;&emsp;🤺 有问题欢迎随时联系我：<strong>微信</strong> (lizhengxiao99)、<strong>QQ</strong> (1482275402)、<strong>Email</strong> (dauger@126.com)。</p>
+</div>
 
 
 <details>
