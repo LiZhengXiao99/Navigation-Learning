@@ -3,17 +3,28 @@
 </div>
 
 <div align="center">
-<p>&emsp;&emsp;👋 嗨，你好，我是李郑骁，安徽理工大学导航工程本科生。</p>
-<p>&emsp;&emsp;💡 仓库所有内容都可以随意转载，可用于任何目的，不必征求我的意见。</p>
-<p>&emsp;&emsp;✨ 本仓库会长期更新，分享出来，希望有人用得上，也激励着自己坚持学下去。</p>
-<p>&emsp;&emsp;💻 有些程序会详细写（比如 RTKLIB、KF-GINS），有些只画个流程图、列举重点的函数。</p>
-<p>&emsp;&emsp;🛠 不建议直接下载整个仓库，Markdown 和 PDF 可以在线看，想要的文件也可以<a href='https://zhuanlan.zhihu.com/p/578116206' target='_blank'>单独下载</a>。</p>
-<p>&emsp;&emsp;🤺 有问题欢迎随时联系我：<strong>微信</strong> (lizhengxiao99)、<strong>QQ</strong> (1482275402)、<strong>Email</strong> (dauger@126.com)。</p>
+    <img alt="Static Badge" src="https://img.shields.io/badge/QQ-1482275402-red">
+    <img alt="Static Badge" src="https://img.shields.io/badge/%E5%BE%AE%E4%BF%A1-lizhengxiao99-green">
+    <img alt="Static Badge" src="https://img.shields.io/badge/Email-dauger%40126.com-brown">
+    <a href="https://space.bilibili.com/179262602/"><img src="https://img.shields.io/badge/Bilibili-B站-ff69b4" /></a>
+    <a href="https://blog.csdn.net/daoge2666/"><img src="https://img.shields.io/badge/CSDN-论坛-c32136" /></a>
+    <a href="https://www.zhihu.com/people/dao-ge-92-60/"><img src="https://img.shields.io/badge/Zhihu-知乎-blue" /></a>
+    <!-- visitor statistics logo 访问量统计徽标 -->
+    <img src="https://komarev.com/ghpvc/?username=LiZhengXiao99&label=Views&color=0e75b6&style=flat" alt="访问量统计" />
 </div>
 
+<div align="center">
+<p>👋 嗨，你好，我是李郑骁，安徽理工大学导航工程本科生；</p>
+<p>💡 仓库所有内容都可以随意转载，可用于任何目的，不必征求我的意见；</p>
+<p>✨ 本仓库会长期更新，分享出来，希望有人用得上，也激励着自己坚持学下去；</p>
+<p>💻 有些程序会详细写（比如 RTKLIB、KF-GINS），有些只画个流程图、列举重点的函数；</p>
+<p>🛠 不建议直接下载整个仓库，Markdown 和 PDF 可以在线看，想要的文件也可以<a href='https://zhuanlan.zhihu.com/p/578116206' target='_blank'>单独下载</a>；</p>
+<p>🤺 有问题欢迎随时联系我：<strong>微信</strong> (lizhengxiao99)、<strong>QQ</strong> (1482275402)、<strong>Email</strong> (dauger@126.com)；</p>
+</div>
 
 <details>
-<summary> 记录一些我看到过的项目，其中加粗的项目会在本仓库介绍： </summary>
+    <summary><strong>记录一些我看到过的项目，其中加粗的项目会在本仓库介绍： </strong></summary>
+
 
 |       类型        |                          项目/网址                           |
 | :---------------: | :----------------------------------------------------------: |
@@ -34,7 +45,8 @@
 </details>
 
 <details>
-<summary> 记录一些导航相关的网址、学习资源、导航设备： </summary>
+    <summary><strong> 记录一些导航相关的网址、学习资源、导航设备： </strong></summary>
+
 
 |           类型           |                             网址                             |
 | :----------------------: | :----------------------------------------------------------: |
@@ -60,14 +72,15 @@
 </details>
 
 <details>
-<summary> 📚 推荐书籍 </summary>
+    <summary> <strong> 推荐书籍 </strong></summary>
+
 
 ![image-20240125155004417](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240125155004417.png)
 
 </details>
 
 <details>
-<summary> 在此介绍一下本仓库详细讲解的开源程序 </summary>
+    <summary> <strong>在此介绍一下本仓库详细讲解的开源程序 </strong></summary>
 
 ## 01-RTKLIB：GNSS 数据处理
 
@@ -97,6 +110,8 @@ RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本�
 * **提供许多代码库和API**：卫星和导航系统函数、矩阵和向量函数，时间和字符串函数、坐标的转换，输入和输出函数、调试跟踪函数、平台依赖函数、定位模型、大气模型、天线模型、地球潮汐模型、大地水准面模型、基准转换、RINEX函数、星历和时钟函数、精密星历和时钟、接收机原始数据函数、RTCM函数，解算函数、谷歌地球KML转换、SBAS函数、选项（option）函数、流数据输入和输出函数、整周模糊度解算、标准定位、精密定位、后处理定位（解算）、流服务器函数、RTK服务器函数、下载函数。
 
 > 推荐阅读：[不迷途导航程序员：RTKLIB 源码阅读笔记](https://mp.weixin.qq.com/s/2D3V0qDh6fwt_tZ0225znw)
+
+</details>
 
 ---
 
