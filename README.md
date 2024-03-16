@@ -13,6 +13,8 @@
     <img src="https://komarev.com/ghpvc/?username=LiZhengXiao99&label=Views&color=0e75b6&style=flat" alt="访问量统计" />
 </div>
 
+<div>&nbsp;</div>
+
 <div align="center">
 <p>👋 嗨，你好，我是李郑骁，安徽理工大学导航工程本科生；</p>
 <p>💡 仓库所有内容都可以随意转载，可用于任何目的，不必征求我的意见；</p>
@@ -25,7 +27,7 @@
 ---
 
 <div align="center">
-<h4>记录一些我看到过的项目，其中加粗的项目会在本仓库介绍</h4>
+<h3>记录一些我看到过的项目，其中加粗的项目会在本仓库介绍</h3>
 </div>
 
 
@@ -48,7 +50,7 @@
 ---
 
 <div align="center">
-<h4>记录一些导航相关的网址、学习资源、导航设备</h4>
+<h3>记录一些导航相关的网址、学习资源、导航设备</h3>
 </div>
 
 
@@ -76,11 +78,11 @@
 ---
 
 <div align="center">
-<h4>推荐书籍</h4>
+<h3>推荐书籍</h3>
 </div>
 
 
-![image-20240125155004417](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240125155004417.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240125155004417.png" alt="image-20240125155004417" style="zoom:50%;" />
 
 ---
 
@@ -88,7 +90,7 @@
 <h2>本仓库介绍的开源程序</h2>
 </div>
 
-#### 01-RTKLIB：GNSS 数据处理
+### 01-RTKLIB：GNSS 数据处理
 
 RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本东京海洋大学的高须知二（Tomoji Takasu）开发，由一个**核心程序库**和多个**命令行程序**、**界面程序**组成；代码规范、功能完善、可拓展性好，许多 GNSS 导航定位程序开源程序都是基于 RTKLIB 二次开发衍生而来，适合作为 GNSS 入门学习的代码。
 
@@ -249,9 +251,7 @@ GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR
 
 KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以读取 IMU 数据文件、GNSS 结果文件，进行松组合解算，计算位置、速度、姿态、陀螺仪零偏、加速度计零偏、陀螺仪比例、加速度计比力，共 21 维状态向量。代码量小，有详细的文档、注释和讲解，代码结构很好理解，有一些可以学习的工程技巧。
 
-<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230928094541518.png" alt="image-20230928094541518" style="zoom: 33%;" />
-
-![image-20230925181044694](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230925181044694.png)
+![kf-gings structure](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/kf-gings%20structure.png)
 
 * **项目开源地址**：https://github.com/i2Nav-WHU
 * **i2NAV组合导航讲义、数据集**：http://www.i2nav.cn/index/newList_zw?newskind_id=13a8654e060c40c69e5f3d4c13069078
