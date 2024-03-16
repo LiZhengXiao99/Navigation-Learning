@@ -1,5 +1,5 @@
-
-![Navigation-Learning-cover](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/Navigation-Learning-cover.png)
+<div align="center">
+<h1>Navation-Learning：一个本科生的导航学习记录</h1>
 
 <p>&emsp;&emsp;👋 嗨，你好，我是李郑骁，安徽理工大学导航工程本科生。</p>
 <p>&emsp;&emsp;💡 仓库所有内容都可以随意转载，可用于任何目的，不必征求我的意见。</p>
@@ -7,7 +7,7 @@
 <p>&emsp;&emsp;💻 有些程序会详细写（比如 RTKLIB、KF-GINS），有些只画个流程图、列举重点的函数。</p>
 <p>&emsp;&emsp;📚 水平不高，理解尚浅，列举的理论公式无法保证准确性，仅供参考。 </p>
 <p>&emsp;&emsp;🛠 不建议直接下载整个仓库，Markdown 和 PDF 可以在线看，<a href='https://zhuanlan.zhihu.com/p/578116206' target='_blank'>想要的文件也可以单独下载</a>。</p>
-<p>&emsp;&emsp;🤺 有问题欢迎随时联系我：<strong>电话</strong> (15255291038)、<strong>微信</strong> (lizhengxiao99)、<strong>QQ</strong> (1482275402)、<strong>Email</strong> (dauger@126.com)。</p>
+<p>&emsp;&emsp;🤺 有问题欢迎随时联系我：<strong>微信</strong> (lizhengxiao99)、<strong>QQ</strong> (1482275402)、<strong>Email</strong> (dauger@126.com)。</p>
 
 <details>
 <summary> 记录一些我看到过的项目，其中加粗的项目会在本仓库介绍： </summary>
