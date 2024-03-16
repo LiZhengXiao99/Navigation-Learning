@@ -1,5 +1,5 @@
 <div align="center">
-<h1>Navation-Learning：一个本科生的导航学习笔记</h1>
+<h1>Navigation-Learning：一个本科生的导航学习笔记</h1>
 </div>
 
 <div align="center">
@@ -80,7 +80,6 @@
 <div align="center">
 <h3>推荐书籍</h3>
 </div>
-
 
 <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240125155004417.png" alt="image-20240125155004417" style="zoom:50%;" />
 
