@@ -22,8 +22,11 @@
 <p>🤺 有问题欢迎随时联系我：<strong>微信</strong> (lizhengxiao99)、<strong>QQ</strong> (1482275402)、<strong>Email</strong> (dauger@126.com)；</p>
 </div>
 
-<details>
-    <summary><strong>记录一些我看到过的项目，其中加粗的项目会在本仓库介绍： </strong></summary>
+---
+
+<div align="center">
+<h4>记录一些我看到过的项目，其中加粗的项目会在本仓库介绍</h4>
+</div>
 
 
 |       类型        |                          项目/网址                           |
@@ -42,10 +45,11 @@
 |     **工具**      | [zotero](https://github.com/zotero/zotero)、[Captura](https://github.com/MathewSachin/Captura)、[ GitHub520](https://github.com/521xueweihan/GitHub520)、[free](https://github.com/zp-9696/free)、[carrot](https://github.com/xx025/carrot)、[aliyunpan](https://github.com/gaozhangmin/aliyunpan)、[SerialChart](https://github.com/peng-zhihui/SerialChart) |
 | **开源程序作者**  | [池澄](https://github.com/chichengcn/gici-open)、[周峰](https://github.com/zhouforme0318)、[陈超](https://github.com/heiwa0519)、[严恭敏](https://psins.org.cn/sy)、[李政](https://github.com/lizhengnss)、[苏景岚](https://github.com/Erensu)、[陈凯](https://github.com/kaichen686)、[王晗](https://github.com/wh200720041)、[刘国庆](https://github.com/DreamWaterFound)、[高翔](https://github.com/gaoxiang12)、[杨熙](https://github.com/yandld)、[张春杰](https://github.com/kongtian-SiBu)、[魏源](https://github.com/hui-Scholarliness)、[吕少麟](https://github.com/shaolinbit)、[布树辉](https://link.zhihu.com/?target=http%3A//www.adv-ci.com/blog/)、[谢立华](https://link.zhihu.com/?target=https%3A//wanghan.pro/)、[邹丹平](https://link.zhihu.com/?target=http%3A//drone.sjtu.edu.cn/dpzou/index.php)、[JzHuai0108](https://github.com/JzHuai0108)、[XikunLiu-huskit](https://github.com/XikunLiu-huskit)、[cggos](https://github.com/cggos)、[Welson WEN](https://www.zhihu.com/people/Welson-WEN)、[cggos](https://github.com/cggos)、[zarathustr](https://github.com/zarathustr)、[YizeZhang](https://github.com/YizeZhang)、[globsky](https://github.com/globsky)、[tomojitakasu](https://github.com/tomojitakasu)、[carlesfernandez](https://github.com/carlesfernandez)、[rtklibexplorer](https://github.com/rtklibexplorer)、[GeoscienceAustralia](https://github.com/GeoscienceAustralia)、[taroz](https://github.com/taroz)、[osqzss](https://github.com/osqzss)、[iliasam](https://github.com/iliasam)、[JonasBchrt](https://github.com/JonasBchrt) |
 
-</details>
+---
 
-<details>
-    <summary><strong> 记录一些导航相关的网址、学习资源、导航设备： </strong></summary>
+<div align="center">
+<h4>记录一些导航相关的网址、学习资源、导航设备</h4>
+</div>
 
 
 |           类型           |                             网址                             |
@@ -69,20 +73,22 @@
 |     **SLAM研究团队**     | [香港科技大学空中机器人实验室](https://uav.hkust.edu.hk/)、[香港科技大学机器人与多感知实验室 RAM-LAB](https://www.ram-lab.com/)、[香港中文大学天石机器人实验室](http://ri.cuhk.edu.hk/)、[浙江大学 CAD&CG 国家重点实验室](http://www.zjucvg.net/)、[美国密歇根大学感知机器人实验室（PeRL）](https://robots.engin.umich.edu/About/)、[美国卡耐基梅陇大学机器人研究所](https://www.ri.cmu.edu/)、 [美国加州大学圣地亚哥分校语境机器人研究所](https://existentialrobotics.org/index.html)、[美国特拉华大学人感知与导航组](https://sites.udel.edu/robot/)、[美国麻省理工学院航空航天实验室](http://acl.mit.edu/)、[美国麻省理工学院 SPARK 实验室](http://web.mit.edu/sparklab/)、[美国麻省理工学院海洋机器人组](https://marinerobotics.mit.edu/)、[美国明尼苏达大学多元自主机器人系统实验室](http://mars.cs.umn.edu/index.php)、[美国宾夕法尼亚大学 Vijay Kumar 实验室](https://www.kumarrobotics.org/)、[美国麻省理工学院 Robust Robotics Group]()、[美国佐治亚理工学院智能视觉与自动化实验室](https://link.zhihu.com/?target=http%3A//ivalab.gatech.edu/)、[加拿大蒙特利尔大学机器人与嵌入式 AI 实验室](http://groups.csail.mit.edu/rrg/index.php)、[加拿大舍布鲁克大学智能、交互、综合、跨学科机器人实验室](https://introlab.3it.usherbrooke.ca/)、[瑞士苏黎世大学机器人与感知课题组](http//3A//rpg.ifi.uzh.ch/index.html)、[瑞士苏黎世联邦理工 Vision for Robotics Lab](https://v4rl.ethz.ch/the-group.html)、[瑞士苏黎世联邦理工计算机视觉与几何实验室](https://link.zhihu.com/?target=http%3A//www.cvg.ethz.ch/index.php)、[瑞士苏黎世联邦理工自主系统实验室](https://cvg.ethz.ch/index)、[英国帝国理工学院戴森机器人实验室](https://www.imperial.ac.uk/dyson-robotics-lab/)、[英国牛津大学信息工程学](https://www.robots.ox.ac.uk/)、[德国慕尼黑工业大学计算机视觉组](https://github.com/tum-vision)、[德国马克斯普朗克智能系统研究所嵌入式视觉组](https://ev.is.mpg.de/)、[德国弗莱堡大学智能自主系统实验室](http://ais.informatik.uni-freiburg.de/index_en.php)、[德国波恩大学摄影测量与机器人实验室](https://www.ipb.uni-bonn.de/)、[西班牙萨拉戈萨大学机器人、感知与实时组 SLAM 实验室](http://robots.unizar.es/slamlab/)、[西班牙马拉加大学机器感知与智能机器人课题组](http://mapir.uma.es/mapirwebsite/)、[奥地利格拉茨技术大学计算机图形学与视觉研究所](https://www.tugraz.at/institutes/icg/home/)、[波兰波兹南工业大学移动机器人实验室](http://lrm.put.poznan.pl/)、[澳大利亚昆士兰科技大学机器人技术中心](https://www.qut.edu.au/research/centre-for-robotics)、[澳大利亚机器人视觉中心](https://www.roboticvision.org/)、[日本国立先进工业科学技术研究所](https://www.airc.aist.go.jp/en/intro/) |
 |       **实用工具**       | WPS、NotePad++、Thunderbird、MSys2、Typora、Everything、进程截杀器、百叶窗、飞书、芦笋、幕布、ProssOn、EV 录屏、XMind、MobaXterm、PotPlayer、Zetero、WinMerge、火绒、360、Snipaste、Quicker、超级公式、冰点文库下载器、Bandizip、天若 OCR、Dropit、flux、QuickLook、Geek Uninstaller |
 
-</details>
+---
 
-<details>
-    <summary> <strong> 推荐书籍 </strong></summary>
+<div align="center">
+<h4>推荐书籍</h4>
+</div>
 
 
 ![image-20240125155004417](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240125155004417.png)
 
-</details>
+---
 
-<details>
-    <summary> <strong>在此介绍一下本仓库详细讲解的开源程序 </strong></summary>
+<div align="center">
+<h2>本仓库介绍的开源程序</h2>
+</div>
 
-## 01-RTKLIB：GNSS 数据处理
+#### 01-RTKLIB：GNSS 数据处理
 
 RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本东京海洋大学的高须知二（Tomoji Takasu）开发，由一个**核心程序库**和多个**命令行程序**、**界面程序**组成；代码规范、功能完善、可拓展性好，许多 GNSS 导航定位程序开源程序都是基于 RTKLIB 二次开发衍生而来，适合作为 GNSS 入门学习的代码。
 
@@ -111,11 +117,9 @@ RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本�
 
 > 推荐阅读：[不迷途导航程序员：RTKLIB 源码阅读笔记](https://mp.weixin.qq.com/s/2D3V0qDh6fwt_tZ0225znw)
 
-</details>
-
 ---
 
-## 02-GAMP：基于 RTKLIB 的后处理双频 PPP
+### 02-GAMP：基于 RTKLIB 的后处理双频 PPP
 
 GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and multi-frequency **P**recise positioning)，在 RTKLIB 的基础上，将一些些多余的函数、代码简洁化，精简出后处理双频 PPP 部分，并对算法进行改进增强。对初学者非常友好，在我接触过的导航定位开源程序中算是最简单的，是用纯 C 语言编写，由于做了简化，代码比 RTKLIB 原版还要简单；使用也非常简单，软件包里直接有 VS 工程，和组织好的配置、数据文件，简单改改路径就能算出结果。
 
@@ -123,7 +127,7 @@ GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and mul
 
 ---
 
-## 03-PSINS：MATLAB-C++ 捷联惯导工具箱
+### 03-PSINS：MATLAB-C++ 捷联惯导工具箱
 
 PSINS（**P**recise **S**trapdown **I**nertial **N**avigation **S**ystem 高精度捷联惯导系统算法）工具箱由西北工业大学自动化学院惯性技术教研室严恭敏老师开发和维护。工具箱分为Matlab和C++两部分。主要应用于**捷联惯导**系统的数据处理和算法验证开发，它包括**惯性传感器数据分析**、**惯组标定**、**初始对准**、**惯导AVP**（姿态-速度-位置）更新解算、**组合导航**Kalman滤波等功能。C++部分采用 VC6 编写，可以用于嵌入式开发。
 
@@ -131,7 +135,7 @@ PSINS（**P**recise **S**trapdown **I**nertial **N**avigation **S**ystem 高精�
 
 ---
 
-## 04-Ginan
+### 04-Ginan
 
 
 
@@ -157,7 +161,7 @@ PEA 用 C++、POD 部分用 Fortune，绘图和批处理脚本用 Python
 
 ---
 
-## 05-goGPS：MATLAB-GNSS 数据处理
+### 05-goGPS：MATLAB-GNSS 数据处理
 
 **goGPS**是一个处理GNSS原始数据的软件，最初支持单频低成本GPS接收机数据，但现在也可以用来处理多频多系统GNSS数据。它实现了多种算法来解算，目前包括两个主要的最小二乘法（LS）引擎：一个基于于组合观测数据（例如无电离层观测）；另一个能够使用所有的频率和记录的信号数据，而不进行任何组合（电离层延迟是正常方程的参数）。组合和不组合的引擎都支持PPP、NET解算。目前只支持静态测站的解算，还不能动态解算。
 
@@ -165,7 +169,7 @@ PEA 用 C++、POD 部分用 Fortune，绘图和批处理脚本用 Python
 
 ---
 
-## 06-GICI-LIB：GNSS+INS+Camera 图优化融合定位
+### 06-GICI-LIB：GNSS+INS+Camera 图优化融合定位
 
 GICI-LIB 全称 **G**NSS/**I**NS/**C**amera **I**ntegrated Navigation Library，是上海交大最新开源的一套基于图优化的 GNSS+INS+Camera 集成导航定位库。基于 RTKLIB 处理 I/O 流、编解码；基于 OKVIS 因子图优化类型封装；基于 SVO 做特征提取。以 GNSS 为主，再加入 INS、Camera 做组合，支持相当多的数据格式、定位模式，包含很多 GNSS 因子、惯导因子、视觉因子及运动约束。以处理实时数据为主，后处理也采用模拟实时数据处理的方式进行。
 
@@ -185,7 +189,7 @@ GICI-LIB 全称 **G**NSS/**I**NS/**C**amera **I**ntegrated Navigation Library，
 
 ---
 
-## 07-SoftGSS：MATLAB-GPS 软件接收机
+### 07-SoftGSS：MATLAB-GPS 软件接收机
 
 SoftGNSS 是《软件定义的GPS和伽利略接收机》附带的程序，MATLAB 编写，实现了一套最简单的 GNSS 软件接收机功；输入经过天线接收，射频前端滤波下变频后的数字中频信号文件，进行 GPS L1 C/A 码的捕获跟踪，生成伪距观测值，解译导航电文，最小二乘定位解算；代码量很小也很简单，适合作为 GNSS 基带数字信号处理的入门阅读程序。主要执行流程如下：
 
@@ -193,7 +197,7 @@ SoftGNSS 是《软件定义的GPS和伽利略接收机》附带的程序，MATLA
 
 ---
 
-## 08-VINS：
+### 08-VINS：
 
 与双目相机和 RGB-D 相机相比，单目相机具有结构简单、成本低和处理速度快的优点。然而，单目 VSLAM 存在尺度不确定性、无法对齐位姿和重力方向的自身缺点和快速运动导致的运动模糊的环境下容易跟踪丢失等不足。为弥补此问题，可将单目相机和 IMU 相结合的传感器融合，这种融合方案被称为单目视觉惯性里程计（Visual Inertial Odometry，VIO）或单目视觉惯性 SLAM（Visual-inertial SLAM，VINS）。
 
@@ -207,7 +211,7 @@ SoftGNSS 是《软件定义的GPS和伽利略接收机》附带的程序，MATLA
 
 ---
 
-## 09-ORB-SLAM3：
+### 09-ORB-SLAM3：
 
 ORB 指 **O**riented FAST and **r**otated **B**RIEF，是一种结合 FAST 和 BRIEF，并引入旋转不变性的一种特征点和描述子；SLAM 指 **S**imultaneous **L**ocalization **a**nd **M**apping，指的是同时进行实时定位和地图构建。
 
@@ -217,7 +221,7 @@ ORB-SLAM3 是**迄今为止，最完整的视觉惯性 SLAM 系统系统**，它
 
 ---
 
-## 10-GNSS-SDR：GNSS 软件接收机
+### 10-GNSS-SDR：GNSS 软件接收机
 
 GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR:** **S**oftware **D**efined **R**eceiver），在 GitHub 上搜索 “GNSS” 排第一的仓库，收藏量也高达 1.3k。与上面列举的 RTKLIB、GAMP 等 GNSS 数据处理软件不同，GNSS-SDR 直接对信号进行处理，是一个用 C++ 实现的 GNSS 软件接收机开源项目。有了 GNSS-SDR，用户可以通过创建一个图来构建 GNSS 软件接收器，图中的节点是信号处理块，线条代表它们之间的数据流。该软件为不同的合适射频前端提供接口，并实现从接收器一直到 PVT 解算的所有功能。它的设计允许任何形式的定制，包括信号源、信号处理算法、与其他系统的互操作性、输出格式的互换，并为所有中间信号、参数和变量提供接口。
 
@@ -231,7 +235,7 @@ GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR
 
 ---
 
-## 11-TGINS：
+### 11-TGINS：
 
 
 
@@ -241,7 +245,7 @@ GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR
 
 ---
 
-## 12-KF-GINS：
+### 12-KF-GINS：
 
 KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以读取 IMU 数据文件、GNSS 结果文件，进行松组合解算，计算位置、速度、姿态、陀螺仪零偏、加速度计零偏、陀螺仪比例、加速度计比力，共 21 维状态向量。代码量小，有详细的文档、注释和讲解，代码结构很好理解，有一些可以学习的工程技巧。
 
@@ -255,7 +259,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 
 ---
 
-## 13-OB-GINS：
+### 13-OB-GINS：
 
 武大 I2NAV 开源，基于图优化的 IMU/GNSS 松组合解算，IMU 预积分算法相比以视觉为主的 ORB-SLAM3、VINS 要精细一些。
 
@@ -271,7 +275,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 
 ---
 
-## 14-ROS导航功能包
+### 14-ROS导航功能包
 
 功能简单来说，就是根据输入的里程计等传感器的信息流和机器人的全局位置，通过导航算法，计算得出安全可靠的机器人速度控制指令。广泛用在一些对可靠性要求没那么高的自主导航机器人场景中，比如扫地机器人、物流机器人等。
 
@@ -281,7 +285,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 
 ---
 
-## 15-北斗GPS双模软件接收机
+### 15-北斗GPS双模软件接收机
 
 《北斗GPS双模软件接收机》书配套程序，MATLAB 编写，程序运行相当耗时，70s 的示例程序要算几个小时。
 
@@ -295,7 +299,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 
 ---
 
-## 16-PocketSDR
+### 16-PocketSDR
 
 PocketSDR 是 RTKLIB 作者写的一款 GNSS 软件接收机，包含一个射频前端和一套后处理 GNSS 接收机程序（只支持后处理），实现了一整套完整的 GNSS 接收机功能，采用 C、Python 编写，支持几乎所有的 GNSS 信号（比商业接收机支持的还要多），目前 0.8 版本的程序支持的信号如下：
 
@@ -307,5 +311,3 @@ PocketSDR 是 RTKLIB 作者写的一款 GNSS 软件接收机，包含一个射�
 * **NavIC**: L5-SPS, SBAS: L1C/A, L5I, L5Q
 
 <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240110092301571.png" alt="image-20240110092301571" style="zoom:50%;" />
-
-</details>
