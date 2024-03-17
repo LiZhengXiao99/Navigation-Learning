@@ -29,26 +29,28 @@
 <h3>以下是本仓库重点介绍项目，点击跳转程序简介</h3>
 </div>
 
+<div align="center">
 
+|                     开源程序                     |                简介                |                            完成度                            |
+| :----------------------------------------------: | :--------------------------------: | :----------------------------------------------------------: |
+|         <a href="#RTKLIB">**RTKLIB**</a>         |     最知名的 GNSS 数据处理程序     | <Strong>【\=\=\=\=\=\=\><div>&emsp&emsp&emsp&emsp&emsp&emsp&emsp&emsp</div>】</Strong>60% |
+|           <a href="#GAMP">**GAMP**</a>           |    基于 RTKLIB 的后处理双频 PPP    | <Strong>【\=\=\=\=\=\=\=\=><div>&emsp&emsp&emsp&emsp&emsp</div>】</Strong>80% |
+|          <a href="#PSINS">**PSINS**</a>          |     MATLAB/C++ 捷联惯导工具箱      |                【\=\=\=\=\>             】40%                |
+|          <a href="#Ginan">**Ginan**</a>          |     澳大利亚 PPP 定位/定轨程序     |                【\=>                   】10%                 |
+|          <a href="#goGPS">**goGPS**</a>          |       MATLAB-GNSS 数据批处理       |                【\=>                   】10%                 |
+|       <a href="#GICI-LIB">**GICI-LIB**</a>       |   GNSS+INS+Camera 图优化融合定位   |                【\=\=\=\>               】30%                |
+|       <a href="#SoftGNSS">**SoftGNSS**</a>       |   MATLAB GPS L1-C/A 码软件接收机   |                【\=\=\=\=\=\=\>        】60%                 |
+|           <a href="#VINS">**VINS**</a>           |     光流法视觉惯性图优化 SLAM      |                【\=\=\=\>               】30%                |
+|      <a href="#ORB-SLAM3">**ORB-SLAM3**</a>      |    特征点法视觉惯性图优化 SLAM     |                【\=\=\>                 】20%                |
+|       <a href="#GNSS-SDR">**GNSS-SDR**</a>       |  基于 GNURadio 的 GNSS 软件接收机  |                【\=>                   】10%                 |
+|          <a href="#TGINS">**TGINS**</a>          | 基于 RTKLIB 的 GNSS/INS-EKF 紧组合 |                【\=\=\>                 】20%                |
+|        <a href="#KF-GINS">**KF-GINS**</a>        |      GNSS/INS-EKF 松组合 Demo      |                 【\=\=\=\=\=\=\=\=\=>  】90%                 |
+|        <a href="#OB-GINS">**OB-GINS**</a>        |      GNSS/INS-FGO 松组合 Demo      |                【\=\=\=\=\>             】40%                |
+| <a href="#ROS-Navigation">**ROS导航功能包**</a>  |  自主导航机器人定位/建图/路径规划  |                【\=\=\>                 】20%                |
+| <a href="#BDS-GPS-SDR">**北斗GPS软件接收机**</a> |      GPS-L1/BDS-B1 软件接收机      |                【\=\=\>                 】20%                |
+|      <a href="#PocketSDR">**PocketSDR**</a>      | 带射频前端的后处理 GNSS 软件接收机 |                【\=>                   】10%                 |
 
-|                     开源程序                     |                简介                |               完成度               |
-| :----------------------------------------------: | :--------------------------------: | :--------------------------------: |
-|         <a href="#RTKLIB">**RTKLIB**</a>         |     最知名的 GNSS 数据处理程序     | **【\=\=\=\=\=\=\>        】**60%  |
-|           <a href="#GAMP">**GAMP**</a>           |    基于 RTKLIB 的后处理双频 PPP    |  **【\=\=\=\=\=\=\=\=>    】**80%  |
-|          <a href="#PSINS">**PSINS**</a>          |     MATLAB/C++ 捷联惯导工具箱      | **【\=\=\=\=\>             】**40% |
-|          <a href="#Ginan">**Ginan**</a>          |     澳大利亚 PPP 定位/定轨程序     | **【\=>                   】**10%  |
-|          <a href="#goGPS">**goGPS**</a>          |       MATLAB-GNSS 数据批处理       | **【\=>                   】**10%  |
-|       <a href="#GICI-LIB">**GICI-LIB**</a>       |   GNSS+INS+Camera 图优化融合定位   | **【\=\=\=\>               】**30% |
-|       <a href="#SoftGNSS">**SoftGNSS**</a>       |   MATLAB GPS L1-C/A 码软件接收机   | **【\=\=\=\=\=\=\>        】**60%  |
-|           <a href="#VINS">**VINS**</a>           |     光流法视觉惯性图优化 SLAM      | **【\=\=\=\>               】**30% |
-|      <a href="#ORB-SLAM3">**ORB-SLAM3**</a>      |    特征点法视觉惯性图优化 SLAM     | **【\=\=\>                 】**20% |
-|       <a href="#GNSS-SDR">**GNSS-SDR**</a>       |  基于 GNURadio 的 GNSS 软件接收机  | **【\=>                   】**10%  |
-|          <a href="#TGINS">**TGINS**</a>          | 基于 RTKLIB 的 GNSS/INS-EKF 紧组合 | **【\=\=\>                 】**20% |
-|        <a href="#KF-GINS">**KF-GINS**</a>        |      GNSS/INS-EKF 松组合 Demo      |  **【\=\=\=\=\=\=\=\=\=>  】**90%  |
-|        <a href="#OB-GINS">**OB-GINS**</a>        |      GNSS/INS-FGO 松组合 Demo      | **【\=\=\=\=\>             】**40% |
-| <a href="#ROS-Navigation">**ROS导航功能包**</a>  |  自主导航机器人定位/建图/路径规划  | **【\=\=\>                 】**20% |
-| <a href="#BDS-GPS-SDR">**北斗GPS软件接收机**</a> |      GPS-L1/BDS-B1 软件接收机      | **【\=\=\>                 】**20% |
-|      <a href="#PocketSDR">**PocketSDR**</a>      | 带射频前端的后处理 GNSS 软件接收机 | **【\=>                   】**10%  |
+</div>
 
 ---
 
