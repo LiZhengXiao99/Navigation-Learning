@@ -336,7 +336,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
   * Junxiang Jiang, Xiaoji Niu, and Jingnan Liu, “Improved IMU Preintegration with Gravity Change and Earth Rotation for Optimization-Based GNSS/VINS,” *Remote Sensing*, vol. 12, no. 18, p. 3048, Sep. 2020, doi: [10.3390/rs12183048](https://doi.org/10.3390/rs12183048). [下载](https://sci-hub.se/10.3390/rs12183048)
   * Le Chang, Xiaoji Niu, and Tianyi Liu, “GNSS/IMU/ODO/LiDAR-SLAM Integrated Navigation System Using IMU/ODO Pre-Integration,” *Sensors*, vol. 20, no. 17, p. 4702, Aug. 2020, doi: [10.3390/s20174702](https://doi.org/10.3390/s20174702). [下载](https://www.mdpi.com/1424-8220/20/17/4702/pdf)
 
-<p align="center" > &nbsp;👆👆👆&nbsp;  <a href=13-OB-GINS源码阅读' target='_blank'>转到文件夹</a> &nbsp; or &nbsp; <a href="#Top">回到开头</a> &nbsp; 👆👆👆</p>
+<p align="center" > &nbsp;👆👆👆&nbsp;  <a href='13-OB-GINS源码阅读' target='_blank'>转到文件夹</a> &nbsp; or &nbsp; <a href="#Top">回到开头</a> &nbsp; 👆👆👆</p>
 
 ---
 
