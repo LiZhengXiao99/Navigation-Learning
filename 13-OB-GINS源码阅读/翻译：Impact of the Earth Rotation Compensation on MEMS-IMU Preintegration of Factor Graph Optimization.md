@@ -18,6 +18,12 @@
 
 
 
+
+
+
+
+
+
 在本文中，我们的目标是评估 MEMS-IMU 预积分中进行地球自转补偿的效果；利用了模拟 GNSS 中断的方法，而非 VINS 或 LINS 进行分析和评估；并且以 EKF 的 GNSS/INS 组合导航解作为 INS 精确度的基准。本论文的主要贡献如下：
 
 * 提出了一种图优化框架下，滑动窗口 GNSS/INS 组合导航优化器，可以融合 GNSS 定位点和 IMU 预积分数据；其中我们重新定义了 IMU 预积分模型，进行了地球自转补偿。
@@ -87,6 +93,10 @@ $$
 $$
 
 ### 3、IMU 预积分
+
+
+
+
 
 
 
@@ -185,6 +195,4 @@ $$
 30. Agarwal, Sameer, Mierle, and Keir, “Ceres Solver — A Large Scale Non-linear Optimization Library.” [Online]. Avaliable: http://ceres-solver.org/ 
 
 31. J. Engel, V. Koltun, and D. Cremers, “Direct Sparse Odometry,” *IEEE* *Trans. Pattern Anal. Mach. Intell.*, vol. 40, no. 3, pp. 611–625, Mar. 2018
-
-    
 
