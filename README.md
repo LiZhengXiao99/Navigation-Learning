@@ -22,11 +22,40 @@
 </div>
 
 
+
+---
+
+<div align="center">
+<h3>以下是本仓库重点介绍项目，点击跳转程序简介</h3>
+</div>
+
+
+
+|                     开源程序                     |                简介                |               完成度               |
+| :----------------------------------------------: | :--------------------------------: | :--------------------------------: |
+|         <a href="#RTKLIB">**RTKLIB**</a>         |     最知名的 GNSS 数据处理程序     | **【\=\=\=\=\=\=\>        】**60%  |
+|           <a href="#GAMP">**GAMP**</a>           |    基于 RTKLIB 的后处理双频 PPP    |  **【\=\=\=\=\=\=\=\=>    】**80%  |
+|          <a href="#PSINS">**PSINS**</a>          |     MATLAB/C++ 捷联惯导工具箱      | **【\=\=\=\=\>             】**40% |
+|          <a href="#Ginan">**Ginan**</a>          |     澳大利亚 PPP 定位/定轨程序     | **【\=>                   】**10%  |
+|          <a href="#goGPS">**goGPS**</a>          |       MATLAB-GNSS 数据批处理       | **【\=>                   】**10%  |
+|       <a href="#GICI-LIB">**GICI-LIB**</a>       |   GNSS+INS+Camera 图优化融合定位   | **【\=\=\=\>               】**30% |
+|       <a href="#SoftGNSS">**SoftGNSS**</a>       |   MATLAB GPS L1-C/A 码软件接收机   | **【\=\=\=\=\=\=\>        】**60%  |
+|           <a href="#VINS">**VINS**</a>           |     光流法视觉惯性图优化 SLAM      | **【\=\=\=\>               】**30% |
+|      <a href="#ORB-SLAM3">**ORB-SLAM3**</a>      |    特征点法视觉惯性图优化 SLAM     | **【\=\=\>                 】**20% |
+|       <a href="#GNSS-SDR">**GNSS-SDR**</a>       |  基于 GNURadio 的 GNSS 软件接收机  | **【\=>                   】**10%  |
+|          <a href="#TGINS">**TGINS**</a>          | 基于 RTKLIB 的 GNSS/INS-EKF 紧组合 | **【\=\=\>                 】**20% |
+|        <a href="#KF-GINS">**KF-GINS**</a>        |      GNSS/INS-EKF 松组合 Demo      |  **【\=\=\=\=\=\=\=\=\=>  】**90%  |
+|        <a href="#OB-GINS">**OB-GINS**</a>        |      GNSS/INS-FGO 松组合 Demo      | **【\=\=\=\=\>             】**40% |
+| <a href="#ROS-Navigation">**ROS导航功能包**</a>  |  自主导航机器人定位/建图/路径规划  | **【\=\=\>                 】**20% |
+| <a href="#BDS-GPS-SDR">**北斗GPS软件接收机**</a> |      GPS-L1/BDS-B1 软件接收机      | **【\=\=\>                 】**20% |
+|      <a href="#PocketSDR">**PocketSDR**</a>      | 带射频前端的后处理 GNSS 软件接收机 | **【\=>                   】**10%  |
+
 ---
 
 <div align="center">
 <h3>记录一些我看到过的项目，其中加粗的项目会在本仓库介绍</h3>
 </div>
+
 
 
 |                             类型                             |                          项目/网址                           |
@@ -62,7 +91,7 @@
 |   **[导航类会议](导航定位相关网站记录/03-导航类会议.md)**    | [美国导航年会 ION](https://link.zhihu.com/?target=https%3A//www.ion.org/)、[IEEE/ION Position Location and Navigation Symposium (IEEE/ION PLANS)](https://www.ion.org/plans/)、[International Technical Meeting (ITM)](https://www.ion.org/itm/)、[中国卫星导航学术年会 CSNC](http://www.beidou.gov.cn/zt/dhnh/djjzgwxdhxsnh/)、[欧洲导航年会 ENC](https://www.enc2020.eu/)、[慕尼黑卫星导航峰会 (Munich Satellite Navigation Summit)](https://www.munich-satellite-navigation-summit.org/)、[欧洲地学联盟大会 (EGU General Assembly)](https://www.egu.eu/)、[CVPR](https://cvpr.thecvf.com/Conferences/2024)、[ICCV](https://iccv2023.thecvf.com/)、[ECCV](https://eccv2022.ecva.net/)、[BMVC](https://bmvc2019.org/)、[ROBIO](https://www.ieee-ras.org/conferences-workshops/financially-co-sponsored/robio)、[ICRA](https://www.ieee-ras.org/conferences-workshops/fully-sponsored/icra)、[AAAI](http://www.aaai.org/)、[ICCP](http://www.iccp.ro/iccp2019/)、[ICPR](https://www.icpr2020.it/)、[PR](https://www.journals.elsevier.com/pattern-recognition/)、[IJCV](https://www.springer.com/journal/11263/)、[CVIU](https://www.journals.elsevier.com/computer-vision-and-image-understanding/)、[ICIP](https://www.journals.elsevier.com/computer-vision-and-image-understanding/)、[TIP](https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=83#opennewwindow)、[SIPPR](http://www.iwsippr.org/)、[ICDIP](http://www.icdip.org/)、[ICRA](https://www.ieee-ras.org/conferences-workshops/fully-sponsored/icra)、[IROS](https://www.iros2019.org/)、[RSS](https://roboticsconference.org/)、[AIM](http://aim2020.org/)、[ICMA](http://2019.ieee-icma.org/)、[ECCV](https://eccv2020.eu/)、[ACCV](http://accv2020.kyoto/)、[BMVC](https://bmvc2019.org/)、[TPAMI](https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=34)、[TIP](https://ieeexplore.ieee.org/xpl/RecentIssue.jsp)、[International Conference on 3D Vision](http://3dv2020.dgcv.nii.ac.jp/)、 |
 | **[文献下载网站](导航定位相关网站记录/04-文献下载网站.md)**  | [知网](https://www.cnki.net/)、[万方](https://w.wanfangdata.com.cn/)、[维普](https://www.cqvip.com/)、[Bing学术](https://cn.bing.com/academic/)、[百度学术](https://xueshu.baidu.com/)、[Sci-Hub](https://www.scihub.net.cn/)、[arxiv](https://arxiv.org/)、[ResearchGate](https://www.researchgate.net/)、[思谋学术-谷歌学术镜像](https://ac.scmor.com/)、[标准网](https://www.biaozhun.org/)、[发现报告](https://www.fxbaogao.com/)、[中国国家图书馆](https://www.nlc.cn/web/index.shtml)、[国家数据](https://data.stats.gov.cn/index.htm)、[专利检索及分析](https://pss-system.cponline.cnipa.gov.cn/conventionalSearch) |
 | **[各系统、分析中心官网](导航定位相关网站记录/05-各系统、分析中心官网.md)** | [BDS](http://www.beidou.gov.cn)、[GPS](http://www.gps.gov)、[GLONASS](https://www.glonass-iac.ru/en/)、[Galileo](http://ec.europa.eu/index_en.htm)、[QZSS](https://qzss.go.jp/en/technical/qzssinfo/)、[IRNSS](https://www.isro.gov.in/irnss-programme)、[MGEX](https://www.igs.org/mgex/)、[IGS](https://igs.org/)、[IGMAS](http://www.igmas.org/)、[ITRF](https://itrf.ign.fr/en/homepage)、[IGS标准](https://www.igs.org/formats-and-standards)、[IGS站](https://network.igs.org/)、[iGMAS](http://igmas.users.sgg.whu.edu.cn/home)、[IAG](https://www.iag-aig.org/)、[WDS](https://worlddatasystem.org/)、[IUGG](https://iugg.org/)、[GGOS](https://ggos.org/)、CNES、IAC、SHAO、CODE、[GFZ](https://www.gfz-potsdam.de/)、ESA、[WHU](http://www.igs.gnsswhu.cn/)、[BKG](https://igs.bkg.bund.de/)、[CDDIS](https://cddis.nasa.gov/)、ING、[中国卫星导航系统管理办公室测试评估研究中心](https://www.csno-tarc.cn/)、[gpsworld](https://www.gpsworld.com/)、[Inside GNSS](https://insidegnss.com/)、[GNSS Calendar](https://www.gnsscalendar.com/)、[时间转换查询](http://www.leapsecond.com/java/gpsclock.htm)、[灰机wiki卫星百科](https://sat.huijiwiki.com/wiki/%E9%A6%96%E9%A1%B5)、[Advanced Navigation](https://www.advancednavigation) |
-| **[导航软件/设备厂商](导航定位相关网站记录/06-导航软件、设备厂商.md)** | [Ublox](https://www.u-blox.com/en/)、[诺瓦泰](https://novatel.com/)、[天宝](http://www.tianbaonet.com/)、[徕卡](https://leica-geosystems.com/)、[意法半导体](https://www.st.com/zh/positioning/gnss-ics.html)、[Javad](https://www.javad.com/)、[Septentrio](https://www.baidu.com/link?url=Tz1rvry1DTYCTiDvKIZyzBdtkn9o5lrNK_1Lm_QdjvQkTa0dDYD5asZOG8sp3z51&wd=&eqid=b98a38f0010d606a0000000665e53220)、[Spectra Geospatial](https://spectrageospatial.com/)、[SXblue](https://sxbluegps.com/products/vehicle-guidance-receivers/)、[NavCom](https://www.navcomtech.com/en/)、[Geneq](https://geneq.com/fr)、[和芯星通](https://www.unicorecomm.com/)、[北斗星通](https://www.bdstar.com/)、[华力创通](http://www.hwacreate.com.cn/)、[创宇星通](http://www.cyxt.com/)、[华测导航](https://www.huace.cn/)、[千寻位置](https://www.qxwz.com/)、[六分科技](https://www.sixents.com/)、[思南导航](https://www.sinognss.com/)、[南方测绘](http://www.southsurvey.com/)、[合众思壮](https://www.unistrong.com/)、[移远通信](https://www.quectel.com.cn/)、[北云科技](https://www.bynav.com/)、[格林恩德](http://www.szgled.cn/)、[中电科星河北斗](http://www.cetc-pnt.com/)、[中电科网络通信研究院(五十四所)](https://www.cti.ac.cn/)、[创新微](https://www.minewsemi.com/)、[米度测控](https://www.shmedo.cn/)、[通宇通信](https://www.tycc.cn/)、[天奥电子](http://www.elecspn.com/)、[九洲北斗](https://www.scbdlbs.com/)、[云智北斗](http://www.panda-sc.com/)、[海积信息](http://www.highgain.com.cn/)、[际上导航](http://www.geosun-gnss.com.cn/index.html)、[博通集成](https://www.bekencorp.com/)、[天硕导航](https://www.tersus-gnss.cn/)、[AOSense](https://aosense.com/)、[Kearfott](https://www.kearfott.com/)、[Aesculap](https://www.aesculapusa.com/en.html)、[泰雷兹](https://www.thalesgroup.cn/)、[博世](https://www.bosch.com.cn/)、[Sensonor](https://www.sensonor.com/)、[InvenSense](https://invensense.tdk.com/)、[赛峰集团](https://www.safran-group.com/cn)、[SBG Systems](https://www.sbg-systems.com/zh)、[OOXTS](https://www.oxts.com/zh/)、[诺格](https://www.northropgrumman.com/)、[霍尼韦尔](https://www.honeywell.com.cn/products-services/aerospace/sensing-navigation)、[Optolink](http://www.optolinkcorp.com/)、[iXblue](https://www.ixblue.com/)、[超核电子](https://www.hipnuc.com/)、[原极科技](https://www.forsense.cn/)、[奥比中光](https://www.orbbec.com.cn/)、[浩如科技](https://www.haorutech.com/)、[凌思科技](https://www.lins-tech.com/)、[矽睿科技](http://www.siwisemi.com/)、[瑞芬科技](http://www.rion-tech.net/)、[北微传感](http://www.bwsensing.com.cn/)、[元生创新](https://www.yesense.com/)、[维特智能](https://wit-motion.cn/)、[智腾微电子](http://www.ztmicro.com/product/jzdz-zhdh/)、[北斗时代科技](http://www.bdstartimes.com/)、[清研讯科](https://www.tsingoal.com/)、[喜讯科技](https://www.xexun.com/)、[沃旭通讯](https://www.woxuwireless.com/)、[瑞达科讯](https://html.rdkx-iot.com/)、[美迪索科](https://html.rdkx-iot.com/)、[泰浩微](https://www.taihaowei.net/)、[RealSense](www.intelrealsense.com/)、[申稷光电](http://www.shsenky.com/)、[司岚光电](http://www.slamopto.com/index.php?lang=cn)、[奥比中光](https://www.orbbec.com.cn/)、[科力光电](http://www.sdkeli.com/)、[禾赛科技](https://www.hesaitech.com/cn/)、[基恩士](https://www.keyence.com.cn/)、[锐驰激光](https://www.richbeam.com/)、[EAI科技](https://ydlidar.cn/about.html)、[Kinect](https://learn.microsoft.com/zh-tw/azure/Kinect-dk/depth-camera)、[海川润泽](https://www.57iot.com/)、[四信物联网](https://www.four-faith.com.cn/)、[钦天导航](https://www.qinnav.com/)、[思为无线](https://www.nicerf.cn/)、[光鉴科技](https://learn.microsoft.com/zh-tw/azure/Kinect-dk/depth-camera)、[图漾科技](https://www.percipio.xyz/)、[微深联创](https://www.visenai.com/)、[航天宏图](https://www.piesat.cn/)、[中煤航测](http://www.arscmh.com/)、[迈普时空](http://www.whmpst.com/cn/)、[四维图新](https://www.navinfo.com/)、[正元地信](http://www.geniuses.com.cn/)、[亿力吉奥](http://gwxtslyljaxxkjyxgs.cn.gongxuku.com/)、[恒华伟业](http://www.ieforever.com/)、[苍穹数码](http://www.kqgeo.com/)、[九成中芯](http://www.dljcch.cn/)、[欧比特航宇微](https://www.myorbita.net/index.aspx)、[二十一世纪空间技术应用](https://www.21at.com.cn/)、[中科星图](https://www.geovis.com.cn/)、[智腾微电子](http://www.ztmicro.com/)、[卡尔曼导航](https://www.kalman-navigation.com/)、[导远电子](https://www.asensing.com/)、[梦芯科技](https://www.wh-mx.com/)、[纵目科技](https://www.zongmutech.com/)、[华大北斗](https://www.allystar.com/)、[国科微电子](http://www.gokemicro.com/)、[泰斗微电子](https://www.techtotop.com/)、[北方导航](http://bfdh.norincogroup.com.cn/) |
+| **[导航软件/设备厂商](导航定位相关网站记录/06-导航软件、设备厂商.md)** | [Ublox](https://www.u-blox.com/en/)、[诺瓦泰](https://novatel.com/)、[天宝](http://www.tianbaonet.com/)、[徕卡](https://leica-geosystems.com/)、[意法半导体](https://www.st.com/zh/positioning/gnss-ics.html)、[Javad](https://www.javad.com/)、[Septentrio](https://www.baidu.com/link?url=Tz1rvry1DTYCTiDvKIZyzBdtkn9o5lrNK_1Lm_QdjvQkTa0dDYD5asZOG8sp3z51&wd=&eqid=b98a38f0010d606a0000000665e53220)、[Spectra Geospatial](https://spectrageospatial.com/)、[SXblue](https://sxbluegps.com/products/vehicle-guidance-receivers/)、[NavCom](https://www.navcomtech.com/en/)、[Geneq](https://geneq.com/fr)、[和芯星通](https://www.unicorecomm.com/)、[北斗星通](https://www.bdstar.com/)、[华力创通](http://www.hwacreate.com.cn/)、[创宇星通](http://www.cyxt.com/)、[华测导航](https://www.huace.cn/)、[千寻位置](https://www.qxwz.com/)、[六分科技](https://www.sixents.com/)、[思南导航](https://www.sinognss.com/)、[南方测绘](http://www.southsurvey.com/)、[合众思壮](https://www.unistrong.com/)、[移远通信](https://www.quectel.com.cn/)、[北云科技](https://www.bynav.com/)、[格林恩德](http://www.szgled.cn/)、[中电科星河北斗](http://www.cetc-pnt.com/)、[中电科网络通信研究院(五十四所)](https://www.cti.ac.cn/)、[创新微](https://www.minewsemi.com/)、[米度测控](https://www.shmedo.cn/)、[通宇通信](https://www.tycc.cn/)、[天奥电子](http://www.elecspn.com/)、[九洲北斗](https://www.scbdlbs.com/)、[云智北斗](http://www.panda-sc.com/)、[海积信息](http://www.highgain.com.cn/)、[际上导航](http://www.geosun-gnss.com.cn/index.html)、[博通集成](https://www.bekencorp.com/)、[天硕导航](https://www.tersus-gnss.cn/)、[AOSense](https://aosense.com/)、[Kearfott](https://www.kearfott.com/)、[Aesculap](https://www.aesculapusa.com/en.html)、[泰雷兹](https://www.thalesgroup.cn/)、[博世](https://www.bosch.com.cn/)、[Sensonor](https://www.sensonor.com/)、[InvenSense](https://invensense.tdk.com/)、[赛峰集团](https://www.safran-group.com/cn)、[SBG Systems](https://www.sbg-systems.com/zh)、[OOXTS](https://www.oxts.com/zh/)、[诺格](https://www.northropgrumman.com/)、[霍尼韦尔](https://www.honeywell.com.cn/products-services/aerospace/sensing-navigation)、[Optolink](http://www.optolinkcorp.com/)、[iXblue](https://www.ixblue.com/)、[超核电子](https://www.hipnuc.com/)、[原极科技](https://www.forsense.cn/)、[奥比中光](https://www.orbbec.com.cn/)、[浩如科技](https://www.haorutech.com/)、[凌思科技](https://www.lins-tech.com/)、[矽睿科技](http://www.siwisemi.com/)、[瑞芬科技](http://www.rion-tech.net/)、[北微传感](http://www.bwsensing.com.cn/)、[元生创新](https://www.yesense.com/)、[维特智能](https://wit-motion.cn/)、[智腾微电子](http://www.ztmicro.com/product/jzdz-zhdh/)、[北斗时代科技](http://www.bdstartimes.com/)、[清研讯科](https://www.tsingoal.com/)、[喜讯科技](https://www.xexun.com/)、[沃旭通讯](https://www.woxuwireless.com/)、[瑞达科讯](https://html.rdkx-iot.com/)、[美迪索科](https://html.rdkx-iot.com/)、[泰浩微](https://www.taihaowei.net/)、[RealSense](www.intelrealsense.com/)、[申稷光电](http://www.shsenky.com/)、[司岚光电](http://www.slamopto.com/index.php?lang=cn)、[奥比中光](https://www.orbbec.com.cn/)、[科力光电](http://www.sdkeli.com/)、[禾赛科技](https://www.hesaitech.com/cn/)、[基恩士](https://www.keyence.com.cn/)、[锐驰激光](https://www.richbeam.com/)、[EAI科技](https://ydlidar.cn/about.html)、[Kinect](https://learn.microsoft.com/zh-tw/azure/Kinect-dk/depth-camera)、[海川润泽](https://www.57iot.com/)、[四信物联网](https://www.four-faith.com.cn/)、[钦天导航](https://www.qinnav.com/)、[思为无线](https://www.nicerf.cn/)、[光鉴科技](https://learn.microsoft.com/zh-tw/azure/Kinect-dk/depth-camera)、[图漾科技](https://www.percipio.xyz/)、[微深联创](https://www.visenai.com/)、[航天宏图](https://www.piesat.cn/)、[中煤航测](http://www.arscmh.com/)、[迈普时空](http://www.whmpst.com/cn/)、[四维图新](https://www.navinfo.com/)、[正元地信](http://www.geniuses.com.cn/)、[亿力吉奥](http://gwxtslyljaxxkjyxgs.cn.gongxuku.com/)、[恒华伟业](http://www.ieforever.com/)、[苍穹数码](http://www.kqgeo.com/)、[九成中芯](http://www.dljcch.cn/)、[欧比特航宇微](https://www.myorbita.net/index.aspx)、[二十一世纪空间技术应用](https://www.21at.com.cn/)、[中科星图](https://www.geovis.com.cn/)、[智腾微电子](http://www.ztmicro.com/)、[卡尔曼导航](https://www.kalman-navigation.com/)、[导远电子](https://www.asensing.com/)、[梦芯科技](https://www.wh-mx.com/)、[纵目科技](https://www.zongmutech.com/)、[华大北斗](https://www.allystar.com/)、[国科微电子](http://www.gokemicro.com/)、[泰斗微电子](https://www.techtotop.com/)、[北方导航](http://bfdh.norincogroup.com.cn/)、[莱赛导航](https://www.laisaidh.com/) |
 |     **[芯片厂商](导航定位相关网站记录/07-芯片厂商.md)**      | [恩智浦](https://www.nxp.com.cn/)、[微芯](https://www.microchip.com/)、[瑞萨](https://www.renesas.cn/cn/zh)、[高通](https://www.qualcomm.cn/)、[意法半导体](https://www.st.com/content/st_com/zh.html)、[AMD](https://www.amd.com/zh-cn.html)、[ARM](https://www.arm.com/)、[英飞凌](https://www.infineon.com/)、[德州仪器](https://www.ti.com.cn/)、[新唐](https://www.nuvoton.com.cn/)、[罗姆](https://www.rohm.com.cn/)、[三星电子](https://www.samsung.com.cn/)、[东芝](https://www.toshiba.com.cn/)、[海力士](https://www.skhynix.com.cn/)、[美光](https://www.micron.cn/)、[赛普拉斯](https://www.infineon.com/?utm_source=cypress&utm_medium=referral&utm_campaign=202110_globe_en_all_integration-homepage&redirId=test_homepage)、[亚德诺](https://www.analog.com/cn/index.html)、[莱迪思](https://www.latticesemi.com/zh-CN/)、[思佳讯](https://www.skyworksinc.com/?Lang=zh-cn)、[博通](https://www.broadcom.cn/)、[Maevell](https://www.marvell.com/)、[菲菱科思](http://www.phoenixcompany.cn/)、[CISCO](https://www.cisco.com/)、[安森美](https://www.onsemi.cn/)、[兆易创新](https://www.gigadevice.com.cn/)、[乐鑫科技](http://espressif.cn/zh-hans)、[沁恒微电子](https://www.wch.cn/products/CH569.html)、[高云半导体](http://www.gowinsemi.com.cn/)、[复旦微电子](https://www.fmsh.com/products.shtml)、[宏晶科技](http://www.macrosilicon.com/default.asp)、[摩尔线程](https://www.mthreads.com/)、[芯动科技](https://www.innosilicon.cn/)、[海思半导体](https://www.hisilicon.com/en)、[平头哥](https://www.t-head.cn/)、[紫光集团](https://www.unigroup.com.cn/)、[长江存储](https://www.ymtc.com/)、[长鑫存储](https://www.cxmt.com/)、[易灵思](https://www.elitestek.com/index.html) |
 |     **[计算平台](导航定位相关网站记录/08-计算平台.md)**      | [Jetson](https://www.nvidia.com/en-us/autonomous-machines/)、[Arduino](https://www.arduino.cc/)、[ESP32](https://www.espressif.com.cn/)、[STC89C51](https://www.stcmicro.com/index.html)、[STM32](https://www.st.com/zh/microcontrollers-microprocessors/stm32-32-bit-arm-cortex-mcus.html)、[GD32](https://www.gd32mcu.com/cn/product/)、[CH32](https://www.wch.cn/products/productsCenter/mcuInterface?categoryId=70)、[ZYNQ](https://china.xilinx.com/products/silicon-devices/soc/zynq-7000.html)、[香橙派](http://www.orangepi.cn/)、[RK3588](https://www.rock-chips.com/a/cn/product/RK35xilie/2022/0926/1656.html)、[NanoPi](https://www.friendlyelec.com/)、[泰山派](https://lckfb.com/project/detail/lctspi-2g-16g?param=baseInfo)、[RockPi](https://rockpi.org/) |
 | **[淘宝京东店铺](导航定位相关网站记录/09-淘宝京东店铺.md)**  | [北天](https://beitianznsb.tmall.com/)、[墨子号科技](https://mzhtek.taobao.com/)、[南方测绘](https://south.tmall.com/)、[体感中国](https://shop36983089.taobao.com/)、[移远](https://yiyuanznsb.tmall.com/)、[千寻位置](https://qianxunweizhi.tmall.com/)、[全方](https://qfrtk.taobao.com/)、[集思宝](https://jisibaohw.tmall.com/)、[深圳天工测绘](https://shop471758324.taobao.com/)、[思南导航](https://sinognss.tmall.com/)、[浩如科技](https://shop456096856.taobao.com/)、[维特智能](https://weitezhineng.tmall.com/)、[北云科技](https://shop382665129.taobao.com/)、[原极科技](https://shop69172801.taobao.com/)、[凌思科技](https://shop578921739.taobao.com/)、[啊路比电子](https://shop264805684.taobao.com/)、[超核电子](https://hipnuc.tmall.com/)、[瑞芬科技](https://rion-tech.taobao.com/)、[蓝尊科技](https://shop433492811.taobao.com/)、[北微传感](https://bewis.taobao.com/)、[精讯畅通](https://shop116671741.taobao.com/)、[华信](https://hx002.taobao.com/)、[红心天线](https://shop278992037.taobao.com/)、[维信天线](https://shop106012054.taobao.com/)、[亚博智能](https://yabozhineng.tmall.com/)、[微雪电子](https://weixuesm.tmall.com/)、[轮趣科技](https://wheeltec.tmall.com/)、[幻尔机器人](https://lobot-zone.taobao.com/)、 [youyeetoo开源硬件商城](https://shop113286404.taobao.com/)、[天之博特](https://tianbot.taobao.com/)、[合宙](https://luat.taobao.com/)、[正点原子](https://zhengdianyuanzi.tmall.com/)、[野火](https://yehuosm.tmall.com/)、[Speed](https://sipeed.taobao.com/)、[seeed](https://seeedstudio.taobao.com/)、[芯板坊](https://shop599532105.taobao.com/)、[Abrobt](https://shop264518119.taobao.com/)、[创乐博](https://chuanglebo.tmall.com/)、[米尔科技](https://shop108478821.taobao.com/)、[嘉立创](https://shop400371330.taobao.com/)、[微相科技](https://esoc.taobao.com/)、[我爱开发板](https://shop580004668.taobao.com/)、[璞致电子](https://shop275566416.taobao.com/)、[香橙派](https://xiangchengpaidn.tmall.com/)、[EAI](https://eaibot.taobao.com/)、[北醒](https://jxlyt520.taobao.com/)、[司岚](https://shop152221712.taobao.com/)、[SenkyLaser](https://senkylaser.taobao.com/)、[宇树](https://unitree.tmall.com/)、[科恩光电](https://shop254986868.taobao.com/)、 [骆鸵互娱科技](https://shop148383984.taobao.com/)、[奥比中光](https://shop142544700.taobao.com/)、 [韦东山老师个人店 ](https://100ask.taobao.com/)、[WeAct Studio](https://weactstudio.taobao.com/?spm=a1z10.1-c.0.0.888c78f2VOna3u)、[OpenJumper](https://shop555818949.taobao.com/?spm=a1z10.1-c-s.0.0.5a0b778cLIkmxU)、[开源SDR实验室](https://opensourcesdrlab.taobao.com/)、[友善](https://nanopi.taobao.com/)、[alinx](https://alinx.tmall.com/) |
@@ -96,8 +125,7 @@
 <div align="center">
 <h2>本仓库介绍的开源程序</h2>
 </div>
-
-### 01-RTKLIB：GNSS 数据处理
+### <a name="RTKLIB">01-RTKLIB：最知名的 GNSS 数据处理</a>
 
 RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本东京海洋大学的高须知二（Tomoji Takasu）开发，由一个**核心程序库**和多个**命令行程序**、**界面程序**组成；代码规范、功能完善、可拓展性好，许多 GNSS 导航定位程序开源程序都是基于 RTKLIB 二次开发衍生而来，适合作为 GNSS 入门学习的代码。
 
@@ -128,7 +156,7 @@ RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本�
 
 ---
 
-### 02-GAMP：基于 RTKLIB 的后处理双频 PPP
+### <a name="GAMP">02-GAMP：基于 RTKLIB 的后处理双频 PPP</a>
 
 GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and multi-frequency **P**recise positioning)，在 RTKLIB 的基础上，将一些些多余的函数、代码简洁化，精简出后处理双频 PPP 部分，并对算法进行改进增强。对初学者非常友好，在我接触过的导航定位开源程序中算是最简单的，是用纯 C 语言编写，由于做了简化，代码比 RTKLIB 原版还要简单；使用也非常简单，软件包里直接有 VS 工程，和组织好的配置、数据文件，简单改改路径就能算出结果。
 
@@ -136,7 +164,7 @@ GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and mul
 
 ---
 
-### 03-PSINS：MATLAB-C++ 捷联惯导工具箱
+### <a name="PSINS">03-PSINS：MATLAB-C++ 捷联惯导工具箱</a>
 
 PSINS（**P**recise **S**trapdown **I**nertial **N**avigation **S**ystem 高精度捷联惯导系统算法）工具箱由西北工业大学自动化学院惯性技术教研室严恭敏老师开发和维护。工具箱分为Matlab和C++两部分。主要应用于**捷联惯导**系统的数据处理和算法验证开发，它包括**惯性传感器数据分析**、**惯组标定**、**初始对准**、**惯导AVP**（姿态-速度-位置）更新解算、**组合导航**Kalman滤波等功能。C++部分采用 VC6 编写，可以用于嵌入式开发。
 
@@ -144,7 +172,7 @@ PSINS（**P**recise **S**trapdown **I**nertial **N**avigation **S**ystem 高精�
 
 ---
 
-### 04-Ginan
+### <a name="Ginan">04-Ginan</a>
 
 
 
@@ -170,7 +198,7 @@ PEA 用 C++、POD 部分用 Fortune，绘图和批处理脚本用 Python
 
 ---
 
-### 05-goGPS：MATLAB-GNSS 数据处理
+### <a name="goGPS">05-goGPS：MATLAB-GNSS 数据处理</a>
 
 **goGPS**是一个处理GNSS原始数据的软件，最初支持单频低成本GPS接收机数据，但现在也可以用来处理多频多系统GNSS数据。它实现了多种算法来解算，目前包括两个主要的最小二乘法（LS）引擎：一个基于于组合观测数据（例如无电离层观测）；另一个能够使用所有的频率和记录的信号数据，而不进行任何组合（电离层延迟是正常方程的参数）。组合和不组合的引擎都支持PPP、NET解算。目前只支持静态测站的解算，还不能动态解算。
 
@@ -178,7 +206,7 @@ PEA 用 C++、POD 部分用 Fortune，绘图和批处理脚本用 Python
 
 ---
 
-### 06-GICI-LIB：GNSS+INS+Camera 图优化融合定位
+### <a name="GICI-LIB">06-GICI-LIB：GNSS+INS+Camera 图优化融合定位</a>
 
 GICI-LIB 全称 **G**NSS/**I**NS/**C**amera **I**ntegrated Navigation Library，是上海交大最新开源的一套基于图优化的 GNSS+INS+Camera 集成导航定位库。基于 RTKLIB 处理 I/O 流、编解码；基于 OKVIS 因子图优化类型封装；基于 SVO 做特征提取。以 GNSS 为主，再加入 INS、Camera 做组合，支持相当多的数据格式、定位模式，包含很多 GNSS 因子、惯导因子、视觉因子及运动约束。以处理实时数据为主，后处理也采用模拟实时数据处理的方式进行。
 
@@ -198,7 +226,7 @@ GICI-LIB 全称 **G**NSS/**I**NS/**C**amera **I**ntegrated Navigation Library，
 
 ---
 
-### 07-SoftGSS：MATLAB-GPS 软件接收机
+### <a name="SoftGNSS">07-SoftGSS：MATLAB GPS L1-C/A 码软件接收机</a>
 
 SoftGNSS 是《软件定义的GPS和伽利略接收机》附带的程序，MATLAB 编写，实现了一套最简单的 GNSS 软件接收机功；输入经过天线接收，射频前端滤波下变频后的数字中频信号文件，进行 GPS L1 C/A 码的捕获跟踪，生成伪距观测值，解译导航电文，最小二乘定位解算；代码量很小也很简单，适合作为 GNSS 基带数字信号处理的入门阅读程序。主要执行流程如下：
 
@@ -206,7 +234,7 @@ SoftGNSS 是《软件定义的GPS和伽利略接收机》附带的程序，MATLA
 
 ---
 
-### 08-VINS：
+### <a name="VINS">08-VINS：光流法视觉惯性 SLAM</a>
 
 与双目相机和 RGB-D 相机相比，单目相机具有结构简单、成本低和处理速度快的优点。然而，单目 VSLAM 存在尺度不确定性、无法对齐位姿和重力方向的自身缺点和快速运动导致的运动模糊的环境下容易跟踪丢失等不足。为弥补此问题，可将单目相机和 IMU 相结合的传感器融合，这种融合方案被称为单目视觉惯性里程计（Visual Inertial Odometry，VIO）或单目视觉惯性 SLAM（Visual-inertial SLAM，VINS）。
 
@@ -220,7 +248,7 @@ SoftGNSS 是《软件定义的GPS和伽利略接收机》附带的程序，MATLA
 
 ---
 
-### 09-ORB-SLAM3：
+### <a name="ORB-SLAM3">09-ORB-SLAM3：</a>
 
 ORB 指 **O**riented FAST and **r**otated **B**RIEF，是一种结合 FAST 和 BRIEF，并引入旋转不变性的一种特征点和描述子；SLAM 指 **S**imultaneous **L**ocalization **a**nd **M**apping，指的是同时进行实时定位和地图构建。
 
@@ -230,7 +258,7 @@ ORB-SLAM3 是**迄今为止，最完整的视觉惯性 SLAM 系统系统**，它
 
 ---
 
-### 10-GNSS-SDR：GNSS 软件接收机
+### <a name="GNSS-SDR">10-GNSS-SDR：GNSS 软件接收机</a>
 
 GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR:** **S**oftware **D**efined **R**eceiver），在 GitHub 上搜索 “GNSS” 排第一的仓库，收藏量也高达 1.3k。与上面列举的 RTKLIB、GAMP 等 GNSS 数据处理软件不同，GNSS-SDR 直接对信号进行处理，是一个用 C++ 实现的 GNSS 软件接收机开源项目。有了 GNSS-SDR，用户可以通过创建一个图来构建 GNSS 软件接收器，图中的节点是信号处理块，线条代表它们之间的数据流。该软件为不同的合适射频前端提供接口，并实现从接收器一直到 PVT 解算的所有功能。它的设计允许任何形式的定制，包括信号源、信号处理算法、与其他系统的互操作性、输出格式的互换，并为所有中间信号、参数和变量提供接口。
 
@@ -244,7 +272,7 @@ GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR
 
 ---
 
-### 11-TGINS：
+### <a name="TGINS">11-TGINS：</a>
 
 
 
@@ -254,7 +282,7 @@ GNSS-SDR（**GNSS:** **G**lobal **N**avigation **S**atellite **S**ystems、**SDR
 
 ---
 
-### 12-KF-GINS：
+### <a name="KF-GINS">12-KF-GINS：</a>
 
 KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以读取 IMU 数据文件、GNSS 结果文件，进行松组合解算，计算位置、速度、姿态、陀螺仪零偏、加速度计零偏、陀螺仪比例、加速度计比力，共 21 维状态向量。代码量小，有详细的文档、注释和讲解，代码结构很好理解，有一些可以学习的工程技巧。
 
@@ -266,7 +294,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 
 ---
 
-### 13-OB-GINS：
+### <a name="OB-GINS">13-OB-GINS：</a>
 
 武大 I2NAV 开源，基于图优化的 IMU/GNSS 松组合解算，IMU 预积分算法相比以视觉为主的 ORB-SLAM3、VINS 要精细一些。
 
@@ -282,7 +310,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 
 ---
 
-### 14-ROS导航功能包
+### <a name="ROS-Navigation">14-ROS导航功能包</a>
 
 功能简单来说，就是根据输入的里程计等传感器的信息流和机器人的全局位置，通过导航算法，计算得出安全可靠的机器人速度控制指令。广泛用在一些对可靠性要求没那么高的自主导航机器人场景中，比如扫地机器人、物流机器人等。
 
@@ -292,7 +320,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 
 ---
 
-### 15-北斗GPS双模软件接收机
+### <a name="BDS-GPS-SDR">15-北斗GPS双模软件接收机</a>
 
 《北斗GPS双模软件接收机》书配套程序，MATLAB 编写，程序运行相当耗时，70s 的示例程序要算几个小时。
 
@@ -306,7 +334,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 
 ---
 
-### 16-PocketSDR
+### <a name="PocketSDR">16-PocketSDR</a>
 
 PocketSDR 是 RTKLIB 作者写的一款 GNSS 软件接收机，包含一个射频前端和一套后处理 GNSS 接收机程序（只支持后处理），实现了一整套完整的 GNSS 接收机功能，采用 C、Python 编写，支持几乎所有的 GNSS 信号（比商业接收机支持的还要多），目前 0.8 版本的程序支持的信号如下：
 
