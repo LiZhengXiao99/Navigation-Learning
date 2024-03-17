@@ -2,8 +2,6 @@
     <a name="Top"></a>
 	<h1>Navigation-Learning：一个本科生的导航学习笔记</h1>
 </div>
-
-
 <div align="center">
     <img alt="Static Badge" src="https://img.shields.io/badge/QQ-1482275402-red">
     <img alt="Static Badge" src="https://img.shields.io/badge/%E5%BE%AE%E4%BF%A1-lizhengxiao99-green">
@@ -24,16 +22,33 @@
 </div>
 
 
+<div align="center">
+    <h3>👇以下是本仓库包含的板块，点击跳转👇</h3>
+
+|                   &nbsp; 板块 &nbsp;                    |               🧾&nbsp;说明&nbsp;🧾               |                     🛠&nbsp;完成度&nbsp;🛠                     |
+| :-----------------------------------------------------: | :--------------------------------------------: | :----------------------------------------------------------: |
+|            <a href="#Code">**源码阅读**</a>             | 我对开源程序的解读、流程图、思维导图、相关资料 | <Strong>【\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;             】</Strong>40% |
+|            [**设备上手**](导航定位设备上手)             | 各种 GNSS/IMU/Camera/Lidar 设备用法、测试数据  | <Strong>【\=> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                  】</Strong>10% |
+|            <a href="#Books">**书籍讲义**</a>            |  导航算法学习过程中对我起较大帮助的书籍、讲义  | <Strong>【\=\=\=\=\=\=\=\=>&nbsp;&nbsp;&nbsp;】</Strong>80%  |
+|           <a href="#Project">**开源整理**</a>           | 整理导航相关开源项目，拓展眼界，避免重复造轮子 | <Strong>【\=\=\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;】</Strong>60% |
+|           <a href="#Website">**常用网站**</a>           | 整理导航相关网址，方便点击跳转，起收藏夹的作用 | <Strong>【\=\=\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;】</Strong>60% |
+|             [**常用命令**](常用指令快捷键)              |  Linux/Git/ROS/VSCode 常用命令，便于查找使用   | <Strong>【\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;             】</Strong>40% |
+| [**学习心得**](一个双非学校导航工程本科生的学习心得.md) | 我作为双非导航工程本科生对于导航学习的思考感悟 | <Strong>【\=\=\=\=\=\=\=\=>&nbsp;&nbsp;&nbsp;】</Strong>80%  |
+
+</div>
+
 
 ---
 
 <div align="center">
-<h3>以下是本仓库重点介绍项目，点击跳转程序简介</h3>
+    <a name="Code"></a>
+	<h3>👇以下是本仓库重点介绍项目，点击跳转程序简介👇</h3>
 </div>
+
 
 <div align="center">
 
-|                     开源程序                     |                简介                |                            完成度                            |
+|                     开源程序                     |        🧾&nbsp; 简介&nbsp;🧾         |                          🛠 完成度 🛠                          |
 | :----------------------------------------------: | :--------------------------------: | :----------------------------------------------------------: |
 |         <a href="#RTKLIB">**RTKLIB**</a>         |     最知名的 GNSS 数据处理程序     | <Strong>【\=\=\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;】</Strong>60% |
 |           <a href="#GAMP">**GAMP**</a>           |    基于 RTKLIB 的后处理双频 PPP    | <Strong>【\=\=\=\=\=\=\=\=>&nbsp;&nbsp;&nbsp;】</Strong>80%  |
@@ -57,8 +72,10 @@
 ---
 
 <div align="center">
-<h3>记录一些我看到过的项目，其中加粗的项目会在本仓库介绍</h3>
+    <a name="Project"></a>
+	<h3>🛠&nbsp;记录一些我看到过的项目，其中加粗的项目会在本仓库介绍&nbsp;🛠</h3>
 </div>
+
 
 
 
@@ -86,8 +103,10 @@
 ---
 
 <div align="center">
-<h3>记录一些导航相关的网址、学习资源、导航设备</h3>
+    <a name="Website"></a>
+	<h3>💾&nbsp;记录一些导航相关的网址、学习资源、导航设备&nbsp;💾</h3>
 </div>
+
 
 
 |                             类型                             |                             网址                             |
@@ -111,15 +130,19 @@
 | **[导航考研院校](导航定位相关网站记录/20-考研院校官网.md)**  | [长安大学测绘学院](https://dcxy.chd.edu.cn/xb/sy.htm)、[浙工大信息工程学院](https://ie.zjut.edu.cn/jsp/index.jsp)、[安理工测绘学院](https://chxy.aust.edu.cn/)、[中山大学地科学院](https://gs.sysu.edu.cn/)、[中山大学电子通信学院](https://sece.sysu.edu.cn/)、[西工大自动化](https://zdhxy.nwpu.edu.cn/)、[徐矿测绘学院](https://cesi.cumt.edu.cn/)、[合工大测绘学院](http://geomatics.hfut.edu.cn/)、[滁州学院地信学院](https://dxxy.chzu.edu.cn/_s9/main.psp)、[河海地科学院](https://dxy.hhu.edu.cn/)、[南航自动化学院](https://cae.nuaa.edu.cn/)、[南航航空学院](http://aero.nuaa.edu.cn/)、[南理工自动化学院](https://au.njust.edu.cn/)、[南信大自动化学院](https://auto.nuist.edu.cn/_t10/main.htm)、[南信大遥感测绘学院](https://ycxy.nuist.edu.cn/main.htm)、[南邮自动化学院](https://coa.njupt.edu.cn/)、[南邮地信学院](https://cgb.njupt.edu.cn/)、[南师大地科学院](http://dky.njnu.edu.cn/)、[东南大学仪科学院](https://ins.seu.edu.cn/)、[东南大学交通学院](https://tc.seu.edu.cn/)、[清华仪科学系](https://www.dpi.tsinghua.edu.cn/)、[北大遥感地信研究所](https://www.irsgis.pku.edu.cn/)、[北大地空学院](https://sess.pku.edu.cn/xygk/xyjj.htm)、[武大测绘学院](http://www.sgg.whu.edu.cn/)、[武大GNSS中心](http://gpscenter.whu.edu.cn/index.shtml)、[武大测绘遥感国重](https://liesmars.whu.edu.cn/)、[武大遥感学院](https://rsgis.whu.edu.cn/)、[武大珞珈实验室](https://luojia.whu.edu.cn/)、[武大南极研究中心](https://pole.whu.edu.cn/cn/)、[中国测绘科学研究院](http://www.casm.ac.cn/)、[中国科学院精密测量研究所](https://apm.cas.cn/)、[中国科学院国家授时中心](http://www.ntsc.ac.cn/)、[中国科学院空天信息创新研究院](http://www.aircas.ac.cn/)、[华东师范地信学院](https://geo.ecnu.edu.cn/)、[哈工大智能学院](http://cisse.hrbeu.edu.cn/)、[同济测绘学院](https://celiang.tongji.edu.cn/)、[同济电信学院](https://see.tongji.edu.cn/)、[北建测绘学院](https://chxy.bucea.edu.cn/)、[武理工航运学院](http://sn.whut.edu.cn/)、[武理工资环学院](http://sree.whut.edu.cn/)、[山科大测绘学院](https://gc.sdust.edu.cn/)、[山建测绘学院](https://www.sdjzu.edu.cn/cedlxx/)、[上交感知学院](https://ssse.sjtu.edu.cn/)、[北理工自动化学院](https://ac.bit.edu.cn/)、[国科大智科学院](http://hias.ucas.ac.cn/znkxyjs/index.htm)、[西南交大地环学院](https://gsee.swjtu.edu.cn/)、[河南理工测绘学院](http://chxy.hpu.edu.cn/)、[兰州交通测绘学院](https://cdxy.lzjtu.edu.cn/)、[中南地信学院](https://gip.csu.edu.cn/)、[东北大学自动化学院](http://www.me.neu.edu.cn/)、[湖南科技大学资环学院](https://zaxy.hnust.edu.cn/index.htm)、[重邮自动化学院](http://ac.cqupt.edu.cn/)、[华中科技自动化学院](http://aia.hust.edu.cn/)、[浙大控制学院](http://www.cse.zju.edu.cn/)、 |
 | **[国内知名团队官网](导航定位相关网站记录/17-国内知名团队官网.md)** | [武大牛小骥i2NAV](http://www.i2nav.com/)、[武大耿江辉Pride](http://pride.whu.edu.cn/index.shtml#)、[武大钟燕飞RSIDEA](http://rsidea.whu.edu.cn/index.html)、[武大姚剑CVRS](https://cvrs.whu.edu.cn/)、[武大郭迟BRAIN](https://zhiyuteam.com/html/web//index.html)、[武大张祖勋数字摄影测量与计算机视觉研究中心](https://dpcv.whu.edu.cn/jj/zxjj.htm)、[上交感知与导航研究所](https://isn.sjtu.edu.cn/web/index)、[同济李博峰GNSS研究团队](https://gnss.tongji.edu.cn/)、 |
 | **[SLAM研究团队](导航定位相关网站记录/18-SLAM研究团队.md)**  | [香港科技大学空中机器人实验室](https://uav.hkust.edu.hk/)、[香港科技大学机器人与多感知实验室 RAM-LAB](https://www.ram-lab.com/)、[香港中文大学天石机器人实验室](http://ri.cuhk.edu.hk/)、[浙江大学 CAD&CG 国家重点实验室](http://www.zjucvg.net/)、[美国密歇根大学感知机器人实验室（PeRL）](https://robots.engin.umich.edu/About/)、[美国卡耐基梅陇大学机器人研究所](https://www.ri.cmu.edu/)、 [美国加州大学圣地亚哥分校语境机器人研究所](https://existentialrobotics.org/index.html)、[美国特拉华大学人感知与导航组](https://sites.udel.edu/robot/)、[美国麻省理工学院航空航天实验室](http://acl.mit.edu/)、[美国麻省理工学院 SPARK 实验室](http://web.mit.edu/sparklab/)、[美国麻省理工学院海洋机器人组](https://marinerobotics.mit.edu/)、[美国明尼苏达大学多元自主机器人系统实验室](http://mars.cs.umn.edu/index.php)、[美国宾夕法尼亚大学 Vijay Kumar 实验室](https://www.kumarrobotics.org/)、[美国麻省理工学院 Robust Robotics Group]()、[美国佐治亚理工学院智能视觉与自动化实验室](https://link.zhihu.com/?target=http%3A//ivalab.gatech.edu/)、[加拿大蒙特利尔大学机器人与嵌入式 AI 实验室](http://groups.csail.mit.edu/rrg/index.php)、[加拿大舍布鲁克大学智能、交互、综合、跨学科机器人实验室](https://introlab.3it.usherbrooke.ca/)、[瑞士苏黎世大学机器人与感知课题组](http//3A//rpg.ifi.uzh.ch/index.html)、[瑞士苏黎世联邦理工 Vision for Robotics Lab](https://v4rl.ethz.ch/the-group.html)、[瑞士苏黎世联邦理工计算机视觉与几何实验室](https://link.zhihu.com/?target=http%3A//www.cvg.ethz.ch/index.php)、[瑞士苏黎世联邦理工自主系统实验室](https://cvg.ethz.ch/index)、[英国帝国理工学院戴森机器人实验室](https://www.imperial.ac.uk/dyson-robotics-lab/)、[英国牛津大学信息工程学](https://www.robots.ox.ac.uk/)、[德国慕尼黑工业大学计算机视觉组](https://github.com/tum-vision)、[德国马克斯普朗克智能系统研究所嵌入式视觉组](https://ev.is.mpg.de/)、[德国弗莱堡大学智能自主系统实验室](http://ais.informatik.uni-freiburg.de/index_en.php)、[德国波恩大学摄影测量与机器人实验室](https://www.ipb.uni-bonn.de/)、[西班牙萨拉戈萨大学机器人、感知与实时组 SLAM 实验室](http://robots.unizar.es/slamlab/)、[西班牙马拉加大学机器感知与智能机器人课题组](http://mapir.uma.es/mapirwebsite/)、[奥地利格拉茨技术大学计算机图形学与视觉研究所](https://www.tugraz.at/institutes/icg/home/)、[波兰波兹南工业大学移动机器人实验室](http://lrm.put.poznan.pl/)、[澳大利亚昆士兰科技大学机器人技术中心](https://www.qut.edu.au/research/centre-for-robotics)、[澳大利亚机器人视觉中心](https://www.roboticvision.org/)、[日本国立先进工业科学技术研究所](https://www.airc.aist.go.jp/en/intro/) |
-|     **[实用工具](导航定位相关网站记录/19-实用工具.md)**      | [WPS](https://www.wps.cn/)、[NotePad++](https://notepad.plus/)、[Thunderbird](https://www.thunderbird.net/zh-CN/)、[MSys2](https://www.msys2.org/)、[Typora](https://typoraio.cn/)、[Everything](https://www.voidtools.com/zh-cn/)、[进程截杀器](http://shajincheng.com/)、[百叶窗](https://shutters.160.com/)、[飞书](https://www.feishu.cn/)、[芦笋](https://lusun.com/)、[幕布](https://mubu.com/home)、[ProssOn](https://www.processon.com/)、[EV 录屏](https://www.ieway.cn/)、[XMind](https://xmind.cn/)、[MobaXterm](https://mobaxterm.mobatek.net/)、[PotPlayer](https://potplayer.tv/)、[Zotero](https://www.zotero.org/)、[WinMerge](https://winmerge.org/)、[火绒](https://www.huorong.cn/)、[360](https://www.360.cn/)、[Snipaste](https://www.snipaste.com/)、[Quicker](https://getquicker.net/)、[超级公式](https://www.ocrmath.com/)、[冰点文库下载器](http://www.bingdian001.com/)、[Bandizip](https://bandizip.zhangfan131.cn/)、[天若 OCR](https://ocr.tianruo.net/)、[Dropit](http://www.dropitproject.com/)、[flux](https://justgetflux.com/)、[QuickLook](https://github.com/QL-Win/QuickLook)、[Geek Uninstaller](https://geekuninstaller.com/)、[日期计算器](https://www.ri7.com.cn/)、 |
+|     **[实用工具](导航定位相关网站记录/19-实用工具.md)**      | [NotePad++](https://notepad.plus/)、[Thunderbird](https://www.thunderbird.net/zh-CN/)、[MSys2](https://www.msys2.org/)、[Typora](https://typoraio.cn/)、[Everything](https://www.voidtools.com/zh-cn/)、[进程截杀器](http://shajincheng.com/)、[百叶窗](https://shutters.160.com/)、[飞书](https://www.feishu.cn/)、[芦笋](https://lusun.com/)、[幕布](https://mubu.com/home)、[ProssOn](https://www.processon.com/)、[EV 录屏](https://www.ieway.cn/)、[XMind](https://xmind.cn/)、[MobaXterm](https://mobaxterm.mobatek.net/)、[PotPlayer](https://potplayer.tv/)、[Zotero](https://www.zotero.org/)、[WinMerge](https://winmerge.org/)、[火绒](https://www.huorong.cn/)、[360](https://www.360.cn/)、[Snipaste](https://www.snipaste.com/)、[Quicker](https://getquicker.net/)、[超级公式](https://www.ocrmath.com/)、[冰点文库下载器](http://www.bingdian001.com/)、[Bandizip](https://bandizip.zhangfan131.cn/)、[天若 OCR](https://ocr.tianruo.net/)、[Dropit](http://www.dropitproject.com/)、[flux](https://justgetflux.com/)、[QuickLook](https://github.com/QL-Win/QuickLook)、[Geek Uninstaller](https://geekuninstaller.com/)、[日期计算器](https://www.ri7.com.cn/)、 |
 
 <p align="center" > &nbsp;👆👆👆&nbsp;  <a href='导航定位相关网站记录' target='_blank'>转到文件夹</a> &nbsp; or &nbsp; <a href="#Top">回到开头</a> &nbsp; 👆👆👆</p>
 
 ---
 
 <div align="center">
-<h3>推荐书籍</h3>
+    <a name="Books"></a>
+    <h3>📚&nbsp;推荐书籍&nbsp;📚</h3>
 </div>
+
+  
+
 <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240125155004417.png" alt="image-20240125155004417" style="zoom:50%;" />
 
 
