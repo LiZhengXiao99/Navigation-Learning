@@ -16,10 +16,12 @@
 <p>👋 嗨，你好，我是李郑骁，安徽理工大学导航工程本科生；</p>
 <p>💡 仓库所有内容都可以随意转载，可用于任何目的，不必征求我的意见；</p>
 <p>✨ 本仓库会长期更新，分享出来，希望有人用得上，也激励着自己坚持学下去；</p>
-<p>💻 有些程序会详细写（比如 RTKLIB、KF-GINS），有些只画个流程图、列举重点的函数；</p>
+<p>💻 理解尚浅、实践甚少，列举的公式理论仅供参考，千万不要照着我的公式写代码；</p>
 <p>🛠 不建议直接下载整个仓库，Markdown 和 PDF 可以在线看，想要的文件也可以<a href='https://zhuanlan.zhihu.com/p/578116206' target='_blank'>单独下载</a>；</p>
+<p>🎉 如果您觉得内容有价值，推荐用 Github-Desktop 下载并保持更新，用 Typora 看 Markdown；</p>
 <p>🤺 有问题欢迎随时联系我：<strong>微信</strong> (lizhengxiao99)、<strong>QQ</strong> (1482275402)、<strong>Email</strong> (dauger@126.com)；</p>
 </div>
+
 
 
 ---
@@ -31,7 +33,7 @@
 
 |                🌟&nbsp;板块&nbsp;🌟&nbsp;                 |               🧾&nbsp;说明&nbsp;🧾               |                     🛠&nbsp;完成度&nbsp;🛠                     |
 | :-----------------------------------------------------: | :--------------------------------------------: | :----------------------------------------------------------: |
-|            <a href="#Code">**源码阅读**</a>             | 我对开源程序的解读、流程图、思维导图、相关资料 | <Strong>【\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;             】</Strong>40% |
+|            <a href="#Code">**源码解读**</a>             | 我对开源程序的解读、流程图、思维导图、相关资料 | <Strong>【\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;             】</Strong>40% |
 |            [**设备上手**](导航定位设备上手)             | 各种 GNSS/IMU/Camera/Lidar 设备用法、测试数据  | <Strong>【\=> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                  】</Strong>10% |
 |            <a href="#Books">**书籍讲义**</a>            |  导航算法学习过程中对我起较大帮助的书籍、讲义  | <Strong>【\=\=\=\=\=\=\=\=>&nbsp;&nbsp;&nbsp;】</Strong>80%  |
 |                **[博客翻译](博客翻译)**                 | 机翻外文有意思的博客，稍作修改，再加上我的总结 | <Strong>【\=\=\=\> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;              】</Strong>30% |
@@ -145,8 +147,7 @@
 </div>
 
 
-
-<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240125155004417.png" alt="image-20240125155004417" style="zoom:50%;" />
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240318113132366.png" alt="image-20240125155004417" style="zoom:67%;" />
 
 
 
