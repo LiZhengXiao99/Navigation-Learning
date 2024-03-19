@@ -20,8 +20,9 @@
 <p>💻 理解尚浅、实践甚少，列举的公式理论仅供参考，千万不要照着我的公式写代码；</p>
 <p>🛠 不建议直接下载整个仓库，Markdown 和 PDF 可以在线看，想要的文件也可以<a href='https://zhuanlan.zhihu.com/p/578116206' target='_blank'>单独下载</a>；</p>
 <p>🎉 如果您觉得内容有价值，推荐用 Github-Desktop 下载并保持更新，用 Typora 看 Markdown；</p>
-<p>🤺 有问题欢迎随时联系我：<strong>微信</strong> (lizhengxiao99)、<strong>QQ</strong> (1482275402)、<strong>Email</strong> (dauger@126.com)；</p>
+<p>🤺 有问题欢迎随时与我联系：<strong>微信</strong> (lizhengxiao99)、<strong>QQ</strong> (1482275402)、<strong>Email</strong> (dauger@126.com)；</p>
 </div>
+
 
 
 
