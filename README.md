@@ -86,7 +86,6 @@
 <div align="center">
     <a name="Recommend-Repositories"></a>
 	<h3>🤺&nbsp;推荐一些同类仓库，创作不易，欢迎给他们 Star 鼓励&nbsp;🤺</h3>
-</div>
 
 
 
@@ -171,8 +170,7 @@
 
 <div align="center">
     <a name="RSS"></a>
-	<h3>🌏&nbsp;推荐一些不错的RSS源，在信息爆炸且碎片化的当下，建立个人专属信息聚合&nbsp;🌏</h3>
-</div>
+	<h3>🌏&nbsp;推荐一些不错的RSS源，在信息爆炸且碎片化的当下，建立个人专属信息聚合&nbsp;🌏</h3>
 
 
 | 订阅源 | 网址 | RSS-URL |
