@@ -43,7 +43,7 @@
 |        <a href="#Website">**常用网站**</a>         |        整理导航相关网址，点击即可跳转，方便收藏与访问        | <Strong>【\=\=\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;】</Strong>60% |
 |         [**指令速查**](常用指令快捷键速查)         | [Linux](常用指令快捷键速查/01-Linux常用指令)/[Vim](常用指令快捷键速查/02-Vim常用指令.md)/[Make](常用指令快捷键速查/03-Make常用指令.md)/[CMake](常用指令快捷键速查/08-CMake常用命令.md)/[Git](常用指令快捷键速查/04-Git常用指令.md)/[Docker](常用指令快捷键速查/05-Docker常用指令.md)/[ROS](常用指令快捷键速查/06-ROS常用指令.md)/[VScode](常用指令快捷键速查/07-VScode快捷键.md) | <Strong>【\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;             】</Strong>40% |
 |        [**算法理解**](导航定位算法公式理解)        |        不会一板一眼地推导公式，写点我对导航算法的理解        | <Strong>【\=> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                  】</Strong>10% |
-|          [**算法解惑**](导航定位算法解惑)          | [参数估计](导航定位算法解惑/01-参数估计算法解惑.md)/[GNSS](导航定位算法解惑/02-GNSS算法解惑.md)/[INS](导航定位算法解惑/03-INS算法解惑.md)/[组合导航](导航定位算法解惑/04-组合导航算法解惑.md)/[SLAM](导航定位算法解惑/05-SLAM算法解惑.md)/[多源融合](导航定位算法解惑/06-多源融合算法解惑.md)/[规控](导航定位算法解惑/07-规划控制算法解惑.md) |                 【==>                 】20%                  |
+|          [**算法解惑**](导航定位算法解惑)          | [参数估计](导航定位算法解惑/01-参数估计算法解惑.md)/[GNSS](导航定位算法解惑/02-GNSS算法解惑.md)/[INS](导航定位算法解惑/03-INS算法解惑.md)/[组合导航](导航定位算法解惑/04-组合导航算法解惑.md)/[SLAM](导航定位算法解惑/05-SLAM算法解惑.md)/[多源融合](导航定位算法解惑/06-多源融合算法解惑.md)/[规控](导航定位算法解惑/07-规划控制算法解惑.md) | <Strong>【\=\=\=\> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;              】</Strong>30% |
 |              [**心得体会**](心得体会)              | [导航学习](心得体会/一个双非学校导航工程本科生的学习心得.md)/[博客写作](心得体会/博客写作心得.md)/[Github主页](心得体会/Github主页布置.md)/[个人网站](心得体会/个人网站搭建.md)/[RSS上手](心得体会/RSS介绍及推荐.md) | <Strong>【\=\=\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;】</Strong>60% |
 |              [**安理导航**](安理导航)              | [毕业生去向](安理导航/安理工导航工程17-18-19级去向.png)/[课程体系](安理导航/导航工程课程体系.png)/[21级课表](安理导航/课表)/[课程锐评](安理导航/安理工导航工程课程锐评.md)/[硕导评价](安理导航/安理工空测院导航相关硕导评价.md) | <Strong>【\=\=\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;】</Strong>60% |
 | <a href="#Recommend-Repositories">**仓库推荐**</a> |       推荐一些同类仓库，创作不易，欢迎给他们 Star 鼓励       | <Strong>【\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;             】</Strong>40% |
@@ -170,7 +170,10 @@
 
 <div align="center">
     <a name="RSS"></a>
-	<h3>🌏&nbsp;推荐一些不错的RSS源，在信息爆炸且碎片化的当下，建立个人专属信息聚合&nbsp;🌏</h3>
+	<h3>🌏&nbsp;推荐一些不错的RSS源，在信息爆炸且碎片化的当下，建立个人专属信息聚合&nbsp;🌏</h3>
+
+
+
 
 
 | 订阅源 | 网址 | RSS-URL |
