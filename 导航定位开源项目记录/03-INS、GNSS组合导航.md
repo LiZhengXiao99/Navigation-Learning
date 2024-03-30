@@ -15,15 +15,15 @@
 
 <br/>
 
-* **[PSINS](http://www.psins.org.cn/)**：
-* **[KF-GINS](https://github.com/i2Nav-WHU/KF-GINS)**：
-* **[OB-GINS](https://github.com/i2Nav-WHU/OB_GINS)**：
-* **[TGINS](https://github.com/heiwa0519/TGINS)**：
-* [PPPLIB](https://geodesy.noaa.gov/gps-toolbox/PPPLib.htm)：
-* [Compass](https://gitee.com/hw_cc/compass)：
-* [GINav_v2.0](https://github.com/kaichen686/GINav_v2.0-test)、[GINAV](https://github.com/kaichen686/GINav)：
-* [IGNAV](https://github.com/Erensu/ignav)：
-* [MATLAB-Groves](https://github.com/zbai/MATLAB-Groves)：
+* **[PSINS](http://www.psins.org.cn/)**：西工大严恭敏开发的捷联惯导工具箱，包含一系列 MATLAB 后处理脚本，和 C++ 实时松组合程序，
+* **[KF-GINS](https://github.com/i2Nav-WHU/KF-GINS)**：武大，算是一个 Demo，代码只有 1300 行，注释详尽，适合作为入门惯导入门松组合学习的代码，听说原本是硕士
+* **[OB-GINS](https://github.com/i2Nav-WHU/OB_GINS)**：武大唐海亮，
+* **[TGINS](https://github.com/heiwa0519/TGINS)**：后处理 PPP-INS 紧组合，安理工陈超开发，
+* [PPPLIB](https://geodesy.noaa.gov/gps-toolbox/PPPLib.htm)：矿大陈超开发，投稿到 GPS Solution，支持 GNSS 三频数据处理，基于 C++ 编写，
+* [Compass](https://gitee.com/hw_cc/compass)：矿大陈超开发，对应于他的博士论文
+* [GINav_v2.0](https://github.com/kaichen686/GINav_v2.0-test)、[GINAV](https://github.com/kaichen686/GINav)：后处理 GNSS-INS 紧组合，矿大陈凯开发，
+* [IGNAV](https://github.com/Erensu/ignav)：基于 RTKLIB 的 GNSS-INS 图优化紧组合，武大苏景岚开发，
+* [MATLAB-Groves](https://github.com/zbai/MATLAB-Groves)：GNSS 及多传感器数据融合，
 * [imu_x_fusion](https://github.com/cggos/imu_x_fusion)：
 * [OpenIMU](https://github.com/introlab/OpenIMU)：
 * [eagleye](https://github.com/MapIV/eagleye)：
@@ -55,5 +55,6 @@
 * [Gait-Tracking](https://github.com/xioTechnologies/Gait-Tracking)：
 * [Machine_Learning_GNSS_IMU_Integration](https://github.com/Akpozi/Machine_Learning_GNSS_IMU_Integration)：
 * [ImuCalibration-Poistion](https://github.com/shenshikexmu/ImuCalibration-Poistion)：
+* [ ADIS16470_Arduino_Teensy](https://github.com/juchong/ADIS16470_Arduino_Teensy)：
+* [Seeed_ADIS16470](https://github.com/Seeed-Studio/Seeed_ADIS16470)：
 * [IMU-study 整理](https://github.com/Staok/IMU-study)：
-* [Visual Navigation 整理](https://paperswithcode.com/task/visual-navigation)：

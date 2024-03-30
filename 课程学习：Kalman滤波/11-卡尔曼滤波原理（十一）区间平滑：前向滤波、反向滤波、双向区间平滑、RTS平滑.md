@@ -1,11 +1,11 @@
 最优预测、估计与平滑之间的关系：
 
-![[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-kZC8JtPg-1686234324707)(卡尔曼滤波与组合导航原理（十一）区间平滑.assets/1686229884025.png)]](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/f19c5ae8d6e141f2871ddf61224efe4b.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/f19c5ae8d6e141f2871ddf61224efe4b.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-kZC8JtPg-1686234324707)(卡尔曼滤波与组合导航原理（十一）区间平滑.assets/1686229884025.png)]" style="zoom:67%;" />
 
 
 三种平滑方式：
 
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/8a347802fce04134a7106b7afc078975.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/8a347802fce04134a7106b7afc078975.png" style="zoom: 80%;" />
 
 
 **函数模型和随机模型**
@@ -100,7 +100,9 @@ $$
 
 ### 6、平滑精度比较
 
-![[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-U8jzdNUC-1686234324709)(卡尔曼滤波与组合导航原理（十一）区间平滑.assets/1686232739636.png)]](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/51dfacc488584ff39fb482710ad71461.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/51dfacc488584ff39fb482710ad71461.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-U8jzdNUC-1686234324709)(卡尔曼滤波与组合导航原理（十一）区间平滑.assets/1686232739636.png)]" style="zoom: 67%;" />
 
 * 可平滑性问题：受系统噪声影响的状态才具可平滑性。随机常数就没有可平滑性。
 * 滤波要存的数据量比较大，可能几个G，工程上双向滤波+ P 阵对角线加权平均，可有效降低存储量。
+
+我的理解，RTS和双向滤波等价，比单向滤波精度高，全高斯白噪声理想情况精度高一倍；双向滤波是从前往后算一遍，存下状态向量、协方差，再从后往前算一遍，前后的结果取加权平均；RTS也是先从前往后算一遍，存的量更多，但从后往前算可以直接出平滑后的结果。

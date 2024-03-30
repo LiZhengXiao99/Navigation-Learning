@@ -14,11 +14,11 @@
 </div>
 <br/>
 
-* **[GNSS-SDR](https://github.com/gnss-sdr/gnss-sdr)**：
-* **[SoftGNSS](https://github.com/kristianpaul/SoftGNSS)**：
+* **[GNSS-SDR](https://github.com/gnss-sdr/gnss-sdr)**：C++ 编写，二十万行，是支持频点最多的开源 GNSS 软件接收机，支持 CUDA 加速，基于 GNU Radio，文档很全面，而且在持续更新。
+* **[SoftGNSS](https://github.com/kristianpaul/SoftGNSS)**：《软件定义的 GPS/Galileo 接收机》书上的程序，MATLA编写
 * [SoftGNSS-python](https://github.com/perrysou/SoftGNSS-python)：
 * **[PocketSDR](https://github.com/tomojitakasu/PocketSDR)**：
-* [GNSS-SDRLIB](https://github.com/taroz/GNSS-SDRLIB)：
+* [GNSS-SDRLIB](https://github.com/taroz/GNSS-SDRLIB)：采用 C++ 编写，和 RTKLIB 代码风格一模一样，可能是同一个课题组，包括界面程序和命令行程序，主要在 Windows 运行，对 Linux 支持不好。
 * [nut2nt](https://github.com/amungo/nut2nt)：
 * [Beagle_SDR_GPS](https://github.com/jks-prv/Beagle_SDR_GPS)：
 * [FlyDog_SDR_GPS](https://github.com/flydog-sdr/FlyDog_SDR_GPS)：

@@ -43,3 +43,4 @@
 * [Visual_SLAM_Related_Research 整理](https://github.com/wuxiaolang/Visual_SLAM_Related_Research)：
 * [vins-application 整理](https://github.com/engcang/vins-application)：
 * [Recent-Stars-2024 整理](https://github.com/Vincentqyw/Recent-Stars-2024)：
+* [Visual Navigation 整理](https://paperswithcode.com/task/visual-navigation)：
