@@ -200,7 +200,7 @@
 </div>
 <table align="center">
     <tr align="center">
-    	<th width="150">封面</th>
+    	<th width="160">封面</th>
     	<th>简介</th>
     </tr>
     <tr>
@@ -208,6 +208,9 @@
             <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331145552445.png" alt="image-20240331145552445" style="zoom:;" />
         </td>
     	<td>
+            <p align="center">
+                <strong>《GPS原理与接收机设计》谢刚</strong>
+            </p>
             入门卫星导航首选的书，真正能把一整套都交给你，学 GNSS 不能只知道根据接收机输出的伪距、载波、多普勒、信噪比做定位，最好还是了解了解接收机内部的原理，
         </td>
     </tr>
@@ -216,6 +219,9 @@
             <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331150652642.png" alt="image-20240331150652642" />
         </td>
         <td>
+			<p align="center">
+                <strong>《捷联惯导算法与组合导航讲义》严恭敏</strong>
+            </p>
         </td>
     </tr>
         <tr>
@@ -223,6 +229,9 @@
             <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331150756809.png" alt="image-20240331150756809" />
         </td>
         <td>
+            <p align="center">
+                <strong>《GNSS与惯性及多传感器组合导航系统原理》Groves</strong>
+            </p>
         </td>
     </tr>
         <tr>
@@ -230,24 +239,127 @@
             <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331150921116.png" alt="image-20240331150921116" />
         </td>
         <td>
+            <p align="center">
+                <strong>《测绘程序设计》李英冰</strong>
+            </p>
         </td>
     </tr>
         <tr>
         <td>
+            <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331151755099.png" alt="image-20240331151755099" />
         </td>
         <td>
-        </td>
-    </tr>
-        <tr>
-        <td>
-        </td>
-        <td>
+            <p align="center">
+                <strong>《自适应动态导航定位》杨元喜</strong>
+            </p>
         </td>
     </tr>
         <tr>
         <td>
+            <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331151907738.png" alt="image-20240331151907738" />
         </td>
         <td>
+            <p align="center">
+                <strong>《GPS测量与数据处理》李征航</strong>
+            </p>
+        </td>
+    </tr>
+        <tr>
+        <td>
+            <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331152222633.png" alt="image-20240331152222633" />
+        </td>
+        <td>
+            <p align="center">
+                <strong>《概率机器人》塞巴斯蒂安·特龙</strong>
+            </p>
+        </td>
+    </tr>
+    </tr>
+        <tr>
+        <td>
+            <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331152305330.png" alt="image-20240331152305330" />
+        </td>
+        <td>
+            <p align="center">
+                <strong>《北斗GPS双模软件接收机》鲁郁</strong>
+            </p>
+        </td>
+    </tr>
+    </tr>
+        <tr>
+        <td>
+            <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331152342461.png" alt="image-20240331152342461" />
+        </td>
+        <td>
+             <p align="center">
+                <strong>《软件定义的GPS和伽利略接收机》</strong>
+            </p>
+        </td>
+    </tr>
+    </tr>
+        <tr>
+        <td>
+            <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331152422181.png" alt="image-20240331152422181" />
+        </td>
+        <td>
+            <p align="center">
+                <strong>《EffectiveC++》</strong>
+            </p>
+        </td>
+    </tr>
+	</tr>
+        <tr>
+        <td>
+            <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331152500555.png" alt="image-20240331152500555" />
+        </td>
+        <td>
+            <p align="center">
+                <strong>《C++20高级编程》</strong>
+            </p>
+        </td>
+    </tr>
+	</tr>
+        <tr>
+        <td>
+            <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331152721060.png" alt="image-20240331152721060" />
+        </td>
+        <td>
+            <p align="center">
+                <strong>《视觉SLAM十四讲》高翔</strong>
+            </p>
+        </td>
+    </tr>
+	</tr>
+        <tr>
+        <td>
+            <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331152834041.png" alt="image-20240331152834041" />
+        </td>
+        <td>
+            <p align="center">
+                <strong>《视觉惯性SLAM》程小六</strong>
+            </p>
+        </td>
+    </tr>
+	</tr>
+        <tr>
+        <td>
+            <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331152928671.png" alt="image-20240331152928671" />
+        </td>
+        <td>
+            <p align="center">
+                <strong>《自动驾驶中的SLAM技术》高翔</strong>
+            </p>
+        </td>
+    </tr>
+	</tr>
+        <tr>
+        <td>
+            <img width="180" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240331153002713.png" alt="image-20240331153002713" />
+        </td>
+        <td>
+            <p align="center">
+                <strong>《大话数据结构》程杰</strong>
+            </p>
         </td>
     </tr>
 </table>
