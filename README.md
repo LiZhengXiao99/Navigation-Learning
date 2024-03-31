@@ -294,6 +294,9 @@
             <p align="center">
                 <strong>《北斗GPS双模软件接收机》鲁郁</strong>
             </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要是推荐书附带的程序，MATLAB 编写 GPS-L1/BDS-B1 软件接收机，学一学北斗信号处理算法，NH码处理啥的；程序运行相当耗时，70s 的数据要算几个小时。书写的有些部分写的比谢刚的《GPS原理与接收机设计》要细致深入，代码的有些部分处理的比SoftGNSS细致，可以结合着一块看。
+            </p>
             <p align="center" > 👉👉👉&nbsp;  <a href='' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
     </tr>
@@ -350,6 +353,9 @@
         <td>
             <p align="center">
                 <strong>《C++20高级编程》</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全面、详实的介绍了C++的方方面面，还有案例讲解，非常适合现代C++入门学者；C++ Primer没涵盖新的语法特性（仅到C++11），而且将来也大概率不会涵盖了，因为作者已经去世了；市面上其他介绍C++20的书，大多都只介绍C++的新特性，是给那些已经掌握了C++的读者读的（用来了解新特性），不适合初学者。
             </p>
             <p align="center" > 👉👉👉&nbsp;  <a href='' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
@@ -423,6 +429,8 @@
         </td>
     </tr>
 </table>
+
+
 
 
 
