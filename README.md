@@ -306,6 +306,9 @@
              <p align="center">
                 <strong>《软件定义的GPS和伽利略接收机》</strong>
             </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;薄薄的一小本，一百多面，我主要是推荐配套的开源程序SoftGNSS，MATLAB 编写，实现了一套最简单的 GNSS 软件接收机功；输入经过天线接收，射频前端滤波下变频后的数字中频信号文件，进行 GPS L1 C/A 码的捕获跟踪，生成伪距观测值，解译导航电文，最小二乘定位解算；代码量很小也很简单，适合作为 GNSS 基带数字信号处理的入门阅读程序。
+            </p>
             <p align="center" > 👉👉👉&nbsp;  <a href='' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
     </tr>
@@ -319,7 +322,7 @@
                 <strong>《C++Premier》</strong>
             </p>
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直译过来叫“C++入门”，但不适合完全零基础看，适合初学者上过了C语言或者C++课，有了一点点基础之后看，难度比其它的 C++ 入门书籍、教材稍大，写的很详细，文笔还非常幽默风趣让人心情愉悦；可以放一本在手边，语法生疏了，查一下；它还有个简略的版本：《C++ Premier Plus》，也是C++入门不错的参考书。
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直译过来叫“C++入门”，但不适合完全零基础看，适合初学者上过了C语言或者C++课，有了一点点基础之后看，难度比其它的 C++ 入门书籍、教材稍大，写的很详细，不光讲语法，还会讲一些代码设计经验以及一些避坑指南，文笔幽默风趣让人心情愉悦；可以放一本在手边，语法生疏了，查一下；它还有个简略的版本：《C++ Premier Plus》，也是C++入门不错的参考书。
             </p>
 			<p align="center" > 👉👉👉&nbsp;  <a href='' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
@@ -334,7 +337,7 @@
                 <strong>《EffectiveC++》</strong>
             </p>
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本书以条款的形式列举了55条C++语法的使用建议，帮助我们提高代码质量、性能、可读性、可拓展性，让我们对 C++ 编程的理解更上一层楼；使用的 C++ 版本比较老，很多内容不适用于现代 C++，看完之后可以再看看类似的《Modern Effective C++》、《Effective STL》。
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以条款的形式列举了55条C++语法的使用建议，帮助我们提高代码质量、性能、可读性、可拓展性，让我们对 C++ 编程的理解更上一层楼；使用的 C++ 版本比较老，很多内容不适用于现代 C++，看完之后可以再看看类似的《Modern Effective C++》、《Effective STL》。
             </p>
             <p align="center" > 👉👉👉&nbsp;  <a href='' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
@@ -374,6 +377,9 @@
         <td>
             <p align="center">
                 <strong>《视觉惯性SLAM》程小六</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计算机视觉Life程小六写的ORB-SLAM3的源码解析，质量比大部分的博客讲义高的多，学完《视觉SLAM十四讲》就该继续学常用的SLAM框架，结合着代码深入学算法，基于ORB特征点的ORB-SLAM3是一个不错的选择，支持单目/双目/RGB-D、惯性紧组合、回环检测、重定位，在开源数据集上有不错的效果，缺点是计算量大、代码BUG多、对外参标定要求高。在六哥的知识星球《小六的机器人AI圈》中有读书挑战赛活动，感兴趣可以去看看。
             </p>
             <p align="center" > 👉👉👉&nbsp;  <a href='' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
