@@ -473,7 +473,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;严老师给博士讲的课，这是腾讯会议直播的录屏，把卡尔曼滤波、捷联惯导、组合导航的算法讲的很透彻，前七讲介绍各种卡尔曼滤波，后三讲介绍捷联惯导和组合导；建议搭配着《捷联惯导与组合导航原理》和开源程序PSINS来学。
             </p>
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即使你不做惯导，也推荐看看前两节，最小二乘和卡尔曼滤波，能让你有更深一层层的认识，听严老师这两节课比听我的老师讲一学期的《最优估计》收货还要大。
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即使你不做惯导，也推荐看看前两节，能让你对最小二乘和卡尔曼滤波有更深一层的认识，听严老师这两节课比听我老师讲一学期的《最优估计》收货还要大。
             </p>
         	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV11K411J7gp' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
@@ -501,7 +501,7 @@
                 <strong>《组合导航》武大i2Nav</strong>
             </p>
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;武大研究生课程，是《惯性导航》课程的深入，介绍了先介绍IMU特性、标定、对准，然后回顾了各种姿态和旋转，最后是捷联惯导递推和噪声传播，最后两讲介绍松紧组合；学完之后推荐结合着讲义看PSINS程序，程序很简单，只有1300行，网上也有很多讲解。
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;武大研究生课程，是《惯性导航》课程的深入，介绍了先介绍IMU特性、标定、对准，然后回顾了各种姿态和旋转，最后是捷联惯导递推和噪声传播，最后两讲介绍松紧组合；学完之后推荐结合着讲义看PSINS程序，程序很简单，只有1300行，网上也有很多讲解，能把程序看懂才是真的学明白了。
             </p>
         	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1na411Z7rQ' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
