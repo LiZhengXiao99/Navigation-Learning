@@ -449,6 +449,20 @@
     </tr>
     <tr>
     	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240402133256208.png" alt="image-20240331145552445" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《误差理论与测量平差基础》邱卫宁</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导航定位建图本质上都是参数估计问题，各种算法都要按最小二乘、卡尔曼滤波的方式来理解，初学导航，推荐先看武大邱卫宁《误差理论与测量平差》的前三章（误差理论、协方差与权、最小二乘原理），然后再看严恭敏《卡尔曼滤波与组合导航》前两节。
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1vs411N7sz' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
             <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240402132434608.png" alt="image-20240331145552445" style="zoom:;" />
         </td>
     	<td>
@@ -456,7 +470,10 @@
                 <strong>《卡尔曼滤波与组合导航原理》严恭敏</strong>
             </p>
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;严老师把捷联惯导、组合导航的算法讲的很透彻，不过整本书都是公式推导，学起来相当有难度；前三章介绍常用姿态、坐标系，地球相关参数计算，第四章介绍捷联惯导递推、误差传播，五六章介绍参数估计、各种滤波，第七章介绍松组合、初始对准，第八章讲仿真。B 站有上配套的视频课《卡尔曼滤波与组合导航》，严老师开源了配套的 MATLAB 捷联惯导工具箱 PSINS，都是入门捷联惯导、组合导航不错的资料。
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;严老师给博士讲的课，这是腾讯会议直播的录屏，把卡尔曼滤波、捷联惯导、组合导航的算法讲的很透彻，前七讲介绍各种卡尔曼滤波，后三讲介绍捷联惯导和组合导；建议搭配着《捷联惯导与组合导航原理》和开源程序PSINS来学。
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即使你不做惯导，也推荐看看前两节，最小二乘和卡尔曼滤波，能让你有更深一层层的认识，听严老师这两节课比听我的老师讲一学期的《最优估计》收货还要大。
             </p>
         	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV11K411J7gp' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
@@ -469,6 +486,9 @@
             <p align="center">
                 <strong>《惯性导航》武大i2Nav</strong>
             </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;武大导航工程本科生课程，比严老师的课简单的多，只讲捷联惯导，先介绍IMU的原理、误差特性，然后介绍各种姿态和旋转，最后是捷联惯导递推和噪声传播，推荐搭配着i2Nav的讲义来看。
+            </p>
         	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1nR4y1E7Yj' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
     </tr>
@@ -480,6 +500,9 @@
             <p align="center">
                 <strong>《组合导航》武大i2Nav</strong>
             </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;武大研究生课程，是《惯性导航》课程的深入，介绍了先介绍IMU特性、标定、对准，然后回顾了各种姿态和旋转，最后是捷联惯导递推和噪声传播，最后两讲介绍松紧组合；学完之后推荐结合着讲义看PSINS程序，程序很简单，只有1300行，网上也有很多讲解。
+            </p>
         	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1na411Z7rQ' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
     </tr>
@@ -489,20 +512,12 @@
         </td>
     	<td>
             <p align="center">
-                <strong>《测绘学概论》武大六位院士</strong>
+                <strong>《测绘学概论》武大</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;测绘通识课，六位院士每人讲一节，分别是：宁津生《绪论》、陈俊勇《大地测量学》、李德仁《遥感科学与技术》、张祖勋《摄影测量》、龚健雅《地理信息系统》、刘经南《导航定位与北斗》。
             </p>
         	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1y7411Z72b' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
-        </td>
-    </tr>
-    <tr>
-    	<td>
-            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240402133256208.png" alt="image-20240331145552445" style="zoom:;" />
-        </td>
-    	<td>
-            <p align="center">
-                <strong>《误差理论与测量平差基础》邱卫宁</strong>
-            </p>
-        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1vs411N7sz' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
     </tr>
     <tr>
@@ -648,10 +663,6 @@
         </td>
     </tr>
 </table>
-
-
-
-
 
 
 
