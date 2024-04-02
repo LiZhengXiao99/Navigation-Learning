@@ -266,7 +266,7 @@
                 <strong>《捷联惯导算法与组合导航讲义》严恭敏</strong>
             </p>
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;严老师把捷联惯导、组合导航的算法讲的很透彻，不过整本书的公式推导，学起来相当有难度；前三章介绍常用姿态、坐标系，地球相关参数计算，第四章介绍捷联惯导递推、误差传播，五六章介绍参数估计、各种滤波，第七章介绍松组合、初始对准，第八章讲仿真。B 站有上配套的视频课《卡尔曼滤波与组合导航》，严老师开源了配套的 MATLAB 捷联惯导工具箱 PSINS，都是入门捷联惯导、组合导航不错的资料。
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;严老师把捷联惯导、组合导航的算法讲的很透彻，不过整本书都是公式推导，学起来相当有难度；前三章介绍常用姿态、坐标系，地球相关参数计算，第四章介绍捷联惯导递推、误差传播，五六章介绍参数估计、各种滤波，第七章介绍松组合、初始对准，第八章讲仿真。B 站有上配套的视频课《卡尔曼滤波与组合导航》，严老师开源了配套的 MATLAB 捷联惯导工具箱 PSINS，都是入门捷联惯导、组合导航不错的资料。
             </p>
             <p align="center" > 👉👉👉&nbsp;  <a href='' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
@@ -432,6 +432,7 @@
 
 
 
+
 <p align="center" > &nbsp;👆👆👆&nbsp;  <a href='https://github.com/LiZhengXiao99/Navigation-Book' target='_blank'>转到项目</a> &nbsp; or &nbsp; <a href="#Top">回到开头</a> &nbsp; 👆👆👆</p>
 
 ---
@@ -452,6 +453,9 @@
     	<td>
             <p align="center">
                 <strong>《卡尔曼滤波与组合导航原理》严恭敏</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;严老师把捷联惯导、组合导航的算法讲的很透彻，不过整本书都是公式推导，学起来相当有难度；前三章介绍常用姿态、坐标系，地球相关参数计算，第四章介绍捷联惯导递推、误差传播，五六章介绍参数估计、各种滤波，第七章介绍松组合、初始对准，第八章讲仿真。B 站有上配套的视频课《卡尔曼滤波与组合导航》，严老师开源了配套的 MATLAB 捷联惯导工具箱 PSINS，都是入门捷联惯导、组合导航不错的资料。
             </p>
         	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV11K411J7gp' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
