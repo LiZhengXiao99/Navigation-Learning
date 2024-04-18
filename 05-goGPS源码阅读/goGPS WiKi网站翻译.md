@@ -10,7 +10,7 @@
 
 那是2007年，在米兰理工大学--科莫校区，最初有一套用来教学生GPS数据处理和 Kalman 滤波的程序。当时Mirko Reguzzoni 和 Eugenio Realini 觉得，基于MATLAB语言的新的GPS处理软件可能有发展空间。在一些学生（创始者）的帮助下，他们开始写一套利用 Kalman 滤波的完整软件。goGPS 的第一个版本可以追溯到2009年，当时代码在 GPL 下发布并上传到 SourceForge 平台。之后该软件开始在大学里被使用，并开始收到来自世界不同地区的贡献。同时， Eugenio 在通过 goGPS 的博士论文答辩后，前往日本从事对流层研究的博士后工作，在那里他编写了 PPP 解算的大部分代码。2014年，Eugenio 回到意大利，与他在 Politecnico 的一些前同事一起成立了一个名为 GReD 的子公司，并发布了第一个版本，用 Kalman 滤波实现了 PPP。
 
-![goGPS_history](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/goGPS_History.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/goGPS_History.png" alt="goGPS_history" style="zoom: 33%;" />
 
 当我在 2016 年底开始为 goGPS 工作时，该软件使用了一个固定的数据结构，限制了最多两个频率的使用，而且还没有为现代星座做好准备。要扩大它或修改处理顺序是非常复杂的；开始时是为了提高性能，但很快就变成了对软件的全面重写。 我决定使用**面向对象**的编程方法，以获得更大的灵活性和模块化，但 **Kalman 滤波仍然是一个限制性的性能因素**（MATLAB在进行迭代处理方面是出了名的慢）。Eugenio 测试了基于**批处理最小二乘**引擎的差分组合数据处理，结果相当好，所以当 Giulio Tagliaferro 加入 GReD 团队，我们必须开发一个新的引擎时，他提出并编写了第一个非差的批处理程序，这仍然是 goGP S预处理的核心。MATLAB 擅长处理矩阵，新的引擎比旧的 KF 引擎快得多，但我们一直在做准静态站的后处理，我们对它们的处理进行了优化，并且现在我们**不再支持移动接收机**。2018年，我离开 Politecnico，加入了 GReD ；从那时起，目前 99% 的发展是由我们的子公司支持的。在过去的一年里，Giulio 和我负责了大部分的开发工作，改进了软件，现在与原始版本相同的代码行数有所减少。带 KF 的最后一个版本是0.5.x，现在可以在遗留分支找到。新的 1.0 版本是一个全新的软件，有两个引擎（组合和非组合），能够进行 PPP 和 NET，可以很容易地扩展到其它算法，成为测试新算法的基础。
 
@@ -143,7 +143,7 @@ goGPS_MATLAB
 
 如果一切正常，你的屏幕上应该出现类似这样的图形用户界面：
 
-![goGPS Main Window](https://gogps-project.github.io/wiki/images/goGPS_MainWindow.png?raw=true) 
+<img src="https://gogps-project.github.io/wiki/images/goGPS_MainWindow.png?raw=true" alt="goGPS Main Window" style="zoom:50%;" /> 
 
 ## 六、软件配置
 

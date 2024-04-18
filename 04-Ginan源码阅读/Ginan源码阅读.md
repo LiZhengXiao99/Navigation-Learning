@@ -1,5 +1,27 @@
 [TOC]
 
+## 前言
+
+Ginan教程太少了，欢迎大家都投入到，
+
+
+
+
+
+计划下一篇文章介绍 MATLAB 版的 goGPS；下下篇讲图优化 GNSS-INS 松组合程序 OB-GINS。
+
+
+
+
+
+现在对话大模型很厉害了，
+
+
+
+
+
+
+
 ## 一、Ginan 介绍
 
 ### 1、软件简介
@@ -12,15 +34,71 @@
 
 
 
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240406095221692.png" alt="image-20240406095221692" style="zoom:50%;" />
+
+
+
 * 
 
 * 用 cloc 统计 src 文件夹，结果如下：
 
   <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20230808154537347.png" alt="image-20230808154537347" style="zoom:50%;" />
+  
+  <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240406094815349.png" alt="image-20240406094815349" style="zoom:50%;" />
 
 
 
-### 3、PEA（parameter estimation algorithm）
+### 3、版本更迭
+
+Ginan 持续更新，整理了一下 CHANGELOG 文件，总共三个大版本：
+
+* **[1.0.0]** - 2021-07-13：首次正式发布。
+* **[1.1.0]** - 2021-08-06：增加模糊度解算、Ntrip/RTCM 支持、BiasSinex 改正。
+* **[1.1.1]** - 2021-09-29：加入 CHANGELOG.md 文件 、修复 Eigen v3.4 编译问题。
+* **[1.2]** - 2021-10-07：调整三处 PEA 配置文件。
+* **[1.3]** - 2022-03-18：增加新的模糊度解算方法、非差非组合算法框架、EOP 率估计、.ERP/.TRO 文件输出、RTCM 转 RINEX3/.SP3、二进制数据流记录和回放、Python 脚本 (difftrace、diffsnx、duffutil、merge_sp3、log2snx 等)。
+* **[1.4]** - 2022-05-24：增加 YAML 配置检测、全面应用卡尔曼滤波统计测试、重构并简化硬件和系统偏差处理代码、改进模糊度固定算法。
+* **[1.4.1]** - 2022-05-27：指定 Eigen、Boost、Mongo-cxx 的版本、移除根目录虚假的 CMakeLists.txt。
+* **[1.4.2]** - 2022-07-18：修复 GLONASS 钟差计算错误。
+* **[1.5]** - 2022-07-26：支持 RINEX4 读写、加入新 POD 模式 pod_data_int、重构了 PEA 配置文件、增强了最小约束算法和配置选项、改进了 POD ERP/EOP 插值算法、增强了 Brdc2sp3 应用程序的稳健性、实现了简化的 PEA/POD .erp 信息处理。
+* **[1.5.1]** - 2022-08-22：北斗二三 BlockID和SRP、允许偶尔丢失伪观测数据点（全为零的行）、首历元进行卫星健康检测、使用不同的 sp3 文件进行比较。
+* **[1.5.2]** - 2022-12-28：无需 conda 环境来运行 python 脚本、天线 PCO 值现在针对特定星座。
+* **[1.5.3]** - 2023-04-04：修复当第一颗卫星被排除在外时，使用初始条件文件的 POD 崩溃，当标准 ERP 文件提供的数据不足时，POD 将使用 IC ERP 数据。
+* **[1.5.4]** - 2023-05-07：新依赖关系：Ginan 依赖 python gnssanalysis 工具（可通过 pip 安装）运行大部分脚本，但运行主要产品本身并不需要它。
+* **[2.0.1]** - 2023-06-09：统一的观测模型和滤波器、完整的多系统多频功能、非差非组合 (UDUC) 处理（V1 版仅为组合 IF）、集成 CPP 和耦合精确轨道确定 (POD) 、在滤波周期滑移和离群点检测与移除方面，数据处理更加稳健、完整的 RTCM3 第 1 和第 2 阶段信息解码和编码、全面实现 SLR 数据处理。
+* **[2.1]** - 2023-07-04：实现减少动态（伪随机）脉冲估算、高阶（二阶/三阶）电离层建模、加入伪观测/约束条件，以消除观测模型中的等级缺陷、实现了完整的全球导航卫星系统恒定姿态建模（GPS/GAL/GLO/BDS/QZS）、Python gnssanalysis 工具更新。
+* **[3.0]** - 2024-02-05：实现并验证了 IERS 2010 标准潮汐模型、实施紧凑型 SSR 标准校正输出编码/解码、重组 YAML 配置文件、改进了卫星姿态模型、改进了接收机（天线）姿态模型。
+
+> 顺带一提，李老师的公众号文章发在 2021-2/2， Ginan 首次发布之前。
+
+
+
+## 二、Ginan 项目结构
+
+拿到一份源码，先把文件结构看明白。
+
+
+
+
+
+CMake 构建的 C++ 项目，项目结构，可以从顶层 CmakeLists.txt 开始入手。Ginan 的 CmakeLists.txt 总共 284 行
+
+* 定义最小 CMake 版本，
+* 设置文件路径到变量
+* 定义一些编译标志
+* 
+
+cpp 文件夹内存放源码，CmakeLists.txt 总共 418 行
+
+
+
+
+
+
+
+
+
+## 三、PEA（parameter estimation algorithm）
 
 > usingThePea.md、peaUser.md、peaNetwork.md、peaConfig.md、defaultConfiguration.md
 
@@ -120,13 +198,9 @@ PEA 使用单个YAML文件作为配置文件，
 
 
 
+## 参考链接
 
+1. 
 
-
-
-
-
-
-
-
+2. 
 

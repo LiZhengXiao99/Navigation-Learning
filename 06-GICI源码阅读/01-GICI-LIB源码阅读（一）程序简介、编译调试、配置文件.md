@@ -516,7 +516,7 @@ option 文件夹里有一些配置文件，以伪实时定位解算为主，对�
 - 程序运行前，把 yaml 配置文件的路径加到命令行参数中。
 - 结果在 output 文件夹下，`xxx_solution.txt` 文件可以直接用 `rtkplot` 打开查看结果。用`matlab_plot` 里的脚本应该也行。
 
-> 一定注意，配置文件中有好几处 `<data-directory>`、`<gici-root-directory>` 、 `<output-directory>` 、`start_time` 要改，不能漏，我在这卡了很久。
+> 一定注意，配置文件中有好几处 `<data-directory>`、`<gici-root-directory>` 、 `<output-directory>` 、`start_time` 要改，不能漏，我在这卡了很久。报错了，在YAML文件里Ctrl+F搜搜这几个，看看还有没有没改的。
 >
 > 没运行成功，仔细看看报错信息，INFO不用看，关注ERROR，看对应配置是否正确。
 

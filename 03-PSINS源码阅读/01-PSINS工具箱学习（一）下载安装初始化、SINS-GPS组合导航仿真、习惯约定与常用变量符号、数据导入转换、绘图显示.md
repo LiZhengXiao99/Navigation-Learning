@@ -31,7 +31,7 @@ PSINS（Precise Strapdown Inertial Navigation System 高精度捷联惯导系统
 
 * PSINS开发板：[bilibili介绍视频](https://www.bilibili.com/video/BV1z3411a7xe/)、[淘宝链接](https://item.taobao.com/item.htm?spm=a230r.7195193.1997079397.11.7010ca143ltqP3&id=593752631438&abbucket=5)、780元
 
-  ![1686649442025](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1686649442025.png)
+  <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1686649442025.png" alt="1686649442025" style="zoom:50%;" />
 
 ## 三、下载安装初始化
 
@@ -61,13 +61,13 @@ PSINS（Precise Strapdown Inertial Navigation System 高精度捷联惯导系统
 * 新版本的安装初始化会移除以往添加到 Matlab 的含“PSINS”字符的所有路径，减小冲突。
 * **不要自己用`addpath`添加路径**，如果下多个版本，可能会冲突。
 
-![1686706404390](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1686706430686.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1686706430686.png" alt="1686706404390" style="zoom:50%;" />
 
 ### 4、启动工具箱导览
 
 打开PSINS根目录下的`psinsmain.m`文件，运行，启动“工具箱导览”主界面，点击相应按钮可感受工具箱的主要演示/测试例子；如果勾选了左上角的“查看m文件源码”，再点按钮就是阅览相应的程序源代码。 
 
-![1686661051114](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1686661051114.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1686661051114.png" alt="1686661051114" style="zoom:50%;" />
 
 ## 四、习惯约定与常用变量符号
 
@@ -181,14 +181,14 @@ global glv
 * 导航坐标系(n)：东E-北N-天U
 * 载体坐标系(b)：右R-前F-上U
 
-![1686708755628](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1686708770390.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1686708770390.png" alt="1686708755628" style="zoom:50%;" />
 
 ### 3、姿态阵/姿态四元数/欧拉角 Cnb/qnb/att
 
 * 姿态阵：`Cnb`，表示从 b 系到 n 系的坐标变换矩阵。对应姿态四元数写为`qnb`。
 * 欧拉角：`att=[俯仰pitch; 横滚roll; 方位yaw]`。没有按照转到顺序来写，如果按转到顺序，东北天坐标系转到右前下坐标系，常见先转方位角、然后俯仰角、横滚角
 
-![1686708789937](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1686709145422.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1686709145422.png" alt="1686708789937" style="zoom:50%;" />
 
 ### 4、IMU采样数据 imu
 
