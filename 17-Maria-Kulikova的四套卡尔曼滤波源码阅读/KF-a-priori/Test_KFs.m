@@ -5,16 +5,19 @@
 
 clear all; close all; clc; warning off;
 
-% ---- Parameters that you may change ------
-MC_runs  = 10;                 % Number of Monte Carlo runs
-Delta    = 2;                  % Sampling interval Delta = t_{k}-t_{k-1}
-N_total  = 200;                % Discrete-time instances
-noise_type = @noise_gauss;     % Type of uncertainties 
+% ---- Parameters that you may change ------    
+% 用户自定义参数
+MC_runs  = 10;                 % Number of Monte Carlo runs                 仿真的次数【10】
+Delta    = 2;                  % Sampling interval Delta = t_{k}-t_{k-1}    采样间隔数【2】
+N_total  = 200;                % Discrete-time instances                    仿真的时长【200】
+noise_type = @noise_gauss;     % Type of uncertainties                      噪声类型【@noise_gauss】
 
-% ----Load  Model to be examined ----
+% ----Load  Model to be examined ----   
+% 导入要测试的模型，默认是 Model_satellite，也可以选择 Models文件夹中的 Model_electrocardiogram、Model_navigatio，还也可以自己写一个
 p = pwd; cd('Models/'); [Fsys,Gsys,Qsys,Hsys,Rsys,P0,x0] = Model_satellite; cd(p); % e.g. see also Model_electrocardiogram, Model_navigation or add your own
 
 %--- Filtering methods to be examined ----
+% 
 p = pwd; cd('Methods-KF'); 
     % ----- Conventional algorithms --------
     handle_funs{1} = @Riccati_KF_standard;       % Conventional implementation by Kalman (1960)

@@ -56,6 +56,8 @@ GNSS 的基本原理是空间后方交会
 
 高精度的定位解算方法包括：
 
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240419154548594.png" alt="image-20240419154548594" style="zoom: 80%;" />
+
 * RTK：
 * PPP：模糊度固定和实时快速 PPP 是目前主要的研究方向
 * PPP-RTK：区域参考网增强精密单点定位
