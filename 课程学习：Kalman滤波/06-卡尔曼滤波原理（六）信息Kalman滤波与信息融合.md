@@ -135,7 +135,7 @@ $$
 
 ### 2、信息融合推导Kalman滤波
 
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/63d198b0e14549a19ee29a1518deee93.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/63d198b0e14549a19ee29a1518deee93.png" style="zoom:50%;" />
 
 
 **状态估计融合**

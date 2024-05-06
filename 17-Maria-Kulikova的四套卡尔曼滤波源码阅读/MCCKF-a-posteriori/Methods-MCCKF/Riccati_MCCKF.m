@@ -36,8 +36,9 @@ function [PI,hatX,hatDP] = Riccati_MCCKF(matrices,initials_filter,measurements,h
             PI = 0;                       % set initial value for the PI
 
  hatX(:,1)  = X; hatDP(:,1) = diag(P);    % save initials at the first entry 
- for k = 1:N_total                
-      [X,P]    = kf_predict(X,P,F,G,Q);                            
+ % 循环遍历各历元的量测，执行滤波过程
+ for k = 1:N_total                  
+      [X,P]    = kf_predict(X,P,F,G,Q);                       
       lambda_k = feval(handle_kernel,matrices,X,P,measurements(:,k));
       if (size(lambda_k,1)>1)||(size(lambda_k,2)>1), error('The MCC-KF estimator implies a scalar adjusting parameter'); end;
       Rek_lambda  = R + lambda_k*H*P*H';  % only for PI calculation

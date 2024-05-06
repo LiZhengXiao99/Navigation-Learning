@@ -230,8 +230,8 @@ $$
  > $$
  > 前面括号内的矩阵就是从 $0$ 时刻转移到 $t$ 时刻的状态转移矩阵：
  > $$
- > \boldsymbol{\Phi}(t, 0)  =\boldsymbol{I}+\int_{0}^{t} \boldsymbol{F}(\tau) \mathrm{d} \tau+\int_{0}^{t} \boldsymbol{F}(\tau) \int_{0}^{\tau} \boldsymbol{F}\left(\tau_{1}\right) \mathrm{d} \tau_{1} \mathrm{~d} \tau+\int_{0}^{t} \boldsymbol{F}(\tau) \int_{0}^{\tau} \boldsymbol{F}\left(\tau_{1}\right) \int_{0}^{\tau_{1}} \boldsymbol{F}\left(\tau_{2}\right) \mathrm{d} \tau_{2} \mathrm{~d} \tau_{1} \mathrm{~d} \tau+\cdots
-$$
+ > \boldsymbol{\Phi}(t, 0)  =\boldsymbol{I}+\int{0}^{t} \boldsymbol{F}(\tau) \mathrm{d} \tau+\int{0}^{t} \boldsymbol{F}(\tau) \int{0}^{\tau} \boldsymbol{F}\left(\tau{1}\right) \mathrm{d} \tau{1} \mathrm{~d} \tau+\int{0}^{t} \boldsymbol{F}(\tau) \int{0}^{\tau} \boldsymbol{F}\left(\tau{1}\right) \int{0}^{\tau{1}} \boldsymbol{F}\left(\tau{2}\right) \mathrm{d} \tau{2} \mathrm{~d} \tau_{1} \mathrm{~d} \tau+\cdots
+ > $$
  >
  > >可以省略高阶项进行近似，或者有时候高阶项就为 $0$ 
  >
@@ -247,11 +247,10 @@ $$
  >  \boldsymbol{\Phi}(t, 0)=\boldsymbol{I}+\frac{1}{1 !} \int_{0}^{t} \boldsymbol{F}(\tau) \mathrm{d} \tau+\frac{1}{2 !}\left[\int_{0}^{t} \boldsymbol{F}(\tau) \mathrm{d} \tau\right]^{2}+\frac{1}{3 !}\left[\int_{0}^{t} \boldsymbol{F}(\tau) \mathrm{d} \tau\right]^{3}+\cdots=\mathrm{e}^{\int_{0}^{t} F(\tau) \mathrm{d} \tau} 40
  >  \end{array}
  > $$
- >
-
 ### 6、连续时间Kalman滤波方程汇总
+
 $$
-\begin{array}{l}\boldsymbol{K}(t)=\boldsymbol{P}(t) \boldsymbol{H}^{\mathrm{T}}(t) \boldsymbol{r}^{-1}(t) \\ \dot{\hat{\boldsymbol{X}}}(t)=\boldsymbol{F}(t) \hat{\boldsymbol{X}}(t)+\boldsymbol{K}(t)[\boldsymbol{Z}(t)-\boldsymbol{H}(t) \hat{\boldsymbol{X}}(t)] \\ \dot{\boldsymbol{P}}(t)=\boldsymbol{F}(t) \boldsymbol{P}(t)+\boldsymbol{P}(t) \boldsymbol{F}^{\mathrm{T}}(t)-\boldsymbol{K}(t) \boldsymbol{r}(t) \boldsymbol{K}^{\mathrm{T}}(t)+\boldsymbol{G}(t) \boldsymbol{q}(t) \boldsymbol{G}^{\mathrm{T}}(t) \\\end{array}
+\begin{array}{l}\boldsymbol{K}(t)=\boldsymbol{P}(t) \boldsymbol{H}^{\mathrm{T}}(t) \boldsymbol{r}^{-1}(t) \ \dot{\hat{\boldsymbol{X}}}(t)=\boldsymbol{F}(t) \hat{\boldsymbol{X}}(t)+\boldsymbol{K}(t)[\boldsymbol{Z}(t)-\boldsymbol{H}(t) \hat{\boldsymbol{X}}(t)] \ \dot{\boldsymbol{P}}(t)=\boldsymbol{F}(t) \boldsymbol{P}(t)+\boldsymbol{P}(t) \boldsymbol{F}^{\mathrm{T}}(t)-\boldsymbol{K}(t) \boldsymbol{r}(t) \boldsymbol{K}^{\mathrm{T}}(t)+\boldsymbol{G}(t) \boldsymbol{q}(t) \boldsymbol{G}^{\mathrm{T}}(t) \end{array}
 $$
 
 连续时间Kalman滤波方程中的状态估计和方差都是微分方程，相求结果得解微分方程。

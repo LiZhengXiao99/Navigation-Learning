@@ -11,7 +11,7 @@
 
 ## 一、平方根滤波基本形式
 
-![img](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/ac289c5a7d39466f88fca23df6d78ea2.png) 
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/ac289c5a7d39466f88fca23df6d78ea2.png" alt="img" style="zoom:50%;" />
 
 在计算机中，单精度浮点数(float)有效数字为7位，双精度 (double)为16位，为了提高前者环境下的均方差阵计算精度，须采用平方根滤波。Kalman滤波计算过程中，有三个方差阵，分别可以记为：
 $$
@@ -24,12 +24,12 @@ $$
 
 标准Kalman滤波的流程图可以表示成：
 
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/6086f7b960374e40bc21f32ecd1acd66.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/6086f7b960374e40bc21f32ecd1acd66.png" style="zoom: 50%;" />
 
 
 将图中的 $P、Q、R$ 都用平方根形式替换 ，得：
 
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/a5d004df07a348fcabb2f4fc8e228ee7.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/a5d004df07a348fcabb2f4fc8e228ee7.png" style="zoom:50%;" />
 
 
 * 更新都用平方根，损失精度小。
@@ -120,10 +120,9 @@ $$
 
 > QR分解的改进：施密特正交化法，伪代码如下：
 >
-> ![\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-Cc0WMdKk-1686126621082)(卡尔曼滤波与组合导航原理（七）平方根Kalman滤波.assets/1686048938976.png)\]](https://img-blog.csdnimg.cn/93d52dbbf65148b0b31dff4608950caf.png)
-
+> <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/93d52dbbf65148b0b31dff4608950caf.png" alt="img" style="zoom: 67%;" />
 >
->核心就是每个新的矢量都减去它在已经正交化的矢量方向的投影，进而每次新增一个新的正交矢量。新的矢量只和之前的矢量有关，而与后面的矢量无关。
+> 核心就是每个新的矢量都减去它在已经正交化的矢量方向的投影，进而每次新增一个新的正交矢量。新的矢量只和之前的矢量有关，而与后面的矢量无关。
 
 先把 $\left[\begin{array}{c}\boldsymbol{\Delta}_{k-1}^{\mathrm{T}} \boldsymbol{\Phi}_{k / k-1}^{\mathrm{T}} \\ \left(\boldsymbol{Q}_{k-1}^{\frac{1}{2}}\right)^{\mathrm{T}} \boldsymbol{\Gamma}_{k-1}^{\mathrm{T}}\end{array}\right]$ 求出来，再用Gram-Schmidt法即可得到方差阵的时间更新 $\boldsymbol{\Delta}_{k / k-1}$ 
 
@@ -138,12 +137,12 @@ $$
 
 前述标量量测情形
 
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/e3c25547edde4d6789a36c1b0cf0ecac.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/e3c25547edde4d6789a36c1b0cf0ecac.png" style="zoom:50%;" />
 
 
 同理，向量量测情形：
 
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/643dbe6ccf7e4a219a0db1477e6d3d9b.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/643dbe6ccf7e4a219a0db1477e6d3d9b.png" style="zoom:50%;" />
 
 
 全流程：
@@ -159,7 +158,7 @@ $$
 
 朴素分解方式：
 
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/c1348e9a20d745d3a1f61d3e03e62379.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/c1348e9a20d745d3a1f61d3e03e62379.png" style="zoom:50%;" />
 
 
 上式每次更新要做两次QR分解，两次三角阵求逆；考虑用SVD分解，这样就只用做对角阵求逆。
@@ -223,7 +222,7 @@ $$
 $$
 \begin{array}{l} \boldsymbol{U}_{k} \boldsymbol{D}_{k} \boldsymbol{U}_{k}^{\mathrm{T}}= \boldsymbol{U}_{k / k-1} \boldsymbol{D}_{k / k-1} \boldsymbol{U}_{k / k-1}^{\mathrm{T}}- \\ \boldsymbol{U}_{k / k-1} \boldsymbol{D}_{k / k-1} \boldsymbol{U}_{k / k-1}^{\mathrm{T}} \boldsymbol{H}_{k}^{\mathrm{T}}\left(\boldsymbol{H}_{k} \boldsymbol{U}_{k / k-1} \boldsymbol{D}_{k / k-1} \boldsymbol{U}_{k / k-1}^{\mathrm{T}} \boldsymbol{H}_{k}^{\mathrm{T}}+R_{k}\right)^{-1} \boldsymbol{H}_{k} \boldsymbol{U}_{k / k-1} \boldsymbol{D}_{k / k-1} \boldsymbol{U}_{k / k-1}^{\mathrm{T}} \\ = \boldsymbol{U}_{k / k-1}\left[\boldsymbol{D}_{k / k-1}-\boldsymbol{D}_{k / k-1} \boldsymbol{U}_{k / k-1}^{\mathrm{T}} \boldsymbol{H}_{k}^{\mathrm{T}}\left(\boldsymbol{H}_{k} \boldsymbol{U}_{k / k-1} \boldsymbol{D}_{k / k-1} \boldsymbol{U}_{k / k-1}^{\mathrm{T}} \boldsymbol{H}_{k}^{\mathrm{T}}+R_{k}\right)^{-1} \boldsymbol{H}_{k} \boldsymbol{U}_{k / k-1} \boldsymbol{D}_{k / k-1}\right] \boldsymbol{U}_{k / k-1}^{\mathrm{T}} \\ = \boldsymbol{U}_{k / k-1}\left(\boldsymbol{D}_{k / k-1}-\alpha^{-1} \boldsymbol{g} \boldsymbol{g}^{\mathrm{T}}\right) \boldsymbol{U}_{k / k-1}^{\mathrm{T}} \\ \text { 记 }\left\{\begin{array}{l}\alpha=\boldsymbol{H}_{k} \boldsymbol{U}_{k / k-1} \cdot \boldsymbol{D}_{k / k-1} \boldsymbol{U}_{k / k-1}^{\mathrm{T}} \boldsymbol{H}_{k}^{\mathrm{T}}+R_{k}=\boldsymbol{f}^{\mathrm{T}} \boldsymbol{g}+R_{k} \\ \boldsymbol{f}=\left(\boldsymbol{H}_{k} \boldsymbol{U}_{k / k-1}\right)^{\mathrm{T}} \\ \boldsymbol{g}=\boldsymbol{D}_{k / k-1} \boldsymbol{U}_{k / k-1}^{\mathrm{T}} \boldsymbol{H}_{k}^{\mathrm{T}}=\boldsymbol{D}_{k / k-1} \boldsymbol{f}\end{array}\right.\end{array}
 $$
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/cc2a949aea54437dbf59abfe678acf33.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/cc2a949aea54437dbf59abfe678acf33.png" style="zoom:50%;" />
 
 
 从 $D_{nn}$ 开始先计算最后一列 ，再计算倒数第二列，直到 $D_{11}$ 。
@@ -268,7 +267,7 @@ $R$ 是QR分解出的三角阵，$U$ 是UD分解出的三角阵，乘出来的 $
 $$
 D_{k \mid k-1, j j}=\sum_{s=1}^{n+1} \tilde{D}_{k-1, s s} W_{j, s}^{(n-j)} W_{j, s}^{(n-j)} \quad U_{k l k-1, i j}=\frac{\sum_{s=1}^{n+1} \tilde{D}_{k-1, s s} W_{i, s}^{(n-j)} W_{j, s}^{(n-j)}}{D_{k / k-1, j j}}
 $$
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/b8928dcaf8964f128e7484e91218af28.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/b8928dcaf8964f128e7484e91218af28.png" style="zoom:50%;" />
 
 
 滤波流程： $\left(U_{k-1, j,}, D_{k-1, j}\right) \rightarrow\left(U_{k \mid k-1, j j}, D_{k l k-1, j}\right) \rightarrow\left(U_{k, j}, D_{k, j, j}\right)$ 
@@ -277,7 +276,7 @@ $$
 
 ## 五、平方根信息滤波SRIKF
 
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/4b03ca6e9dc64ce6b322127ca19de845.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/4b03ca6e9dc64ce6b322127ca19de845.png" style="zoom:50%;" />
 
 
 将信息矩阵 $I$ 分解，与Potter平方根滤波很相似，计算量几乎一模一样，可以类比来看。

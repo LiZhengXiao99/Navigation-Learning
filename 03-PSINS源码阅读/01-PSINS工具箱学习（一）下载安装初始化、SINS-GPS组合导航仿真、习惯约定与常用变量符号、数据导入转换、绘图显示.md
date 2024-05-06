@@ -638,7 +638,7 @@ kf = kfinit0(kf, nts);
 ## 五、数据导入、转换
 
 * 二进制（纯double型）格式文件，使用`binfile`函数，这对导入C语言生成的数据文件快速方便；或者可参照`binfile`，使用`fread`自行编程导入特定格式的二进制文件；
-* 文本文件/或`.mat`格式文件，使用Matlab的`load`或`importdata`函数；mat是MATLAB专用的数据文件，有压缩，很方便MATLAB之间存数据，但C语言中没法读。
+* 文本文件或`.mat`格式文件，使用Matlab的`load`或`importdata`函数；mat是MATLAB专用的数据文件，有压缩，很方便MATLAB之间存数据，但C语言中没法读。
 * 特殊格式的 PSINS-IMU/AVP 文件，可用`imufile`、`avpfile`等函数。
 
 从文件直接导入 Matlab 工作空间的数据通常是一个二维数组，其各列顺序及量纲单位不一定符合 PSINS 的习惯，需再进行数据提取和转换： 

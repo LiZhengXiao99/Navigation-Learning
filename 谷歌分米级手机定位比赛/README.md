@@ -13,11 +13,9 @@
 
 <br/>
 
-谷歌手机分米级定位比赛 (Google Smartphone Decimeter Challenge，简称：GSDC)， Android GPS 团队主办，受到美国导航协会 ION 赞助，
+谷歌手机分米级定位比赛 (Google Smartphone Decimeter Challenge，简称：GSDC)， Android GPS 团队主办，受到美国导航协会 ION 赞助，从 2021 年举办了第一届开始，每年一届，到现在已经连续进行了三年
 
-从 2021 年举办了第一届开始，每年一届，到现在已经连续进行了三年
-
-
+比赛的内容简单来说，
 
 
 
