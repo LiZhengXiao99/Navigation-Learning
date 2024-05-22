@@ -12,17 +12,6 @@ GINav 是 2020 年发布在 GPS Solution 上开源 GNSS/INS 紧组合工具箱�
 
 <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/5a44608fabc3fb9fd64d728ef29a3ff2.png" alt="5a44608fabc3fb9fd64d728ef29a3ff2" style="zoom: 40%;" />
 
-包含两个界面工具：
-
-* **GINavExe**：选择数据文件和配置文件，然后进行导航定位解算，支持模式如下：
-  * **纯 GNSS**： SPP、PPD、PPK、PPS、PPP
-  * **GNSS/INS 松组合**：PPD_LC、PPK_LC、PPP_LC、SPP_LC
-  * **GNSS/INS 紧组合**：SPP_TC、PPD_TC、PPK_TC、PPP_TC
-* **Plot_Analysis**：结果绘图分析，支持三种模式：
-  * **Polt**：根据 GINavExe 生成的结果文件绘制：
-  * **Error plot**：将 GINavExe 生成的结果与参考结果进行比较，绘制 PVA 误差曲线；
-  * **PPP plot**：根据 GINavExe 生成的结果和 sinex 文件绘制 PPP 东北天方向的误差曲线；
-
 算法特点包括：
 
 * 通过 TDCP 测速定姿，实现 GNSS/INS 初始对准对准；
@@ -51,9 +40,30 @@ GINav 是 2020 年发布在 GPS Solution 上开源 GNSS/INS 紧组合工具箱�
 
 ## 二、GINav 使用
 
+### 1、两个界面工具
+
+* **GINavExe**：选择数据文件和配置文件，然后进行导航定位解算，支持模式如下：
+  * **纯 GNSS**： SPP、PPD、PPK、PPS、PPP
+  * **GNSS/INS 松组合**：PPD_LC、PPK_LC、PPP_LC、SPP_LC
+  * **GNSS/INS 紧组合**：SPP_TC、PPD_TC、PPK_TC、PPP_TC
+* **Plot_Analysis**：结果绘图分析，支持三种模式：
+  * **Polt**：根据 GINavExe 生成的结果文件绘制：
+  * **Error plot**：将 GINavExe 生成的结果与参考结果进行比较，绘制 PVA 误差曲线；
+  * **PPP plot**：根据 GINavExe 生成的结果和 sinex 文件绘制 PPP 东北天方向的误差曲线；
+
+使用 GINavExe 注意事项：
+
+* 下载 Lambda-3.0，放到 3rd 目录下，用于模糊度固定（[网盘链接](https://pan.baidu.com/s/1Hr7J9NHivYSiwOFKkypPtQ?pwd=aust)）；
+* 解压 data 目录下的数据文件，否则无法选择数据文件；
+* 在 GINavExe 界面选择配置文件的时候总是报错，把 `GINavCfg.m` 165 行 的 `matchinfile` 注释了就好；
+* cpt 数据支持的定位模式最全，但其默认配置大多都是单系统或者 GC、GR 双系统；
+* 结果文件默认存储在 result 路径下，默认命名是测站名+解算模式，会覆盖旧的结果；
+* GINav 的结果文件相比 RTKLIB 拓展了姿态几列，用 RTKPLOT 绘制速度更快，但是看不了姿态；
+* 我写了一个脚本，比较各组定位结果精度，根据参考，计算 RMSE，绘制误差曲线，放在 [Navigation-Script](https://github.com/LiZhengXiao99/Navigation-Script) 仓库；
 
 
-### 1、cpt 测试数据
+
+### 2、cpt 测试数据
 
 GINav 程序提供了四组示例数据：
 
@@ -72,7 +82,7 @@ GINav 程序提供了四组示例数据：
 
 <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240512204240029.png" alt="image-20240512204240029" style="zoom:50%;" />
 
-cpt 数据由，本文主要以 cpt 这组数据
+本文主要以 cpt 这组数据
 
 ![cpt_RTKLIB观测数据分析](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/cpt_RTKLIB%E8%A7%82%E6%B5%8B%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90.png)
 
@@ -82,7 +92,7 @@ cpt 数据由，本文主要以 cpt 这组数据
 
 
 
-### 2、RTK/RTK-INS 解算结果比较
+### 3、RTK/RTK-INS 解算结果比较
 
 比较了 RTKLIB、RTKLIB-demo5-b43i、PSINS 的松组合、GINav 的 PPK、RTK/INS-LC、RTK/INS-TC 解如下
 
@@ -100,7 +110,7 @@ cpt 数据由，本文主要以 cpt 这组数据
 
 
 
-### 3、PPP/PPP-INS 解算结果比较
+### 4、PPP/PPP-INS 解算结果比较
 
 
 
@@ -129,6 +139,8 @@ cpt 数据由，本文主要以 cpt 这组数据
 ## 三、GINavExe 程序结构
 
 
+
+![image-20240515083706867](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240515083706867.png)
 
 
 
@@ -206,6 +218,27 @@ cpt 数据由，本文主要以 cpt 这组数据
 ## 四、RTK/INS-TC 执行流程
 
 
+
+
+
+PPK：
+
+|       待估状态量        | 维数 | 随机模型 |             其它             |
+| :---------------------: | :--: | :------: | :--------------------------: |
+|      位置参数 $r$       |  3   |  白噪声  |      单点定位解做先验值      |
+| 单差模糊度 $N_{rb,j}^m$ |      | 随机游走 | 继承上一历元结果，周跳时重置 |
+
+
+
+消电离层 PPP：
+
+| 待估状态量StateVariables | 维数Dimension | 随机模型StochasticModel |               其它 Others                |
+| :----------------------: | :-----------: | :---------------------: | :--------------------------------------: |
+|       位置参数 $r$       |       3       |         白噪声          | 对于动态模式，建模白噪声，每个历元位置使 |
+|    接收机钟差 $dT_r$     |               |                         |                                          |
+|  系统间偏差 $dt_{ISB}$   |               |                         |                                          |
+|  天顶对流层湿延迟 $Z_w$  |               |                         |                                          |
+|  IF 组合模糊度 $N_{IF}$  |               |                         |                                          |
 
 
 

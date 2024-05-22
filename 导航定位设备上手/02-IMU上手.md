@@ -8,21 +8,29 @@
     <a href="https://www.zhihu.com/people/dao-ge-92-60/"><img src="https://img.shields.io/badge/Zhihu-知乎-blue" /></a>
     <img src="https://komarev.com/ghpvc/?username=LiZhengXiao99&label=Views&color=0e75b6&style=flat" alt="访问量统计" />
 </div>
-
+---
 
 <br/>
 
-> 推荐视频：计算机视觉life-
+> 推荐阅读或观看：
+>
+> * 计算机视觉life：
+>
+> * Jason漫谈：[IMU 简介和误差综述](https://zhuanlan.zhihu.com/p/659329350#/)
+>
+> * [mymymind](https://space.bilibili.com/37049168)：[【硬核】用PCB手搓一个陀螺仪](https://www.bilibili.com/video/BV15r421u72u)
 
-IMU 基本原理是惯性平台 + 三轴加速度计
 
 
 
 
 
 
+![img](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/v2-404d6cc7825dbbb266d50e432d148acf_1440w.webp)
 
-ADIS、超核电子、
+
+
+
 
 
 
