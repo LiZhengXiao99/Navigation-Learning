@@ -47,7 +47,7 @@ RTKLIB 可以初步实现以下功能，相对于商业软件，可靠性没那�
 
 ---
 
-**如果有 GNSS 模块和天线，通过串口或网口连接电脑、树莓派，可以用 RTKLIB 程序包实现以下操作：**
+** 如果有 GNSS 模块和天线，通过串口或网口连接电脑、树莓派，可以用 RTKLIB 程序包实现以下操作：**
 
 * 你可以用 RTKNAVI 或 RTKRCV 进行实时定位解算，单 GNSS 一般只能进行 SPP 解算，米级精度；想提高精度：可以接入差分数据做 RTK（自己搭基准站或者买 CORS 账号）；或者提前下载一些精密改正文件，并申请 IGS 账号，接入 SSR 改正数据，做实时 PPP。在进行实时解算的过程中，可以通过 LOG 把数据流的数据都都存下来。
 * 你可以通过 STRSVR 或 STR2STR 把数据存到文件里；或者通过 Ntrip、TCP 等协议把数据播发出去，进行远程解算；或者作为 Ntrip 数据源把数据挂载 NtripCaster 搭基准站。
@@ -343,9 +343,12 @@ rtkrcv 无法直接在 Windows 下编译调试，因为它依赖了一些 Linux 
    DENAGAL
    DLL
    WIN32
+   TRACE
    ```
 
-   > 尤其主要加 WIN32，好多博客都没加这一项，加了这一项后 RTKLIB 就不会用 Linux 下的 <pthread.h> 和 <sys/select.h>，咱们项目要在 Windows 下编译运行的，不加会报 ”找不到 <pthread.h> 和 <sys/select.h>“ 的错。
+   > * 尤其主要加 WIN32，好多博客都没加这一项，加了这一项后 RTKLIB 就不会用 Linux 下的 <pthread.h> 和 <sys/select.h>，咱们项目要在 Windows 下编译运行的，不加会报 ”找不到 <pthread.h> 和 <sys/select.h>“ 的错。
+   >
+   > * 不加 TRACE 没法输出 trace 文件。
 
 4. 将常规中的目标文件名改为 rnx2rtkp 。
 

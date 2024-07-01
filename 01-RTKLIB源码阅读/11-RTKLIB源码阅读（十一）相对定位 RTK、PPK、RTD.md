@@ -2733,7 +2733,7 @@ ratio-test用来验证整周模糊度；该值表示具有第二最佳整数向�
 - 基于整数变换的模糊度**降相关**——为了保证LAMBDA捜索的快捷性和准确性，需要首先对原始模糊度的协因数矩阵加以调整，使得原始模糊度间的相关性降低。
 - 基于**序贯条件最小二乘**估计的整周捜索LAMBDA搜索是整个过程的关键和主体，其主要目的是通过连续的迭代找出最接近真的的模糊度整数值。
 
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/52c78060560c477689d8c4aaff88cfb6.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/52c78060560c477689d8c4aaff88cfb6.png" style="zoom: 67%;" />
 
 
 ### 2、三种模糊度固定选项
