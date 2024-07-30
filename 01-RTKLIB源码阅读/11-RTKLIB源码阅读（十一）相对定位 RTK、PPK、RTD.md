@@ -1626,7 +1626,6 @@ static void initx(rtk_t *rtk, double xi, double var, int i)
 
   ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/6fb97020960145a78997fe4f6f9fec63.png)
 
-
 **传入参数**：
 
 ```c
