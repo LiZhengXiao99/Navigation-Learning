@@ -8,27 +8,26 @@
     <img alt="Static Badge" src="https://img.shields.io/badge/%E5%BE%AE%E4%BF%A1-lizhengxiao99-green">
     <img alt="Static Badge" src="https://img.shields.io/badge/Email-dauger%40126.com-brown">
     <a href="https://blog.csdn.net/daoge2666/"><img src="https://img.shields.io/badge/CSDN-论坛-c32136" /></a>
-    <img src="https://komarev.com/ghpvc/?username=LiZhengXiao99&label=Views&color=0e75b6&style=flat" alt="访问量统计" />
 </div>
 
 <br/>
 
 <div align="center">
-	<p>💡 仓库所有内容都可以随意转载，可用于任何目的，无需征求我的意见；</p>
-	<p>✨ 本仓库会长期更新，分享出来，希望有人用得上，也激励着自己坚持学下去；</p>
-	<p>💻 理解尚浅、实践甚少，列举的公式和理论仅供参考，千万不要照着我的公式写代码；</p>
+	<p>✨ 长期更新，分享出来，也许有人用得上，也激励自己坚持学下去；</p>
+    <p>💡 仓库所有内容都可以随意转载，可用于任何目的，无需征求我的意见；</p>
+   	<p>🍀 把原始文档都放在这了，欢迎大家在我的基础上整理出属于自己的一套笔记；</p>
+    <p>💻 理解尚浅、实践甚少，列举的公式和理论仅供参考，千万不要照着我的公式写代码；</p>
 	<p>🛠 不建议直接就下载整个仓库，Markdown 和 PDF 可以在线看，想要的文件可以<a href='https://zhuanlan.zhihu.com/p/578116206' target='_blank'>单独下载</a>；</p>
-    <p><strong>⚙ 目前仓库还不够完善，部分文件还没啥内容，下载之前，建议先点开看看，有没有您期望的内容；</strong></p>
+	<p><strong>⚙ 目前仓库还不够完善，部分文件还没啥内容，下载之前，建议先点开看看，有没有您期望的内容；</strong></p>
 	<p>🎉 如果您觉得仓库内容有价值，推荐用 Github-Desktop 下载并保持更新，用 Typora 看 Markdown 文件；</p>
-    <details>
-        <summary>🤺 【点击展开】欢迎随时与我交流：<strong>微信</strong> (lizhengxiao99)、<strong>QQ</strong> (1482275402)、<strong>Email</strong> (dauger@126.com)；</summary>
-		<p>
-			<img align="center" width="350" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/662bf58e5529e6a138945e9ffc90893e.png" alt="662bf58e5529e6a138945e9ffc90893e" />
-        </p>
-    </details>
+	<details>
+    <summary>🤺 【点击展开】欢迎随时与我交流：<strong>微信</strong> (lizhengxiao99)、<strong>QQ</strong> (1482275402)、<strong>Email</strong> (dauger@126.com)；</summary>
+	<p>
+		<img align="center" width="350" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/662bf58e5529e6a138945e9ffc90893e.png" alt="662bf58e5529e6a138945e9ffc90893e" />
+    </p>
+	</details>
+
 </div>
-
-
 
 ---
 
@@ -49,7 +48,7 @@
 |        [**算法理解**](导航定位算法公式理解)        |        不会一板一眼地推导公式，写点我对导航算法的理解        | <Strong>【\=> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                  】</Strong>10% |
 |          [**算法解惑**](导航定位算法解惑)          | [参数估计](导航定位算法解惑/01-参数估计算法解惑.md)/[GNSS](导航定位算法解惑/02-GNSS算法解惑.md)/[INS](导航定位算法解惑/03-INS算法解惑.md)/[组合导航](导航定位算法解惑/04-组合导航算法解惑.md)/[SLAM](导航定位算法解惑/05-SLAM算法解惑.md)/[多源融合](导航定位算法解惑/06-多源融合算法解惑.md)/[规控](导航定位算法解惑/07-规划控制算法解惑.md) | <Strong>【\=\=\=\> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;              】</Strong>30% |
 |              [**心得体会**](心得体会)              | [导航学习](心得体会/一个双非学校导航工程本科生的学习心得.md)/[博客写作](心得体会/博客写作心得.md)/[READM美化](心得体会/README美化.md)/[Github上手](心得体会/Github使用指南.md)/[RSS上手](心得体会/RSS介绍及推荐.md) | <Strong>【\=\=\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;】</Strong>60% |
-|              [**安理导航**](安理导航)              | [毕业生去向](安理导航/安理工导航工程17-18-19级去向.png)/[课程体系](安理导航/导航工程课程体系.png)/[21级课表](安理导航/课表)/[课程锐评](安理导航/安理工导航工程课程锐评.md)/[硕导评价](安理导航/安理工空测院导航相关硕导评价.md) | <Strong>【\=\=\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;】</Strong>60% |
+|              [**安理导航**](安理导航)              | [毕业生去向](安理导航/安理工导航工程17-18-19级去向.png)/[课程体系](安理导航/导航工程课程体系.png)/[21级课表](安理导航/课表)/[课程锐评](安理导航/安理工导航工程课程锐评.md)/[安理往事](安理导航/安理往事) | <Strong>【\=\=\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;】</Strong>60% |
 | <a href="#Recommend-Repositories">**仓库推荐**</a> |       推荐一些同类仓库，创作不易，欢迎给他们 Star 鼓励       | <Strong>【\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;             】</Strong>40% |
 |        <a href="#Finally">**写在最后**</a>         |         欢迎大家在我的基础上整理出属于自己的一套笔记         | <Strong>【\=\=\=\=\=\=\=\=>&nbsp;&nbsp;&nbsp;】</Strong>80%  |
 
