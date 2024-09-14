@@ -208,7 +208,7 @@
 
 |                             工具                             |                             简介                             | 登录 |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | ---- |
-|      **[GNSS-Calendar](https://www.gnsscalendar.com/)**      | 在日历上选择年月日，自动显示自动年积日、儒略日、GPS周、周内天，并且提供 GPS 和 GLONASS 的精密轨道钟差、SNX、ION、DCB 文件的下载链接。 | 无需 |
+|      **[GNSS-Calendar](https://www.gnsscalendar.com/)**      | 在日历上选择年月日，可以转换到年积日、儒略日、GPS周、周内天，并且提供 GPS 和 GLONASS 的精密轨道钟差、SNX、ION、DCB 文件的下载链接。 | 无需 |
 | [**TRX**](https://webapp.csrs-scrs.nrcan-rncan.gc.ca/geod/tools-outils/trx.php) | 加拿大自然资源局开发的在线坐标转换工具，支持 LLH-XYZ-UTM 三种坐标之间的转换，支持 NAD83 和各种 ITRF 框架、支持上传文件进行批处理。 | 无需 |
 | **[INDIR](https://webapp.csrs-scrs.nrcan-rncan.gc.ca/geod/tools-outils/indir.php)** | 加拿大自然资源局开发的大地主题正反算在线计算工具；正算是指输入起点的经纬（高）、大地线长度和大地方位角，计算终点的经纬（高）；反算是指输入两点的经纬（高）计算大地线长度和大地方位角。 | 无需 |
 | [**CSRS-PPP**](https://webapp.csrs-scrs.nrcan-rncan.gc.ca/geod/tools-outils/ppp.php) | 加拿大自然资源局开发的在线 PPP 解算工具，用户仅需上传观测文件，既可执行静态或动态 PPP 解算，解算结果将通过邮件发送给用户。 | 需要 |
