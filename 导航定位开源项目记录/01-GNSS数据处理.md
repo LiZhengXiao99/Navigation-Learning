@@ -27,14 +27,14 @@
 * [GAMIT/GLOBK]()：美国 MIT 开发，
 * [GraphGNSSLib](https://github.com/weisongwen/GraphGNSSLib)：图优化 GNSS，港理工，基于 RTKLIB，基于 ROS1，支持图优化 SPP 和 RTK，三篇参考论文，港理工同课题组出的 GLIO 程序在此基础上开发 。
 * [Net_Diff](https://github.com/YizeZhang/Net_Diff)：
-* [POSGO](https://github.com/lizhengnss/POSGO)：图优化 GNSS，武大李政开发，投稿到 GPS Solution，目前只支持 SPP，主要用在手机定位，
+* [POSGO](https://github.com/lizhengnss/POSGO)：图优化 GNSS，武大李政博士开发，投稿到 GPS Solution，目前只支持 SPP，主要用在手机定位；
 * [Pride-PPPAR](https://github.com/PrideLab/PRIDE-PPPAR)：后处理 PPP，武大耿江辉课题组开发，投稿到 GPS Solution，持续更新，模糊度固定可达到毫米级定位精度，可以用于算 RTK 基准站坐标，地震学等地学研究。
 * [PPPwizard](http://www.ppp-wizard.net/)：
 * [GPSTk](https://github.com/SGL-UT/GPSTk)、[gnsstk](https://github.com/SGL-UT/gnsstk)、[gnsstk-apps](https://github.com/SGL-UT/gnsstk-apps)：GPSTk 改名为 GNSSTk，并且分为 [gnsstk](https://github.com/SGL-UT/gnsstk)、[gnsstk-apps](https://github.com/SGL-UT/gnsstk-apps) 两个仓库。
 * [G-NUT/Anubis](https://www.pecny.cz/Joomla25/index.php/gnss/sw/anubis)：观测数据质量分析
 * [Teqc](https://www.unavco.org/software/data-processing/teqc/teqc.html)：观测数据质量分析
 * [RNXQCE](https://github.com/cuizilu/RNXQCE)：RINEX 观测数据质量分析，作者给的介绍所是 TEQC 很久没更新，所以开发了 RNXQCE。
-* [Bernese](https://www.bernese.unibe.ch/)：伯尔尼大学天文研究所（AIUB）开发的 GNSS 数据处理软件，主要是欧洲轨道确定中心（CODE）在用，
+* [Bernese](https://www.bernese.unibe.ch/)：伯尔尼大学天文研究所（AIUB）开发的 GNSS 数据处理软件，主要是欧洲定轨中心（CODE）在用；
 * [gLAB](https://github.com/valgur/gLAB?tab=readme-ov-file)：加泰罗尼亚理工大学天文学和地球数学研究小组（gAGE）根据欧洲空间局（ESA）合同开发的
 * [gnssrefl](https://github.com/kristinemlarson/gnssrefl)：Python 编写的 GNSS 干涉反射测量（GNSS-IR）软件包，[文档](https://gnssrefl.readthedocs.io/en/latest/)写的挺详细，主要是用信噪比来计算。
 * [gnssSNR](https://github.com/kristinemlarson/gnssSNR)：gnssrefl 作者的另一套程序，从 RINEX 文件中提取信噪比、方位角、高度角，基于 Fortran 编写。
