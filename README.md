@@ -2,16 +2,15 @@
     <a name="Top"></a>
 	<h1>Navigation-Learning：一个本科生的导航学习笔记</h1>
     <p><strong>学习之路漫又长，唯有不断总结，不断回味，不断分享，才能成长！</strong></p>
-</div
+</div>
 <div align="center">
     <img alt="Static Badge" src="https://img.shields.io/badge/QQ-1482275402-red">
     <img alt="Static Badge" src="https://img.shields.io/badge/%E5%BE%AE%E4%BF%A1-lizhengxiao99-green">
     <img alt="Static Badge" src="https://img.shields.io/badge/Email-dauger%40126.com-brown">
     <a href="https://blog.csdn.net/daoge2666/"><img src="https://img.shields.io/badge/CSDN-论坛-c32136" /></a>
 </div>
+
 <br/>
-
-
 
 <div align="center">
 	<p>✨ 长期更新，分享出来，也许有人用得上，也激励自己坚持学下去；</p>
@@ -27,8 +26,9 @@
 		<img align="center" width="350" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/662bf58e5529e6a138945e9ffc90893e.png" alt="662bf58e5529e6a138945e9ffc90893e" />
     </p>
 	</details>
-
 </div>
+
+
 
 ---
 
