@@ -140,7 +140,7 @@
 <div align="center">
     <a name="Project"></a>
 	<h3>🛠&nbsp;记录一些我看到过的项目，其中加粗的项目会在本仓库介绍&nbsp;🛠</h3>
-    <p><strong>🔗<a href='导航定位建图开源数据集记录.md' target='_blank'>点击左侧超链接跳转详细介绍页面</a>🔗</strong></p>
+    <p>🔗<a href='导航定位建图开源项目记录.md' target='_blank'>点击左侧超链接跳转详细介绍页面</a>🔗</p>
 </div>
 
 
