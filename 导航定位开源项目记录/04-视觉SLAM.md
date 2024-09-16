@@ -32,7 +32,7 @@
 * [Mvision](https://github.com/Ewenwan/MVision)：
 * [rgbdslam_v2](https://github.com/felixendres/rgbdslam_v2)：
 * [camera_calibration](https://github.com/puzzlepaint/camera_calibration)：
-* [Structure-SLAM-PointLine](https://github.com/yanyan-li/Structure-SLAM-PointLine)：基于ORB-SLAM2的点
+* [Structure-SLAM-PointLine](https://github.com/yanyan-li/Structure-SLAM-PointLine)：
 * [awesome-visual-slam 整理](https://github.com/tzutalin/awesome-visual-slam)：
 * [Recent_SLAM_Research 整理](https://github.com/YiChenCityU/Recent_SLAM_Research)：
 * [Awesome CV Works 整理](https://vincentqin.tech/posts/awesome-works/)：
