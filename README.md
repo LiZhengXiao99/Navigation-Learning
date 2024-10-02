@@ -29,12 +29,11 @@
 </div>
 
 
-
-
 ---
 
 <div align="center">
     <h3>👇&nbsp;以下是本仓库包含的板块，点击跳转&nbsp;👇</h3>
+
 
 
 |              🌟&nbsp;板块&nbsp;🌟&nbsp;              |                      🧾&nbsp;说明&nbsp;🧾                      |                     🛠&nbsp;完成度&nbsp;🛠                     |
@@ -54,6 +53,7 @@
 |            [**安理导航**](安理导航.md)             | [毕业生去向](安理导航.md#qx)/[课程体系](安理导航.md#tx)/[21级课程](安理导航.md#kc)/[教学锐评](安理导航.md#rp)/[安理往事](安理导航.md#ws) | <Strong>【\=\=\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;】</Strong>60% |
 | <a href="#Recommend-Repositories">**仓库推荐**</a> |       推荐一些同类仓库，创作不易，欢迎给他们 Star 鼓励       | <Strong>【\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;             】</Strong>40% |
 |        <a href="#Finally">**写在最后**</a>         |         欢迎大家在我的基础上整理出属于自己的一套笔记         | <Strong>【\=\=\=\=\=\=\=\=>&nbsp;&nbsp;&nbsp;】</Strong>80%  |
+
 
 </div>
 
@@ -148,9 +148,9 @@
 
 |                             类型                             |                          项目/网址                           |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|    [**GNSS 数据处理**](导航定位建图开源项目记录.md#GNSS)     | **[RTKLIB](https://www.rtklib.com/)**、[RTKLIB-Demo5](https://github.com/rtklibexplorer/RTKLIB)、[learning_rtklib](https://github.com/LiZhengXiao99/learning_rtklib)、[rtklib-py](https://github.com/rtklibexplorer/rtklib-py)、[GPS-RTKLIB-ARM-F407VG](https://github.com/ngochieu642/GPS-RTKLIB-ARM-F407VG)、[MatRTKLIB](https://github.com/taroz/MatRTKLIB)、[Taroz-gsdc2023](https://github.com/taroz/gsdc2023)、[CSSRLib](https://github.com/hirokawa/cssrlib)、[rtklib_ros_bridge](https://github.com/MapIV/rtklib_ros_bridge)、[FiPPP](https://github.com/HuChao-gnss/FiPPP)、[rtkrcv_ros](https://github.com/ajbfinesc/rtkrcv_ros)、**[GAMP](https://geodesy.noaa.gov/gps-toolbox/GAMP.htm)**、[GAMPII-GOOD](https://github.com/zhouforme0318/GAMPII-GOOD)、**[Ginan](https://github.com/GeoscienceAustralia/ginan)**、**[goGPS](https://github.com/goGPS-Project/goGPS_MATLAB)**、[goGPS_Java](https://github.com/goGPS-Project/goGPS_Java)、[BNC](https://igs.bkg.bund.de/ntrip/bnc)、[GREAT-PVT](https://github.com/GREAT-WHU/GREAT-PVT)、[GFZRNX](https://dataservices.gfz-potsdam.de/panmetaworks/showshort.php?id=escidoc:1577894)、[GNSSLogger](https://github.com/google/gps-measurement-tools)、[georinex](https://github.com/geospace-code/georinex)、[GAMIT/GLOBK](http://geoweb.mit.edu/gg/)、[GraphGNSSLib](https://github.com/weisongwen/GraphGNSSLib)、[NavCodeMonitor](https://github.com/weisongwen/NavCodeMonitor)、[Net_Diff](https://github.com/YizeZhang/Net_Diff)、[laika](https://github.com/commaai/laika)、[CSRS-PPP](https://webapp.csrs-scrs.nrcan-rncan.gc.ca/geod/tools-outils/ppp.php)、[POSGO](https://github.com/lizhengnss/POSGO)、[Pride-PPPAR](https://github.com/PrideLab/PRIDE-PPPAR)、[PPPwizard](http://www.ppp-wizard.net/)、[GPSTk](https://github.com/SGL-UT/GPSTk)、[gnsstk](https://github.com/SGL-UT/gnsstk)、[gnsstk-apps](https://github.com/SGL-UT/gnsstk-apps)、[G-NUT/Anubis](https://www.pecny.cz/Joomla25/index.php/gnss/sw/anubis)、[Teqc](https://www.unavco.org/software/data-processing/teqc/teqc.html)、[RNXQCE](https://github.com/cuizilu/RNXQCE)、[Bernese](https://www.bernese.unibe.ch/)、[gLAB](https://github.com/valgur/gLAB?tab=readme-ov-file)、[Look4Sat](https://github.com/rt-bishop/Look4Sat)、[RobustGNSS](https://github.com/wvu-navLab/RobustGNSS)、[ntrip](https://github.com/sevensx/ntrip)、[rtcm](https://github.com/Node-NTRIP/rtcm)、[cors](https://github.com/Erensu/cors)、[VrsCaster](https://github.com/DoubleString/VrsCaster)、[gstream](https://github.com/Jin-Whu/gstream)、[ogrp](https://github.com/Fraunhofer-IIS/ogrp)、[centipede](https://github.com/CentipedeRTK/centipede)、[TouchRTKStation](https://github.com/taroz/TouchRTKStation)、[rtkbase](https://github.com/Stefal/rtkbase)、[GREAT-IFCB](https://github.com/GREAT-WHU/GREAT-IFCB)、[gnss_comm](https://github.com/HKUST-Aerial-Robotics/gnss_comm)、[PPP-BayesTree](https://github.com/wvu-navLab/PPP-BayesTree)、[gnsspy](https://github.com/GNSSpy-Project/gnsspy)、[gnssgo](https://github.com/FengXuebin/gnssgo)、[raPPPid](https://github.com/TUW-VieVS/raPPPid)、[gnss-compass-ros](https://github.com/MapIV/gnss_compass_ros)、[gnss-attitude](https://github.com/low-earth-orbit/gnss-attitude)、[FCB-FILES](https://github.com/FCB-SGG/FCB-FILES)、[MG_APP](https://github.com/XiaoGongWei/MG_APP)、[gps_amcl](https://github.com/midemig/gps_amcl)、[deep_gnss](https://github.com/Stanford-NavLab/deep_gnss)、[TSAnalyzer](https://github.com/wudingcheng/TSAnalyzer)、[GNSS-TimeSeries-Viewers](https://github.com/kmaterna/GNSS_TimeSeries_Viewers)、[RTKinGSS](https://github.com/shaolinbit/RTKinGSS)、[gnss_lib_py](https://github.com/Stanford-NavLab/gnss_lib_py)、[PNT-Integrity](https://github.com/cisagov/PNT-Integrity)、[GORS](https://github.com/lengyanyanjing/GORS)、[GDDS](https://geodesy.noaa.gov/gps-toolbox/gdds.shtml)、[FAST](https://github.com/ChangChuntao/FAST)、[QGOPDD](https://github.com/yhw605/QGOPDD)、[gnss-downloader](https://github.com/Mereithhh/gnss-downloader)、[groops](https://github.com/groops-devs/groops)、[georb](https://github.com/Thomas-Loudis/georb)、[madocalib](https://github.com/QZSS-Strategy-Office/madocalib)、[OREKIT](https://link.zhihu.com/?target=https%3A//www.orekit.org/)、[rt-clk-service](https://github.com/DoubleString/rt-clk-service)、[polaris](https://github.com/PointOneNav/polaris)、[gnss-tec](https://github.com/gnss-lab/gnss-tec)、[utm](https://github.com/sfegan/utm)、[PW-from-GPS](https://github.com/ZiskinZiv/PW_from_GPS)、[GNSS-Multipath-Analysis-Software](https://github.com/paarnes/GNSS_Multipath_Analysis_Software)、[gnss-multipath-detector](https://github.com/EvgeniiMunin/gnss-multipath-detector)、[GNSS-Shadowing](https://github.com/xaedes/GNSS-Shadowing)、[gnssIR-python](https://github.com/kristinemlarson/gnssIR_python)、[GARNO](https://github.com/geoios/GARNO)、[GPSPACE](https://github.com/CGS-GIS/GPSPACE)、[GNSSDataQC](https://github.com/GNSS-FUN/GNSSDataQC)、[gnssr-synth](https://github.com/purnelldj/gnssr_synth)、[gnssIR-matlab-v3](https://github.com/kristinemlarson/gnssIR_matlab_v3)、[gnssrefl](https://github.com/kristinemlarson/gnssrefl)、[gnss2tws-green](https://github.com/jzshhh/gnss2tws_green)、[gnssSNR](https://github.com/kristinemlarson/gnssSNR)、[mphw](https://github.com/fgnievinski/mphw)、[hgpt_model](https://github.com/pjmateus/hgpt_model)、[GNSSR_MERRByS](https://github.com/pjalesSSTL/GNSSR_MERRByS)、[PyGPSClient](https://github.com/semuconsulting/PyGPSClient)、[STM32Primer2-GNSS-Tracker](https://github.com/nemuisan/STM32Primer2_GNSS_Tracker)、[STM32-GNSS](https://github.com/SimpleMethod/STM32-GNSS)、[GNSSTimeServer](https://github.com/Montecri/GNSSTimeServer)、[GNSS_Clock](https://github.com/stevemarple/GNSS_Clock)、[AgOpenGPS](https://github.com/farmerbriantee/AgOpenGPS)、[nmea-msgs](https://github.com/ros-drivers/nmea_msgs)、[LilyGo-LoRa-Series](https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series)、[HASlib](https://github.com/nlsfi/HASlib)、[HASPPP](https://github.com/ZhangRunzhi20/HASPPP)、[OSNMA](https://github.com/Algafix/OSNMA)、[galileo-osnma](https://github.com/daniestevez/galileo-osnma)、[GNSSAMS](https://github.com/GanAHE/GNSSAMS)、[geodetic_utils](https://github.com/ethz-asl/geodetic_utils)、[ppp-tools](https://github.com/aewallin/ppp-tools)、[gpstest](https://github.com/barbeau/gpstest)、[iSniff-GPS](https://github.com/hubert3/iSniff-GPS)、[hypatia](https://github.com/snkas/hypatia)、[gps-measurement-tools](https://github.com/google/gps-measurement-tools)、[FE-GUT](https://github.com/zhaoqj23/FE-GUT)、[gnss-RX](https://github.com/HeryMwenegoha/gnss-RX)、[Pypredict](https://github.com/spel-uchile/Pypredict)、[novatel-gps-driver](https://github.com/swri-robotics/novatel_gps_driver)、[GNSSAMS](https://github.com/GanAHE/GNSSAMS)、[GNSS-Radar](https://github.com/taroz/GNSS-Radar)、[geodesy_modeling](https://github.com/kmaterna/geodesy_modeling)、[gnss-odometry](https://github.com/mgoar/gnss-odometry)、[Caster_Project](https://github.com/KOROyo123/Caster_Project)、[rviz_satellite](https://github.com/nobleo/rviz_satellite)、[gnatss](https://github.com/seafloor-geodesy/gnatss)、[gnssr_lowcost](https://github.com/purnelldj/gnssr_lowcost)、[satellite-position-calculation-mapping](https://github.com/egemengulpinar/satellite-position-calculation-mapping)、[SatellitePosition](https://github.com/LStudioLoren/SatellitePosition)、[GNSSTool](https://github.com/quectel-open-source/GNSSTool)、[pynex](https://github.com/swift-nav/pynex)、[pygnssutils](https://github.com/semuconsulting/pygnssutils)、[flipperzero-gps](https://github.com/ezod/flipperzero-gps)、[ROS-GPS](https://github.com/sigmaai/ROS-GPS)、[rtk-rs](https://github.com/rtk-rs)、[ge-gnss-visibility](https://github.com/taroz/ge-gnss-visibility)、[OpenRTK](https://github.com/AndreasArendt/OpenRTK)、[GNSS_RTK](https://github.com/SupakunZ/GNSS_RTK)、[GPSToolbox 投稿](https://geodesy.noaa.gov/gps-toolbox/exist.htm)、[barbeau-awesome-gnss 整理](https://github.com/barbeau/awesome-gnss)、[hdkarimi-awesome-gnss 整理](https://github.com/hdkarimi/awesome-gnss)、[mcraymer 整理](https://mcraymer.github.io/geodesy/index.html)、[Awesome-Geospatial 整理](https://github.com/sacridini/Awesome-Geospatial)、[GISResourcce 整理](https://gisresources.com/) |
+|    [**GNSS 数据处理**](导航定位建图开源项目记录.md#GNSS)     | **[RTKLIB](https://www.rtklib.com/)**、[RTKLIB-Demo5](https://github.com/rtklibexplorer/RTKLIB)、[learning_rtklib](https://github.com/LiZhengXiao99/learning_rtklib)、[rtklib-py](https://github.com/rtklibexplorer/rtklib-py)、[pyrtklib](https://github.com/IPNL-POLYU/pyrtklib)、[GPS-RTKLIB-ARM-F407VG](https://github.com/ngochieu642/GPS-RTKLIB-ARM-F407VG)、[MatRTKLIB](https://github.com/taroz/MatRTKLIB)、[Taroz-gsdc2023](https://github.com/taroz/gsdc2023)、[CSSRLib](https://github.com/hirokawa/cssrlib)、[rtklib_ros_bridge](https://github.com/MapIV/rtklib_ros_bridge)、[FiPPP](https://github.com/HuChao-gnss/FiPPP)、[rtkrcv_ros](https://github.com/ajbfinesc/rtkrcv_ros)、**[GAMP](https://geodesy.noaa.gov/gps-toolbox/GAMP.htm)**、[GAMPII-GOOD](https://github.com/zhouforme0318/GAMPII-GOOD)、**[Ginan](https://github.com/GeoscienceAustralia/ginan)**、**[goGPS](https://github.com/goGPS-Project/goGPS_MATLAB)**、[goGPS_Java](https://github.com/goGPS-Project/goGPS_Java)、[BNC](https://igs.bkg.bund.de/ntrip/bnc)、[GREAT-PVT](https://github.com/GREAT-WHU/GREAT-PVT)、[GFZRNX](https://dataservices.gfz-potsdam.de/panmetaworks/showshort.php?id=escidoc:1577894)、[GNSSLogger](https://github.com/google/gps-measurement-tools)、[georinex](https://github.com/geospace-code/georinex)、[GAMIT/GLOBK](http://geoweb.mit.edu/gg/)、[GraphGNSSLib](https://github.com/weisongwen/GraphGNSSLib)、[NavCodeMonitor](https://github.com/weisongwen/NavCodeMonitor)、[Net_Diff](https://github.com/YizeZhang/Net_Diff)、[laika](https://github.com/commaai/laika)、[CSRS-PPP](https://webapp.csrs-scrs.nrcan-rncan.gc.ca/geod/tools-outils/ppp.php)、[POSGO](https://github.com/lizhengnss/POSGO)、[Pride-PPPAR](https://github.com/PrideLab/PRIDE-PPPAR)、[PPPwizard](http://www.ppp-wizard.net/)、[GPSTk](https://github.com/SGL-UT/GPSTk)、[gnsstk](https://github.com/SGL-UT/gnsstk)、[gnsstk-apps](https://github.com/SGL-UT/gnsstk-apps)、[G-NUT/Anubis](https://www.pecny.cz/Joomla25/index.php/gnss/sw/anubis)、[Teqc](https://www.unavco.org/software/data-processing/teqc/teqc.html)、[RNXQCE](https://github.com/cuizilu/RNXQCE)、[Bernese](https://www.bernese.unibe.ch/)、[gLAB](https://github.com/valgur/gLAB?tab=readme-ov-file)、[Look4Sat](https://github.com/rt-bishop/Look4Sat)、[RobustGNSS](https://github.com/wvu-navLab/RobustGNSS)、[ntrip](https://github.com/sevensx/ntrip)、[rtcm](https://github.com/Node-NTRIP/rtcm)、[cors](https://github.com/Erensu/cors)、[VrsCaster](https://github.com/DoubleString/VrsCaster)、[gstream](https://github.com/Jin-Whu/gstream)、[ogrp](https://github.com/Fraunhofer-IIS/ogrp)、[centipede](https://github.com/CentipedeRTK/centipede)、[TouchRTKStation](https://github.com/taroz/TouchRTKStation)、[rtkbase](https://github.com/Stefal/rtkbase)、[GREAT-IFCB](https://github.com/GREAT-WHU/GREAT-IFCB)、[gnss_comm](https://github.com/HKUST-Aerial-Robotics/gnss_comm)、[PPP-BayesTree](https://github.com/wvu-navLab/PPP-BayesTree)、[gnsspy](https://github.com/GNSSpy-Project/gnsspy)、[gnssgo](https://github.com/FengXuebin/gnssgo)、[raPPPid](https://github.com/TUW-VieVS/raPPPid)、[gnss-compass-ros](https://github.com/MapIV/gnss_compass_ros)、[gnss-attitude](https://github.com/low-earth-orbit/gnss-attitude)、[FCB-FILES](https://github.com/FCB-SGG/FCB-FILES)、[MG_APP](https://github.com/XiaoGongWei/MG_APP)、[gps_amcl](https://github.com/midemig/gps_amcl)、[deep_gnss](https://github.com/Stanford-NavLab/deep_gnss)、[TSAnalyzer](https://github.com/wudingcheng/TSAnalyzer)、[GNSS-TimeSeries-Viewers](https://github.com/kmaterna/GNSS_TimeSeries_Viewers)、[RTKinGSS](https://github.com/shaolinbit/RTKinGSS)、[gnss_lib_py](https://github.com/Stanford-NavLab/gnss_lib_py)、[PNT-Integrity](https://github.com/cisagov/PNT-Integrity)、[GORS](https://github.com/lengyanyanjing/GORS)、[GDDS](https://geodesy.noaa.gov/gps-toolbox/gdds.shtml)、[FAST](https://github.com/ChangChuntao/FAST)、[QGOPDD](https://github.com/yhw605/QGOPDD)、[gnss-downloader](https://github.com/Mereithhh/gnss-downloader)、[groops](https://github.com/groops-devs/groops)、[georb](https://github.com/Thomas-Loudis/georb)、[madocalib](https://github.com/QZSS-Strategy-Office/madocalib)、[OREKIT](https://link.zhihu.com/?target=https%3A//www.orekit.org/)、[rt-clk-service](https://github.com/DoubleString/rt-clk-service)、[polaris](https://github.com/PointOneNav/polaris)、[gnss-tec](https://github.com/gnss-lab/gnss-tec)、[utm](https://github.com/sfegan/utm)、[PW-from-GPS](https://github.com/ZiskinZiv/PW_from_GPS)、[GNSS-Multipath-Analysis-Software](https://github.com/paarnes/GNSS_Multipath_Analysis_Software)、[gnss-multipath-detector](https://github.com/EvgeniiMunin/gnss-multipath-detector)、[GNSS-Shadowing](https://github.com/xaedes/GNSS-Shadowing)、[gnssIR-python](https://github.com/kristinemlarson/gnssIR_python)、[GARNO](https://github.com/geoios/GARNO)、[GPSPACE](https://github.com/CGS-GIS/GPSPACE)、[GNSSDataQC](https://github.com/GNSS-FUN/GNSSDataQC)、[gnssr-synth](https://github.com/purnelldj/gnssr_synth)、[gnssIR-matlab-v3](https://github.com/kristinemlarson/gnssIR_matlab_v3)、[gnssrefl](https://github.com/kristinemlarson/gnssrefl)、[gnss2tws-green](https://github.com/jzshhh/gnss2tws_green)、[gnssSNR](https://github.com/kristinemlarson/gnssSNR)、[mphw](https://github.com/fgnievinski/mphw)、[hgpt_model](https://github.com/pjmateus/hgpt_model)、[GNSSR_MERRByS](https://github.com/pjalesSSTL/GNSSR_MERRByS)、[PyGPSClient](https://github.com/semuconsulting/PyGPSClient)、[STM32Primer2-GNSS-Tracker](https://github.com/nemuisan/STM32Primer2_GNSS_Tracker)、[STM32-GNSS](https://github.com/SimpleMethod/STM32-GNSS)、[GNSSTimeServer](https://github.com/Montecri/GNSSTimeServer)、[GNSS_Clock](https://github.com/stevemarple/GNSS_Clock)、[AgOpenGPS](https://github.com/farmerbriantee/AgOpenGPS)、[nmea-msgs](https://github.com/ros-drivers/nmea_msgs)、[LilyGo-LoRa-Series](https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series)、[HASlib](https://github.com/nlsfi/HASlib)、[HASPPP](https://github.com/ZhangRunzhi20/HASPPP)、[OSNMA](https://github.com/Algafix/OSNMA)、[galileo-osnma](https://github.com/daniestevez/galileo-osnma)、[GNSSAMS](https://github.com/GanAHE/GNSSAMS)、[geodetic_utils](https://github.com/ethz-asl/geodetic_utils)、[ppp-tools](https://github.com/aewallin/ppp-tools)、[gpstest](https://github.com/barbeau/gpstest)、[iSniff-GPS](https://github.com/hubert3/iSniff-GPS)、[hypatia](https://github.com/snkas/hypatia)、[gps-measurement-tools](https://github.com/google/gps-measurement-tools)、[FE-GUT](https://github.com/zhaoqj23/FE-GUT)、[gnss-RX](https://github.com/HeryMwenegoha/gnss-RX)、[Pypredict](https://github.com/spel-uchile/Pypredict)、[novatel-gps-driver](https://github.com/swri-robotics/novatel_gps_driver)、[GNSSAMS](https://github.com/GanAHE/GNSSAMS)、[GNSS-Radar](https://github.com/taroz/GNSS-Radar)、[geodesy_modeling](https://github.com/kmaterna/geodesy_modeling)、[gnss-odometry](https://github.com/mgoar/gnss-odometry)、[Caster_Project](https://github.com/KOROyo123/Caster_Project)、[rviz_satellite](https://github.com/nobleo/rviz_satellite)、[gnatss](https://github.com/seafloor-geodesy/gnatss)、[gnssr_lowcost](https://github.com/purnelldj/gnssr_lowcost)、[satellite-position-calculation-mapping](https://github.com/egemengulpinar/satellite-position-calculation-mapping)、[SatellitePosition](https://github.com/LStudioLoren/SatellitePosition)、[GNSSTool](https://github.com/quectel-open-source/GNSSTool)、[pynex](https://github.com/swift-nav/pynex)、[pygnssutils](https://github.com/semuconsulting/pygnssutils)、[flipperzero-gps](https://github.com/ezod/flipperzero-gps)、[ROS-GPS](https://github.com/sigmaai/ROS-GPS)、[rtk-rs](https://github.com/rtk-rs)、[ge-gnss-visibility](https://github.com/taroz/ge-gnss-visibility)、[OpenRTK](https://github.com/AndreasArendt/OpenRTK)、[GNSS_RTK](https://github.com/SupakunZ/GNSS_RTK)、[GPSToolbox 投稿](https://geodesy.noaa.gov/gps-toolbox/exist.htm)、[barbeau-awesome-gnss 整理](https://github.com/barbeau/awesome-gnss)、[hdkarimi-awesome-gnss 整理](https://github.com/hdkarimi/awesome-gnss)、[mcraymer 整理](https://mcraymer.github.io/geodesy/index.html)、[Awesome-Geospatial 整理](https://github.com/sacridini/Awesome-Geospatial)、[GISResourcce 整理](https://gisresources.com/) |
 | **[GNSS 信号处理](导航定位建图开源项目记录.md#GNSS-Signal)** | **[GNSS-SDR](https://github.com/gnss-sdr/gnss-sdr)**、[gnss-sdr-monitor](https://github.com/acebrianjuan/gnss-sdr-monitor)、**[SoftGNSS](https://github.com/kristianpaul/SoftGNSS)**、[SoftGNSS-python](https://github.com/perrysou/SoftGNSS-python)、**[PocketSDR](https://github.com/tomojitakasu/PocketSDR)**、[GNSS-SDRLIB](https://github.com/taroz/GNSS-SDRLIB)、[nut2nt](https://github.com/amungo/nut2nt)、[Beagle_SDR_GPS](https://github.com/jks-prv/Beagle_SDR_GPS)、[KiwiSDR](https://forum.kiwisdr.com/)、[FlyDog-SDR-GPS](https://github.com/flydog-sdr/FlyDog_SDR_GPS)、[FlyCat-SDR-GPS](https://github.com/flydog-sdr/FlyCat_SDR_GPS)、[Full_Stack_GPS_Receiver](https://github.com/hamsternz/Full_Stack_GPS_Receiver)、[BDS-3-B1C-B2a-SDR-receiver](https://github.com/lyf8118/BDS-3-B1C-B2a-SDR-receiver)、[FGI-GSRx](https://github.com/nlsfi/FGI-GSRx)、[gypsum](https://github.com/codyd51/gypsum)、[sydr](https://github.com/aproposorg/sydr)、[NavLab-DPE-SDR](https://github.com/Stanford-NavLab/NavLab-DPE-SDR)、[multi-channel-gnss](https://github.com/dasdboot/multi-channel-gnss)、[GPUAcceleratedTracking](https://github.com/coezmaden/GPUAcceleratedTracking)、[GNSS-GPS-SDR](https://github.com/JiaoXianjun/GNSS-GPS-SDR)、[SDR-GPS-SPOOF](https://github.com/B44D3R/SDR-GPS-SPOOF)、[gps](https://github.com/psas/gps)、[SnapperGPS](https://snappergps.info/)、[snapshot-gnss-algorithms](https://github.com/JonasBchrt/snapshot-gnss-algorithms)、[gnss-sdr-1pps](https://github.com/oscimp/gnss-sdr-1pps)、[SatDump](https://github.com/SatDump/SatDump)、[gps-sdr-simulink](https://github.com/dmiralles2009/gps-sdr-simulink)、[gps-sdr-sim](https://github.com/osqzss/gps-sdr-sim)、[beidou-sdr-sim](https://github.com/yangfan852219770/beidou-sdr-sim)、[galileo-sdr-sim](https://github.com/harshadms/galileo-sdr-sim)、[gps-qzss-sdr-sim](https://github.com/iGNSS/gps-qzss-sdr-sim)、[multi-sdr-gps-sim](https://github.com/Mictronics/multi-sdr-gps-sim)、[pluto-gps-sim](https://github.com/Mictronics/pluto-gps-sim)、[SignalSim](https://github.com/globsky/SignalSim)、[Microsat-gps-sim](https://github.com/niklasknoell/Microsat-gps-sim)、[GPS_GAL_SSS](https://github.com/domonforyou/GPS_GAL_SSS)、[greta-oto](https://github.com/globsky/greta-oto)、[BD3_FPGA](https://github.com/whc2uestc/BD3_FPGA)、[GNSS-matlab](https://github.com/danipascual/GNSS-matlab)、[oresat-gps-software](https://github.com/oresat/oresat-gps-software)/[hardware](https://github.com/oresat/oresat-gps-hardware)、[MAX2769FT2232H](https://github.com/WKyleGilbertson/MAX2769FT2232H)、[SDR-GB-SAR](https://github.com/jmfriedt/SDR-GB-SAR)、[gps-rf-frontend-sim](https://github.com/iliasam/gps_rf_frontend_sim)、[GNSS-VHDL](https://github.com/danipascual/GNSS-VHDL)、[GNSS-Metadata-Standard](https://github.com/IonMetadataWorkingGroup/GNSS-Metadata-Standard)、[gnss-baseband](https://github.com/j-core/gnss-baseband)、[GPSMAXIM2769b-](https://github.com/vaidhyamookiah/GPSMAXIM2769b-)、[Analog-GPS-data-receiver](https://github.com/leaningktower/Analog-GPS-data-receiver)、[GNSS_Firehose](https://github.com/pmonta/GNSS_Firehose)、[GNSS-DSP-tools](https://github.com/pmonta/GNSS-DSP-tools)、[hard_sydr](https://github.com/aproposorg/hard_sydr)、[B1C-Signals-Simulation](https://github.com/pandaclover/B1C_Signals_Simulation)、[CU-SDR-Collection](https://github.com/gnsscusdr/CU-SDR-Collection)、[ESP32-SDR-GPS](https://github.com/iliasam/ESP32_SDR_GPS)、[STM32F4-SDR-GPS](https://github.com/iliasam/STM32F4_SDR_GPS)、[Fast-GNSS-ReceiverMATLAB](https://github.com/JohnBagshaw/Fast_GNSS_ReceiverMATLAB)、[gnss-sdr-rs](https://github.com/kewei/gnss-sdr-rs)、[sdr-beamforming](https://github.com/ADolbyB/sdr-beamforming)、[gr-gnMAX2769](https://github.com/wkazubski/gr-gnMAX2769)、[gps-sdr](https://github.com/gps-sdr/gps-sdr)、[GPSL1-DPEmodule](https://github.com/Sergio-Vicenzo/GPSL1-DPEmodule)、[esp2822_NMEA_sim](https://github.com/michalpelka/esp2822_NMEA_sim)、[BDS_SDR](https://github.com/nkyang/BDS_SDR) |
-|     **[INS、组合导航](导航定位建图开源项目记录.md#INS)**     | [INS_Course_Matlab](https://github.com/LiZhengXiao99/INS_Course_Matlab)、**[PSINS](http://www.psins.org.cn/)**、[Android-PSINSToolbox](https://gitee.com/tmrnic/android-psinstoolbox)、[PSINS-ROS](https://github.com/BohemianRhapsodyz/PSINS-ROS)、[PSINS-Develop-Group](https://github.com/Cattle521/PSINS-Develop-Group)、[PSINS_FIMU](https://github.com/georgenwpu/PSINS_FIMU)、**[KF-GINS](https://github.com/i2Nav-WHU/KF-GINS)**、[KF_GINS_GUI](https://github.com/Wang-Jie-Lucid-Sheep/KF_GINS_GUI)、[py_IMU](https://github.com/Dennissy23/py_IMU)、**[OB-GINS](https://github.com/i2Nav-WHU/OB_GINS)**、**[TGINS](https://github.com/heiwa0519/TGINS)**、[PPPLIB](https://geodesy.noaa.gov/gps-toolbox/PPPLib.htm)、[Compass](https://gitee.com/hw_cc/compass)、[GINAV](https://github.com/kaichen686/GINav)/[v2.0](https://github.com/kaichen686/GINav_v2.0-test)、[IGNAV](https://github.com/Erensu/ignav)、[MATLAB-Groves](https://github.com/zbai/MATLAB-Groves)、[GIOW-release](https://github.com/i2Nav-WHU/GIOW-release)、[imu_x_fusion](https://github.com/cggos/imu_x_fusion)、[OpenIMU](https://github.com/introlab/OpenIMU)、[ronin](https://github.com/Sachini/ronin)、[RINS-W](https://github.com/mbrossar/RINS-W)、[invensense-imu](https://github.com/bolderflight/invensense-imu)、[eagleye](https://github.com/MapIV/eagleye)、[ai-imu-dr](https://github.com/mbrossar/ai-imu-dr)、[NaveCodePro](https://github.com/zelanzou/NaveCodePro)、[InertialNav](https://github.com/priseborough/InertialNav)、[allan-variance-ros](https://github.com/ori-drs/allan_variance_ros)、[eskf_localization](https://github.com/Arcanain/eskf_localization)、[imu_gnss_eskf](https://github.com/zouyajing/imu_gnss_eskf)、[nav_matlab](https://github.com/yandld/nav_matlab)、[imu_zupt](https://github.com/Fixit-Davide/imu_zupt)、[IEZ](https://github.com/pajaraca/IEZ)、[ZUPT-aided-INS](https://github.com/hcarlsso/ZUPT-aided-INS)、[gnss-ins-zupt](https://github.com/wvu-navLab/gnss-ins-zupt)、[corenav-GP](https://github.com/wvu-navLab/corenav-GP)、[kalibr](https://github.com/ethz-asl/kalibr)、[kalibr_allan](https://github.com/rpng/kalibr_allan)、[allan_variance_ros](https://github.com/ori-drs/allan_variance_ros)、[allan_variance](https://github.com/GAVLab/allan_variance)、[imu_allan](https://github.com/alalagong/imu_allan)、[allan_ros2](https://github.com/CruxDevStuff/allan_ros2)、[AdevAnalysis](https://github.com/itsuhane/AdevAnalysis)、[imu-data-simulation](https://github.com/robosu12/imu_data_simulation)、[GPS_IMU_Kalman_Filter](https://github.com/karanchawla/GPS_IMU_Kalman_Filter)、[TightlyCoupledINSGNSS](https://github.com/benzenemo/TightlyCoupledINSGNSS)、[stm32f4_mpu9250](https://github.com/suhetao/stm32f4_mpu9250)、[mpu6050](https://github.com/libdriver/mpu6050)、[mpu9250](https://github.com/libdriver/mpu9250)、[FastIMU](https://github.com/LiquidCGS/FastIMU)、[Wheel-INS ](https://github.com/i2Nav-WHU/Wheel-INS)、[GNSS-INS](https://github.com/hitleeleo/GNSS-INS)、[pyshoe](https://github.com/utiasSTARS/pyshoe)、[imu_tools](https://github.com/CCNYRoboticsLab/imu_tools)、[IMUCalibration-Gesture](https://github.com/shenshikexmu/IMUCalibration-Gesture)、[ImuCalibration-Poistion](https://github.com/shenshikexmu/ImuCalibration-Poistion)、[imu_utils](https://github.com/gaowenliang/imu_utils)、[GyroAllan](https://github.com/XinLiGH/GyroAllan)、[gnss-ins-sim](https://github.com/Aceinna/gnss-ins-sim)、[MEMS-IMU-Denoising](https://github.com/ansfl/MEMS-IMU-Denoising)、[agrobot](https://github.com/nesl/agrobot)、[IBG_EKF_TC](https://github.com/Dennissy23/IBG_EKF_TC)、[ZCJ-GNSSINS-DeepIntegration](https://github.com/kongtian-SiBu/ZCJ_GNSSINS_DeepIntegration)、[Smartphone-IMU-GPS](https://github.com/alexschultze/Smartphone_IMU_GPS)、[INSTINCT](https://github.com/UniStuttgart-INS/INSTINCT)、[Gait-Tracking](https://github.com/xioTechnologies/Gait-Tracking)、[Machine-Learning-GNSS-IMU-Integration](https://github.com/Akpozi/Machine_Learning_GNSS_IMU_Integration)、[ImuCalibration-Poistion](https://github.com/shenshikexmu/ImuCalibration-Poistion)、[ ADIS16470-Arduino-Teensy](https://github.com/juchong/ADIS16470_Arduino_Teensy)、[Seeed_ADIS16470](https://github.com/Seeed-Studio/Seeed_ADIS16470)、[iXR_GNSS-IMU_TightlyCouplingProgram](https://github.com/kakusang2020/iXR_GNSS-IMU_TightlyCouplingProgram)、[KalmanFilter_Vehicle_GNSS_INS](https://github.com/alirezaahmadi/KalmanFilter-Vehicle-GNSS-INS)、[GPS_Milemeter_IMU_EKFLocation](https://github.com/gilbertz/GPS_Milemeter_IMU_EKFLocation)、[IMUNet](https://github.com/BehnamZeinali/IMUNet)、[SmartIMU](https://github.com/KitSprout/SmartIMU)、[IMUSensorModels](https://github.com/hanley6/IMUSensorModels)、[imu_gps_localization](https://github.com/ydsf16/imu_gps_localization)、[dcm-imu](https://github.com/hhyyti/dcm-imu)、[denoise_imu_gyro](https://github.com/mbrossar/denoise-imu-gyro)、[vectornav](https://github.com/dawonn/vectornav)、[OpenIMUFilter](https://github.com/hustcalm/OpenIMUFilter)、[9DOF_Razor_IMU](https://github.com/sparkfun/9DOF_Razor_IMU)、[IMU_Attitude_Estimator](https://github.com/gaochq/IMU_Attitude_Estimator)、[SparkFun_LSM9DS1_Arduino_Library](https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library)、[imu_pipeline](https://github.com/ros-perception/imu_pipeline)、[ESEKF_IMU](https://github.com/aipiano/ESEKF_IMU)、[IMA-estimation](https://github.com/QIJINCHEN/IMA-estimation)、[fusion](https://github.com/Guo-ziwei/fusion)、[Indirect_EKF_IMU_GPS](https://github.com/hgpvision/Indirect_EKF_IMU_GPS)、[gps_imu_fusion](https://github.com/Shelfcol/gps_imu_fusion)、[imu_ekf](https://github.com/mrsp/imu_ekf)、[x-IMU-GUI](https://github.com/xioTechnologies/x-IMU-GUI)、[ekf-imu-depth](https://github.com/SenZHANG-GitHub/ekf-imu-depth)、[imu_tk_matlab](https://github.com/JzHuai0108/imu_tk_matlab)、[imu_tk](https://github.com/Kyle-ak/imu_tk)、[IMU_Preintegration](https://github.com/ujasmandavia/IMU_Preintegration)、[RTIMULib2](https://github.com/HongshiTan/RTIMULib2)、[imu_to_odom](https://github.com/nadiawangberg/imu_to_odom)、[imu-human-pose-pytorch](https://github.com/CHUNYUWANG/imu-human-pose-pytorch)、[IMU-Array](https://github.com/i2Nav-WHU/IMU-Array)、[IMUPoser](https://github.com/FIGLAB/IMUPoser)、[IMUDB](https://github.com/KleinYuan/IMUDB)、[har_with_imu_transformer](https://github.com/yolish/har-with-imu-transformer)、[EyeMU](https://github.com/FIGLAB/EyeMU)、[Attitude-Estimation](https://github.com/pms67/Attitude-Estimation)、[Activity_Detection_using_IMU_sensor](https://github.com/mohan-mj/Activity-Detection-using-IMU-sensor)、[lwoi](https://github.com/CAOR-MINES-ParisTech/lwoi)、[InvariantEKF_GNSS_IMU](https://github.com/mfkiwl/InvariantEKF_GNSS_IMU)、[imu_veh_calib](https://github.com/smallsunsun1/imu_veh_calib)、[ImuMeanFilter](https://github.com/XinLiGH/ImuMeanFilter)、[kalman_filter_with_kitti](https://github.com/motokimura/kalman_filter_with_kitti)、[ImuGpsGuiding](https://github.com/JackJu-HIT/ImuGpsGuiding)、[OpenSimRT](https://github.com/mitkof6/OpenSimRT)、[RTD_phone](https://github.com/milkytipo/RTD_phone)、[ADIS16470_Demo](https://github.com/wmdscjhdpy/ADIS16470_Demo)、[odom_predictor](https://github.com/ethz-asl/odom_predictor)、[robot_pose_ekf](https://github.com/udacity/robot_pose_ekf)、[UKF](https://github.com/krishnasandeep09/UKF)、[gnss-sensor-fusion](https://github.com/betaBison/gnss-sensor-fusion)、[amsi](https://github.com/weisongwen/amsi)、[EgoLocate](https://github.com/Xinyu-Yi/EgoLocate)、[learned_inertial_model_odometry](https://github.com/uzh-rpg/learned_inertial_model_odometry)、[MadgwickAHRS](https://github.com/arduino-libraries/MadgwickAHRS)、[integrated-navigation](https://github.com/XDDz123/integrated-navigation)、[KGP-IAEKF-IGGIII](https://github.com/chi-qhsun/KGP-IAEKF-IGGIII)、[navfusion](https://github.com/nvpadron/navfusion)、[Madgwick_Filter](https://github.com/bjohnsonfl/Madgwick_Filter)、[UrbanRTK-INS-OutlierOpt](https://github.com/Azurehappen/UrbanRTK-INS-OutlierOpt)、[SCH63T_MINI_EVK](https://github.com/tomojitakasu/SCH63T_MINI_EVK)、[GPS_IMU_Kalman_Filter](https://github.com/karanchawla/GPS_IMU_Kalman_Filter)、[Location](https://github.com/yyccR/Location)、[waypoint_nav](https://github.com/nickcharron/waypoint_nav)、[GIOW-release](https://github.com/i2Nav-WHU/GIOW-release)、[pyins](https://github.com/nmayorov/pyins)、[GINS-Navi](https://github.com/lewis5499/GINS-Navi)、[GNSS_INS_Integrations_Comparisons](https://github.com/ZhengdaoLI0602/GNSS_INS_Integrations_Comparisons)、[KF-GINS-ECEF](https://github.com/akui1321/KF-GINS-ECEF) |
+|     **[INS、组合导航](导航定位建图开源项目记录.md#INS)**     | [INS_Course_Matlab](https://github.com/LiZhengXiao99/INS_Course_Matlab)、**[PSINS](http://www.psins.org.cn/)**、[Android-PSINSToolbox](https://gitee.com/tmrnic/android-psinstoolbox)、[PSINS-ROS](https://github.com/BohemianRhapsodyz/PSINS-ROS)、[PSINS-Develop-Group](https://github.com/Cattle521/PSINS-Develop-Group)、[PSINS_FIMU](https://github.com/georgenwpu/PSINS_FIMU)、**[KF-GINS](https://github.com/i2Nav-WHU/KF-GINS)**、[KF_GINS_GUI](https://github.com/Wang-Jie-Lucid-Sheep/KF_GINS_GUI)、[py_IMU](https://github.com/Dennissy23/py_IMU)、**[OB-GINS](https://github.com/i2Nav-WHU/OB_GINS)**、**[TGINS](https://github.com/heiwa0519/TGINS)**、[PPPLIB](https://geodesy.noaa.gov/gps-toolbox/PPPLib.htm)、[Compass](https://gitee.com/hw_cc/compass)、[GINAV](https://github.com/kaichen686/GINav)/[v2.0](https://github.com/kaichen686/GINav_v2.0-test)、[IGNAV](https://github.com/Erensu/ignav)、[MATLAB-Groves](https://github.com/zbai/MATLAB-Groves)、[GIOW-release](https://github.com/i2Nav-WHU/GIOW-release)、[imu_x_fusion](https://github.com/cggos/imu_x_fusion)、[OpenIMU](https://github.com/introlab/OpenIMU)、[ronin](https://github.com/Sachini/ronin)、[RINS-W](https://github.com/mbrossar/RINS-W)、[invensense-imu](https://github.com/bolderflight/invensense-imu)、[eagleye](https://github.com/MapIV/eagleye)、[ai-imu-dr](https://github.com/mbrossar/ai-imu-dr)、[NaveCodePro](https://github.com/zelanzou/NaveCodePro)、[InertialNav](https://github.com/priseborough/InertialNav)、[allan-variance-ros](https://github.com/ori-drs/allan_variance_ros)、[eskf_localization](https://github.com/Arcanain/eskf_localization)、[imu_gnss_eskf](https://github.com/zouyajing/imu_gnss_eskf)、[nav_matlab](https://github.com/yandld/nav_matlab)、[imu_zupt](https://github.com/Fixit-Davide/imu_zupt)、[IEZ](https://github.com/pajaraca/IEZ)、[ZUPT-aided-INS](https://github.com/hcarlsso/ZUPT-aided-INS)、[gnss-ins-zupt](https://github.com/wvu-navLab/gnss-ins-zupt)、[corenav-GP](https://github.com/wvu-navLab/corenav-GP)、[kalibr](https://github.com/ethz-asl/kalibr)、[kalibr_allan](https://github.com/rpng/kalibr_allan)、[allan_variance_ros](https://github.com/ori-drs/allan_variance_ros)、[allan_variance](https://github.com/GAVLab/allan_variance)、[imu_allan](https://github.com/alalagong/imu_allan)、[allan_ros2](https://github.com/CruxDevStuff/allan_ros2)、[AdevAnalysis](https://github.com/itsuhane/AdevAnalysis)、[imu-data-simulation](https://github.com/robosu12/imu_data_simulation)、[GPS_IMU_Kalman_Filter](https://github.com/karanchawla/GPS_IMU_Kalman_Filter)、[TightlyCoupledINSGNSS](https://github.com/benzenemo/TightlyCoupledINSGNSS)、[stm32f4_mpu9250](https://github.com/suhetao/stm32f4_mpu9250)、[mpu6050](https://github.com/libdriver/mpu6050)、[mpu9250](https://github.com/libdriver/mpu9250)、[FastIMU](https://github.com/LiquidCGS/FastIMU)、[Wheel-INS ](https://github.com/i2Nav-WHU/Wheel-INS)、[GNSS-INS](https://github.com/hitleeleo/GNSS-INS)、[pyshoe](https://github.com/utiasSTARS/pyshoe)、[imu_tools](https://github.com/CCNYRoboticsLab/imu_tools)、[IMUCalibration-Gesture](https://github.com/shenshikexmu/IMUCalibration-Gesture)、[ImuCalibration-Poistion](https://github.com/shenshikexmu/ImuCalibration-Poistion)、[imu_utils](https://github.com/gaowenliang/imu_utils)、[GyroAllan](https://github.com/XinLiGH/GyroAllan)、[gnss-ins-sim](https://github.com/Aceinna/gnss-ins-sim)、[MEMS-IMU-Denoising](https://github.com/ansfl/MEMS-IMU-Denoising)、[agrobot](https://github.com/nesl/agrobot)、[IBG_EKF_TC](https://github.com/Dennissy23/IBG_EKF_TC)、[ZCJ-GNSSINS-DeepIntegration](https://github.com/kongtian-SiBu/ZCJ_GNSSINS_DeepIntegration)、[Smartphone-IMU-GPS](https://github.com/alexschultze/Smartphone_IMU_GPS)、[INSTINCT](https://github.com/UniStuttgart-INS/INSTINCT)、[Gait-Tracking](https://github.com/xioTechnologies/Gait-Tracking)、[Machine-Learning-GNSS-IMU-Integration](https://github.com/Akpozi/Machine_Learning_GNSS_IMU_Integration)、[ImuCalibration-Poistion](https://github.com/shenshikexmu/ImuCalibration-Poistion)、[ ADIS16470-Arduino-Teensy](https://github.com/juchong/ADIS16470_Arduino_Teensy)、[Seeed_ADIS16470](https://github.com/Seeed-Studio/Seeed_ADIS16470)、[iXR_GNSS-IMU_TightlyCouplingProgram](https://github.com/kakusang2020/iXR_GNSS-IMU_TightlyCouplingProgram)、[KalmanFilter_Vehicle_GNSS_INS](https://github.com/alirezaahmadi/KalmanFilter-Vehicle-GNSS-INS)、[GPS_Milemeter_IMU_EKFLocation](https://github.com/gilbertz/GPS_Milemeter_IMU_EKFLocation)、[IMUNet](https://github.com/BehnamZeinali/IMUNet)、[SmartIMU](https://github.com/KitSprout/SmartIMU)、[IMUSensorModels](https://github.com/hanley6/IMUSensorModels)、[imu_gps_localization](https://github.com/ydsf16/imu_gps_localization)、[dcm-imu](https://github.com/hhyyti/dcm-imu)、[denoise_imu_gyro](https://github.com/mbrossar/denoise-imu-gyro)、[vectornav](https://github.com/dawonn/vectornav)、[OpenIMUFilter](https://github.com/hustcalm/OpenIMUFilter)、[9DOF_Razor_IMU](https://github.com/sparkfun/9DOF_Razor_IMU)、[IMU_Attitude_Estimator](https://github.com/gaochq/IMU_Attitude_Estimator)、[SparkFun_LSM9DS1_Arduino_Library](https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library)、[imu_pipeline](https://github.com/ros-perception/imu_pipeline)、[ESEKF_IMU](https://github.com/aipiano/ESEKF_IMU)、[IMA-estimation](https://github.com/QIJINCHEN/IMA-estimation)、[fusion](https://github.com/Guo-ziwei/fusion)、[Indirect_EKF_IMU_GPS](https://github.com/hgpvision/Indirect_EKF_IMU_GPS)、[gps_imu_fusion](https://github.com/Shelfcol/gps_imu_fusion)、[imu_ekf](https://github.com/mrsp/imu_ekf)、[x-IMU-GUI](https://github.com/xioTechnologies/x-IMU-GUI)、[ekf-imu-depth](https://github.com/SenZHANG-GitHub/ekf-imu-depth)、[imu_tk_matlab](https://github.com/JzHuai0108/imu_tk_matlab)、[imu_tk](https://github.com/Kyle-ak/imu_tk)、[IMU_Preintegration](https://github.com/ujasmandavia/IMU_Preintegration)、[RTIMULib2](https://github.com/HongshiTan/RTIMULib2)、[imu_to_odom](https://github.com/nadiawangberg/imu_to_odom)、[imu-human-pose-pytorch](https://github.com/CHUNYUWANG/imu-human-pose-pytorch)、[IMU-Array](https://github.com/i2Nav-WHU/IMU-Array)、[IMUPoser](https://github.com/FIGLAB/IMUPoser)、[IMUDB](https://github.com/KleinYuan/IMUDB)、[har_with_imu_transformer](https://github.com/yolish/har-with-imu-transformer)、[EyeMU](https://github.com/FIGLAB/EyeMU)、[Attitude-Estimation](https://github.com/pms67/Attitude-Estimation)、[Activity_Detection_using_IMU_sensor](https://github.com/mohan-mj/Activity-Detection-using-IMU-sensor)、[lwoi](https://github.com/CAOR-MINES-ParisTech/lwoi)、[InvariantEKF_GNSS_IMU](https://github.com/mfkiwl/InvariantEKF_GNSS_IMU)、[imu_veh_calib](https://github.com/smallsunsun1/imu_veh_calib)、[ImuMeanFilter](https://github.com/XinLiGH/ImuMeanFilter)、[kalman_filter_with_kitti](https://github.com/motokimura/kalman_filter_with_kitti)、[ImuGpsGuiding](https://github.com/JackJu-HIT/ImuGpsGuiding)、[OpenSimRT](https://github.com/mitkof6/OpenSimRT)、[RTD_phone](https://github.com/milkytipo/RTD_phone)、[ADIS16470_Demo](https://github.com/wmdscjhdpy/ADIS16470_Demo)、[odom_predictor](https://github.com/ethz-asl/odom_predictor)、[robot_pose_ekf](https://github.com/udacity/robot_pose_ekf)、[UKF](https://github.com/krishnasandeep09/UKF)、[gnss-sensor-fusion](https://github.com/betaBison/gnss-sensor-fusion)、[amsi](https://github.com/weisongwen/amsi)、[EgoLocate](https://github.com/Xinyu-Yi/EgoLocate)、[learned_inertial_model_odometry](https://github.com/uzh-rpg/learned_inertial_model_odometry)、[MadgwickAHRS](https://github.com/arduino-libraries/MadgwickAHRS)、[integrated-navigation](https://github.com/XDDz123/integrated-navigation)、[KGP-IAEKF-IGGIII](https://github.com/chi-qhsun/KGP-IAEKF-IGGIII)、[navfusion](https://github.com/nvpadron/navfusion)、[Madgwick_Filter](https://github.com/bjohnsonfl/Madgwick_Filter)、[UrbanRTK-INS-OutlierOpt](https://github.com/Azurehappen/UrbanRTK-INS-OutlierOpt)、[SCH63T_MINI_EVK](https://github.com/tomojitakasu/SCH63T_MINI_EVK)、[GPS_IMU_Kalman_Filter](https://github.com/karanchawla/GPS_IMU_Kalman_Filter)、[Location](https://github.com/yyccR/Location)、[waypoint_nav](https://github.com/nickcharron/waypoint_nav)、[GIOW-release](https://github.com/i2Nav-WHU/GIOW-release)、[pyins](https://github.com/nmayorov/pyins)、[GINS-Navi](https://github.com/lewis5499/GINS-Navi)、[GNSS_INS_Integrations_Comparisons](https://github.com/ZhengdaoLI0602/GNSS_INS_Integrations_Comparisons)、[KF-GINS-ECEF](https://github.com/akui1321/KF-GINS-ECEF)、[TDL-GNSS](https://github.com/ebhrz/TDL-GNSS) |
 |     **[视觉 SLAM](导航定位建图开源项目记录.md#Vision)**      | **[Vins-Mono](https://github.com/HKUST-Aerial-Robotics/VINS-Mono)/[Fusion](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion)**、**[ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3)**/[2](https://github.com/raulmur/ORB_SLAM2)/[1](https://github.com/raulmur/ORB_SLAM)、[OpenVINS](https://github.com/rpng/open_vins)、[Openvslam](https://github.com/xdspacelab/openvslam)、[svo](https://github.com/uzh-rpg/rpg_svo)、[svo_pro](https://github.com/uzh-rpg/rpg_svo_pro_open)、[msckf_vio](https://github.com/KumarRobotics/msckf_vio)、[okvis](https://github.com/ethz-asl/okvis)、[DM-VIO](https://github.com/lukasvst/dm-vio)、[DSO](https://github.com/JakobEngel/dso)、[DSOL](https://github.com/versatran01/dsol)、[wildnav](https://github.com/TIERS/wildnav)、[NeRF](https://github.com/bmild/nerf)、[H3](https://github.com/SYSU-STAR/H3-Mapping)/[H2-Mapping](https://github.com/SYSU-STAR/H2-Mapping)、[gaussian-splatting](https://github.com/graphdeco-inria/gaussian-splatting)、[2d-gaussian-splatting](https://github.com/hbb1/2d-gaussian-splatting)、[Elasticfusion](https://github.com/mp3guy/ElasticFusion)、[OpenMVG](https://github.com/openMVG/openMVG)、[Meshroom](https://github.com/alicevision/Meshroom)、[Kintinuous](https://github.com/mp3guy/Kintinuous)、[Mvision](https://github.com/Ewenwan/MVision)、[rgbdslam_v2](https://github.com/felixendres/rgbdslam_v2)、[camera_calibration](https://github.com/puzzlepaint/camera_calibration)、[crisp](https://github.com/hovren/crisp)、[VideoIMUCapture-Android](https://github.com/DavidGillsjo/VideoIMUCapture-Android)、[OpenImuCameraCalibrator](https://github.com/urbste/OpenImuCameraCalibrator)、[Structure-SLAM-PointLine](https://github.com/yanyan-li/Structure-SLAM-PointLine)、[SLAM_interface](https://github.com/Tompson11/SLAM_interface)、[Sync_Pola_IMU_ROS](https://github.com/BlanchonMarc/Sync_Pola_IMU_ROS)、[ViDAR](https://github.com/OpenDriveLab/ViDAR)、[BEVFormer](https://github.com/fundamentalvision/BEVFormer)、[aruco_ekf_slam](https://github.com/ydsf16/aruco_ekf_slam)、[ AVP-SLAM-SIM](https://github.com/TurtleZhong/AVP-SLAM-SIM)、[MSCKF_VIO_MONO](https://github.com/UMiNS/MSCKF_VIO_MONO)、[VIW-Fusion](https://github.com/TouchDeeper/VIW-Fusion)、[awesome-visual-slam 整理](https://github.com/tzutalin/awesome-visual-slam)、[Recent_SLAM_Research 整理](https://github.com/YiChenCityU/Recent_SLAM_Research)、[Awesome CV Works 整理](https://vincentqin.tech/posts/awesome-works/)、[Lee-SLAM-source 整理](https://github.com/AlbertSlam/Lee-SLAM-source)、[Awesome-SLAM 整理](https://github.com/SilenceOverflow/Awesome-SLAM)、[awesome-slam 整理](https://github.com/kanster/awesome-slam)、[Awesome_Dynamic_SLAM 整理](https://github.com/zhuhu00/Awesome_Dynamic_SLAM)、[awesome-NeRF 整理](https://github.com/awesome-NeRF/awesome-NeRF)、[visual-slam-roadmap 整理](https://github.com/changh95/visual-slam-roadmap)、[Visual_SLAM_Related_Research 整理](https://github.com/wuxiaolang/Visual_SLAM_Related_Research)、[vins-application 整理](https://github.com/engcang/vins-application)、[Recent-Stars-2024 整理](https://github.com/Vincentqyw/Recent-Stars-2024)、[Visual Navigation 整理](https://paperswithcode.com/task/visual-navigation)、[Awesome-Optical-Flow 整理](https://github.com/hzwer/Awesome-Optical-Flow)、[awesome-Implicit-NeRF-SLAM 整理](https://github.com/DoongLi/awesome-Implicit-NeRF-SLAM)、[awesome-computer-vision 整理](https://github.com/jbhuang0604/awesome-computer-vision)、[awesome-semantic-segmentation 整理](https://github.com/mrgloom/awesome-semantic-segmentation)、[awesome_3d_slam_resources 整理](https://github.com/qxiaofan/awesome_3d_slam_resources)、[awesome-road-environment-segmentation 整理](https://github.com/DaveLogs/awesome-road-environment-segmentation)、[Awesome-BEV-Perception-Multi-Cameras 整理](https://github.com/chaytonmin/Awesome-BEV-Perception-Multi-Cameras) |
 |      **[激光 SLAM](导航定位建图开源项目记录.md#Lidar)**      | [Gmapping](https://github.com/ros-perception/slam_gmapping)、[Cartographer](https://github.com/cartographer-project/cartographer)、[hector-slam](https://github.com/tu-darmstadt-ros-pkg/hector_slam)、[LeGO-LOAM](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM)、[LOAM-Livox](https://github.com/hku-mars/loam_livox)、[A-LOAM](https://github.com/HKUST-Aerial-Robotics/A-LOAM)、[SuMa](https://github.com/jbehley/SuMa)、[LIO-SAM](https://github.com/TixiaoShan/LIO-SAM)、[FAST-LIO-SAM](https://github.com/kahowang/FAST_LIO_SAM)、[FAST-LIO](https://github.com/hku-mars/FAST_LIO)、[LIO-Mapping](https://github.com/hyye/lio-mapping)、[CT-ICP](https://github.com/jedeschaud/ct_icp)、[Coco-LIC](https://github.com/APRIL-ZJU/Coco-LIC)、[BoW3D](https://github.com/YungeCui/BoW3D)、[OverlapNet](https://github.com/PRBonn/OverlapNet)、[CloudViewer](https://github.com/nightn/CloudViewer)、[Lidar_AI_Solution](https://github.com/NVIDIA-AI-IOT/Lidar_AI_Solution)、[lidar_IMU_calib](https://github.com/APRIL-ZJU/lidar_IMU_calib)、[LT-Mapper](https://github.com/gisbi-kim/lt-mapper)、[LiDAR_IMU_Init](https://github.com/hku-mars/LiDAR_IMU_Init)、[RIs-Calib](https://github.com/Unsigned-Long/RIs-Calib)、[GMMCalib](https://github.com/TUMFTM/GMMCalib)、[Radar-Basic-Algorithm](https://github.com/flappyimi/Radar-Basic-Algorithm)、[Extended-Kalman-Filter](https://github.com/shazraz/Extended-Kalman-Filter)、[GRIL-Calib](https://github.com/Taeyoung96/GRIL-Calib)、[FF-LINS](https://github.com/i2Nav-WHU/FF-LINS)、[I2EKF-LO](https://github.com/YWL0720/I2EKF-LO)、[OpenRadar](https://github.com/PreSenseRadar/OpenRadar)、[awesome-lidar 整理](https://github.com/szenergy/awesome-lidar)、[awesome-point-cloud-place-recognition 整理](https://github.com/kxhit/awesome-point-cloud-place-recognition)、[awesome-sar 整理](https://github.com/RadarCODE/awesome-sar)、[awesome-radar-perception 整理](https://github.com/ZHOUYI1023/awesome-radar-perception)、[awesome-deep-point-cloud-compression 整理](https://github.com/kaiwangm/awesome-deep-point-cloud-compression)、[awesome-point-cloud-analysis 整理](https://github.com/Yochengliu/awesome-point-cloud-analysis)、[Awesome_Laser_scanners 整理](https://github.com/mvarga1989/Awesome_Laser_scanners)、[awesome-point-cloud-analysis-2023](https://github.com/NUAAXQ/awesome-point-cloud-analysis-2023)、[awesome-lidar-curb-detection 整理](https://github.com/crankler/awesome-lidar-curb-detection)、[LiDAR-Guide 整理](https://github.com/mikeroyal/LiDAR-Guide)、[awesome-data-labeling-tools 整理](https://github.com/HuangCongQing/awesome-data-labeling-tools)、[Awesome-Dynamic-Point-Cloud-Analysis 整理](https://github.com/hehefan/Awesome-Dynamic-Point-Cloud-Analysis)、[awesome-point-cloud-scene-flow 整理](https://github.com/MaxChanger/awesome-point-cloud-scene-flow) |
 |      **[多源融合](导航定位建图开源项目记录.md#Fusion)**      | **[GICI-LIB](https://github.com/chichengcn/gici-open)**、[GVINS](https://github.com/HKUST-Aerial-Robotics/GVINS)、[GLIO](https://github.com/XikunLiu-huskit/GLIO)、[InGVIO](https://github.com/ChangwuLiu/InGVIO)、[Multi-Sensor-Fusion](https://github.com/2013fangwentao/Multi_Sensor_Fusion)、[MSF_developed](https://github.com/milkytipo/MSF_developed)、[MINS](https://github.com/rpng/MINS)、[mars_lib](https://github.com/aau-cns/mars_lib)、[MMF-LVINS](https://github.com/Grandzxw/MMF-LVINS)、[raw-gnss-fusion](https://github.com/JonasBchrt/raw-gnss-fusion)、[ESEKF-IMU-GNSS-Lidar](https://github.com/NekSfyris/ESEKF_IMU_GNSS_Lidar)、[imu_x_fusion](https://github.com/cggos/imu_x_fusion)、[RTK-Visual-Inertial-Navigation](https://github.com/xiaohong-huang/RTK-Visual-Inertial-Navigation)、[IC_GVINS](https://github.com/i2Nav-WHU/IC-GVINS)、[FAST-LIVO](https://github.com/hku-mars/FAST-LIVO)、[VINS-GPS-Wheel](https://github.com/Wallong/VINS-GPS-Wheel)、[sync_gps_lidar_imu_cam](https://github.com/nkliuhui/sync_gps_lidar_imu_cam)、[carvig](https://github.com/Erensu/carvig)、[LVI-SAM](https://link.zhihu.com/?target=https%3A//github.com/TixiaoShan/LVI-SAM)、[ekfmonoslam](https://github.com/JzHuai0108/ekfmonoslam)、[ethzasl_msf](https://github.com/ethz-asl/ethzasl_msf)、[NaveGo](https://github.com/rodralez/NaveGo)、[robot_localization](https://github.com/cra-ros-pkg/robot_localization)、[YabLoc](https://github.com/tier4/YabLoc)、[ILCC](https://github.com/mfxox/ILCC)、[ekfmonoslam](https://github.com/JzHuai0108/ekfmonoslam)、[SuperFusion](https://github.com/haomo-ai/SuperFusion)、[Sensor-Fusion-Using-ES-EKF](https://github.com/paulyehtw/Sensor-Fusion-Using-ES-EKF)、[msckf_vio_GPS](https://github.com/loveforeverLi/msckf_vio_GPS)、[GPS-Gaussian](https://github.com/aipixel/GPS-Gaussian)、[clic](https://github.com/APRIL-ZJU/clic)、[multimodal_data_studio](https://github.com/ccyinlu/multimodal_data_studio)、[limo](https://github.com/johannes-graeter/limo)、[UWB-VIO-FUSE](https://github.com/pikkuri14/UWB-VIO-FUSE)、[FAST-LIO-Multi-Sensor-Fusion](https://github.com/zhh2005757/FAST-LIO-Multi-Sensor-Fusion)、[multi-sensor-calibration](https://github.com/tudelft-iv/multi_sensor_calibration)、[SensorsCalibration](https://github.com/PJLab-ADG/SensorsCalibration)、[Calibration-Is-All-You-Need](https://github.com/linClubs/Calibration-Is-All-You-Need)、[Awesome-LiDAR-Camera-Calibration](https://github.com/Deephome/Awesome-LiDAR-Camera-Calibration)、[Awesome-LiDAR-IMU-calibration 整理](https://github.com/Taeyoung96/Awesome-LiDAR-IMU-calibration) |
@@ -496,7 +496,7 @@
 ---
 
 <div align="center">
-    <a name="Books"></a>
+    <a name="Conference"></a>
     <h3>📽&nbsp;推荐视频课程&nbsp;📽</h3>
 </div>
 <table align="center">
@@ -709,13 +709,352 @@
 
 
 
+
 ---
 
+<div align="center">
+    <a name="Books"></a>
+    <h3>📽&nbsp;推荐学术讲座&nbsp;📽</h3>
+</div>
+<table align="center">
+    <tr align="center">
+    	<th width="220">封面</th>
+    	<th>简介</th>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002204118479.png" alt="image-20240331145552445" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《高频北斗/GNSS精密数据处理》耿江辉、林吉航、曾竞&nbsp;&nbsp;2022.08</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.koushare.com/video/details/30665' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002202442959.png" alt="image-20240331145552445" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《一些不实用的惯导算法简介》严恭敏&nbsp;&nbsp;2023.07</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.koushare.com/live/details/19512' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002205957794.png" alt="image-20240331145552445" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《城市复杂环境信息约束的多源组合导航》李增科&nbsp;&nbsp;2023.06</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.koushare.com/live/details/19512?vid=59100' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002213905026.png" alt="image-20240331145552445" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《从idea到SCI论文发表一关于科研那些你想知道的事》徐凯&nbsp;&nbsp;2020.04</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1nz411B76i' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002213330863.png" alt="image-20240331145552445" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《惯性导航在地球空间信息技术中的时空传递作用》牛小骥&nbsp;&nbsp;2021.05</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1HF411E7EL' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002213050588.png" alt="image-20240331145552445" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《低轨导航增强GNSS：精密定位、星座设计》马福建 &nbsp;&nbsp;2020.10</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1vs411N7sz' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002212001130.png" alt="image-20240331145552445" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《中国首个“学生造”遥感卫星背后的故事》金光&nbsp;&nbsp;2022.01</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介绍中国首个“学生造”遥感卫星背后的故事，阐述了“启明星一号”的研制过程和技术状态，回顾了“启明星一号”测试与试验情况及发射与飞行试验准备工作。报告最后结合“启明星一号”的设计和研制，对武汉大学航天装备教学能力与研究水平的提高进行了展望。
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1iU4y1o72i' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002211351087.png" alt="image-20240331145552445" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《泛化图学习与本科生科研经历分享》万冠呈&nbsp;&nbsp;2024.05</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1EA411E7bB' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002202709581.png" alt="image-20240331145552445" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《一生一芯暑期招生宣讲会》</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1vs411N7sz' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002214350257.png" alt="image-20240331145552445" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《众包和本地基站混合定位研究及科研经历分享》余跃&nbsp;&nbsp; 2020.04</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1fb4y1W7Jc' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002215548830.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《IMU选型、标定误差分析、AHRS组合导航》徐伟&nbsp;&nbsp;2020.08</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV12Z4y1K79e' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002220848962.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《主流V1O综述及VINS解析》崔华坤&nbsp;&nbsp; 2019.02</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1gb411a7bh' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002221255684.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《算法岗的招聘现状与未来——移动机器人与自动驾驶专场》&nbsp;&nbsp; 2021.09</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;深蓝学院特邀夏添（白犀牛无人车联合创始人兼CTO），刘兰个川（小鹏汽车算法研发总监，自动驾驶北京平台负责人），黎嘉信（高仙机器人深度学习总监、新加坡研发中心总监），任乾（自动驾驶定位算法专家）四位嘉宾分享企业招聘经验，同时对垂直领域的行业发展、技术学习及应用落地，多层次、全方位的为求职者解读剖析。
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1PR4y1p7WV' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002223613287.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《ROS机器人开发案例——浅谈如何将ROS应用于机器人开发》古月&nbsp;&nbsp;2019.02 </strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1Yb411h7jg' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002223905098.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《图森未来在重卡自动驾驶的最新落地与实践》王乃岩&nbsp;&nbsp; 2022.07</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1hG411n74f' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002232443877.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《LIO系统的改进及其在自动驾驶定位模块中的应用》高翔&nbsp;&nbsp;2022.07 </strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1VY4y1E7oV/?spm_id_from=333.337.search-card.all.click&vd_source=c8bae8b0e519cab6da13ba8432fee573' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+        <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002231842756.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《大规模点云地图的自动化构建》高翔&nbsp;&nbsp;2021.03 </strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://mp.weixin.qq.com/s?src=11&timestamp=1727882000&ver=5542&signature=ewAampzXzDCBMiycJSbqp8PXj7fqaxt9Gda6NqYZpi*UoTpRz2prqea-g8sDBvXsMcE8SiZovdev9t1uh0a*mgVaNLP64P6NB0sk9ZLUpJ5WVrirMnduZ-KwoJuiTL3R&new=1' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+        <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002225901855.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《非差非组合GNSS数据处理模型与应用》张宝成&nbsp;&nbsp;2021.03 </strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://mp.weixin.qq.com/s?src=11&timestamp=1727881085&ver=5542&signature=ewAampzXzDCBMiycJSbqp8PXj7fqaxt9Gda6NqYZpi9dFsRY1un20u-0n05Y3S3-IkdWq34C5UzG9mm5*TGXcw0HQxvPiHuCAZfaf44t4cK1EZYk8z2tOCxLBTZhRVZi&new=1' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002231113568.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《城市峡谷环境中的3D LiDAR辅助GNSS定位》文伟松&nbsp;&nbsp;2021.01 </strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://mp.weixin.qq.com/s?src=11&timestamp=1727881637&ver=5542&signature=ewAampzXzDCBMiycJSbqp8PXj7fqaxt9Gda6NqYZpi8fTstdocP5LfUUwCi2s9lKBrQWRg97swXbcJzlTVyzwwNfOp*jE7BZ-htbJrptXggQowjwQTcV-3RU6xe9wfmo&new=1' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002231617229.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《北斗GNSS精密定位及多源导航增强》李星星&nbsp;&nbsp;2021.03 </strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://mp.weixin.qq.com/s?src=11&timestamp=1727882022&ver=5542&signature=ewAampzXzDCBMiycJSbqp8PXj7fqaxt9Gda6NqYZpi8PNBpOLjXDw2tdh32l*3AubQWH7zlH4cgV9aecLtP5CpdEBSoZfO*GpsCKeWH81jSyiLWoIERopdCmWGft1WiT&new=1' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002232745744.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《多模多频实时GNSS软件接收机》刘刚&nbsp;&nbsp; 2021.03</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://mp.weixin.qq.com/s?src=11&timestamp=1727882022&ver=5542&signature=ewAampzXzDCBMiycJSbqp8PXj7fqaxt9Gda6NqYZpi*fI23DtWnOK68SDYAtDXEv*pRoq8g2Oqbl9DJYiYJraPMn4wx5asu886MAesVHfU2tWAMSfOWy38yp2XYm2eaJ&new=1' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002230523969.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《卫星导航接收机原理》杨颖&nbsp;&nbsp;2020.04 </strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://mp.weixin.qq.com/s?src=11&timestamp=1727881291&ver=5542&signature=ewAampzXzDCBMiycJSbqp8PXj7fqaxt9Gda6NqYZpi8q5BCEBb3OpaxEui063O*tJx7PpuOgnKQbtckkyf8RNdG5blQlK-I992DI6TVXHXUFK-g1WFgo*21mp*SYUKyj&new=1' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002224819334.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《精密单点定位（PPP）之浅见》周峰&nbsp;&nbsp; 2020.02</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介绍了PPP的发展历程、PPP的基本原理、常用模型、具体的软件实现、应用中的限制瓶颈等内容。
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://mp.weixin.qq.com/s?src=11&timestamp=1727880461&ver=5542&signature=ewAampzXzDCBMiycJSbqp8PXj7fqaxt9Gda6NqYZpi-DOFVCpaXXPtkeehHIgNcDjt3Ch7QE2BC1jxVflIy6zCVwtkciKbuoe-diVKF1xD4CZuYrM3G-1vYN*xKeDCwa&new=1' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+</table>
 
+
+
+
+
+---
 
 <div align="center">
-	<h2>本仓库介绍的开源程序</h2>
+	<h2>✨&nbsp; 本仓库介绍的开源程序 &nbsp;✨</h2>
 </div>
+
 
 
 
