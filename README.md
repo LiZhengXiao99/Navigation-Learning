@@ -909,7 +909,7 @@
         </td>
     	<td>
             <p align="center">
-                <strong>《ROS机器人开发案例——浅谈如何将ROS应用于机器人开发》古月&nbsp;&nbsp;2019.02 </strong>
+                <strong>《浅谈如何将ROS应用于机器人开发》古月&nbsp;&nbsp;2019.02 </strong>
             </p>
             <p>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -1044,8 +1044,6 @@
         </td>
     </tr>
 </table>
-
-
 
 
 
