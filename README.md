@@ -1189,6 +1189,8 @@ RTKLIB 是全球导航卫星系统 GNSS 开源定位解算程序包，由日本�
 >
 > 推荐视频：[Lewen_NavSense-多模卫星导航定位与应用](https://space.bilibili.com/479790048/channel/collectiondetail?sid=2487703)
 >
+> 推荐视频：[GNSS高精度算法代码学习-RTKLIB篇1-1 RTKLIB入门](https://www.bilibili.com/video/BV1a6saeAEDz)
+>
 > 推荐视频：[冰菓的RTKlib&GAMP 北斗卫星定位不妙屋](https://space.bilibili.com/199461274/channel/collectiondetail?sid=1088015)
 
 <p align="center" > 
@@ -1221,6 +1223,8 @@ GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and mul
     <a href="#Top">回到开头</a> 
     &nbsp; 👆👆👆
 </p>
+
+
 ---
 
 ### <a name="PSINS">03-PSINS：MATLAB-C++ 捷联惯导工具箱</a>
