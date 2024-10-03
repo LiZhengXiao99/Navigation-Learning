@@ -192,7 +192,6 @@
 |   国内知名团队官网   | [武大牛小骥i2NAV](http://www.i2nav.com/)、[武大耿江辉Pride](http://pride.whu.edu.cn/index.shtml#)、[武大钟燕飞RSIDEA](http://rsidea.whu.edu.cn/index.html)、[武大姚剑CVRS](https://cvrs.whu.edu.cn/)、[武大郭迟BRAIN](https://zhiyuteam.com/html/web//index.html)、[武大张守建MISSION-Lab](http://edu.qinrock.com/)、[武大张祖勋数字摄影测量与计算机视觉研究中心](https://dpcv.whu.edu.cn/jj/zxjj.htm)、[上交感知与导航研究所](https://isn.sjtu.edu.cn/web/index)、[同济李博峰GNSS研究团队](https://gnss.tongji.edu.cn/) |
 |     SLAM研究团队     | [香港科技大学空中机器人实验室](https://uav.hkust.edu.hk/)、[香港科技大学机器人与多感知实验室 RAM-LAB](https://www.ram-lab.com/)、[香港中文大学天石机器人实验室](http://ri.cuhk.edu.hk/)、[浙江大学 CAD&CG 国家重点实验室](http://www.zjucvg.net/)、[美国密歇根大学感知机器人实验室（PeRL）](https://robots.engin.umich.edu/About/)、[美国卡耐基梅陇大学机器人研究所](https://www.ri.cmu.edu/)、 [美国加州大学圣地亚哥分校语境机器人研究所](https://existentialrobotics.org/index.html)、[美国特拉华大学人感知与导航组](https://sites.udel.edu/robot/)、[美国麻省理工学院航空航天实验室](http://acl.mit.edu/)、[美国麻省理工学院 SPARK 实验室](http://web.mit.edu/sparklab/)、[美国麻省理工学院海洋机器人组](https://marinerobotics.mit.edu/)、[美国明尼苏达大学多元自主机器人系统实验室](http://mars.cs.umn.edu/index.php)、[美国宾夕法尼亚大学 Vijay Kumar 实验室](https://www.kumarrobotics.org/)、[美国麻省理工学院 Robust Robotics Group]()、[美国佐治亚理工学院智能视觉与自动化实验室](https://link.zhihu.com/?target=http%3A//ivalab.gatech.edu/)、[加拿大蒙特利尔大学机器人与嵌入式 AI 实验室](http://groups.csail.mit.edu/rrg/index.php)、[加拿大舍布鲁克大学智能、交互、综合、跨学科机器人实验室](https://introlab.3it.usherbrooke.ca/)、[瑞士苏黎世大学机器人与感知课题组](http//3A//rpg.ifi.uzh.ch/index.html)、[瑞士苏黎世联邦理工 Vision for Robotics Lab](https://v4rl.ethz.ch/the-group.html)、[瑞士苏黎世联邦理工计算机视觉与几何实验室](https://link.zhihu.com/?target=http%3A//www.cvg.ethz.ch/index.php)、[瑞士苏黎世联邦理工自主系统实验室](https://cvg.ethz.ch/index)、[英国帝国理工学院戴森机器人实验室](https://www.imperial.ac.uk/dyson-robotics-lab/)、[英国牛津大学信息工程学](https://www.robots.ox.ac.uk/)、[德国慕尼黑工业大学计算机视觉组](https://github.com/tum-vision)、[德国马克斯普朗克智能系统研究所嵌入式视觉组](https://ev.is.mpg.de/)、[德国弗莱堡大学智能自主系统实验室](http://ais.informatik.uni-freiburg.de/index_en.php)、[德国波恩大学摄影测量与机器人实验室](https://www.ipb.uni-bonn.de/)、[西班牙萨拉戈萨大学机器人、感知与实时组 SLAM 实验室](http://robots.unizar.es/slamlab/)、[西班牙马拉加大学机器感知与智能机器人课题组](http://mapir.uma.es/mapirwebsite/)、[奥地利格拉茨技术大学计算机图形学与视觉研究所](https://www.tugraz.at/institutes/icg/home/)、[波兰波兹南工业大学移动机器人实验室](http://lrm.put.poznan.pl/)、[澳大利亚昆士兰科技大学机器人技术中心](https://www.qut.edu.au/research/centre-for-robotics)、[澳大利亚机器人视觉中心](https://www.roboticvision.org/)、[日本国立先进工业科学技术研究所](https://www.airc.aist.go.jp/en/intro/) |
 |     开源程序团队     | [i2Nav-WHU](https://github.com/i2Nav-WHU)、[PrideLab](https://github.com/PrideLab)、[GREAT-WHU](https://github.com/GREAT-WHU)、[WHU-USI3DV](https://github.com/WHU-USI3DV)、[WHULuoJiaTeam](https://github.com/WHULuoJiaTeam)、[TUW-VieVS](https://github.com/TUW-VieVS)、[PengYu-Team](https://github.com/PengYu-Team)、[tiev-tongji](https://github.com/tiev-tongji)、[tjiiv-cprg](https://github.com/tjiiv-cprg)、[SJTU-ViSYS](https://github.com/SJTU-ViSYS)、[ZJU-FAST-Lab](https://github.com/ZJU-FAST-Lab)、[SYSU-CPNTLab](https://github.com/SYSU-CPNTLab)、[amazon-science](https://github.com/amazon-science)、[Stanford-NavLab](https://github.com/Stanford-NavLab)、[stanford-gps-lab](https://github.com/stanford-gps-lab)、[SnapperGPS](https://github.com/SnapperGPS)、[iGNSS](https://github.com/iGNSS)、[TIERS](https://github.com/TIERS)、[ArduPilot](https://github.com/ArduPilot)、[uzh-rpg](https://github.com/uzh-rpg)、[Turing-zero](https://github.com/Turing-zero)、[leggedrobotics](https://github.com/leggedrobotics)、[HKUST-Aerial-Robotics](https://github.com/HKUST-Aerial-Robotics)、[UZ-SLAMLab](https://github.com/UZ-SLAMLab)、[OpenSLAM-org](https://github.com/OpenSLAM-org)、[sair-lab](https://github.com/sair-lab)、[open-mmlab](https://github.com/open-mmlab)、[RoboticExplorationLab](https://github.com/RoboticExplorationLab)、[MetaSLAM](https://github.com/MetaSLAM)、[APRIL-ZJU](https://github.com/APRIL-ZJU)、[MRPT](https://github.com/MRPT)、[seap-udea](https://github.com/seap-udea)、[LRMPUT](https://github.com/LRMPUT)、[PJLab-ADG](https://github.com/PJLab-ADG)、[inertialsense](https://github.com/inertialsense)、[wvu-navLab](https://github.com/wvu-navLab)、[IPNL-POLYU](https://github.com/IPNL-POLYU)、[EmbeddedAndMultisensorSystemsLab](https://github.com/EmbeddedAndMultisensorSystemsLab)、[tyrex-team](https://github.com/tyrex-team)、[MapIV](https://github.com/MapIV)、[TUMFTM](https://github.com/TUMFTM)、[imLabNTU](https://github.com/imLabNTU)、[uw-ssec](https://github.com/uw-ssec)、[Tinkerbug-Robotics](https://github.com/Tinkerbug-Robotics)、[ewine-project](https://github.com/ewine-project)、[LIAS-CUHKSZ](https://github.com/LIAS-CUHKSZ)、[rwth-irt](https://github.com/rwth-irt)、[3DOM-FBK](https://github.com/3DOM-FBK)、[KIT-ISAS](https://github.com/KIT-ISAS)、[dabamos](https://github.com/dabamos)、[url-kaist](https://github.com/url-kaist)、[UniStuttgart-INS](https://github.com/UniStuttgart-INS)、[google](https://github.com/google)、[PRBonn](https://github.com/PRBonn)、[jpl-x](https://github.com/jpl-x)、[OUCTheoryGroup](https://github.com/OUCTheoryGroup)、[aau-cns](https://github.com/aau-cns)、[KIT-MRT](https://github.com/KIT-MRT)、[cvg](https://github.com/cvg)、[ram-lab](https://github.com/ram-lab)、[PJLab-ADG](https://github.com/PJLab-ADG)、[RoboMaster](https://github.com/RoboMaster)、[GNSS-SPAN](http://gnss.curtin.edu.au/)、[oresat](https://github.com/oresat)、[SJTU-ViSYS](https://github.com/SJTU-ViSYS)、[haomo-ai](https://github.com/haomo-ai)、[ntnu-arl](https://github.com/ntnu-arl)、[SYSU-STAR](https://github.com/SYSU-STAR)、[OpenDriveLab](https://github.com/OpenDriveLab) |
-|     开源程序作者     | [池澄](https://github.com/chichengcn/gici-open)、[周峰](https://github.com/zhouforme0318)、[陈超](https://github.com/heiwa0519)、[严恭敏](https://psins.org.cn/sy)、[李政](https://github.com/lizhengnss)、[苏景岚](https://github.com/Erensu)、[陈凯](https://github.com/kaichen686)、[肖恭伟](https://github.com/XiaoGongWei)、[欧阳明俊](https://github.com/ouyangmingjun-work)、[余义](https://github.com/wustyuyi)、[张欣](https://github.com/shenshikexmu)、[任乾](https://github.com/Little-Potato-1990)、[王晗](https://github.com/wh200720041)、[刘国庆](https://github.com/DreamWaterFound)、[高翔](https://github.com/gaoxiang12)、[杨熙](https://github.com/yandld)、[张春杰](https://github.com/kongtian-SiBu)、[魏源](https://github.com/hui-Scholarliness)、[方文涛](https://github.com/2013fangwentao)、[吕少麟](https://github.com/shaolinbit)、[布树辉](https://link.zhihu.com/?target=http%3A//www.adv-ci.com/blog/)、[谢立华](https://link.zhihu.com/?target=https%3A//wanghan.pro/)、[邹丹平](https://link.zhihu.com/?target=http%3A//drone.sjtu.edu.cn/dpzou/index.php)、[李英冰](https://github.com/ybli)、[稚晖君]()、[electech6](https://github.com/electech6)、[JzHuai0108](https://github.com/JzHuai0108)、[XikunLiu-huskit](https://github.com/XikunLiu-huskit)、[cggos](https://github.com/cggos)、[Welson WEN](https://www.zhihu.com/people/Welson-WEN)、[cggos](https://github.com/cggos)、[zarathustr](https://github.com/zarathustr)、[YizeZhang](https://github.com/YizeZhang)、[globsky](https://github.com/globsky)、[tomojitakasu](https://github.com/tomojitakasu)、[carlesfernandez](https://github.com/carlesfernandez)、[rtklibexplorer](https://github.com/rtklibexplorer)、[GeoscienceAustralia](https://github.com/GeoscienceAustralia)、[taroz](https://github.com/taroz)、[osqzss](https://github.com/osqzss)、[iliasam](https://github.com/iliasam)、[JonasBchrt](https://github.com/JonasBchrt)、[JakobEngel](https://github.com/JakobEngel)、[priseborough](https://github.com/priseborough)、[Charmve](https://github.com/Charmve) |
 |     编程入门学习     | [awesome-cn](https://asmcn.icopy.site/)、[awesome-c](https://github.com/oz123/awesome-c)、[awesome-cpp](https://github.com/fffaraz/awesome-cpp)、[awesome-python-cn](https://github.com/jobbole/awesome-python-cn)、[awesome-c-cn](https://github.com/jobbole/awesome-c-cn)、[awesome-cpp-cn](https://github.com/jobbole/awesome-cpp-cn)、[awesome-cs-books](https://github.com/imarvinle/awesome-cs-books)、[awesome-modern-cpp](https://github.com/rigtorp/awesome-modern-cpp)、[awesome-ios-cn](https://github.com/jobbole/awesome-ios-cn)、[awesome-css-frameworks](https://github.com/troxler/awesome-css-frameworks)、[awesome-cs](https://github.com/CodingDocs/awesome-cs)、[Hacking C++](https://hackingcpp.com/)、[QWidgetDemo](https://github.com/feiyangqingyun/QWidgetDemo)、[中国程序员容易发音错误的单词](https://github.com/shimohq/chinese-programmer-wrong-pronunciation)、[FPGA](https://github.com/LeiWang1999/FPGA)、[missing-semester](https://github.com/missing-semester/missing-semester) |
 |       实用工具       | [NotePad++](https://notepad.plus/)、[Thunderbird](https://www.thunderbird.net/zh-CN/)、[MSys2](https://www.msys2.org/)、[Typora](https://typoraio.cn/)、[Everything](https://www.voidtools.com/zh-cn/)、[进程截杀器](http://shajincheng.com/)、[百叶窗](https://shutters.160.com/)、[飞书](https://www.feishu.cn/)、[芦笋](https://lusun.com/)、[幕布](https://mubu.com/home)、[ProssOn](https://www.processon.com/)、[EV 录屏](https://www.ieway.cn/)、[XMind](https://xmind.cn/)、[MobaXterm](https://mobaxterm.mobatek.net/)、[PotPlayer](https://potplayer.tv/)、[Zotero](https://www.zotero.org/)、[WinMerge](https://winmerge.org/)、[火绒](https://www.huorong.cn/)、[360](https://www.360.cn/)、[Snipaste](https://www.snipaste.com/)、[Quicker](https://getquicker.net/)、[超级公式](https://www.ocrmath.com/)、[冰点文库下载器](http://www.bingdian001.com/)、[Bandizip](https://bandizip.zhangfan131.cn/)、[天若 OCR](https://ocr.tianruo.net/)、[Dropit](http://www.dropitproject.com/)、[flux](https://justgetflux.com/)、[QuickLook](https://github.com/QL-Win/QuickLook)、[Geek Uninstaller](https://geekuninstaller.com/)、[日期计算器](https://www.ri7.com.cn/)、[SpaceSniffer](https://spacesniffer.en.softonic.com/) |
 |      Github美化      | [SerialChart](https://github.com/peng-zhihui/SerialChart)、[awesome-github-profile-readme-chinese](https://github.com/eryajf/awesome-github-profile-readme-chinese)、[awesome-github-profile-readme](https://github.com/abhisheknaiidu/awesome-github-profile-readme)、[awesome-github-profiles](https://github.com/EddieHubCommunity/awesome-github-profiles)、[github-readme-quotes](https://github.com/shravan20/github-readme-quotes)、[readme-typing-svg](https://github.com/DenverCoder1/readme-typing-svg)、[shields](https://github.com/badges/shields)、[visitor-badge](https://github.com/jwenjian/visitor-badge)、[spotify-github-profile](https://github.com/kittinan/spotify-github-profile)、[readme-jokes](https://github.com/ABSphreak/readme-jokes)、[github-readme-streak-stats](https://github.com/DenverCoder1/github-readme-streak-stats)、[metrics](https://metrics.lecoq.io/、github-readme-quotes)、[github-readme-quotes](https://github.com/shravan20/github-readme-quotes)、[github-profile-trophy](https://github.com/ryo-ma/github-profile-trophy)、[github-readme-stats](https://github.com/anuraghazra/github-readme-stats)、[github-readme-activity-graph](https://github.com/Ashutosh00710/github-readme-activity-graph) |
@@ -607,6 +606,20 @@
     </tr>
     <tr>
     	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/00452c77adeede22215e332fdb73d644a7bf5a04.jpg" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《GNSS高精度算法代码学习》欧阳明俊</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1a6saeAEDz' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
             <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240402134119365.png" alt="image-20240331145552445" style="zoom:;" />
         </td>
     	<td>
@@ -709,6 +722,7 @@
 
 
 
+<p align="center" > &nbsp;👆👆👆 &nbsp; <a href="#Top">回到开头</a> &nbsp; 👆👆👆</p>
 
 ---
 
@@ -720,6 +734,34 @@
     <tr align="center">
     	<th width="220">封面</th>
     	<th>简介</th>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002230523969.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《卫星导航接收机原理》杨颖&nbsp;&nbsp;2020.04 </strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://mp.weixin.qq.com/s?src=11&timestamp=1727881291&ver=5542&signature=ewAampzXzDCBMiycJSbqp8PXj7fqaxt9Gda6NqYZpi8q5BCEBb3OpaxEui063O*tJx7PpuOgnKQbtckkyf8RNdG5blQlK-I992DI6TVXHXUFK-g1WFgo*21mp*SYUKyj&new=1' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002224819334.png" style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《精密单点定位（PPP）之浅见》周峰&nbsp;&nbsp; 2020.02</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介绍了PPP的发展历程、PPP的基本原理、常用模型、具体的软件实现、应用中的限制瓶颈等内容。
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://mp.weixin.qq.com/s?src=11&timestamp=1727880461&ver=5542&signature=ewAampzXzDCBMiycJSbqp8PXj7fqaxt9Gda6NqYZpi-DOFVCpaXXPtkeehHIgNcDjt3Ch7QE2BC1jxVflIy6zCVwtkciKbuoe-diVKF1xD4CZuYrM3G-1vYN*xKeDCwa&new=1' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
     </tr>
     <tr>
     	<td>
@@ -786,9 +828,9 @@
                 <strong>《惯性导航在地球空间信息技术中的时空传递作用》牛小骥&nbsp;&nbsp;2021.05</strong>
             </p>
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;惯性导航在地球空间信息技术中发挥的作用长期以来被测绘遥感行业所忽视。本次讲座牛老师详细介绍了惯性导航和组合导航原理，并以惯性导航在组合导航中的时间同步和空间同步作用作为起点，表现惯性导航在地球空间信息技术中的时空传递作用。
             </p>
-        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1HF411E7EL' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1HF411E7EL' target='_blank'>点击跳转</a> &nbsp;or&nbsp; <a href='https://mp.weixin.qq.com/s/qbPcIzDD6sf0oPKkw66E5Q' target='_blank'>新闻稿</a> &nbsp;👈👈👈</p>
         </td>
     </tr>
     <tr>
@@ -800,9 +842,9 @@
                 <strong>《低轨导航增强GNSS：精密定位、星座设计》马福建 &nbsp;&nbsp;2020.10</strong>
             </p>
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;随着大型低轨互联网星座的兴起，国内外学者提出将低轨星座作为导航信号播发和增强信息转发平台，以全面提升卫星导航系统的精度、完好性、连续性和可用性。本次报告马福建博士生围绕低轨星座导航增强GNSS所涉及的关键技术展开叙述，重点介绍低轨增强GNSS快速精密单点定位性能以及基于遗传算法的混合低轨导航增强星座优化方法。
             </p>
-        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1vs411N7sz' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1vs411N7sz' target='_blank'>点击跳转</a> &nbsp;or&nbsp; <a href='https://mp.weixin.qq.com/s/GkFQJ1weJdOcqP8RoLOnvg' target='_blank'>新闻稿</a> &nbsp; 👈👈👈</p>
         </td>
     </tr>
     <tr>
@@ -814,7 +856,7 @@
                 <strong>《中国首个“学生造”遥感卫星背后的故事》金光&nbsp;&nbsp;2022.01</strong>
             </p>
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介绍中国首个“学生造”遥感卫星背后的故事，阐述了“启明星一号”的研制过程和技术状态，回顾了“启明星一号”测试与试验情况及发射与飞行试验准备工作。报告最后结合“启明星一号”的设计和研制，对武汉大学航天装备教学能力与研究水平的提高进行了展望。
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“启明星一号”是启明星系列星座计划的首发卫星，该星座计划由多颗遥感卫星组成。此次成功升空的“启明星”是一颗以武汉大学学生为研发主体的微纳卫星，是我国首颗可见光高光谱和夜光多光谱多模式在轨可编程卫星，是武汉大学在遥感学科教学从理论走向实践的重要举措。让我们一起聆听这颗“学生造”卫星背后的故事。
             </p>
         	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1iU4y1o72i' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
@@ -835,20 +877,6 @@
     </tr>
     <tr>
     	<td>
-            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002202709581.png" alt="image-20240331145552445" style="zoom:;" />
-        </td>
-    	<td>
-            <p align="center">
-                <strong>《一生一芯暑期招生宣讲会》</strong>
-            </p>
-            <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </p>
-        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1vs411N7sz' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
-        </td>
-    </tr>
-    <tr>
-    	<td>
             <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002214350257.png" alt="image-20240331145552445" style="zoom:;" />
         </td>
     	<td>
@@ -856,7 +884,7 @@
                 <strong>《众包和本地基站混合定位研究及科研经历分享》余跃&nbsp;&nbsp; 2020.04</strong>
             </p>
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全球导航卫星系统(GNSS）已被广泛地应用于室外定位，但基于现有物联网终端设备实现自主、精确和普适的室内导航仍然具有极大的挑战性。本期讲座，报告人将根据个人及课题组的科研项目及学术竞赛经历，介绍使用众包和本地基站混合定位过程中面临的问题及相关科研探索，并分享香港博士申请的相关经历和心得感悟。
             </p>
         	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1fb4y1W7Jc' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
@@ -1017,34 +1045,108 @@
     </tr>
     <tr>
     	<td>
-            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002230523969.png" style="zoom:;" />
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002202709581.png" alt="image-20240331145552445" style="zoom:;" />
         </td>
     	<td>
             <p align="center">
-                <strong>《卫星导航接收机原理》杨颖&nbsp;&nbsp;2020.04 </strong>
+                <strong>《一生一芯暑期招生宣讲会》</strong>
             </p>
             <p>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </p>
-        	<p align="center" > 👉👉👉&nbsp;  <a href='https://mp.weixin.qq.com/s?src=11&timestamp=1727881291&ver=5542&signature=ewAampzXzDCBMiycJSbqp8PXj7fqaxt9Gda6NqYZpi8q5BCEBb3OpaxEui063O*tJx7PpuOgnKQbtckkyf8RNdG5blQlK-I992DI6TVXHXUFK-g1WFgo*21mp*SYUKyj&new=1' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1vs411N7sz' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
     </tr>
     <tr>
     	<td>
-            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241002224819334.png" style="zoom:;" />
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241003120050472.png"  style="zoom:;" />
         </td>
     	<td>
             <p align="center">
-                <strong>《精密单点定位（PPP）之浅见》周峰&nbsp;&nbsp; 2020.02</strong>
+                <strong>《电离层不规则体与闪烁》熊超&nbsp;&nbsp;2021.07</strong>
             </p>
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介绍了PPP的发展历程、PPP的基本原理、常用模型、具体的软件实现、应用中的限制瓶颈等内容。
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;围绕电离层不规则体的产生机制、气候学特征、及电离层闪烁对导航定位的影响展开详细讨论。
             </p>
-        	<p align="center" > 👉👉👉&nbsp;  <a href='https://mp.weixin.qq.com/s?src=11&timestamp=1727880461&ver=5542&signature=ewAampzXzDCBMiycJSbqp8PXj7fqaxt9Gda6NqYZpi-DOFVCpaXXPtkeehHIgNcDjt3Ch7QE2BC1jxVflIy6zCVwtkciKbuoe-diVKF1xD4CZuYrM3G-1vYN*xKeDCwa&new=1' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1bX4y1w7sE' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+        <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241003120726709.png"  style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《GNSS时代的电离层研究》张顺荣&nbsp;&nbsp;2021.04</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介绍、分析与评述电离层科学研究在GNSS时代取得的新进展分享对GNSS影响电离层研究的历史进程和发展趋势的个人观点
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1JK411w75E' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+        <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241003121034649.png"  style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《空间天气链式预报大模型的初步研究思路》陈洲副&nbsp;&nbsp;</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对一次空间天气事件，需要从太阳活动区开始监测观察天阳表面的爆发情况，判断太阳喷发的物质怎样在行星际空间传播，进而判断太阳活动后期对地球空间是否有影响，有何种影响。由王观测技术的局限，卫星无法有效的覆盖空间天气的所有区域，因此想要从物理机制上耦合空间天气整个区域的演化过程是干分困因难的。好在最近几十年空间天气方面的卫星发展迅速，的我们在空间天气多区域提供了大量的观测数据，从最近发展的深度学习技术上来看，已具备构建空间天气多区域耦合模型的观测数据量。因此借助深度学习最新技术的强大数据学习能力，从空间天气链式观测数据中，构建整体演化的时空大模型是有可能建立空间天气不同区域之间的相互作用、相互耦合的智能监测预警模型。这对于提高空间天气监测预报水平具有重要的科学意义。
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1eM4m1X77n' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241003122342072.png"  style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《GNSS与InSAR协同监测》胡俊&nbsp;&nbsp;2023.09</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1ch4y1z7Mz' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241003122303606.png"  style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《GNSS多维水汽反演关键技术及其应用》姚宜斌&nbsp;&nbsp;2022.09</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV17D4y117Er' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
+        </td>
+    </tr>
+    <tr>
+    	<td>
+            <img width="200" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241003122926370.png"  style="zoom:;" />
+        </td>
+    	<td>
+            <p align="center">
+                <strong>《北斗卫星导航系统与国家PNT体系建设》杨元喜&nbsp;&nbsp;2022.05</strong>
+            </p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1dY411F7BH' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
     </tr>
 </table>
 
+
+
+
+<p align="center" > &nbsp;👆👆👆 &nbsp; <a href="#Top">回到开头</a> &nbsp; 👆👆👆</p>
 
 
 ---
