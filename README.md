@@ -46,7 +46,6 @@
 | [**调试经验**](导航定位建图程序编译调试经验.md) |          记录一些导航定位程序编译过程中常遇到的问题          | <Strong>【\=\=\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;】</Strong>60% |
 |      [**算法理解**](导航定位算法公式理解)       |        不会一板一眼地推导公式，写点我对导航算法的理解        | <Strong>【\=> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                  】</Strong>10% |
 |        [**算法解惑**](导航定位算法解惑)         | [参数估计](导航定位算法解惑/01-参数估计算法解惑.md)/[GNSS](导航定位算法解惑/02-GNSS算法解惑.md)/[INS](导航定位算法解惑/03-INS算法解惑.md)/[组合导航](导航定位算法解惑/04-组合导航算法解惑.md)/[SLAM](导航定位算法解惑/05-SLAM算法解惑.md)/[多源融合](导航定位算法解惑/06-多源融合算法解惑.md)/[规控](导航定位算法解惑/07-规划控制算法解惑.md) | <Strong>【\=\=\=\> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;              】</Strong>30% |
-|           [**安理导航**](安理导航.md)           | [毕业生去向](安理导航.md#qx)/[课程体系](安理导航.md#tx)/[21级课程](安理导航.md#kc)/[教学锐评](安理导航.md#rp)/[安理往事](安理导航.md#ws) | <Strong>【\=\=\=\=\=\=\>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;】</Strong>60% |
 |       <a href="#Finally">**写在最后**</a>       |         欢迎大家在我的基础上整理出属于自己的一套笔记         | <Strong>【\=\=\=\=\=\=\=\=>&nbsp;&nbsp;&nbsp;】</Strong>80%  |
 
 </div>
