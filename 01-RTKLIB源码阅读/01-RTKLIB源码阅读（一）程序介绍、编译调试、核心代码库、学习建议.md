@@ -135,7 +135,7 @@ RTKLIB 可以初步实现以下功能，相对于商业软件，可靠性没那�
 * [GINAV](https://github.com/kaichen686/GINav)：MATLAB 紧组合，文件名起的和 RTKLIB 函数名一模一样，虽说是组合导航，但也可以只用其中的 GNSS 部分，相比 goGPS 简单不少。
 * [GICI-LIB](https://github.com/chichengcn/gici-open)：上海交大池澄博士开源的 GNSS-IMU-Camera 图优化多源融合程序，以 GNSS 为主，实现了 RTK、PPP 的模糊度固定 
 * [PPP-AR](https://github.com/PrideLab/PRIDE-PPPAR)：武大 GNSS 中心开源的后处理 PPP，使用配套的产品可以实现 PPP 模糊度固定，支持五频数据处理，使用了 rnx2rtkp 可执行程序计算测站初值坐标。
-* [IGNAV](https://github.com/Erensu/ignav)：武大 GNSS 中心，图优化紧组合
+* [IGNAV](https://github.com/Erensu/ignav)：武大 GNSS 中心
 * [pppwizard](http://www.ppp-wizard.net/)：
 * [GNSS-SDR](https://github.com/gnss-sdr/gnss-sdr)：GNSS 软件接收机，与上面列举的数据处理软件不同，GNSS-SDR 实现基带算法直接对接收机输出的数字中频信号处理，PVT 部分用了 RTKLIB。
 * [PocketSDR](https://github.com/tomojitakasu/PocketSDR)：RTKLIB 作者新开源的软件接收机，包含一个射频前端和一套后处理 GNSS 接收机程序（只支持后处理），实现了一整套完整的 GNSS 接收机功能，采用 C、Python 编写，支持几乎所有的 GNSS 信号（比商业接收机支持的还要多），引入 RTKLIB 做库，用到了 RTKLIB 的一些结构体。
@@ -561,7 +561,7 @@ RTKLIB APP 目录下有 5 个命令行程序
 
 RTKLIB 提供许多代码库和 API，包括：卫星和导航系统函数、矩阵和向量函数，时间和字符串函数、坐标的转换，输入和输出函数、调试跟踪函数、平台依赖函数、定位模型、大气模型、天线模型、地球潮汐模型、大地水准面模型、基准转换、RINEX函数、星历和时钟函数、精密星历和时钟、接收机原始数据函数、RTCM 函数，解算函数、谷歌地球KML转换、SBAS函数、选项（option）函数、流数据输入和输出函数、整周模糊度解算、标准定位、精密定位、后处理定位（解算）、流服务器函数、RTK服务器函数、下载函数。
 
-头文件 rtklib.h 是库的核心 ，主要有三大部分：**宏定义**、**结构体定义**、**全局变量**、**函数定义**
+头文件 rtklib.h 是库的核心 ，主要有四大部分：**宏定义**、**结构体定义**、**全局变量**、**函数定义**
 
 >  需要注意并非所有函数都可以直接调用，只有加了 EXPORT 前缀，而且在 RTKLIB.h 中声明了才行；想用 static 前缀的函数也很简单，只需要把前缀改成 EXPORT，然后在 rtklib.h 中加上声明。
 
@@ -696,7 +696,7 @@ RTKLIB 提供许多代码库和 API，包括：卫星和导航系统函数、矩
   * **三级  Trace 是程序主要执行流程**，主要在函数的开头，告诉我们执行到了这个函数。
   * **四级 Trace 是比三级更深入的程序执行流程**，主要在三级  Trace 函数的中间或者调用的子函数开头，告诉我们执行到了这个操作。
   * **五级 Trace 是解算的中间过程**，具体到每颗卫星，每个频点，每次循环。
-* 看 Trace 文件可以辅助断点调试，甚至替代断点调试。程序执行出错，开 2/3 级 Trace，看 Trace 文件里的 error、warring 就能，知道大致出了啥问题，定位出问题的函数，断点调试的时候你就知道该在哪设置断点了。
+* 看 Trace 文件可以辅助断点调试，甚至替代断点调试。程序执行出错，开 2/3 级 Trace，看 Trace 文件里的 error、warring 就能知道大致出了啥问题，定位出问题的函数，断点调试的时候你就知道该在哪设置断点了。
 
 ![image-20231025205158762](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20231025205158762.png)
 
@@ -926,53 +926,6 @@ RTKLIB 提供许多代码库和 API，包括：卫星和导航系统函数、矩
 * 
 
 
-
-
-
-### 11、基于RTKLIB二次开发程序示例
-
-下面介绍基于 RTKLIB 二次开发的程序 GAMP、GICI-LIB，着重介绍它的项目结构、CMakeLists.txt 文件和用到 RTKLIB 的部分；如果你也想基于 RTKLIB 进行二次开发，可以参考它的程序组织形式。
-
-#### 1. GAMP
-
-GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and multi-frequency **P**recise positioning)，在 RTKLIB 的基础上，将一些多余的函数、代码简洁化，精简出后处理 PPP 部分，并对算法进行改进增强。简化后代码比 RTKLIB 原版还要简单，对初学者非常友好，在我接触过的导航定位开源程序中算是最简单的。使用也很方便，软件包里提供了 VS 工程，和组织好的配置文件、数据文件；设置好 pthreads 库，简单改改文件路径就能算出结果。
-
-![GAMP](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/GAMP.png)
-
-
-
-相较 RTKLIB 的增强：
-
-* **非差非组合的 PPP 模型**
-* **钟跳修复**
-* **北斗多路径延迟改正**
-* **观测值信号量支持更多**
-* **抗差估计**
-* **伪距观测值质量检测**
-* **MW + GF 周跳检测**
-* **利用残差粗差探测**
-* **计算了更多的 DOP 值**
-* **对流层 GPT 模型**
-* **GLONASS 伪距 IFB** 
-* **输出结果更多**
-* **GPT对流层模型**
-
-#### 2. GICI-LIB
-
-
-
-* **时间系统**：用 `gtime_t` 作为量测数据的时间戳，时间转换都用 RTKLIB 提供的接口。
-* **坐标转换**：我程序的坐标都用 Eigen 库的 Vector3d 向量表示；为方便调用，我对 ENU、ECEF、BLH 坐标之间的转换函数做了一层封装，接口为 Eigen 形式。
-* **结果输出**：为了能输出姿态，扩展了 sol_t 结构体，加上三个欧拉角，输出结果的语句上加上欧拉角；然后拓展 rtkplot，把姿态角结果也画出来。
-* **GNSS相关的类型定义**：卫星系统、卫星、观测值定义
-* **配置选项**：GNSS 相关的 
-* **数据读取**：RINEX、RTCM、NMEA
-* **数据流**：
-* 
-
-
-
-项目文件结构和 CMakeLists.txt 文件内容如下：
 
 
 
