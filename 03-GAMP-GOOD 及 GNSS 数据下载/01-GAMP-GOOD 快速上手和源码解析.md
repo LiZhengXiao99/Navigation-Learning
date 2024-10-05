@@ -35,9 +35,11 @@ GAMP-GOOD 由核心代码库 Libgood、命令行可执行程序 Good_Cui 和 Qt�
 
 ![image-20240831165628437](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240831165628437.png)
 
-
-
 ### 2、Good-Cui：命令行数据下载程序
+
+> Windows：`good_cui.exe` + `yaml 配置文件路径`
+>
+> Linux：`good_cui` + `yaml 配置文件路径`
 
 
 
@@ -172,6 +174,7 @@ YAML（YAML Ain't Markup Language）是一种轻量级的数据序列化格式�
     4. `l2s4trp`：
 
 23. `getAtx`：
+    
     1. `opt4atx`：
 
 ---
@@ -312,8 +315,6 @@ getAtx:                           # ANTEX format antenna phase center correction
 
    > 
 
-4. 
-
 
 
 ### 6、已知存在的问题
@@ -332,9 +333,9 @@ getAtx:                           # ANTEX format antenna phase center correction
 
 4. ATX 和 DCB 文件有时候下载很慢
 
-   > * Atx
+   > * Atx.20
 
-4. whu 和 grg 的
+4. grg 的
 
    > 
 
@@ -372,19 +373,15 @@ getAtx:                           # ANTEX format antenna phase center correction
 
 ### 2、文件结构
 
-
-
-
+![image-20241005223229079](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241005223229079.png)
 
 ### 3、CmakeList.txt
 
+![image-20241005225943841](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241005225943841.png)
 
-
-
+![image-20241005225959750](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241005225959750.png)
 
 ### 4、第三方命令行工具
-
-
 
 #### 1. wget 数据下载
 
@@ -425,11 +422,7 @@ getAtx:                           # ANTEX format antenna phase center correction
 
 
 
-
-
 #### 4. lftp
-
-
 
 如果无法连接，可以在 lftp 的命令最后加上 `-d` ，使用调试模式
 
@@ -462,14 +455,14 @@ getAtx:                           # ANTEX format antenna phase center correction
    std::string sdoy = CString::int2str(doy, 3);
    ```
 
-3. 生成文件名，判断文件是否已经存在：
+3. 生成文件名 `rotfile`，判断文件是否已经存在：
 
    ```cpp
    std::string rotfile = "roti" + sdoy + "0." + syy + "f";
    if (access(rotfile.c_str(), 0) == -1)
    ```
 
-4. 判断文件是否存在，如果文件已经存在，则无需下载，输出 `文件已经存在` 的信息到终端和日志文件之后直接结束程序：
+4. 判断文件是否存在，如果文件已经存在，则无需下载，输出 `文件已经存在` 的信息到终端和日志文件之后直接结束程序；如果文件不存在，则进入正常下载流程：
 
    ```cpp
    if (access(rotfile.c_str(), 0) == -1){
@@ -481,11 +474,61 @@ getAtx:                           # ANTEX format antenna phase center correction
    }
    ```
 
-5. 
+5. 从 `ftparchive_` 中取对应的下载地址，拼接上 `年/年积日` 得到待下载文件所在的文件夹路径 `url`：
 
+   ```cpp
+   std::string wgetfull = fopt->wgetfull, gzipfull = fopt->gzipfull, qr = fopt->qr;
+   std::string url, cutdirs = " --cut-dirs=6 ";
+   if (ftpname == "CDDIS") url = ftparchive_.CDDIS[IDX_ROTI] + "/" +
+       syyyy + "/" + sdoy;
+   else if (ftpname == "IGN") url = ftparchive_.IGN[IDX_ROTI] + "/" +
+       syyyy + "/" + sdoy;
+   else if (ftpname == "WHU") url = ftparchive_.WHU[IDX_ROTI] + "/" +
+        syyyy + "/" + sdoy;
+   else url = ftparchive_.CDDIS[IDX_ROTI] + "/" + syyyy + "/" + sdoy;
+   ```
 
+6. 调用 wget，下载 `url` 目录中，名为 `rotfile` 的文件，后缀名不限：
 
+   ```cpp
+   /* it is OK for '*.Z' or '*.gz' format */
+   std::string rotxfile = rotfile + ".*";
+   std::string cmd = wgetfull + " " + qr + " -nH -A " + rotxfile + cutdirs + url;
+   std::system(cmd.c_str());
+   ```
 
+7. 拼接出下载到本地的文件路径 `localfile`：
+
+   ```cpp
+   std::string sep;
+   sep.push_back((char)FILEPATHSEP);
+   std::string localfile = dir + sep + rotfile, url0;
+   CString::GetFile(dir, rotfile, rotxfile);
+   ```
+
+8. 判断文件是否下载成功，下载失败输出错误，下载成功调用 `gzip` 解压，有的还会进行长短文件名转换：
+
+   ```cpp
+   if (access(rotxfile.c_str(), 0) == -1)
+   {
+       TRACE(TWARNING, "failed to download ROTI file " + rotfile);
+       url0 = url + '/' + rotxfile;
+       TRACEFP(fplog_, url0, localfile, false);
+   }
+   else
+   {
+       /* extract '*.gz' or '*.Z' */
+       cmd = gzipfull + " -d -f " + rotxfile;
+       std::system(cmd.c_str());
+   
+       if (access(rotfile.c_str(), 0) == 0)
+       {
+           TRACE(TINFO, "successfully download ROTI file " + rotfile);
+           url0 = url + '/' + rotxfile;
+           TRACEFP(fplog_, url0, localfile, true);
+       }
+   }
+   ```
 
 ### 5、YAML 配置文件读写
 
