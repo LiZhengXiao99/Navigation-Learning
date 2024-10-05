@@ -30,7 +30,7 @@
 <div align="center">
     <h3>👇&nbsp;以下是本仓库包含的板块，点击跳转&nbsp;👇</h3>
 
-​    
+
 
 |            🌟&nbsp;板块&nbsp;🌟&nbsp;             |                      🧾&nbsp;说明&nbsp;🧾                      |                     🛠&nbsp;完成度&nbsp;🛠                     |
 | :---------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
@@ -576,7 +576,7 @@
                 <strong>《卫星导航系统》哈工程</strong>
             </p>
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全面且系统地介绍了GNSS的原理。从信号体制到接收机信号处理，从观测值误差分析到各种定位技术，推荐搭配着谢刚的《GPS原理与接收机设计》来看。
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全面且系统地介绍了 GNSS 的原理。从信号体制到接收机信号处理，从观测值误差分析到各种定位技术，推荐搭配着谢刚的《GPS原理与接收机设计》来看。
             </p>
         	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1mB4y1V7zX' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
@@ -590,7 +590,7 @@
                 <strong>《多模卫星导航系统介绍》赵乐文</strong>
             </p>
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网上的其它GNSS课程，大都只讲原理，只讲 GPS 系统，学完了，你可能还是捋不清该如何从伪距/载波/多普勒和星历，一步步算出 SPP/RTK/PPP 解；相比起来，赵老师这套课更加的贴近科研和工程，他会讲多系统的算法，讲RINEX文件，讲RTKLIB代码。
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网上的其它 GNSS 课程，大都只讲原理，只讲 GPS 系统，学完了，你可能还是捋不清该如何从伪距/载波/多普勒和星历，一步步算出 SPP/RTK/PPP 解；相比起来，赵老师这套课更加的贴近科研和工程，他会讲多系统的算法，讲RINEX文件，讲RTKLIB代码。
             </p>
         	<p align="center" > 👉👉👉&nbsp;  <a href='https://space.bilibili.com/479790048/channel/collectiondetail?sid=2487703' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
@@ -604,7 +604,7 @@
                 <strong>《GNSS高精度算法代码学习》欧阳明俊</strong>
             </p>
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中山大学 CPNT 实验室欧阳明俊老师给组内同学录制的一套 GNSS 高精度算法入门教程，内容为 GNSS 高精度算法代码一行一行讲解（RTKLIB，GAMP，GINAV 等）。
             </p>
         	<p align="center" > 👉👉👉&nbsp;  <a href='https://www.bilibili.com/video/BV1a6saeAEDz' target='_blank'>点击跳转</a> &nbsp;👈👈👈</p>
         </td>
@@ -710,7 +710,6 @@
         </td>
     </tr>
 </table>
-
 
 
 
@@ -1124,10 +1123,6 @@
 
 
 
-
-
-
-
 <p align="center" > &nbsp;👆👆👆 &nbsp; <a href="#Top">回到开头</a> &nbsp; 👆👆👆</p>
 
 
@@ -1136,7 +1131,6 @@
 <div align="center">
 	<h2>✨&nbsp; 本仓库介绍的开源程序 &nbsp;✨</h2>
 </div>
-
 
 
 ### <a name="RTKLIB">01-RTKLIB：最知名的 GNSS 数据处理程序</a>
@@ -1210,11 +1204,9 @@ GAMP 全称 (**G**NSS  **A**nalysis software for **M**ulti-constellation and mul
 
 ---
 
+### <a name="GMAP-GOOD">03-GAMP-GOOD：基于 Wget 的 GNSS 数据下载程序</a>
 
-
-### <a name="GAMP-GOOD">03-GAMP-GOOD：基于 Wget 的 GNSS 数据下载程序</a>
-
-GAMP-GOOD 由核心代码库 Libgood、命令行可执行程序 Good_Cui 和 Qt界面可执行程序 Good_Gui 三部分组成，自2021年4月1.0版本至今已历经 15 个版本迭代，目前已实现常用 GNSS 观测值、广播星历、精密卫星轨道和钟差(实时、超快、快速、最终)、地球定向参数、卫星姿态ORBEX、DCB/DSB/OSB、SINEX周解、电离层和对流层延迟产品、天线相位中心等产品下载。
+GAMP-GOOD 由核心代码库 Libgood、命令行可执行程序 Good_Cui 和 Qt界面可执行程序 Good_Gui 三部分组成，自2021年4月1.0版本至今已历经 15 个版本迭代，目前已实现常用 GNSS 观测值、广播星历、精密卫星轨道和钟差、地球定向参数、卫星姿态ORBEX、DCB/DSB/OSB、SINEX周解、电离层和对流层延迟产品、天线相位中心等产品下载。
 
 ![PPP 观测方程及涉及到的外部数据](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/PPP%20%E8%A7%82%E6%B5%8B%E6%96%B9%E7%A8%8B%E5%8F%8A%E6%B6%89%E5%8F%8A%E5%88%B0%E7%9A%84%E5%A4%96%E9%83%A8%E6%95%B0%E6%8D%AE.png)
 
@@ -1361,7 +1353,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 
 ---
 
-### <a name="OB-GINS">09-OB-GINS：GNSS/INS-FGO 松组合 Demo</a>
+### <a name="OB-GINS">09-OB-GINS：GNSS/INS-FGO 松组合例程</a>
 
 武大 I2NAV 开源，基于图优化的 IMU/GNSS 松组合解算，IMU 预积分算法相比以视觉为主的 ORB-SLAM3、VINS 要精细一些。
 
@@ -1372,7 +1364,7 @@ KF-GINS 是武大 i2Nav 实验室开源的一套松组合导航程序；可以�
 * 开源地址：https://github.com/i2Nav-WHU/OB_GINS，
 * 相关论文：
   * Hailiang Tang, Tisheng Zhang, Xiaoji Niu, Jing Fan, and Jingnan Liu, “Impact of the Earth Rotation Compensation on MEMS-IMU Preintegration of Factor Graph Optimization,” *IEEE Sensors Journal*, 2022. [下载](http://www.i2nav.com/ueditor/jsp/upload/file/20220801/1659348408510061111.pdf)
-  * Junxiang Jiang, Xiaoji Niu, and Jingnan Liu, “Improved IMU Preintegration with Gravity Change and Earth Rotation for Optimization-Based GNSS/VINS,” *Remote Sensing*, vol. 12, no. 18, p. 3048, Sep. 2020, doi: [10.3390/rs12183048](https://doi.org/10.3390/rs12183048). [下载](https://sci-hub.se/10.3390/rs12183048)
+  * Junxiang Jiang, Xiaoji Niu, and Jingnan Liu, “Improved IMU Preintegration with Gravity Change and Earth Rotation for Optimization-Based GNSS/VINS,” *Remote Sensing*, vol. 12, no. 18, p. 3048, Sep. 2020, doi: [10.3390/rs12183048](https://doi.org/10.3390/rs12183048). 
   * Le Chang, Xiaoji Niu, and Tianyi Liu, “GNSS/IMU/ODO/LiDAR-SLAM Integrated Navigation System Using IMU/ODO Pre-Integration,” *Sensors*, vol. 20, no. 17, p. 4702, Aug. 2020, doi: [10.3390/s20174702](https://doi.org/10.3390/s20174702). [下载](https://www.mdpi.com/1424-8220/20/17/4702/pdf)
 
 <p align="center" > 
