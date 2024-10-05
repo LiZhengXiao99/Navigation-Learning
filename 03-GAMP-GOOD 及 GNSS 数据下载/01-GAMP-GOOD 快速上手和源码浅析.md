@@ -1,6 +1,6 @@
 <div align="center">
     <a name="Top"></a>
-	<h1>GAMP-GOOD 快速上手及源码解析</h1>
+	<h1>GAMP-GOOD 快速上手及源码浅析</h1>
 </div>
 
 
@@ -45,10 +45,6 @@ GAMP-GOOD 由核心代码库 Libgood、命令行可执行程序 Good_Cui 和 Qt�
 
 
 
-
-
-
-
 ### 3、YAML 格式配置文件说明
 
 YAML（YAML Ain't Markup Language）是一种轻量级的数据序列化格式，可以用于配置文件、数据交换、API 请求等多种场景。它是一种简单易用的数据序列化格式，使得数据可以以人类易读的方式进行存储和传输。语法非常简单，使用缩进和符号来表示数据结构，需要注意以下激光问题：
@@ -68,23 +64,23 @@ YAML（YAML Ain't Markup Language）是一种轻量级的数据序列化格式�
 
 2. `procTime`：数据下载的开始时间，支持三种形式：
 
-   ```cpp
-   - 1 年/月/日    : 1 2024 8 3
-   - 2 年/年积日	: 2 2024 216
-   - 3 GPS周/周内天 : 3 2327 7
-   ```
+   |   日期形式   |    示例    |
+   | :----------: | :--------: |
+   |   年/月/日   | 1 2024 8 3 |
+   |  年/年积日   | 2 2024 216 |
+   | GPS周/周内天 |  3 2327 7  |
 
 3. `minusAdd1day`：【0 : 关、1 : 开】选择是否额外下载前一天和后一天的精密星历和精密钟差。
 
-   > 部分 PPP 程序需要用到前天和后一天的精密星历和精密钟差进行插值。
+   > 注：部分 PPP 程序需要用到前天和后一天的精密星历和精密钟差进行插值。
 
 4. `merge_sp3files`：【0 : 关、1 : 开】选择是否合并下载的三天精密星历和钟差。
 
-   > 仅在 minusAdd1day 开启的时候生效。
+   > 注：仅在 minusAdd1day 开启的时候生效。
 
 5. `printInfoWget`：【0 : 关、1 : 开】选择是否在终端显示 Wegt 输出的信息。
 
-   > Qt 界面程序中无效。
+   > 注：Qt 界面程序中无效。
 
 6. `ftpDownloading`：
 
@@ -92,90 +88,172 @@ YAML（YAML Ain't Markup Language）是一种轻量级的数据序列化格式�
 
    2. `ftpArch`：【cddis、ign、whu】选择主要的数据中心，支持 cddis、ign、whu：
 
-      ```cpp
-      - 美国 cddis : ftps://gdc.cddis.eosdis.nasa.gov/pub/
-      - 法国 ign   : ftp://igs.ign.fr/pub/
-      - 中国 whu   : ftp://igs.gnsswhu.cn/pub/
-      ```
+      |  数据中心  |               FTP 链接                |
+      | :--------: | :-----------------------------------: |
+      | 美国 cddis | ftps://gdc.cddis.eosdis.nasa.gov/pub/ |
+      |  法国 ign  |         ftp://igs.ign.fr/pub/         |
+      |  中国 whu  |       ftp://igs.gnsswhu.cn/pub/       |
 
+      > 注：
+      >
       > * 绝大多数的数据都在选择的数据中心里下载，有部分例外，详见 [GAMP-GOOD 支持下载的产品链接.md](GAMP-GOOD 支持下载的产品链接.md)。
       > * 一般来说美国的 cddis 数据最全，国内用 whu 下载数据最快。
 
-7. `getObs`：
+7. `getObs`：**Obs 观测值文件下载设置项**
 
    1. `opt4obs`：【0 : 关、1 : 开】观测数据下载的总开关。
-   2. `obsType`：选择观测数据下载的种类
-   3. `obsFrom`：
-   4. `obsList`：
-   5. `sHH4obs`：
-   6. `nHH4obs`：
+
+   2. `obsType`：选择观测数据下载的种类：
+
+      |       观测数据源        |     支持的数据类型      |
+      | :---------------------: | :---------------------: |
+      |     igs、mgex、mgex     | daily、hourly、highrate |
+      | cut、ngs、epn、pbo、chi |          daily          |
+      |           hk            |       30s、5s、1s       |
+
+   3. `obsFrom`：选择观测数据来源：
+
+      | 观测数据源 |                             介绍                             |
+      | :--------: | :----------------------------------------------------------: |
+      |    igs     | IGS观测数据 (RINEX 2.xx, 短文件名)，不支持 BDS，多用于GPS定轨、估钟、PPP算法验证等 |
+      |    mgex    | MGEX观测数据 (RINEX 3.xx, 长文件名)，多用于多系统GNSS定轨、估钟、PPP算法验证等 |
+      |    igm     |  优先下载信息更多的 MGEX 数据，如果没有则尝试下载 IGS 数据   |
+      |    cut     |   科廷科技大学短基线 CORS 观测值，多用于短基线RTK算法验证    |
+      |     hk     | 香港CORS观测值 (RINEX 3.xx, 长文件名)，多用于海潮、GNSS水汽、电离层延迟建模等 |
+      |    ngs     |                美国国家大地测量 CORS 观测数据                |
+      |    epn     |                欧洲 CORS 观测数据，测站比较密                |
+      |    pbo     |    美国国家科学基金会地球观测计划的板块边界观测站观测数据    |
+      |    chi     |                智利观测数据，多用于地震学研究                |
+
+   4. `obsList`：测站列表文件，填 `all` 下载所有测站的数据；
+
+      > 注：测站列表需要以 `.list` 结尾，每个测站（四个字符）一行，可以加以 `#` 起始的注释行；
+
+   5. `sHH4obs`：小时观测数据的起始时间；
+
+   6. `nHH4obs`：小时观测数据的时段数；
+
+      > 注：`sHH4obs`、`nHH4obs` 仅在观测数据类型 `obsType` 设置为 `hourly`、`highrate`、`5s`、`1s` 时生效；`daily` 观测数据一个文件就是一整天的数据，无需设置时段。
+
    7. `l2s4obs`：【0 : 仅长文件名、1 : 仅短文件名、2 : 长文件名 + 短文件名】
 
-8. `getNav`：
+8. `getNav`：**Nav 广播星历数据下载设置项**
+
    1. `opt4nav`：【0 : 关、1 : 开】
-   2. `navType`：
-   3. `navSys`：
-   4. `navFrom`：
-   5. `navList`：
-   6. `sHH4nav`：
-   7. `nHH4nav`：
+
+   2. `navType`：广播星历类型，可以选择 `daily`、`hourly`；
+
+   3. `navSys`：广播星历系统，支持选项如下：
+
+      | 广播星历类型 |            支持选择的卫星系统            |
+      | :----------: | :--------------------------------------: |
+      |    daily     |         gps、glo、mixed3、mixed4         |
+      |    hourly    | gps、glo、bds、gal、qzs、irn、mixed、all |
+
+   4. `navFrom`：分析中心，支持选择如下：
+
+      |   数据中心   | 支持下载广播星历的分析中心 |
+      | :----------: | :------------------------: |
+      |  CDDIS、WHU  |          igs、igs          |
+      |     IGN      |          igs、ign          |
+      | 其它数据中心 |          gop、wrd          |
+
+      > 注：无论选择什么数据中心，都可以选择下载 `gop`、`wrd` 的广播星历。
+
+   5. `navList`：测站列表文件，不支持填 `all`；
+
+   6. `sHH4nav`：小时星历数据的起始时间；
+
+   7. `nHH4nav`：小时星历数据的时段数；
+
+      > 注：下载小时解 `hourly` 星历的时候才需要选测站列表、设置时段。
+
    8. `l2s4nav`：【0 : 仅长文件名、1 : 仅短文件名、2 : 长文件名 + 短文件名】
 
-9. `getOrbClk`：
+9. `getOrbClk`：**OrbClk 精密星历、精密钟差下载设置项**
+
    1. `opt4oc`：【0 : 关、1 : 开】
    2. `ocFrom`：
    3. `sHH4oc`：
    4. `nHH4oc`：
    5. `l2s4oc`：【0 : 仅长文件名、1 : 仅短文件名、2 : 长文件名 + 短文件名】
 
-10. `getEop`：
+10. `getEop`：**EOP 地球自转参数下载设置项**
 
-   11. `opt4eop`：【0 : 关、1 : 开】
+    1. `opt4eop`：【0 : 关、1 : 开】
+    2. `eopFrom`：
+    3. `sHH4eop`：
+    4. `nHH4eop`：
+    5. `l2s4eop`：【0 : 仅长文件名、1 : 仅短文件名、2 : 长文件名 + 短文件名】
 
-   12. `eopFrom`：
+11. `getObx`：**Obx 卫星姿态参数下载设置项**
 
-   13. `sHH4eop`：
-
-   14. `nHH4eop`：
-
-   15. `l2s4eop`：【0 : 仅长文件名、1 : 仅短文件名、2 : 长文件名 + 短文件名】
-
-16. `getObx`：
     1. `opt4obx`：【0 : 关、1 : 开】
     2. `obxFrom`：
 
-17. `getDsb`：
+12. `getDsb`：**Dsb 差分码偏差参数下载设置项**
 
     1. `opt4dsb`：【0 : 关、1 : 开】
     2. `dsbFrom`：
 
-18. `getOsb`：
+13. `getOsb`：**Osb 观测值偏差参数下载设置项**
 
     1. `opt4osb`：【0 : 关、1 : 开】
-    2. `osbFrom`：
 
-19. `getSnx`：
+    2. `osbFrom`：Osb 观测值偏差参数分析中心：
+
+       | Osb 分析中心 | 卫星系统 |    产品形式     |
+       | :----------: | :------: | :-------------: |
+       |     whu      |   GREC   |       OSB       |
+       |     cas      |   GREC   |       OSB       |
+       |     gfz      |   GREC   | 宽巷 UPD+相位种 |
+       |     grg      |    GR    | 宽巷 UPD+整数钟 |
+       |     cod      |          |                 |
+       |     cnt      |          |                 |
+
+14. `getSnx`：**Snx IGS周解/天解结果下载设置项**
+
     1. `opt4snx`：【0 : 关、1 : 开】
     2. `l2s4snx`：【0 : 仅长文件名、1 : 仅短文件名、2 : 长文件名 + 短文件名】
 
-20. `getIon`：
-    1. `opt4ion`：
-    2. `ionFrom`：
+15. `getIon`：**Ion 电离层参数设置项**
+
+    1. `opt4ion`：【0 : 关、1 : 开】
+
+    2. `ionFrom`：电离层产品类型和分析中心设置，可以多选（如：`cas + cod_r`）：
+
+       | 电离层参数类型 |                 分析中心                 |
+       | :------------: | :--------------------------------------: |
+       |     最终解     |    cas、cod、emr、esa、igs、jpl、upc     |
+       |      快速      | cas_r、cod_r、esa_r、igs_r、jpl_r、upc_r |
+       | 快速（小时解） |              emr_hr、upc_hr              |
+       | 快速（15分钟） |                upc_0.25hr                |
+       |      预报      |              cod_1d、cod_2d              |
+
     3. `l2s4ion`：【0 : 仅长文件名、1 : 仅短文件名、2 : 长文件名 + 短文件名】
 
-21. `getRoti`
+16. `getRoti`：**Roti 电离层闪烁参数设置项**
+
     1. `opt4rot`：【0 : 关、1 : 开】
 
-22. `getTrp`：
+17. `getTrp`：**Trp 对流层参数下载设置项**
 
     1. `opt4trp`：【0 : 关、1 : 开】
-    2. `trpFrom`：
-    3. `trpList`：
-    4. `l2s4trp`：
 
-23. `getAtx`：
-    
-    1. `opt4atx`：
+    2. `trpFrom`：对流层数据下载来源，支持 `cod` 和 `igs`：
+
+       | 对流层数据下载来源 |           介绍           |
+       | :----------------: | :----------------------: |
+       |        cod         |        只支持 GPS        |
+       |        igs         | 支持多系统，需要选择测站 |
+
+    3. `trpList`：下载 IGS 对流层数据的测站列表文件，填 `all` 下载所有测站的数据；
+
+    4. `l2s4trp`：【0 : 仅长文件名、1 : 仅短文件名、2 : 长文件名 + 短文件名】
+
+18. `getAtx`：**Atx 天线改正参数下载设置项**
+
+    1. `opt4atx`：【0 : 关、1 : 开】
 
 ---
 
@@ -400,13 +478,13 @@ getAtx:                           # ANTEX format antenna phase center correction
 
 `gzip` 是一个广泛使用的文件压缩工具，它使用 DEFLATE 算法来压缩文件，以减小文件的大小。`gzip` 通常用于 Unix 和 Linux 系统，但它也可以在其他操作系统上使用。压缩后的文件通常具有 `.gz` 或者 `.z` 扩展名。常用命令如下：
 
-```cpp
-- 压缩单个文件              : gzip <filename>
-- 解压单个文件              : gzip -d <filename.gz>
-- 保留原始文件并压缩         : gzip -c <filename> > <filename.gz>
-- 保留原始文件并解压         : gzip -cd <filename.gz> > <filename>
-- 查看压缩文件内容无需解压    : zcat <filename.gz>
-```
+|           功能           |                 命令                  |
+| :----------------------: | :-----------------------------------: |
+|       压缩单个文件       |           `gzip <filename>`           |
+|       解压单个文件       |        `gzip -d <filename.gz>`        |
+|    保留原始文件并压缩    | `gzip -c <filename> > <filename.gz>`  |
+|    保留原始文件并解压    | `gzip -cd <filename.gz> > <filename>` |
+| 查看压缩文件内容无需解压 |         `zcat <filename.gz>`          |
 
 #### 3. crx2rnx 解压 RINEX 文件
 
@@ -416,9 +494,10 @@ getAtx:                           # ANTEX format antenna phase center correction
 
 `crx2rnx` 是一个用于将 Trimble 公司的压缩 RINEX 文件（通常具有 `.crx` 扩展名）转换为标准 RINEX 文件（具有 `.rnx` 或 `.obs` 扩展名）的工具。常用命令如下：
 
-```cpp
-
-```
+| 功能 | 命令 |
+| :--: | :--: |
+|      |      |
+|      |      |
 
 
 
@@ -488,7 +567,7 @@ getAtx:                           # ANTEX format antenna phase center correction
    else url = ftparchive_.CDDIS[IDX_ROTI] + "/" + syyyy + "/" + sdoy;
    ```
 
-6. 调用 wget，下载 `url` 目录中，名为 `rotfile` 的文件，后缀名不限：
+6. 调用 `wget`，下载 `url` 目录中，名为 `rotfile` 的文件，后缀名不限：
 
    ```cpp
    /* it is OK for '*.Z' or '*.gz' format */
