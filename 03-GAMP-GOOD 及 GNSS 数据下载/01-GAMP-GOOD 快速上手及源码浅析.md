@@ -411,7 +411,7 @@ getAtx:                           # ANTEX format antenna phase center correction
 
 4. ATX 和 DCB 文件有时候下载很慢
 
-   > * Atx.20
+   > 
 
 4. grg 的
 

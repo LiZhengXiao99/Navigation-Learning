@@ -1,22 +1,20 @@
-
-
 [TOC]
 
 ## 一、后处理程序使用
 
-> 再次推荐一下 B 站赵老师的[视频讲解](https://space.bilibili.com/479790048?spm_id_from=333.337.search-card.all.click)，看视频学软件操作更直观。我主要是用 RTKLIB 的代码库，自带的程序除了 rtkplot 之外我都没咋用过，下面写的内容是看赵老师视频的时候做的笔记。
+> 再次推荐一下 B 站赵老师的[视频讲解](https://space.bilibili.com/479790048?spm_id_from=333.337.search-card.all.click)，看视频学软件操作更直观。我主要是用 RTKLIB 的代码库，自带的程序除了 rtkplot、rtkpost 之外我都没咋用过，下面写的内容很多都是看赵老师视频的时候做的笔记。
 
 ### 1、常见后处理操作
 
-* 在进行解算前就可以用 RTKPLOT 可以对数据进行分析，最新的 b34 版本的 RTKPLOT 好像有 bug，可以去下载一个别的版本的。
+* 在进行解算前就可以用 RTKPLOT 可以对数据进行分析，最新的 b34 版本的 RTKPLOT 好像有 bug，可以去下载一个别的版本的，比如下载 rtklib-demo5。
 
 * 通过 RTKGET 可以下载 IGS 观测数据和各种改正产品（我没咋用过）。
 
 
 
-
-
 ### 2、后处理数据获取
+
+
 
 
 
@@ -177,8 +175,6 @@
 
 
 
-
-
 ## 二、后处理解算
 
 ### 1、使用 rnx2rtkp 后处理解算
@@ -191,15 +187,17 @@ rnx2rtkp 全称 RINEX to RTK pos，通过原始 RINEX 文件，输出 RTKLIB 的
 
 * 使用方式：`rnx2rtkp [option]... file file [...] `
 
-* 读取 RINEX：OBS/NAV/GNAV/HNAV/CLK, SP3, SBAS 等文件，计算接收机、流动站坐标，并输出结果。
+* 读取 RINEX：OBS/NAV/CLK/SP3/SBAS 等文件，计算接收机、流动站坐标，并输出结果。
 
-* 对于相对定位，第一个 OBS 观测值文件需含接收机、流动站观测值，第二个 OBS 文件需含基准站观测值。
+* 对于相对定位，第一个 OBS 观测值文件需含流动站观测值，第二个 OBS 文件需含基准站观测值。
 
-* 输入文件至少要有一个星历文件，RINEX NAV/GNAV/HNAV 。
+* 输入文件至少要有一个星历文件。
 
 * 想用 SP3 精密星历文件，需提供 .sp3/.eph 文件的路径。
 
-* 输入文件路径可包含通配符 *，为了防止与命令行命令冲突，要用 `"..."`  括起带通配符符路径。
+* 输入文件路径可包含通配符 *，为了防止与命令行命令冲突，要用引号 `"..."`  括起带通配符符路径。
+
+* 输入文件路径中如果有空格，也要用引号括起来，否则会被识别成两个不同的参数。
 
 * 输命令行参数的几种方式：
   * **VS**：
@@ -476,23 +474,17 @@ char   *base     I   基准站ID列表，空格隔开
 
 ## 三、三种输出文件
 
-了解三种输出文件具体内容、默认路径、命名方式，
-
-看懂文件在哪个函数创建，哪个函数输出，
-
-知道怎么去拓展，输出些我们想要的其它信息
-
-
+> 学习要求：
+>
+> * 了解三种输出文件具体内容、默认路径、命名方式；
+> * 看懂文件在哪个函数创建，哪个函数输出；
+> * 知道怎么去拓展，输出些我们想要的其它信息；
 
 后处理过程中，三种输出文件都在 execses() 函数中创建：
 
 ![image-20240222200316982](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240222200316982.png)
 
-Trace 信息都是直接输出，结果和中间结果先存在` rtk->sol`、`rtk->ssat` 结构体中，然后每个历元输出一次，
-
-
-
-
+Trace 信息都是直接输出，结果和中间结果先存在` rtk->sol`、`rtk->ssat` 结构体中，然后每个历元算出一组结果就输出一次，
 
 
 
@@ -506,11 +498,13 @@ Trace 信息都是直接输出，结果和中间结果先存在` rtk->sol`、`rt
 
 
 
-，procpos() 函数 while循环中每次解算完调用 outsol() 输出结果，
+procpos() 函数 while循环中每次解算完调用 outsol() 输出结果，
 
 
 
 ### 3、中间结果文件
+
+> 程序里把它起名叫 ”Solution Status“，所以我以前写文档把它称之为“结果状态”，其实更贴切的翻译应该是“中间结果”，以后会慢慢改过来。
 
 
 
@@ -520,26 +514,27 @@ Trace 信息都是直接输出，结果和中间结果先存在` rtk->sol`、`rt
 
 ## 四、从 postpos 到 rtkpos 的函数调用过程
 
-
-
 * **postpos()**：按解算时间分开处理，替换输入文件时间通配符，读取天线参数文件、大地水准面文件。
-* **execses_b()**：分基准站进行定位解算，替换输入文件基准站ID通配符。
-
-* **execses_r()**：对每个流动站进行定位解算，替换输入文件流动站ID通配符。
+* **execses_b()**：分基准站进行处理，替换输入文件基准站ID通配符。
+* **execses_r()**：对每个流动站进行处理，替换输入文件流动站ID通配符。
 * **execses()**：创建三种输出文件（Trace、结果文件、中间结果文件），读取 TEC、ERP、OBS、NAV、DCB、PCV、BLQ文件，计算基准站坐标，根据滤波解算顺序配置参数调用 procpos() 解算，释放读取的观测数据和星历数据。
 * **procpos()**：先初始化` rtk_t`，然后进入 while 循环，每次循环都通过 `inputobs ()` 函数按滤波顺序读取一个历元的数据，调用 `satsys()` 排除禁用卫星，并调用 `rtkpos()` 函数对该历元的数据进行解算，调用 `outsol()` 输出解释结果。
-* 
 
 ![请添加图片描述](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/25a7656c3b0148f0ba14f6365027cf0e.png)
 ![请添加图片描述](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/c782474785b24b44ab4de4fbd8999af9.png)
 
 ### 1、postpos()
 
+![image-20241006135819519](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241006135819519.png)
+
 #### 1. 功能
 
-后处理定位的主入口函数，根据tu分计算时间段，调用调用`execses_b()`进行下一步解算
+后处理定位的主入口函数，根据 tu 分计算时间段，调用调用`execses_b()`进行下一步解算，输入文件包括观测文件、导航文件、精密星历文件等，postpos 在处理输入文件时有两种方法：
 
-输入文件包括观测文件、导航文件、精密星历文件等，postpos在处理输入文件时有两种方法，一种是输入文件可以只包含替换，然后通过函数`reppath()`处理，将关键词用时间、基准站编号、流动站编号等代替，另一种是直接调用输入文件的文件名，postpos主要是来判断是哪一种输入方式，然后调用相应函数。
+* 一种是输入文件可以只包含替换，然后通过函数`reppath()`处理，将关键词用时间、基准站编号、流动站编号等代替；
+* 另一种是直接调用输入文件的文件名，
+
+> postpos 冗长的代码段主要是来判断是哪一种输入方式，然后调用相应函数进行处理，一般不用看太仔细的去看。
 
 #### 2. 输入参数：
 
@@ -560,9 +555,9 @@ char   *base     I   基准站ID列表，空格隔开
 
 #### 3. 返回值
 
-* 处理一切正常会接收execxes_b()的返回值，失败返回0，内存失败返回-1
-* execses_b()正常会接收execses_b()的返回值，失败返回0
-* execses_r()正常会接收execses()的返回值，失败返回0，aborts返回1
+* 处理一切正常会接收 execxes_b() 的返回值，失败返回 0，内存失败返回 -1
+* execses_b() 正常会接收 execses_b() 的返回值，失败返回 0
+* execses_r() 正常会接收 execses() 的返回值，失败返回 0，aborts 返回 1
 
 #### 4. 执行流程
 
@@ -596,13 +591,13 @@ char   *base     I   基准站ID列表，空格隔开
 
      * 调用`execses_b()`进行下一步解算。
 
-   ②：**若`ts`不为0，`tu`为0或小于0** ：就不考虑`te`、和`tu`
+   ②**若`ts`不为0，`tu`为0或小于0** ：就不考虑`te`、和`tu`
 
    * 为`ifile[]`开辟空间，循环替换`infile[i]`的替换符到`ifile[i]`中。
    * 调用`reppath`替换outfile的替换符，存到ofile中。
    * 调用`execses_b()`进行下一步解算。
 
-   ③：**若`ts`为0**：直接把把`infile[]`的下标`j`存到`index[]`中，调用`execses_b` 进行下一步解算
+   ③**若`ts`为0**：直接把把`infile[]`的下标`j`存到`index[]`中，调用`execses_b` 进行下一步解算
 
 4. 调用`closeses()`，释放`openses()`开辟的内存。
 
@@ -733,8 +728,6 @@ extern int postpos(gtime_t ts, gtime_t te, double ti, double tu,
     return stat;
 }
 ```
-
-
 
 #### 5. 调用的函数
 
@@ -900,13 +893,13 @@ extern int postpos(gtime_t ts, gtime_t te, double ti, double tu,
   }
   ```
 
-
-
 ### 2、execses_b()、execses_r()
+
+![image-20241006135943200](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241006135943200.png)
 
 #### 1. 功能
 
-	execses_b()和execses_r()函数非常类似，execsec_b()会调用调用`readpreceph()`读取精密星历和SBAS数据，把传入`infile[]`文件中基准站替换符进行替换，之后调用`execses_r()`。`execses_r()`把传入`infile[]`文件中流动站站替换符进行替换，再调用`execses()`
+execses_b() 和 execses_r() 函数非常类似，execsec_b()会调用调用`readpreceph()`读取精密星历和SBAS数据，把传入`infile[]`文件中基准站替换符进行替换，之后调用`execses_r()`。`execses_r()`把传入`infile[]`文件中流动站站替换符进行替换，再调用`execses()`
 
 #### 2. 输入参数
 
@@ -1151,9 +1144,9 @@ static int execses_r(gtime_t ts, gtime_t te, double ti, const prcopt_t *popt,
   }
   ```
 
-
-
 ### 四、execses()
+
+![image-20241006140111009](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241006140111009.png)
 
 #### 1. 功能
 
@@ -1559,8 +1552,8 @@ static int execses(gtime_t ts, gtime_t te, double ti, const prcopt_t *popt,
   * 判断静态模式，处理选项和结果选项都得为静态 
   * 开始大循环，i:从前到后，取前向滤波的结果 ，j:从后到前，取后向滤波的结果 ，判断前后向滤波结果的时间差 tt
   * 时间差大于DTTOL ，sols、rbs取时间早的结果，另一个结果的下标不变，进行下一次循环的判断 
-  * 时间差很小，solution status不同，sols、rbs取solution status小的结果 
-  * 时间差很小，solution status相同，进行结合
+  * 时间差很小，solution status 不同，sols、rbs 取 solution status 小的结果 
+  * 时间差很小，solution status 相同，进行结合
     * sols取前向滤波结果 ，时间取前后向时间的平均 
     * 相对定位模式，若结果为固定解，调用valcomb()检验，如果失败将fix降级为float 
     * 赋值前后向协方差给Qf、Qb ，调用smoother()进行前后向滤波结果结合，位置存在sols.rr[]，方差存在sols.qr[] 
@@ -1720,7 +1713,7 @@ static void combres(FILE *fp, const prcopt_t *popt, const solopt_t *sopt)
 }
 ```
 
-* **valcomb()**：判断combine结果的有效性，ok if in 4-sigma 
+* **valcomb()**：判断前后向滤波合并后结果的有效性（ $4 \sigma$ 以内有效）
 
   ```c
   static int valcomb(const sol_t *solf, const sol_t *solb)
@@ -1733,8 +1726,8 @@ static void combres(FILE *fp, const prcopt_t *popt, const solopt_t *sopt)
       
       /* compare forward and backward solution */
       for (i=0;i<3;i++) {
-          dr[i]=solf->rr[i]-solb->rr[i];  //坐标值差dr为两坐标相减
-          var[i]=solf->qr[i]+solb->qr[i]; //方差car为两相加
+          dr[i]=solf->rr[i]-solb->rr[i];  // 坐标值差 dr 为两坐标相减
+          var[i]=solf->qr[i]+solb->qr[i]; // 方差 car 为两相加
       }
       //dr在限差4倍标准差之内，就合格return 1，否则return 0
       for (i=0;i<3;i++) {         
@@ -1743,19 +1736,19 @@ static void combres(FILE *fp, const prcopt_t *popt, const solopt_t *sopt)
           time2str(solf->time,tstr,2);
           trace(2,"degrade fix to float: %s dr=%.3f %.3f %.3f std=%.3f %.3f %.3f\n",
                 tstr+11,dr[0],dr[1],dr[2],SQRT(var[0]),SQRT(var[1]),SQRT(var[2]));
-          return 0;
-      }
+          return 0;    }
       return 1;
   }
   ```
-
   
 
 ### 五、procpos()
 
+![image-20241006140151333](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241006140151333.png)
+
 #### 1. 功能
 
-从这个函数开始正式整个流动站和基准站逐历元处理。每次循环都通过inputobs函数读取一个历元的数据，并调用rtkpos函数对该历元的数据进行解算。 
+从这个函数开始正式整个流动站和基准站逐历元处理。每次循环都通过 `inputobs` 函数读取一个历元的数据，并调用 `rtkpos` 函数对该历元的数据进行解算。 
 
 #### 2. 传入参数
 
@@ -1769,12 +1762,12 @@ int mode			   I   0：forward/backward、1：combined
 
 #### 3. 执行流程
 
-* 判断结果是否为静态,处理选项和结果选项都为静态才算静态 
-* 调用`rtkinit()` 初始化`rtk_t `，将popt结构体赋值给rtk的部分成员 
-* while大循环，调用`inputobs()`，每次取一个历元的观测数据`obs[]`
-* 排除禁用卫星的观测值
-* PPP中如果需要，调用`corr_phase_bias_ssr()`相位的小数轴偏差改正
-* 调用rtkpos()对当前历元进行解算 
+* 判断结果是否为静态，处理选项和结果选项都为静态才算静态；
+* 调用`rtkinit()` 初始化`rtk_t `，将 popt 结构体赋值给 rtk 的部分成员 ；
+* while 大循环，调用`inputobs()`，每次取一个历元的观测数据`obs[]`；
+* 排除禁用卫星的观测值；
+* PPP 中如果需要，调用`corr_phase_bias_ssr()`相位的小数偏差改正（不完善）；
+* 调用 `rtkpos()` 对当前历元进行解算 
 * 根据模式，输出结果，记录当前历元时间
 
 ```c
@@ -2005,8 +1998,9 @@ static void procpos(FILE *fp, const prcopt_t *popt, const solopt_t *sopt,
   } rtk_t;
   ```
 
-
 ### 六、rtkpos()
+
+![1918b61538bce6465f4ae19615ba81e6](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1918b61538bce6465f4ae19615ba81e6.png)
 
 #### 1. 功能：
 
@@ -2171,18 +2165,6 @@ extern int rtkpos(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
     return 1;
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

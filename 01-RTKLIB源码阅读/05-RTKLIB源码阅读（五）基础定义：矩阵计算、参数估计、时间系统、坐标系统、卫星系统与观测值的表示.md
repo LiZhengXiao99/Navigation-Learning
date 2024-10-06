@@ -1,10 +1,6 @@
-> 原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
-
 本篇介绍 RTKLIB 最最最基础的知识，时间系统、坐标系统、卫星系统、卫星、观测值定义。我用 RTKLIB 作为第三方库，这些东西频繁使用。
 
 [TOC]
-
-
 
 ## 一、矩阵和向量计算
 
@@ -275,8 +271,6 @@ RTKLIB 里的矩阵一般都是 double 类型的一数组，列优先顺序，�
         matfprint(A,n,m,p,q,stdout);
     }
     ```
-
-
 
 
 ## 二、最小二乘与Kalman滤波
@@ -1103,7 +1097,6 @@ static double leaps[MAXLEAPS+1][7]={ /* leap seconds (y,m,d,h,m,s,utc-gpst) */
   }
   ```
 
-  
 
 ## 四、坐标系统
 
@@ -1466,12 +1459,11 @@ static double leaps[MAXLEAPS+1][7]={ /* leap seconds (y,m,d,h,m,s,utc-gpst) */
         trace(5,"gmst=%.12f gast=%.12f\n",gmst_,gast);
         trace(5,"P=\n"); tracemat(5,P,3,3,15,12);
         trace(5,"N=\n"); tracemat(5,N,3,3,15,12);
-        trace(5,"W=\n"); tracemat(5,W,3,3,15,12);
+        trace(5,"W=\n"); tracemat(5,,3,3,15,12);
         trace(5,"U=\n"); tracemat(5,U,3,3,15,12);
     }
     ```
 
-    
 
 ## 五、卫星系统与观测值的表示
 

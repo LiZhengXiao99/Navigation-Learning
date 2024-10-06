@@ -1,5 +1,3 @@
-> 原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
-
 [TOC]
 
 ## 一、程序获取和编译
@@ -171,7 +169,7 @@ OPTIONS
 
 ---
 
-## 四、rtknavi：实时定位解算
+## 四、rtkrcv：实时定位解算
 
 ```
 rtkrcv [-s][-p port|-d dev][-o file][-t level]

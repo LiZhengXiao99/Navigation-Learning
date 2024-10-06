@@ -82,9 +82,9 @@ RTKLIB 可以初步实现以下功能，相对于商业软件，可靠性没那�
 
 #### 2. 支持功能
 
-* **支持六大 GNSS 系统**，包括 GPS，GLONASS，Beidou，Galileo，QZSS 和 SBAS。
+* **支持七大 GNSS 系统**，包括 GPS，GLONASS，Beidou，Galileo，QZSS、IRNSS  和 SBAS。
 
-  > 但是不支持全频点，不支持印度 IRNSS 系统，多频算法不完善，对北斗的支持不好。
+  > 但是不支持全频点，多频算法不完善，对北斗的支持不好。
 
 * **支持 9 种 GNSS 实时和后处理定位模式**：
   
@@ -124,14 +124,13 @@ RTKLIB 可以初步实现以下功能，相对于商业软件，可靠性没那�
 
 各种各样的都有，有对定位解算算法做增强的、有做组合导航的、有做服务端程序的、有做软件接收机的、做应用的。下面介绍几个我了解的：
 
-* [RTKLIB-demo5](https://github.com/rtklibexplorer/RTKLIB)：针对低成本接收机做了算法增强，下面的部分程序是基于 demo5 开发的。
+* [RTKLIB-demo5](https://github.com/rtklibexplorer/RTKLIB)：针对低成本接收机做了算法增强。
 * [rtklib-py](https://github.com/rtklibexplorer/rtklib-py)：
-* [GPSTK](https://github.com/SGL-UT/GPSTk)：
 * [GAMP](https://geodesy.noaa.gov/gps-toolbox/GAMP.htm)：山科大周峰写的双频浮点解 PPP，在 RTKLIB 基础上做精简和算法的增强，比原版 RTKLIB 简单，是入门学习 PPP 不错的选择。
 * [Ginan](https://github.com/GeoscienceAustralia/ginan)：澳大利亚，包括精密定位程序 PEA、定轨程序 POD，文档很详细，老师让我看，但我没看下去，代码比较难懂，
 * [GraphGNSSLib](https://github.com/weisongwen/GraphGNSSLib)：港理工，支持图优化 SPP、RTK，作者在知乎很活跃，发过一些科普文章。
 * [GLIO](https://github.com/XikunLiu-huskit/GLIO)：在 GraphGNSSLib 基础上做的 GNSS-IMU-Lidar 图优化紧组合；
-* [PPPLIB](https://geodesy.noaa.gov/gps-toolbox/PPPLib.htm)：我老师在矿大读研的时候写的，支持三频 SPP、PPK、PPP 和松紧组合。
+* [PPPLIB](https://geodesy.noaa.gov/gps-toolbox/PPPLib.htm)：我老师在矿大读研的时候写的，支持三频 SPP、PPK、PPP 和 IMU 组合。
 * [GINAV](https://github.com/kaichen686/GINav)：MATLAB 紧组合，文件名起的和 RTKLIB 函数名一模一样，虽说是组合导航，但也可以只用其中的 GNSS 部分，相比 goGPS 简单不少。
 * [GICI-LIB](https://github.com/chichengcn/gici-open)：上海交大池澄博士开源的 GNSS-IMU-Camera 图优化多源融合程序，以 GNSS 为主，实现了 RTK、PPP 的模糊度固定 
 * [PPP-AR](https://github.com/PrideLab/PRIDE-PPPAR)：武大 GNSS 中心开源的后处理 PPP，使用配套的产品可以实现 PPP 模糊度固定，支持五频数据处理，使用了 rnx2rtkp 可执行程序计算测站初值坐标。
@@ -340,7 +339,7 @@ rtkrcv 无法直接在 Windows 下编译调试，因为它依赖了一些 Linux 
    _WINSOCK_DEPRECATED_NO_WARNINGS             
    ENAGLO
    ENACMP
-   DENAGAL
+   ENAGAL
    DLL
    WIN32
    TRACE
@@ -349,6 +348,8 @@ rtkrcv 无法直接在 Windows 下编译调试，因为它依赖了一些 Linux 
    > * 尤其主要加 WIN32，好多博客都没加这一项，加了这一项后 RTKLIB 就不会用 Linux 下的 <pthread.h> 和 <sys/select.h>，咱们项目要在 Windows 下编译运行的，不加会报 ”找不到 <pthread.h> 和 <sys/select.h>“ 的错。
    >
    > * 不加 TRACE 没法输出 trace 文件。
+   >
+   > * 
 
 4. 将常规中的目标文件名改为 rnx2rtkp 。
 
@@ -409,6 +410,12 @@ rnx2rtkp 的命令行参数很复杂，一不下心就会出错，这时候可�
 再比如，程序运行结束看不到结果输出，可以在 `outhead()` 下面位置设断点，看看 `outfile` 变量里存没存文件路径，那个位置有没有输出了文件头的结果文件。
 
 <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240221191921119.png" alt="image-20240221191921119" style="zoom:50%;" />
+
+再比如文件路径中间如果出现空格，会被识别成两个不同的命令行参数，像下图所示的错误：
+
+![image-20241006133821435](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241006133821435.png)
+
+> 每个人遇到的问题都不见得相同，我觉得最好不要一上来就问师兄或者老师，把自己能想到的方法都试试，"调试" 嘛，就是得多调多试，。
 
 ---
 
@@ -531,8 +538,6 @@ RTKLIB APP 目录下有 5 个命令行程序
  target_link_libraries(POS2KML rtklib)
  ```
 
-
-
 ---
 
 ### 3、编译调试自己写的程序、链接 RTKLIB
@@ -563,7 +568,7 @@ RTKLIB 提供许多代码库和 API，包括：卫星和导航系统函数、矩
 
 头文件 rtklib.h 是库的核心 ，主要有四大部分：**宏定义**、**结构体定义**、**全局变量**、**函数定义**
 
->  需要注意并非所有函数都可以直接调用，只有加了 EXPORT 前缀，而且在 RTKLIB.h 中声明了才行；想用 static 前缀的函数也很简单，只需要把前缀改成 EXPORT，然后在 rtklib.h 中加上声明。
+>  需要注意并非所有函数都可以直接调用，只有加了 EXPORT 前缀，而且在 rtklib.h 中声明了才行。有些 static 小函数在 rtklib.h 没声明，只在 .c 源文件里定义了，在它定义的 .c 源文件以外不能直接调用；想调用它也很简单，只需要把前缀改成 EXPORT，然后在 rtklib.h 中加上声明。
 
 ### 1、宏定义
 
@@ -909,8 +914,6 @@ RTKLIB 提供许多代码库和 API，包括：卫星和导航系统函数、矩
 
 
 
-
-
 ---
 
 ### 10、代码库的使用总结
@@ -922,8 +925,6 @@ RTKLIB 提供许多代码库和 API，包括：卫星和导航系统函数、矩
 * 类型命名结尾都带 `_t`，类型传参用的指针名不带 `_t`
 * 用指针实现了顺序表，
 * 很多读文件的函数都有结尾带 t 和结尾不带 t 两种，带 t 表示要传入开始时间和结束时间的。
-
-* 
 
 
 

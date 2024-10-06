@@ -1,9 +1,5 @@
 [TOC]
 
-> 参考文章：[小白如何学习GNSS（三）-如何阅读rtklib源码](https://zhuanlan.zhihu.com/p/589140780)、[RTKlib相对定位学习笔记](https://zhuanlan.zhihu.com/p/585236517)
-
-![](C:/Users/李郑骁的spin5/Desktop/UWB/b32549479b194f7eb5f706b27b22e3c7.png)
-
 ## 一、RTK算法数据类型
 
 ### 1、rtk_t：rtk控制结构体
@@ -506,7 +502,7 @@ extern int rtkpos(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
 }
 ```
 
-### 3、outsolstat()：输出结果状态
+### 3、outsolstat()：输出中间结果
 
 #### 1.执行流程
 
@@ -581,7 +577,7 @@ static void swapsolstat(void)
 }
 ```
 
-#### 3.rtkoutstat()：写结果状态到缓冲区buffer
+#### 3.rtkoutstat()：写中间结果到缓冲区buffer
 
 内容包括：
 
@@ -688,7 +684,7 @@ extern int rtkoutstat(rtk_t *rtk, char *buff)
     int i,j,week,est,nfreq,nf=NF(&rtk->opt);
     char id[32],*p=buff;
     
-    //如果结果状态为SOLQ_NONE，直接return 0
+    //如果中间结果为SOLQ_NONE，直接return 0
     if (rtk->sol.stat<=SOLQ_NONE) {
         return 0;
     }
@@ -771,22 +767,27 @@ extern int rtkoutstat(rtk_t *rtk, char *buff)
 }
 ```
 
-### 4、rtkpos.c开头的宏函数
+### 4、rtkpos.c 开头的宏函数
 
 RTKLIB中常用很长的一维数组存信息，为方便找对应数据的数组下标，开头定义了几个宏函数：
 
-* **NF**：`define NF(opt)     ((opt)->ionoopt==IONOOPT_IFLC?1:(opt)->nf)`，Iono-Free LC：频率数，电离层与双频的线性组合时为1，否则为设置的频率数 
-* **NP**：`define NP(opt)     ((opt)->dynamics==0?3:9)`，位置参数数量，正常为3，dynamics动力学模式为9 
-* **NI**：`define NI(opt)     ((opt)->ionoopt!=IONOOPT_EST?0:MAXSAT)`，Estimate STEC估算斜电子含量时为最大卫星数，否则为0 
-* **NT**：`define NT(opt)     ((opt)->tropopt<TROPOPT_EST?0:((opt)->tropopt<TROPOPT_ESTG?2:6))`，对流层参数，不估计trop时为0，`TROPOPT_EST`时为2，`TROPOPT_ESTG`时为6
-* **NL**：`define NL(opt)     ((opt)->glomodear!=2?0:NFREQGLO)`，GLONASS AR模式，auto cal为0，其它为GLONASS的载波频率数2 
-* **NB**：`define NB(opt)     ((opt)->mode<=PMODE_DGPS?0:MAXSAT*NF(opt))`，模糊度参数，DGPS和单点定位模式为0，其它模式为最大卫星数MAXSAT乘频率数NF(opt) 
-* **NR**：`define NR(opt)     (NP(opt)+NI(opt)+NT(opt)+NL(opt))`，位置参数NP(opt)+电离层估计参数NI(opt)+对流层参数NT(opt)+GLONASS AR参数NL(opt) 
-* **NX**：`define NX(opt)     (NR(opt)+NB(opt))`，NR+NB
-* **II**：`define II(s,opt)   (NP(opt)+(s)-1)`，电离层参数下标，(s:satellite no) 
-* **IT**：`define IT(r,opt)   (NP(opt)+NI(opt)+NT(opt)/2*(r))`，对流层参数下标(r:0=rov,1:ref) 
-* **IL**：`define IL(f,opt)   (NP(opt)+NI(opt)+NT(opt)+(f))`，GLONASS receiver h/w bias 
-* **IB**：`define IB(s,f,opt) (NR(opt)+MAXSAT*(f)+(s)-1)`，整周模糊度参数下标，(s:satno,f:freq) 
+|  变量  |                             定义                             |                             说明                             |
+| :----: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| **NF** | `define NF(opt) ((opt)->ionoopt==IONOOPT_IFLC?1:(opt)->nf)`  |   频率数，电离层与双频的线性组合时为1，否则为设置的频率数    |
+| **NP** |          `define NP(opt) ((opt)->dynamics==0?3:9)`           |       位置参数数量，默认为 3，dynamics 动力学模式为 9        |
+| **NI** |   `define NI(opt) ((opt)->ionoopt!=IONOOPT_EST?0:MAXSAT)`    |     Estimate STEC 估算斜电子含量时为最大卫星数，否则为 0     |
+| **NT** | `define NT(opt) ((opt)->tropopt<TROPOPT_EST?0:((opt)->tropopt<TROPOPT_ESTG?2:6))` | 对流层参数，不估计时为 0，`TROPOPT_EST`时为 2，`TROPOPT_ESTG`时为 6 |
+| **NL** |      `define NL(opt) ((opt)->glomodear!=2?0:NFREQGLO)`       | GLONASS AR 模式，auto cal为0，其它为 GLONASS 的载波频率数 2  |
+| **NB** | `define NB(opt) ((opt)->mode<=PMODE_DGPS?0:MAXSAT*NF(opt))`  | 模糊度参数，DGPS 和单点定位模式为 0，其它模式为最大卫星数MAXSAT 乘频率数 NF(opt) |
+| **NR** |      `define NR(opt) (NP(opt)+NI(opt)+NT(opt)+NL(opt))`      | 非模糊度参数 = 位置参数 NP(opt)+电离层估计参数 NI(opt) +对流层参数NT(opt)+GLONASS AR 参数NL(opt) |
+| **NX** |              `define NX(opt) (NR(opt)+NB(opt))`              |           总参数 = 非模糊度参数 NR+ 模糊度参数 NB            |
+| **II** |              `define II(s,opt) (NP(opt)+(s)-1)`              |                电离层参数下标 (s 是卫星编号)                 |
+| **IT** |     `define IT(r,opt)   (NP(opt)+NI(opt)+NT(opt)/2*(r))`     |          对流层参数下标 (r：流动站是 0、基准站是 1)          |
+| **IL** |      `define IL(f,opt)   (NP(opt)+NI(opt)+NT(opt)+(f))`      |                   GLONASS 接收机 h/w 延迟                    |
+| **IB** |       `define IB(s,f,opt) (NR(opt)+MAXSAT*(f)+(s)-1)`        |       整周模糊度参数下标，(s 是卫星编号，f 是频率编号)       |
+
+> * 为啥没有位置参数下标宏？因为在最前面，直接取值就行。
+> * 为啥没有钟差参数？因为双差基本消除了钟差，不用计算。
 
 ## 三、relpos()：相对定位算法入口函数
 
@@ -826,7 +827,7 @@ nav_t    *nav      I   导航数据
 * 调用`resamb_LAMBDA()`，利用lambda算法**固定模糊度**。
   * 模糊度解算成功，调用`zdres()`和`ddres()`根据固定结果计算残差和协方差，并进行调用`valpos()`校验 
   * 固定解验证有效，若为hold模式，需要存模糊度信息调用`holdamb()`
-* **保存结果状态**,位置，速度，方差，到`sol.rr`、`sol.qr`、`sol.qv`，固定解数据在`rtk->xa`、`rtk->Pa`，浮点解数据在`rtk->x`、`rtk->P`
+* **保存中间结果**,位置，速度，方差，到`sol.rr`、`sol.qr`、`sol.qv`，固定解数据在`rtk->xa`、`rtk->Pa`，浮点解数据在`rtk->x`、`rtk->P`
 * 循环，**存当前历元载波信息**`rtk->ssat[sat[i]-1].pt`存时间、rtk->ssat[sat[i]-1]`.ph`存载波相位观测值，供下次使用
 * 循环，**存SNR**信噪比信息到`rtk->ssat[sat[i]-1].snr `
 * 循环，存卫星的模糊度固定信息`rtk->ssat[i].fix[j]`及周跳信息，`rtk->ssat[i].slipc[j]`
@@ -1059,7 +1060,7 @@ static int relpos(rtk_t *rtk, const obsd_t *obs, int nu, int nr,
 }
 ```
 
-## 四、zdres()：计算非差残差
+## 四、zdres()：计算非差残差![image-20241006144531175](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241006144531175.png)
 
 计算流动站（base=0）和基准站（base=1）的非差残差，即非差的相位/伪距残差（Zero-Difference Residuals）
 
@@ -1524,6 +1525,8 @@ static int selsat(const obsd_t *obs, double *azel, int nu, int nr,
 
 
 ## 七、udstate()：Kalman滤波时间更新
+
+![image-20241006144611825](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241006144611825.png)
 
 kalman滤波的时间更新，更新状态值`rtk->x`及其误差协方差`rtk->P`
 
@@ -2257,7 +2260,11 @@ static void detslp_gf(rtk_t *rtk, const obsd_t *obs, int i, int j,
 
 ## 九、ddres()：计算双差残差、设计矩阵、新息向量
 
-站星双差、矩阵v、双差设计矩阵`H`，双差协方差矩阵`R`
+![image-20241006144647874](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241006144647874.png)
+
+站星双差、矩阵v、双差设计矩阵`H`，双差协方差矩阵
+
+`R`
 
 ### 1、单差、双差的概念
 

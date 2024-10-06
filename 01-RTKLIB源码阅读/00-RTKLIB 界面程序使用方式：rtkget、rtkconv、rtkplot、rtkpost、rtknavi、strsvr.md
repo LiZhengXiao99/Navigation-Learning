@@ -2,6 +2,11 @@
 
 [TOC]
 
+> 推荐资料：
+>
+> * [RTKLIB2.4.3界面程序中文说明书.pdf](RTKLIB2.4.3界面程序中文说明书.pdf)
+> * 比起苍白的图文介绍，看视频教程来学习界面程序更为清晰，推荐看B站[赵乐文](https://space.bilibili.com/479790048)和[欧阳明俊](https://space.bilibili.com/1394219706)老师的视频。
+
 ### 1、RTKGET 数据下载
 
 > 不推荐用 RTKGET 下载数据，推荐使用周峰老师开源的 [GAMP-GOOD](https://github.com/zhouforme0318/GAMPII-GOOD) 和常春涛博士开源的 [FAST](https://github.com/ChangChuntao/FAST)，都带有界面。 
