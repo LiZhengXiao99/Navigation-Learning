@@ -66,7 +66,7 @@ X^{*}=\underset{X}{\arg\min } \sum_{i}^{k}\left\{\left\|f_{i}\left(x_{i-1}, u_{i
 $$
 上式即为基于因子图优化的估计的一般表达式，其左项为系统状态转移过程，右项为量测过程，$\Sigma$ 和 $\Lambda$ 分别是状态转移过程和量测过程的协方矩阵，进行求解的是状态集合 `X` 。对于式，可以用下图进行表示：
 
-![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1689493564746.png)
+<img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20241010214309910.png" alt="image-20241010214309910" style="zoom: 33%;" />
 
 - **圆圈**：**变量节点**，表示系统待估计的状态，对应一个变量  $x$ 。
 - **正方形**：**因子节点**，表示先验信息、状态转移和量测过程，对应一个局部函数 $f$ ，其中：

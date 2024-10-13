@@ -8,7 +8,7 @@
 
 ### 1、程序概述
 
-GICI-LIB 全称 **G**NSS/**I**NS/**C**amera **I**ntegrated Navigation Library，是上海交大最新开源的一套基于图优化的 GNSS+INS+Camera 集成导航定位库。基于 RTKLIB 处理 I/O 流、编解码；基于 OKVIS 因子图优化类型封装；基于 SVO 做特征提取。以 GNSS 为主，再加入 INS、Camera 做组合，支持相当多的数据格式、定位模式，包含很多 GNSS 因子、惯导因子、视觉因子及运动约束。以处理实时数据为主，后处理也采用模拟实时数据处理的方式进行。典型的应用方式如下图：
+GICI-LIB 全称 **G**NSS/**I**NS/**C**amera **I**ntegrated Navigation Library，是上海交大 23 年开源的一套基于图优化的 GNSS+INS+Camera 集成导航定位库。基于 RTKLIB 处理 I/O 流、编解码；基于 OKVIS 因子图优化类型封装；基于 SVO 做特征提取。以 GNSS 为主，再加入 INS、Camera 做组合，支持相当多的数据格式、定位模式，包含很多 GNSS 因子、惯导因子、视觉因子及运动约束。以处理实时数据为主，后处理也采用模拟实时数据处理的方式进行。典型的应用方式如下图：
 
 ![1689512108793](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/1689512108793.png)
 
@@ -71,7 +71,7 @@ GICI-LIB 主要使用 C++ 编写，且大量使用 C++ 高级语法，CMake 文�
 * 比较友好的地方是代码的注释还算完善，基本每个文件开头、每个函数、程序的关键代码段都有注释。
 * 代码质量很高，但还可以再整理整理，比如有的紧挨着的地方上面用了 auto 而下面没用、有些函数名太长、构造函数写太长、streamer 和 estimator 线程有好几种命名，看着有点乱。
 
-用 cloc 统计 include、src、tools 文件夹**代码量**，结果如下：
+用 cloc 统计 include、src、tools 文件夹**代码量**（不包括 RTKLIB），结果如下：
 
 |     语言     | 文件数  |   空行   |  注释行  |  代码行   |
 | :----------: | :-----: | :------: | :------: | :-------: |
@@ -178,11 +178,15 @@ GICI-LIB 提供的多种传感器在不同定位模式下的很多因子，并�
 >
 > * 本文只介绍非 ROS 版。
 >
-> * 我使用的环境是 VSCode + WSl，很多导航定位的开源软件都基于 Linux，比起虚拟机，VSCode + WSl 要流畅一些，不熟悉的推荐看[这篇文章](https://blog.csdn.net/donghening/article/details/124611881)。
+> * 我使用的环境是 VSCode + WSl，很多导航定位的开源软件都基于 Linux，比起虚拟机，VSCode + WSl 要流畅一些，不熟悉的推荐看这篇博客：
+>
+>   > https://blog.csdn.net/donghening/article/details/124611881)。
 >
 > * 确保之前已经配置好 C++ 环境（g++、Cmake、VScode 插件）。
 >
-> * 看别人的博客，都提到了曾经安装过 glog/gflag 会出问题：[GICI-OPEN多源融合导航框架编译及问题说明](https://blog.csdn.net/zhaolewen/article/details/133245621)
+> * 看别人的博客，都提到了曾经安装过 glog/gflag 会出问题：
+>
+>   > GICI-OPEN 多源融合导航框架编译及问题说明：https://blog.csdn.net/zhaolewen/article/details/133245621
 >
 > * 构建、编译的时候找不到库，可能是因为库装到`/usr/local/lib` 里了，试试创建软链接到  `/usr/lib`
 >
@@ -248,11 +252,11 @@ sudo apt-get install libeigen3-dev
   source /etc/bash.bashrc
   ```
 
-- 执行 `pkg-config --cflags opencv` 如果报错，可以看[博客](https://blog.csdn.net/PecoHe/article/details/97476135)
+- 执行 `pkg-config --cflags opencv` 如果报错，可以看
+
+  > https://blog.csdn.net/PecoHe/article/details/97476135)
 
 #### 3. 安装 glfg、glog
-
-> 参考：[Ubantu下glog编译安装与使用简介](https://blog.csdn.net/alwaysrun/article/details/108418769)
 
 - 下载 glfg
 
@@ -455,9 +459,9 @@ YAML（YAML Ain't Markup Language）是一种轻量级的数据序列化格式�
 
 > YAML 需要特别注意的几个点：
 >
-> - ==大小写敏感。==
-> - ==缩进不允许使用 tab，只允许空格。==
-> - ==缩进的空格数不重要，只要相同层级的元素左对齐即可。==
+> - 大小写敏感；
+> - 缩进不允许使用 tab，只允许空格；
+> - 缩进的空格数不重要，只要相同层级的元素左对齐即可；
 
 ### 2、读取 YAML 的语法
 

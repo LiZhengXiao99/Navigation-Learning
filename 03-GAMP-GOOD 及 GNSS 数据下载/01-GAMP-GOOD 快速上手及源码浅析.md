@@ -8,7 +8,7 @@
 
 ## 一、GAMP-GOOD 快速上手
 
-GAMP-GOOD 由核心代码库 Libgood、命令行可执行程序 Good_Cui 和 Qt界面可执行程序 Good_Gui 三部分组成，自2021年4月1.0版本至今已历经 15 个版本迭代，目前已实现常用 GNSS 观测值、广播星历、精密卫星轨道和钟差(实时、超快、快速、最终)、地球定向参数、卫星姿态ORBEX、DCB/DSB/OSB、SINEX周解、电离层和对流层延迟产品、天线相位中心等产品下载。
+GAMP-GOOD 由核心代码库 Libgood、命令行可执行程序 Good_Cui 和 Qt界面可执行程序 Good_Gui 三部分组成，自2021年4月1.0版本至今已历经 15 个版本迭代，目前已实现常用 GNSS 观测值、广播星历、精密卫星轨道和钟差、地球定向参数、卫星姿态ORBEX、DCB/DSB/OSB、SINEX周解、电离层和对流层延迟产品、天线相位中心等产品下载。
 
 |                 数据类型                 |                   用处                    |
 | :--------------------------------------: | :---------------------------------------: |
@@ -31,9 +31,15 @@ GAMP-GOOD 由核心代码库 Libgood、命令行可执行程序 Good_Cui 和 Qt�
 
 ![image-20240831165507638](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240831165507638.png)
 
+---
+
 ![image-20240831165542898](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240831165542898.png)
 
+---
+
 ![image-20240831165628437](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240831165628437.png)
+
+
 
 ### 2、Good-Cui：命令行数据下载程序
 
