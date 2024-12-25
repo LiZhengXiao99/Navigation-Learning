@@ -1926,7 +1926,7 @@ static void udrcvbias(rtk_t *rtk, double tt)
 
 - 然后利用单差伪距和单差载波相位计算一个**单差相位偏移平均值**，来对状态中已有的单差模糊度进行状态更新如下
 
-  ![](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/5f17401838bc4d0db306c105719699de.png)
+  <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/5f17401838bc4d0db306c105719699de.png" style="zoom:50%;" />
 
 
 - 若状态中没有对应卫星的单差模糊度，则直接将该单差相位估计值作为其单差模糊度初值

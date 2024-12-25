@@ -16,7 +16,7 @@ SoftGNSS 是《软件定义的GPS和伽利略接收机》附带的程序，使�
 
 * CSDN 博客：[基于MATLAB编写的GNSS_SDR（GNSS软件接收机）——自学笔记（1）](https://jldxwsj.blog.csdn.net/article/details/116794856)
 
-* 基于 softGNSS 实现的深组合：[kongtian-SiBu / ZCJ_GNSSINS_DeepIntegration](https://github.com/kongtian-SiBu/ZCJ_GNSSINS_DeepIntegration)，作者是空天院的硕士，他还上传了一些他和他同学的一些硕士论文开题报告，相关论文。
+* 基于 SoftGNSS 和 PSINS 实现的深组合：[kongtian-SiBu / ZCJ_GNSSINS_DeepIntegration](https://github.com/kongtian-SiBu/ZCJ_GNSSINS_DeepIntegration)，作者是空天院的硕士，他还上传了一些他和他同学的一些硕士论文开题报告，相关论文。
 
 
 
@@ -508,7 +508,7 @@ C/A 码具有良好的自相关和互相关性。码环的用意在于将复制C
 
 * **直方图法**：实际中，由于噪声等各种原因，1ms 宽的数据比特流有时并不呈现一个清晰而又有规律的模式，因此 我们不能简单的凭着1ms 宽数据流中的单个跳变来决定比特边缘，否则会发生很高的位同步错误率。 可以借助于直方图法进行判断。
 
-  ![image-20240104194307214](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240104194307214.png)
+  <img src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/image-20240104194307214.png" alt="image-20240104194307214" style="zoom: 50%;" />
 
   过程如下：
 

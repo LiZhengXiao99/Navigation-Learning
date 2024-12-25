@@ -9,7 +9,7 @@
 
 ### 1、RTKGET 数据下载
 
-> 不推荐用 RTKGET 下载数据，推荐使用周峰老师开源的 [GAMP-GOOD](https://github.com/zhouforme0318/GAMPII-GOOD) 和常春涛博士开源的 [FAST](https://github.com/ChangChuntao/FAST)，都带有界面。 
+> 不推荐用 RTKGET 下载数据，推荐使用周锋老师开源的 [GAMP-GOOD](https://github.com/zhouforme0318/GAMPII-GOOD) 和常春涛博士开源的 [FAST](https://github.com/ChangChuntao/FAST)，都带有界面。 
 
 1. 观测值下载
 

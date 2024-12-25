@@ -126,7 +126,7 @@ RTKLIB 可以初步实现以下功能，相对于商业软件，可靠性没那�
 
 * [RTKLIB-demo5](https://github.com/rtklibexplorer/RTKLIB)：针对低成本接收机做了算法增强。
 * [rtklib-py](https://github.com/rtklibexplorer/rtklib-py)：
-* [GAMP](https://geodesy.noaa.gov/gps-toolbox/GAMP.htm)：山科大周峰写的双频浮点解 PPP，在 RTKLIB 基础上做精简和算法的增强，比原版 RTKLIB 简单，是入门学习 PPP 不错的选择。
+* [GAMP](https://geodesy.noaa.gov/gps-toolbox/GAMP.htm)：山科大周锋写的双频浮点解 PPP，在 RTKLIB 基础上做精简和算法的增强，比原版 RTKLIB 简单，是入门学习 PPP 不错的选择。
 * [Ginan](https://github.com/GeoscienceAustralia/ginan)：澳大利亚，包括精密定位程序 PEA、定轨程序 POD，文档很详细，老师让我看，但我没看下去，代码比较难懂，
 * [GraphGNSSLib](https://github.com/weisongwen/GraphGNSSLib)：港理工，支持图优化 SPP、RTK，作者在知乎很活跃，发过一些科普文章。
 * [GLIO](https://github.com/XikunLiu-huskit/GLIO)：在 GraphGNSSLib 基础上做的 GNSS-IMU-Lidar 图优化紧组合；
