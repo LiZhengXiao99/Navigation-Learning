@@ -267,13 +267,13 @@ sudo apt-get install libeigen3-dev
 - 进入 glfg 目录编译安装
 
   ```bash
-  cd glfg
+  cd gflags
   mkdir build
-  cd build/
+  cd build/ 
   
   cmake -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=ON -DINSTALL_HEADERS=ON -DINSTALL_SHARED_LIBS=ON -DINSTALL_STATIC_LIBS=ON -DCMAKE_INSTALL_PREFIX=/usr/ ..
   
-  make
+  make -j4
   sudo make install
   ```
 
@@ -323,7 +323,7 @@ sudo apt-get install libeigen3-dev
   
   cmake -D BUILD_SHARED_LIBS=ON ..
   
-  make -j16
+  make -j4
   sudo make install
   ```
 
@@ -341,7 +341,7 @@ sudo apt-get install libeigen3-dev
   mkdir ceres-bin
   cd ceres-bin
   cmake ../ceres-solver-2.1.0
-  make -j3
+  make -j4
   make test
   make install
   ```

@@ -188,7 +188,7 @@ rtkrcv [-s][-p port|-d dev][-o file][-t level]
 *     `-m port`：远程监控的端口号。
 *     `-d dev`：终端设备。
 *     `-o file`：处理选项文件，与 RNX2RTKP 相同，可以在界面程序 RTKPOST、RTKNAVI 上设置然后导出。
-*     `-w pwd`：远程终端连接密码 ("": 无密码)。
+*     `-w pwd`：远程终端连接密码 ("": 无密码; 默认admin)。
 *     `-r level`：输出解算状态文件 (0:off,1:states,2:residuals)。
 *     `-t level`：Trace 调试级别 (0:off,1-5:on)。
 *     `-sta sta`：接收机测站名。
