@@ -239,11 +239,11 @@ file-staposfile    =../../../../config/bases.sta
 
 您可以直接从此处下载 Windows 可执行文件，并将其放入 GSDC_2023/rtklib 文件夹。如果在 Linux 下运行，则需要根据源代码构建自己的可执行文件。https://rtklibexplorer.wordpress.com/2020/12/18/building-rtklib-code-in-linux/ 上的博文对此进行了说明。
 
-请注意，如果您想自己构建 Windows 可执行文件，Windows 说明中会介绍使用 Embarcadero 编译器，这是 GUI 应用程序所必需的。如果只是编译 rnx2rtkp 应用程序，则可以使用 \app\consapp\rnx2rtkp\msc 文件夹中的项目文件，使用 VisualStudio 编译器进行编译。
+请注意，如果您想自己构建 Windows 可执行文件，Windows 说明中会介绍使用 Embarcadero 编译器，这是 GUI 应用程序所必需的。如果只是编译 rnx2rtkp 应用程序，则可以使用 \app\consapp\rnx2rtkp\msc 文件夹中的项目文件，使用 Visual Studio 编译器进行编译。
 
 ## 步骤 5：转换原始观测文件并进行 PPK 解算
 
-按照下面标题中的配置，该代码将把原始 Android 文件转换为 RINEX 格式，并运行测试集的 RTKLIB PPK 解法。请注意，这些将是浮点解法，我们并不试图解决整数歧义，因为智能手机观测数据的质量非常低。
+按照下面标题中的配置，该代码将把原始 Android 文件转换为 RINEX 格式，并运行测试集的 RTKLIB PPK 解法。请注意，这些将是浮点解，我们并不试图进行整周模糊度固定，因为智能手机观测数据的质量非常低。
 
 在文件底部的主代码中，可以通过注释或取消注释适当的行来设置顺序执行或多进程执行，这既是为了文件转换，也是为了进行批处理解算。顺序运行时更容易调试，但速度要慢得多。我建议先按顺序运行每一步，直到确信运行正常后再切换到多进程。
 

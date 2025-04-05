@@ -2,11 +2,11 @@
 
 ## 一、GINav 简介
 
-GINav 是 2020 年发布在 GPS Solution 上开源 GNSS/INS 紧组合工具箱，支持多模（GPS/GLONASS/GALILEO/BDS/QZSS）多频（单频到三频）GNSS 数据处理，支持多种处理模式 ，包括 SPP、PPD、PPK、PPS  GNSS/INS 组合导航算法开发与测试。软件采用纯 MATLAB 编写，src 目录下共 325 个 .m 文件，约 12000 行代码；GNSS 部分的代码是移植 RTKLIB 和 GAMP，IMU 递推算法移植自 PSINS，使用过 RTKLIB 的朋友应该很容易就能上手。
+GINav 是 2020 年发布在 GPS Solution 上开源 GNSS/INS 紧组合工具箱，支持多模（GPS/GLONASS/GALILEO/BDS/QZSS）多频（单频到三频）GNSS 数据处理，支持多种处理模式 ，包括 SPP、PPD、PPK、PPS  GNSS/INS 组合导航算法开发与测试。软件采用纯 MATLAB 编写，src 目录下共 325 个 .m 文件，约 12000 行代码；GNSS 部分的代码是移植 RTKLIB 和 GAMP，IMU 递推算法移植自 PSINS，学习过 RTKLIB 的朋友应该很容易就能上手。
 
-与 RTKLIB、Ginan、IGNav 等 C/C++ 编写的导航定位解算程序相比，MATLAB 编写的 GINav 可移植性更差，执行效率低，PPK 解算比 RTKLIB 慢 20 倍；GINav 的优点是简单，调试方便，在变量区可以直接看到矩阵的值，MATLAB 提供的数据处理和分析功能更丰富，方便进行算法的学习和研究。
+与 RTKLIB、Ginan、IGNav 等 C/C++ 编写的导航定位解算程序相比，MATLAB 编写的 GINav 可移植性更差，执行效率低，PPK 解算比 RTKLIB 慢大约 20 倍；GINav 的优点是简单，调试方便，在变量区可以直接看到矩阵的值，MATLAB 提供的数据处理和分析功能更丰富，方便进行算法的学习和研究。
 
-与同为 MATLAB 实现的 PSINS 捷联惯导工具箱相比，GINav 更侧重 GNSS 和紧组合算法，实现的惯导和滤波算法远没有 PSINS 丰富。与同为 MATLAB 实现的 goGPS 相比，GINav 的源码和软件使用方式都更简单，采用纯面向过程风格，很多的结构体和函数都与 RTKLIB 和 GAMP 一致，更容易上手。
+与同为 MATLAB 实现的 PSINS 捷联惯导工具箱相比，GINav 更侧重 GNSS 和紧组合算法，实现的惯导和滤波算法远没有 PSINS 丰富；与同为 MATLAB 实现的 GNSS 定位程序 goGPS 相比，GINav 的源码和软件使用方式都更简单，采用纯面向过程风格，很多的结构体和函数都与 RTKLIB 和 GAMP 一致，更容易上手。
 
 
 
