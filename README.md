@@ -88,52 +88,7 @@
 
 </div>
 
----
 
-<div align="center">
-    <a name="Recommend-Repositories"></a>
-	<h3>🤺&nbsp;推荐一些同类仓库，创作不易，欢迎给他们 Star 鼓励&nbsp;🤺</h3>
-
-
-
-
-|                    🌟&nbsp;开源项目&nbsp;🌟                    |                      🧾&nbsp;简介&nbsp;🧾                      | 更新 |
-| :----------------------------------------------------------: | :----------------------------------------------------------: | :--: |
-| **[GitHub-Chinese-Top-Charts](https://github.com/GrowingGit/GitHub-Chinese-Top-Charts)** |                    GitHub 中文资料排行榜                     | √√√  |
-| **[slam-study-note](https://github.com/hanlin-cheng/slam-study-note)** |                  SLAM算法笔记、书籍软件资源                  | √√√  |
-| **[ML_DL_CV_with_pytorch](https://github.com/Michael-Jetson/ML_DL_CV_with_pytorch)** |                深度学习、自动驾驶、计算机视觉                | √√√  |
-| **[Autopilot-Notes](https://github.com/gotonote/Autopilot-Notes)** |                    相当系统的自动驾驶笔记                    | √√√  |
-| **[geolearning](https://github.com/wumingaizhou/geolearning)** |                大一本科生写的 WebGIS 学习笔记                | √√√  |
-| **[InSARLearning](https://github.com/cyloveyou/InSARLearning)** |                      InSAR小白学习笔记                       | √√√  |
-|  **[EveryDay](https://github.com/WindrunnerMax/EveryDay)**   |                    一个前端小白的学习历程                    | √√√  |
-| **[cs-self-learning](https://github.com/PKUFlyingPig/cs-self-learning)** |                北大信科学长创建的CS自学全家桶                | √√√  |
-|   **[AI_Tutorial](https://github.com/cbamls/AI_Tutorial)**   |                  整理 AI 热门文章，每周更新                  | √√√  |
-|     **[HITCS](https://github.com/HITLittleZheng/HITCS)**     |              哈尔滨工业大学计算机课程资料与实验              | √√√  |
-| **[learning_research](https://github.com/pengsida/learning_research)** |              面向实验室研究生、本科生的科研教学              | √√√  |
-| **[3D-Gaussian-Splatting-Papers](https://github.com/Awesome3DGS/3D-Gaussian-Splatting-Papers)** |                3D高斯论文，持续更新，排版挺好                | √√√  |
-| **[qtkaifajingyan](https://github.com/feiyangqingyun/qtkaifajingyan)** |               作者十年 Qt 开发积累的 300+ 经验               | √√√  |
-| **[learning-note](https://github.com/MerlotRain/learning-note)** |              GNU相关知识学习，makefile,cmake,m4              | √√√  |
-| **[researchTools](https://github.com/weisongwen/researchTools)** |           港理工 GraphGNSSLib 作者的博客、整理资料           | ×××  |
-|     **[IMU-study](https://github.com/Staok/IMU-study)**      |               IMU、气压计、磁力计的原理和驱动                | ×××  |
-| **[SLAM-All-In-One](https://github.com/zhouyong1234/SLAM-All-In-One)** |              SLAM 框架整理、代码注释、学习笔记               | ×××  |
-| **[slam-tricks](https://github.com/Unsigned-Long/slam-tricks)** |            记录一些SLAM中常用到的一些算法和小技巧            | ×××  |
-|  **[SLAM-Jobs](https://github.com/nebula-beta/SLAM-Jobs)**   |                  SLAM/SFM求职指南、面试经验                  | ×××  |
-| **[NEXTE_Sentry_Nav](https://github.com/66Lau/NEXTE_Sentry_Nav)** |              一个RM选手的导航系统部署和调试经验              | ×××  |
-|         **[RADAR](https://github.com/wuweh/RADAR)**          |                    一些雷达目标追踪的例程                    | ×××  |
-| **[learning-area](https://github.com/roy-tian/learning-area)** |                 HTML/CSS/JavaScript 入门学习                 | ×××  |
-|       **[cs-408](https://github.com/ddy-ddy/cs-408)**        |                    计算机考研408学习笔记                     | ×××  |
-| **[open-geo-tutorial](https://github.com/ceholden/open-geo-tutorial)** |           地信遥感基础算法（GDAL in Python or R）            | ×××  |
-|   **[AP1400-2](https://github.com/half-dreamer/AP1400-2)**   |           浙大本科生写的C++英文网课作业和学习笔记            | ×××  |
-|    **[learn_slam](https://gitee.com/pi-lab/learn_slam)**     |              西工大布树辉写的SLAM入门路线和建议              | ×××  |
-| **[Road2Coding](https://github.com/rd2coding/Road2Coding)**  |                     B站UP主代码羊的仓库                      | ×××  |
-| **[SLAM_Code_Learning](https://github.com/Fernweh-yang/SLAM_Code_Learning)** |             为做NeRF-based SLAM毕设所读过的代码              | ×××  |
-|    **[Tech_Blog](https://github.com/potato77/Tech_Blog)**    |             北理工博士的无人机理论及实践学习心得             | ×××  |
-| **[CUMT-GIS-16](https://github.com/ajdupeuetgg/CUMT-GIS-16)** | 矿大GIS课设\|**[CUMT-GIS-21](https://github.com/mxxxOrz12/CUMT-GIS-21)**/**[CUMT-GIS-20](https://github.com/lovelydayss/CUMT-GIS)** | ×××  |
-|      **[Mind-Map](https://github.com/lsq210/Mind-Map)**      |                  武大遥感院期末复习思维导图                  | ×××  |
-|        **[papers](https://github.com/yyccR/papers)**         |            作者整理的论文，关于机器学习和组合导航            | ×××  |
-|  **[review-2023](https://github.com/saveweb/review-2023)**   | 23年度总结集合\|[**review-2022**](https://github.com/saveweb/review-2022)\|[**review-2021**](https://github.com/saveweb/review-2021) | ×××  |
-
-</div>
 
 ---
 
@@ -1129,6 +1084,52 @@
 
 
 <p align="center" > &nbsp;👆👆👆 &nbsp; <a href="#Top">回到开头</a> &nbsp; 👆👆👆</p>
+
+---
+
+<div align="center">
+    <a name="Recommend-Repositories"></a>
+	<h3>🤺&nbsp;推荐一些同类仓库，创作不易，欢迎给他们 Star 鼓励&nbsp;🤺</h3>
+
+
+
+|                    🌟&nbsp;开源项目&nbsp;🌟                    |                      🧾&nbsp;简介&nbsp;🧾                      | 更新 |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :--: |
+| **[GitHub-Chinese-Top-Charts](https://github.com/GrowingGit/GitHub-Chinese-Top-Charts)** |                    GitHub 中文资料排行榜                     | √√√  |
+| **[slam-study-note](https://github.com/hanlin-cheng/slam-study-note)** |                  SLAM算法笔记、书籍软件资源                  | √√√  |
+| **[ML_DL_CV_with_pytorch](https://github.com/Michael-Jetson/ML_DL_CV_with_pytorch)** |                深度学习、自动驾驶、计算机视觉                | √√√  |
+| **[Autopilot-Notes](https://github.com/gotonote/Autopilot-Notes)** |                    相当系统的自动驾驶笔记                    | √√√  |
+| **[geolearning](https://github.com/wumingaizhou/geolearning)** |                大一本科生写的 WebGIS 学习笔记                | √√√  |
+| **[InSARLearning](https://github.com/cyloveyou/InSARLearning)** |                      InSAR小白学习笔记                       | √√√  |
+|  **[EveryDay](https://github.com/WindrunnerMax/EveryDay)**   |                    一个前端小白的学习历程                    | √√√  |
+| **[cs-self-learning](https://github.com/PKUFlyingPig/cs-self-learning)** |                北大信科学长创建的CS自学全家桶                | √√√  |
+|   **[AI_Tutorial](https://github.com/cbamls/AI_Tutorial)**   |                  整理 AI 热门文章，每周更新                  | √√√  |
+|     **[HITCS](https://github.com/HITLittleZheng/HITCS)**     |              哈尔滨工业大学计算机课程资料与实验              | √√√  |
+| **[learning_research](https://github.com/pengsida/learning_research)** |              面向实验室研究生、本科生的科研教学              | √√√  |
+| **[3D-Gaussian-Splatting-Papers](https://github.com/Awesome3DGS/3D-Gaussian-Splatting-Papers)** |                3D高斯论文，持续更新，排版挺好                | √√√  |
+| **[qtkaifajingyan](https://github.com/feiyangqingyun/qtkaifajingyan)** |               作者十年 Qt 开发积累的 300+ 经验               | √√√  |
+| **[learning-note](https://github.com/MerlotRain/learning-note)** |              GNU相关知识学习，makefile,cmake,m4              | √√√  |
+| **[researchTools](https://github.com/weisongwen/researchTools)** |           港理工 GraphGNSSLib 作者的博客、整理资料           | ×××  |
+|     **[IMU-study](https://github.com/Staok/IMU-study)**      |               IMU、气压计、磁力计的原理和驱动                | ×××  |
+| **[SLAM-All-In-One](https://github.com/zhouyong1234/SLAM-All-In-One)** |              SLAM 框架整理、代码注释、学习笔记               | ×××  |
+| **[slam-tricks](https://github.com/Unsigned-Long/slam-tricks)** |            记录一些SLAM中常用到的一些算法和小技巧            | ×××  |
+|  **[SLAM-Jobs](https://github.com/nebula-beta/SLAM-Jobs)**   |                  SLAM/SFM求职指南、面试经验                  | ×××  |
+| **[NEXTE_Sentry_Nav](https://github.com/66Lau/NEXTE_Sentry_Nav)** |              一个RM选手的导航系统部署和调试经验              | ×××  |
+|         **[RADAR](https://github.com/wuweh/RADAR)**          |                    一些雷达目标追踪的例程                    | ×××  |
+| **[learning-area](https://github.com/roy-tian/learning-area)** |                 HTML/CSS/JavaScript 入门学习                 | ×××  |
+|       **[cs-408](https://github.com/ddy-ddy/cs-408)**        |                    计算机考研408学习笔记                     | ×××  |
+| **[open-geo-tutorial](https://github.com/ceholden/open-geo-tutorial)** |           地信遥感基础算法（GDAL in Python or R）            | ×××  |
+|   **[AP1400-2](https://github.com/half-dreamer/AP1400-2)**   |           浙大本科生写的C++英文网课作业和学习笔记            | ×××  |
+|    **[learn_slam](https://gitee.com/pi-lab/learn_slam)**     |              西工大布树辉写的SLAM入门路线和建议              | ×××  |
+| **[Road2Coding](https://github.com/rd2coding/Road2Coding)**  |                     B站UP主代码羊的仓库                      | ×××  |
+| **[SLAM_Code_Learning](https://github.com/Fernweh-yang/SLAM_Code_Learning)** |             为做NeRF-based SLAM毕设所读过的代码              | ×××  |
+|    **[Tech_Blog](https://github.com/potato77/Tech_Blog)**    |             北理工博士的无人机理论及实践学习心得             | ×××  |
+| **[CUMT-GIS-16](https://github.com/ajdupeuetgg/CUMT-GIS-16)** | 矿大GIS课设\|**[CUMT-GIS-21](https://github.com/mxxxOrz12/CUMT-GIS-21)**/**[CUMT-GIS-20](https://github.com/lovelydayss/CUMT-GIS)** | ×××  |
+|      **[Mind-Map](https://github.com/lsq210/Mind-Map)**      |                  武大遥感院期末复习思维导图                  | ×××  |
+|        **[papers](https://github.com/yyccR/papers)**         |            作者整理的论文，关于机器学习和组合导航            | ×××  |
+|  **[review-2023](https://github.com/saveweb/review-2023)**   | 23年度总结集合\|[**review-2022**](https://github.com/saveweb/review-2022)\|[**review-2021**](https://github.com/saveweb/review-2021) | ×××  |
+
+</div>
 
 
 ---
