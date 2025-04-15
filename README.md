@@ -17,25 +17,24 @@
     <img alt="Static Badge" src="https://img.shields.io/badge/Email-dauger%40126.com-brown">
     <a href="https://blog.csdn.net/daoge2666/"><img src="https://img.shields.io/badge/CSDN-论坛-c32136" /></a>
 </div>
-
-
 <br/>
 
 <div align="center">
 	<p>✨ 长期更新，分享出来，也许有人用得上，也激励自己坚持学下去；</p>
     <p>💡 仓库所有内容都可以随意转载，可用于任何目的，无需征求我的意见；</p>
    	<p>🍀 把原始文档都放在这了，欢迎大家在我的基础上整理出属于自己的一些文档；</p>
-    <p>💻 主要是写给初学者，已经有基础的同学应该多看论文和代码，看我的仓库学不到啥；</p>
+    <p>💻 主要是写给初学者，已经有基础的同学应该多看论文和代码，看我的笔记学不到啥；</p>
 	<p>🛠 不建议直接就下载整个仓库，Markdown 和 PDF 可以在线看，想要的文件可以<a href='https://zhuanlan.zhihu.com/p/578116206' target='_blank'>单独下载</a>；</p>
 	<p>⚙ 目前仓库还不够完善，部分文件还没啥内容，下载之前，建议先点开看看，有没有您期望的资料；</p>
 	<p>🎉 如果您觉得仓库内容有价值，推荐用 Github-Desktop 下载并保持更新，用 Typora 看 Markdown 文件；</p>
 	<details>
     <summary>🤺 【点击展开】欢迎随时与我交流：<strong>微信</strong> (lizhengxiao99)、<strong>QQ</strong> (1482275402)、<strong>Email</strong> (dauger@126.com)；</summary>
 	<p>
-		<img align="center" src="https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/%E5%AF%BC%E8%88%AA%E5%AE%9A%E4%BD%8D%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%88%86%E4%BA%AB.png" />
+		<img align="center" src="导航定位算法学习笔记分享.png" />
     </p>
 	</details>
 </div>
+
 
 
 ---
