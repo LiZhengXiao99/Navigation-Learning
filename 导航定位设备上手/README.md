@@ -1,5 +1,3 @@
-![navigation-hardware-cover](https://pic-bed-1316053657.cos.ap-nanjing.myqcloud.com/img/navigation-hardware-cover.png)
-
 ---
 
 导航定位，肯定给载体导航，定载体的位，脱离不了硬件，
