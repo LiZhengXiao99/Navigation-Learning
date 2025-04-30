@@ -1,5 +1,3 @@
->  原始 Markdown文档、Visio流程图、XMind思维导图见：https://github.com/LiZhengXiao99/Navigation-Learning
-
 [TOC]
 
 ## 一、GICI-LIB 简介
@@ -69,7 +67,6 @@ GICI-LIB 主要使用 C++ 编写，且大量使用 C++ 高级语法，CMake 文�
 * 大量使用智能指针管理内存，还用 using 给智能指针起别名 xxxPtr。
 * 使用多线程技术，接受数据和解算由不同的线程来做。
 * 比较友好的地方是代码的注释还算完善，基本每个文件开头、每个函数、程序的关键代码段都有注释。
-* 代码质量很高，但还可以再整理整理，比如有的紧挨着的地方上面用了 auto 而下面没用、有些函数名太长、构造函数写太长、streamer 和 estimator 线程有好几种命名，看着有点乱。
 
 用 cloc 统计 include、src、tools 文件夹**代码量**（不包括 RTKLIB），结果如下：
 
@@ -206,9 +203,9 @@ sudo apt-get install libeigen3-dev
 
 - 文件下载
 
-  - OpenCV：https://opencv.org/releases/，下载太慢可以去：<https://www.raoyunsoft.com/wordpress/index.php/2020/03/09/opencvdownload/> 
-  - 下载opencv_contrib（与 OpenCV 版本一致）：https://opencv.org/releases/
-  - 两个都下载好以后，把opencv_contrib放到解压后opencv文件夹里面 
+  - OpenCV：https://opencv.org/releases/
+  - 下载 opencv_contrib（与 OpenCV 版本一致）：https://github.com/opencv/opencv_contrib/tags
+  - 两个都下载好以后，把 opencv_contrib 放到解压后 opencv 文件夹里面 
 
 - 环境配置
 
